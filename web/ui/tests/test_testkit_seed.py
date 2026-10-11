@@ -144,14 +144,6 @@ class SeedTests(SeedDataMixin, TestCase):
         self.assertEqual((by_kind["putaway"] - by_kind["picking"]).total_seconds(), 3600)
         self.assertEqual(len(stamps), 4)
 
-    def test_zaria_conversations_are_per_user(self):
-        from ui.models import ZariaConversation
-        md, tr = self.data.users["Master Data"], self.data.users["Transport"]
-        self.assertEqual(ZariaConversation.objects.filter(user=md).count(), 1)
-        self.assertNotEqual(self.data.zaria.conversations["Master Data"].pk,
-                            self.data.zaria.conversations["Transport"].pk)
-        self.assertFalse(ZariaConversation.objects.filter(user=tr, title__contains="Master").exists())
-
     def test_seeded_data_renders_key_screens(self):
         client = personas.client_for("superuser")
         for url in ("/", "/control/", "/planner/products/"):

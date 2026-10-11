@@ -1,7 +1,7 @@
 """django-filter FilterSets backing the filterable list views."""
 import django_filters as df
 
-from .models import WarehouseLocationMaster, ZariaMessage, ZariaModel
+from .models import WarehouseLocationMaster
 
 
 class LocationMasterFilter(df.FilterSet):
@@ -16,17 +16,3 @@ class LocationMasterFilter(df.FilterSet):
     class Meta:
         model = WarehouseLocationMaster
         fields = ["location_code", "warehouse_type", "level", "max_width_mm"]
-
-
-class ZariaUsageFilter(df.FilterSet):
-    """Filter the ZARIA message log (assistant replies) for the admin usage report."""
-
-    username = df.CharFilter(field_name="conversation__user__username", lookup_expr="icontains",
-                             label="Użytkownik zawiera")
-    model = df.ModelChoiceFilter(queryset=ZariaModel.objects.all(), label="Model")
-    date_from = df.DateFilter(field_name="created_at", lookup_expr="date__gte", label="Od")
-    date_to = df.DateFilter(field_name="created_at", lookup_expr="date__lte", label="Do")
-
-    class Meta:
-        model = ZariaMessage
-        fields = ["username", "model", "date_from", "date_to"]

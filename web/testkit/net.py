@@ -2,7 +2,7 @@
 
 Instalują ją ``testkit.runner`` (``manage.py test``, także w procesach ``--parallel``) oraz
 ``conftest.py`` (pytest). Mocki integracji (``testkit.fake_http``) przechwytują żądania
-WCZEŚNIEJ — na poziomie requests / urllib / httpx — więc do gniazda dociera tylko to, czego
+WCZEŚNIEJ — na poziomie requests / urllib — więc do gniazda dociera tylko to, czego
 żaden test nie zamockował. Każda próba trafia też do ``blocked`` (host, port), bo kod
 „best-effort” (``except Exception``) potrafi połknąć wyjątek i test i tak przechodzi.
 

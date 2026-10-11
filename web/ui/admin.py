@@ -3,9 +3,7 @@ from .models import (Batch, Palletization, Product, Carton, InnerPack,
                      PalletizationInstruction, ErrorReport, SiteInfo, Customer,
                      Task, Notification, RecurringTask, UserProfile, PowerBIToken,
                      UserModuleAccess,
-                     ZariaModel, ZariaModelRoleAccess, ZariaUserModelAccess, ZariaConfig,
-                     ZariaUserBudget, ZariaConversation, ZariaMessage, EscalationRoute,
-                     ZariaRolePermission, ZariaSystemPromptTemplate, ZariaMailLog,
+                     EscalationRoute,
                      PackagingIssue, ProductAlias, DictionaryEntry)
 
 
@@ -134,91 +132,6 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ("user", "phone", "section", "allowed_sections", "email_notifications")
     list_filter = ("email_notifications", "section")
     search_fields = ("user__username", "phone")
-
-
-@admin.register(ZariaModel)
-class ZariaModelAdmin(admin.ModelAdmin):
-    list_display = ("display_name", "key", "provider", "is_active",
-                    "price_input_per_1k", "price_output_per_1k", "sort_order")
-    list_filter = ("provider", "is_active")
-    list_editable = ("sort_order", "is_active")
-    search_fields = ("key", "display_name")
-
-
-@admin.register(ZariaModelRoleAccess)
-class ZariaModelRoleAccessAdmin(admin.ModelAdmin):
-    list_display = ("model", "group_name")
-    list_filter = ("group_name", "model")
-
-
-@admin.register(ZariaUserModelAccess)
-class ZariaUserModelAccessAdmin(admin.ModelAdmin):
-    list_display = ("user", "model", "allowed", "granted_at", "expires_at", "updated_at")
-    list_filter = ("allowed", "model")
-    search_fields = ("user__username",)
-
-
-@admin.register(ZariaRolePermission)
-class ZariaRolePermissionAdmin(admin.ModelAdmin):
-    list_display = ("group_name", "can_compare", "updated_at")
-    list_filter = ("can_compare",)
-
-
-@admin.register(ZariaSystemPromptTemplate)
-class ZariaSystemPromptTemplateAdmin(admin.ModelAdmin):
-    list_display = ("name", "is_active", "sort_order", "updated_at")
-    list_filter = ("is_active",)
-    search_fields = ("name",)
-
-
-@admin.register(ZariaMailLog)
-class ZariaMailLogAdmin(admin.ModelAdmin):
-    list_display = ("created_at", "user", "to", "subject", "scope", "transport")
-    list_filter = ("transport", "scope")
-    search_fields = ("to", "subject", "user__username")
-    readonly_fields = ("created_at",)
-
-
-@admin.register(ZariaConfig)
-class ZariaConfigAdmin(admin.ModelAdmin):
-    list_display = ("__str__", "default_model", "monthly_budget_pln",
-                    "per_user_monthly_budget_pln", "hard_block_over_budget", "updated_at")
-
-    def has_add_permission(self, request):
-        return not ZariaConfig.objects.exists()   # true singleton
-
-
-@admin.register(ZariaUserBudget)
-class ZariaUserBudgetAdmin(admin.ModelAdmin):
-    list_display = ("user", "monthly_budget_pln", "updated_at")
-    search_fields = ("user__username",)
-
-
-# Rozmowy ZARIA są PRYWATNE (roadmapa, wywiad Q26): admin widzi wyłącznie metadane
-# ilościowo-kosztowe — nigdy treści ani tytułu (tytuł = pierwsze słowa rozmowy).
-@admin.register(ZariaConversation)
-class ZariaConversationAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "model", "created_at", "updated_at")
-    list_filter = ("model",)
-    search_fields = ("user__username",)
-    fields = ("user", "model", "created_at", "updated_at", "accepted_privacy_notice_at")
-    readonly_fields = ("user", "model", "created_at", "updated_at", "accepted_privacy_notice_at")
-
-    def has_add_permission(self, request):
-        return False   # audit log — created only by the chat flow
-
-
-@admin.register(ZariaMessage)
-class ZariaMessageAdmin(admin.ModelAdmin):
-    list_display = ("id", "conversation", "role", "model", "prompt_tokens",
-                    "completion_tokens", "cost_pln", "created_at")
-    list_filter = ("role", "model")
-    exclude = ("content",)
-    readonly_fields = ("conversation", "role", "model", "prompt_tokens",
-                       "completion_tokens", "cost_pln", "latency_ms", "error", "created_at")
-
-    def has_add_permission(self, request):
-        return False   # audit log — created only by the chat flow
 
 
 @admin.register(EscalationRoute)

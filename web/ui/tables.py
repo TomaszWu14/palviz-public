@@ -24,19 +24,3 @@ class LocationMasterTable(tables.Table):
     height_mm     = tables.Column(verbose_name="Wys. [mm]")
     max_volume_m3 = tables.Column(verbose_name="Obj. [m³]")
     max_weight_kg = tables.Column(verbose_name="Waga [kg]")
-
-
-class ZariaUsageTable(tables.Table):
-    """Per-user usage summary for the ZARIA admin report. Built from plain dicts
-    (zaria_usage.summarize_by_user output), not a queryset — no Meta.model."""
-
-    username = tables.Column(verbose_name="Użytkownik")
-    messages = tables.Column(verbose_name="Wiadomości")
-    prompt_tokens = tables.Column(verbose_name="Tokeny wejściowe")
-    completion_tokens = tables.Column(verbose_name="Tokeny wyjściowe")
-    cost_pln = tables.Column(verbose_name="Koszt (PLN)")
-
-    class Meta:
-        order_by = ("-cost_pln",)
-        attrs = {"class": "table"}
-        empty_text = "Brak zużycia ZARIA w wybranym okresie."

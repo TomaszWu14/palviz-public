@@ -59,7 +59,6 @@ class SubmitGuardTests(SimpleTestCase):
     def test_no_silent_fetch_catches(self):
         """Top-4 audytu: naprawione pliki nie wracają do pustego .catch()."""
         fixed = [
-            BASE / "ui/templates/ui/zaria/conversation.html",
             BASE / "ui/templates/ui/carton_opt/redesign_detail.html",
             BASE / "ui/templates/ui/_messages_bell.html",
             BASE / "ui/templates/ui/_notif_alert.html",

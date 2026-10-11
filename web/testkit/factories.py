@@ -18,7 +18,7 @@ from transport.models import Shipment, ShipmentLine
 from ui.models import (
     Carton, Customer, CustomerPackagingRule, InnerPack, MaterialMaster, Message, MessageThread,
     Notification, PalletizationInstruction, Product, ProductCategory, Task,
-    UserModuleAccess, ZariaConversation, ZariaMessage, ZariaModel, ZariaModelRoleAccess,
+    UserModuleAccess,
 )
 from wh3d.models import (
     WarehouseModel, WarehouseModelRack, WarehouseRackType, WarehouseSnapshot,
@@ -253,44 +253,6 @@ class MessageFactory(factory.django.DjangoModelFactory):
 
     thread = factory.SubFactory(ThreadFactory)
     body = "Proszę o sprawdzenie palety — źle zafoliowana."
-
-
-# ── ZARIA ───────────────────────────────────────────────────────────────────────────────────
-class ZariaModelFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = ZariaModel
-        django_get_or_create = ("key",)
-
-    key = "claude-haiku-4-5-20251001"
-    display_name = "Claude Haiku (test)"
-    provider = "anthropic"
-
-
-class ZariaRoleAccessFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = ZariaModelRoleAccess
-        django_get_or_create = ("model", "group_name")
-
-    model = factory.SubFactory(ZariaModelFactory)
-    group_name = "Administratorzy"
-
-
-class ZariaConversationFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = ZariaConversation
-
-    user = factory.SubFactory(UserFactory)
-    model = factory.SubFactory(ZariaModelFactory)
-    title = factory.Sequence(lambda n: f"Prywatna rozmowa {n}")
-
-
-class ZariaMessageFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = ZariaMessage
-
-    conversation = factory.SubFactory(ZariaConversationFactory)
-    role = "user"
-    content = "Ile kartonów REF100001 zmieści się na palecie EU?"
 
 
 # ── Magazyn: snapshot, model 3D, zadania EWM ────────────────────────────────────────────────

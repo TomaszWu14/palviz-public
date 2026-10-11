@@ -8,7 +8,7 @@ Użycie:
 Pokrywa: 15 person, katalog (produkty, kartony, opakowania, instrukcje, dane SAP MaterialMaster),
 klientów z regułami pakowania, shipmenty w każdym statusie, HU w kontroli (wszystkie statusy,
 4 strefy, VIP, rezerwacje), zadania, powiadomienia (w tym pilne z potwierdzeniem), wątki,
-prywatne rozmowy ZARIA, snapshot zajętości, model magazynu z regałami, import zadań EWM. Daty: przeszłe, dzisiejsze, przyszłe, przełom roku, oba
+snapshot zajętości, model magazynu z regałami, import zadań EWM. Daty: przeszłe, dzisiejsze, przyszłe, przełom roku, oba
 przestawienia zegara; polskie znaki, maksymalnie długie nazwy, puste pola opcjonalne.
 """
 from datetime import timedelta
@@ -134,21 +134,6 @@ def _comms(users, cat, hus):
     return SimpleNamespace(tasks=tasks, notifications=notes, thread=thread)
 
 
-def _zaria(users):
-    model = f.ZariaModelFactory()
-    local = f.ZariaModelFactory(key="llama3.1:8b", display_name="Llama lokalna", provider="ollama")
-    for group in ("Administratorzy", "Master Data", "Transport", "Podgląd"):
-        f.ZariaRoleAccessFactory(model=model, group_name=group)
-    convs = {}
-    for owner in ("Master Data", "Transport"):      # dwie prywatne rozmowy — test izolacji (P-4)
-        conv = f.ZariaConversationFactory(user=users[owner], model=model, title=f"Rozmowa {owner}")
-        f.ZariaMessageFactory(conversation=conv, role="user")
-        f.ZariaMessageFactory(conversation=conv, role="assistant", content="Około 48 kartonów.",
-                              model=model, prompt_tokens=12, completion_tokens=9)
-        convs[owner] = conv
-    return SimpleNamespace(model=model, local=local, conversations=convs)
-
-
 def _warehouse(users):
     snap = f.SnapshotFactory(name="Snapshot B0 — 2026-09-26")
     rows = [f.SnapshotRowFactory(snapshot=snap, is_empty=(i % 3 == 0), blocked_pick=(i == 5),
@@ -179,7 +164,7 @@ def seed_all():
     ship = _shipments(cat, cust, d, users)
     hus = _hu(ship, cat, users)
     return SimpleNamespace(users=users, dates=d, catalog=cat, customers=cust, shipments=ship,
-                           hu=hus, comms=_comms(users, cat, hus), zaria=_zaria(users),
+                           hu=hus, comms=_comms(users, cat, hus),
                            warehouse=_warehouse(users))
 
 

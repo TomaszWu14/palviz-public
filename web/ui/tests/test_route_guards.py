@@ -35,7 +35,6 @@ PUBLIC_ROUTES = {
     "driver_form": "formularz kierowcy — token w URL",
     "driver_confirm": "potwierdzenie kierowcy — token w URL",
     "notifications_poll": "polling powiadomień — sprawdza is_authenticated w ciele",
-    "zaria_api_chat": "API czatu ZARIA — w ciele: logowanie (401), moduł 'zaria' i RODO (403, SEC-008)",
     # openapi-json/openapi-view: chronione docs_decorator=staff_member_required (ACL-002, #740).
     "api-root": "django-ninja default_home — tylko przekierowanie do docs (chronionych, #740)",
 }

@@ -19,7 +19,6 @@ MODULE_ICONS = {
     "kontrola_hu": "scan-barcode",
     "zadania": "bell",
     "klienci": "users",
-    "zaria": "sparkles",
     "phv": "boxes",
     "carton_opt": "package",
 }

@@ -22,51 +22,9 @@ from ..product_lookup import resolve_ref
 # Kształt kodu lokalizacji, np. „B0-01-100A" / „B0-07-300C-1". Lustro
 # import_locations.CODE_RE — trzymane lokalnie, by nie importować z management command.
 # ponytail: jedno miejsce prawdy byłoby lepsze; przy zmianie formatu zsynchronizuj oba.
-from .phv_data import CHANGE_PALLETIZATION_REASONS, LOCATION_SUGGESTIONS, MISSING_CONVERSION_UNITS, OPTIMIZATION_ISSUE_TYPES, PROCESS_CHOICES, _LOC_RE, _RETIRED_ISSUE_TYPES, _assistant_context, _hierarchy, _issue_stat, _location_card, _material_desc, _storage_strategy, _valid_image  # noqa: F401
+from .phv_data import CHANGE_PALLETIZATION_REASONS, LOCATION_SUGGESTIONS, MISSING_CONVERSION_UNITS, OPTIMIZATION_ISSUE_TYPES, PROCESS_CHOICES, _LOC_RE, _RETIRED_ISSUE_TYPES, _hierarchy, _issue_stat, _location_card, _material_desc, _storage_strategy, _valid_image  # noqa: F401
 
 log = logging.getLogger(__name__)
-
-@module_required("phv")
-@require_POST
-def phv_assistant(request):
-    """Asystent produktu — lokalny model Ollama streszcza/odpowiada na podstawie danych
-    systemu o REF. 100% lokalnie (bez clouda): wymuszony provider 'ollama'. Dane produktu
-    lecą tylko do lokalnego modelu (spójne z read-only SAP i wymogiem prywatności)."""
-    from .. import zaria_llm
-    if not zaria_llm.is_configured("ollama"):
-        return JsonResponse(
-            {"ok": False, "error": "Model lokalny (Ollama) nie jest skonfigurowany na serwerze."},
-            status=503)
-
-    ref = (request.POST.get("ref") or "").strip()[:50]
-    question = (request.POST.get("question") or "").strip()[:1000]
-    product = resolve_ref(ref)
-    if not product:
-        return JsonResponse({"ok": False, "error": "Nie znaleziono indeksu (REF)."}, status=404)
-
-    hierarchy = _hierarchy(product)
-    from ..hierarchy import enrich_pallet_metrics
-    enrich_pallet_metrics(hierarchy["levels"], hierarchy["summary"], hierarchy["instr"])
-    strategy = _storage_strategy(product)
-    context = _assistant_context(product, _material_desc(product), hierarchy, strategy)
-
-    system_prompt = (
-        "Jesteś asystentem magazynowym GROOVE (firma ACME). Odpowiadasz po polsku, zwięźle "
-        "i WYŁĄCZNIE na podstawie danych systemu podanych poniżej. Jeśli danych brakuje — "
-        "powiedz wprost, że system ich nie ma; niczego nie zgaduj i nie wymyślaj.\n\n"
-        "=== DANE SYSTEMU O PRODUKCIE ===\n" + context)
-    messages = [{"role": "user",
-                 "content": question or "Streść wszystko, co system wie o tym produkcie."}]
-
-    from types import SimpleNamespace
-    model = SimpleNamespace(provider="ollama",
-                            key=getattr(settings, "MATINFO_OLLAMA_MODEL", "") or "llama3.1")
-    try:
-        text, *_rest = zaria_llm.complete(model, messages, system_prompt, max_tokens=800)
-    except zaria_llm.ZariaLLMError as exc:
-        return JsonResponse({"ok": False, "error": str(exc)}, status=502)
-    return JsonResponse({"ok": True, "answer": text})
-
 
 def _fuzzy_suggestions(q, have, limit=10):
     """Rozmyte podpowiedzi REF tolerujace literowki/transpozycje (RapidFuzz).
@@ -144,13 +102,11 @@ def phv_home(request):
         from ..models import ProductViewHistory
         recent = list(ProductViewHistory.objects.filter(user=request.user)
                       .select_related("product")[:10])
-    from .. import zaria_llm
     return render(request, "ui/phv/home.html", {
         "recent": recent,
         "q": q, "product": product, "material_desc": material_desc,
         # Tryb „tylko poziomy opakowań" (link z kontroli HU): ukryj stany magazynowe.
         "levels_only": request.GET.get("levels") == "1",
-        "assistant_enabled": zaria_llm.is_configured("ollama"),
         "hierarchy": hierarchy, "suggestions": suggestions,
         # Picker bez typów wycofanych; stare wiersze i tak mają get_issue_type_display.
         "issue_types": [(v, l) for v, l in PackagingIssue.TYPES if v not in _RETIRED_ISSUE_TYPES],
@@ -429,7 +385,6 @@ def reports_admin(request):
     })
 
 __all__ = [
-    'phv_assistant',
     '_fuzzy_suggestions',
     'phv_home',
     'phv_suggest',

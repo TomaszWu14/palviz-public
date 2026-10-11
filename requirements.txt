@@ -35,5 +35,3 @@ django-storages==1.14.6   # pluggable media/static backend (S3/object storage; o
 structlog==26.1.0         # structured logging (opt-in JSON renderer)
 opentelemetry-sdk==1.44.0 # optional tracing (off unless OTEL_ENABLED=1)
 pydantic-settings==2.14.2 # typed, validated env config (fail-fast at startup — palletweb/config.py)
-anthropic==0.120.0        # ZARIA LLM calls (lazy import; only used when ZARIA_ANTHROPIC_API_KEY is set)
-openai==2.54.0            # ZARIA: Ollama / OpenAI / Azure (zgodne API; lazy import) — B-010; 2.x = ten sam httpx co anthropic

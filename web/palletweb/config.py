@@ -208,28 +208,6 @@ class AppEnv(BaseSettings):
     N8N_EVENT_URL: str = ""
     N8N_EVENT_SECRET: str = ""
 
-    # ── ZARIA (wewnętrzny asystent AI) — puste = moduł nieaktywny ────────────
-    # Klucze dostawców LLM — wyłącznie po stronie serwera, nigdy nie trafiają do
-    # przeglądarki. Katalog modeli i cennik są edytowalne w panelu admina (DB);
-    # tu żyją tylko sekrety.
-    ZARIA_ANTHROPIC_API_KEY: str = ""
-    ZARIA_OPENAI_API_KEY: str = ""
-    ZARIA_AZURE_OPENAI_API_KEY: str = ""
-    ZARIA_AZURE_OPENAI_ENDPOINT: str = ""
-    # Lokalny LLM (Ollama, endpoint zgodny z OpenAI), np. http://192.168.1.50:11434/v1
-    ZARIA_OLLAMA_BASE_URL: str = ""
-    # Seeduje ZariaConfig.default_model przy pierwszym wdrożeniu (manage.py zaria_seed).
-    ZARIA_DEFAULT_MODEL_KEY: str = ""
-    # Fallbacki gdy wiersz ZariaConfig jeszcze nie istnieje — właściwe limity są
-    # edytowalne w adminie (ZariaConfig.rate_limit_per_minute/_day).
-    ZARIA_RATE_LIMIT_PER_MINUTE: int = 20
-    ZARIA_RATE_LIMIT_PER_DAY: int = 200
-    ZARIA_REQUEST_TIMEOUT_SEC: int = 60
-    # Retry z backoffem dla 429/529/timeout (obsługiwane przez SDK dostawcy).
-    ZARIA_MAX_RETRIES: int = 3
-    # Domyślnie NIE zapisujemy treści rozmów z /api/chat (tylko ID + liczniki tokenów).
-    ZARIA_LOG_CONVERSATIONS: bool = False
-
     @model_validator(mode="after")
     def _cross_field_checks(self) -> "AppEnv":
         errs: list[str] = []
@@ -242,8 +220,6 @@ class AppEnv(BaseSettings):
             errs.append(f"EMAIL_PORT must be 1–65535 (got {self.EMAIL_PORT}).")
         if not (0 <= self.DEFAULT_STOWAGE_EFFICIENCY_PCT <= 100):
             errs.append("DEFAULT_STOWAGE_EFFICIENCY_PCT must be 0–100.")
-        if self.ZARIA_RATE_LIMIT_PER_MINUTE <= 0 or self.ZARIA_RATE_LIMIT_PER_DAY <= 0:
-            errs.append("ZARIA_RATE_LIMIT_PER_MINUTE and ZARIA_RATE_LIMIT_PER_DAY must be > 0.")
         if errs:
             raise ValueError("Invalid configuration:\n  - " + "\n  - ".join(errs))
         return self

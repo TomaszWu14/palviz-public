@@ -16,7 +16,7 @@ class AdminRedesignRenderTest(TestCase):
 
     def test_redesigned_admin_pages_render(self):
         for name in ["admin_module_access", "admin_users", "admin_control_zones",
-                     "admin_role_matrix", "admin_zaria_panel"]:
+                     "admin_role_matrix"]:
             with self.subTest(page=name):
                 resp = self.client.get(reverse(f"ui:{name}"))
                 self.assertEqual(resp.status_code, 200, f"{name} nie wyrenderował się (200)")

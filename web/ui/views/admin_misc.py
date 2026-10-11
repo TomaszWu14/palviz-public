@@ -126,7 +126,16 @@ def admin_import_status(request):
     return render(request, "ui/admin/import_status.html", {
         "rows": rows, "stale_hours": stale_hours})
 
+@_admin_only
+def admin_access_audit(request):
+    """Podgląd audytu zmian ról i dostępów (P3)."""
+    from ..models import AccessAudit
+    logs = AccessAudit.objects.select_related("actor", "target_user")[:300]
+    return render(request, "ui/admin/access_audit.html", {"logs": logs})
+
+
 __all__ = [
+    'admin_access_audit',
     'admin_positions',
     'admin_position_form',
     'admin_import_status',

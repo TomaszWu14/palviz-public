@@ -61,7 +61,7 @@ class ModuleHomeTests(TestCase):
         # Data Center, so the standalone "Baza klientów" tile is not duplicated here.
         self.assertEqual(labels, {"Data Center", "Paletyzacja", "Wycena przesyłek",
                                   "Magazyn 3D", "Kontrola HU",
-                                  "Zadania i powiadomienia", "ZARIA",
+                                  "Zadania i powiadomienia",
                                   "MATinfo", "Optymalizacja kartonów"})
 
     def test_single_module_user_redirected(self):

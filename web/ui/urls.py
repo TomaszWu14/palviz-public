@@ -82,22 +82,6 @@ urlpatterns = [
     path("wiadomosci/panel-boczny/", views.messages_drawer, name="messages_drawer"),
     path("wiadomosc/<int:pk>/", views.message_thread, name="message_thread"),
 
-    # ── ZARIA (asystent AI) ──────────────────────────────────────────────────────
-    path("zaria/", views.zaria_home, name="zaria_home"),
-    path("zaria/panel/", views.zaria_user_panel, name="zaria_user_panel"),
-    path("zaria/c/new/", views.zaria_new_conversation, name="zaria_new_conversation"),
-    path("zaria/c/<int:pk>/", views.zaria_conversation, name="zaria_conversation"),
-    path("zaria/c/<int:pk>/send/", views.zaria_send_message, name="zaria_send_message"),
-    path("zaria/c/<int:pk>/stream/", views.zaria_send_stream, name="zaria_send_stream"),
-    path("zaria/c/<int:pk>/compare/start/", views.zaria_compare_start, name="zaria_compare_start"),
-    path("zaria/c/<int:pk>/compare/stream/", views.zaria_compare_stream, name="zaria_compare_stream"),
-    path("zaria/c/<int:pk>/compare/pick/", views.zaria_compare_pick, name="zaria_compare_pick"),
-    path("zaria/c/<int:pk>/privacy-accept/", views.zaria_accept_privacy, name="zaria_accept_privacy"),
-    path("zaria/c/<int:pk>/action/", views.zaria_conv_action, name="zaria_conv_action"),
-    path("zaria/c/<int:pk>/mail/", views.zaria_mail, name="zaria_mail"),
-    path("zaria/c/<int:pk>/export/<str:fmt>/", views.zaria_export, name="zaria_export"),
-    path("zaria/m/<int:msg_id>/xlsx/", views.zaria_msg_xlsx, name="zaria_msg_xlsx"),
-    path("api/chat", views.api_chat, name="zaria_api_chat"),
 
     # ── Planner dashboard ───────────────────────────────────────────────────────
     path("planner/", views.planner_dashboard, name="planner_dashboard"),
@@ -254,7 +238,6 @@ urlpatterns = [
     # ── Hierarchia opakowań (PHV) ───────────────────────────────────────────────
     path("phv/", views.phv_home, name="phv_home"),
     path("phv/suggest/", views.phv_suggest, name="phv_suggest"),
-    path("phv/assistant/", views.phv_assistant, name="phv_assistant"),
     path("phv/report/", views.phv_report, name="phv_report"),
     path("phv/location-report/", views.phv_location_report, name="phv_location_report"),
     path("phv/moje/", views.phv_my_issues, name="phv_my_issues"),
@@ -307,21 +290,6 @@ urlpatterns = [
     path("admin-panel/access-audit/", views.admin_access_audit, name="admin_access_audit"),
     path("admin-panel/control-zones/", views.admin_control_zones, name="admin_control_zones"),
 
-    # ── ZARIA admin (asystent AI) ────────────────────────────────────────────────
-    path("admin-panel/zaria/", views.admin_zaria_panel, name="admin_zaria_panel"),
-    path("admin-panel/zaria/models/", views.admin_zaria_models, name="admin_zaria_models"),
-    path("admin-panel/zaria/models/<int:pk>/edit/", views.admin_zaria_models, name="admin_zaria_model_edit"),
-    path("admin-panel/zaria/models/<int:pk>/delete/", views.admin_zaria_model_delete, name="admin_zaria_model_delete"),
-    path("admin-panel/zaria/role-access/", views.admin_zaria_role_access, name="admin_zaria_role_access"),
-    path("admin-panel/zaria/user-access/", views.admin_zaria_user_access, name="admin_zaria_user_access"),
-    path("admin-panel/zaria/config/", views.admin_zaria_config, name="admin_zaria_config"),
-    path("admin-panel/zaria/usage/", views.admin_zaria_usage, name="admin_zaria_usage"),
-    path("admin-panel/zaria/usage/export.xlsx", views.admin_zaria_usage_export_xlsx,
-         name="admin_zaria_usage_export_xlsx"),
-    path("admin-panel/zaria/usage/export.csv", views.admin_zaria_usage_export_csv,
-         name="admin_zaria_usage_export_csv"),
-    path("admin-panel/zaria/audit/", views.admin_zaria_audit, name="admin_zaria_audit"),
-    path("admin-panel/zaria/test/", views.admin_zaria_test, name="admin_zaria_test"),
 
     # ── Leaf-app urlconfs (no prefix, no app_name — merge into namespace ui:) ────
     path("", include("wh3d.urls")),

@@ -8,7 +8,6 @@ from .integrations import *  # noqa: F401,F403
 from .carton_opt import *  # noqa: F401,F403
 from .comms import *  # noqa: F401,F403
 from .tasks_users import *  # noqa: F401,F403
-from .zaria import *  # noqa: F401,F403
 from .packspec import *  # noqa: F401,F403
 from .producer_dims import *  # noqa: F401,F403
 from .material_master import *  # noqa: F401,F403

@@ -77,11 +77,11 @@ class AnonymousGateTests(TestCase):
     GET_ENDPOINTS = [
         "planner_dashboard", "planner_products", "planner_shipments", "data_center",
         "warehouse_map", "hu_control_hub", "tasks_home",
-        "planner_customers", "zaria_home",
+        "planner_customers",
         "admin_panel", "admin_users", "admin_module_access", "admin_role_matrix",
         "admin_access_audit",
     ]
-    POST_ENDPOINTS = ["zaria_api_chat"]
+    POST_ENDPOINTS = ["phv_report"]
 
     def test_anonymous_never_gets_200(self):
         for name in self.GET_ENDPOINTS:

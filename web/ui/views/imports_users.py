@@ -161,7 +161,7 @@ def excel_template_users(request):
         ("is_superuser", "1 = pełne uprawnienia (domyślnie 0)",           12, 0),
         ("groups",     f"Role po średniku. Dozwolone: {roles}",           34, "Kontrola HU; Podgląd"),
         ("phone",      "Telefon (SMS)",                                   14, "600100200"),
-        ("department", "Dział (grupowanie w raporcie zużycia ZARIA)",     18, "Magazyn"),
+        ("department", "Dział",                                         18, "Magazyn"),
         ("section",    "Sekcja skanera: GLS / BUS / GEIS / EXPORT",       12, "GLS"),
         ("control_zones", "Typy magazynu do kontroli, po średniku (puste = wszystkie)", 22, "92JU; 92EX"),
         ("modules_allow", "Moduły wymuszone na TAK (klucze, po średniku)", 22, "kontrola_hu"),

@@ -97,8 +97,7 @@ class ClockTests(SimpleTestCase):
 
 
 class FakeHTTPTests(SimpleTestCase):
-    def test_same_route_for_requests_urllib_and_httpx(self):
-        import httpx
+    def test_same_route_for_requests_and_urllib(self):
         import requests
         with FakeHTTP() as http:
             http.add(r"svc\.example\.test", Reply(json={"ok": 1}))
@@ -106,11 +105,9 @@ class FakeHTTPTests(SimpleTestCase):
             with urllib.request.urlopen("https://svc.example.test/b") as r:
                 self.assertEqual(r.status, 200)
                 self.assertEqual(r.read(), b'{"ok": 1}')
-            self.assertEqual(httpx.Client().post("https://svc.example.test/c", json={}).json(), {"ok": 1})
-        self.assertEqual([c.method for c in http.calls], ["GET", "GET", "POST"])
+        self.assertEqual([c.method for c in http.calls], ["GET", "GET"])
 
     def test_errors_map_to_each_library_native_exception(self):
-        import httpx
         import requests
         with FakeHTTP() as http:
             http.add(r"//t\.", Reply(raises="timeout")).add(r"//e\.", Reply(status=503))
@@ -118,8 +115,6 @@ class FakeHTTPTests(SimpleTestCase):
                 requests.get("https://t.example.test")
             with self.assertRaises(TimeoutError):
                 urllib.request.urlopen("https://t.example.test")
-            with self.assertRaises(httpx.TimeoutException):
-                httpx.get("https://t.example.test")
             with self.assertRaises(urllib.error.HTTPError) as ctx:
                 urllib.request.urlopen("https://e.example.test")
             self.assertEqual(ctx.exception.code, 503)

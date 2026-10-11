@@ -25,7 +25,6 @@ STAFF = {"ninja_api:openapi-json", "ninja_api:openapi-view"}   # docs_decorator=
 TOKEN = {"ui:quote_response", "ui:wh_readiness_response", "ui:driver_form", "ui:driver_confirm"}
 IN_VIEW = {  # widoki sprawdzające dostęp w środku (bez dekoratora)
     "ui:notifications_poll": ("login_miekki", "anon → 200 z pustym JSON (bez danych); zalogowany → 200"),
-    "ui:zaria_api_chat": ("login_401", "anon → 401 JSON; zalogowany → wg budżetu/modelu ZARIA"),
     "ui:password_change": ("login", "PasswordChangeView (login_required w dispatch)"),
 }
 DECISIONS = {}   # B-001 / B-003 naprawione (PR #694) — strażnicy widoków są już docelowi

@@ -42,13 +42,6 @@ MODULES = [
     Module("klienci", _("Baza klientów"), _("Klienci / odbiorcy i ich wymagania dostaw"),
            "planner_customers", "🤝", "#0d9488",
            (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT, GROUP_CLIENT), "Dane"),
-    # Otwarte dla wszystkich ról wewnętrznych (bez GROUP_CLIENT). Nowe role widzą kafelek,
-    # ale czat działa dopiero po nadaniu im ZariaModelRoleAccess w panelu (krok wdrożeniowy);
-    # cap pieniężny ożywa migracją danych 0100.
-    Module("zaria", _("ZARIA"), _("Asystent AI — czat z modelami LLM"),
-           "zaria_home", "🤖", "#d946ef",
-           (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT, GROUP_CONTROLLER,
-            GROUP_LEADER, GROUP_VIEWER, GROUP_WAREHOUSE), "Dane"),
     Module("phv", _("MATinfo"), _("Podgląd materiału: szt → OPZ → karton → ładunek, przeliczniki, wagi, zgłoszenia"),
            "phv_home", "🧱", "#84cc16",
            (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_WAREHOUSE, GROUP_CONTROLLER, GROUP_LEADER), "Magazyn"),
