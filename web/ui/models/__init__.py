@@ -31,7 +31,7 @@ from wh3d.models import (  # noqa: E402,F401
 from huctl.models import (  # noqa: E402,F401
     ControlledWarehouseType, ControllerZone, EscalationRoute, GlsPackingEntry,
     HandlingUnit, HandlingUnitItem, HUControlAttempt, HUControlPhoto,
-    HUPrintProject, HUPrintRun, HUQualityIssue, HUStatusEvent,
+    HUQualityIssue, HUStatusEvent,
 )
 
 

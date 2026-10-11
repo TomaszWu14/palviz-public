@@ -5,6 +5,6 @@ from core.roles import *  # noqa: F401,F403
 # a ui.views.core.base i inni importują je jawnie z ui.roles.
 from core.roles import (  # noqa: F401
     _admin_only, _master_data, _transport_mgr, _controller, _leader,
-    _md_or_tr, _md_or_control, _customer_mgr, _warehouse, _optimizer,
+    _md_or_tr, _md_or_control, _customer_mgr, _optimizer,
     _any_role, _ROLE_PRECEDENCE,
 )

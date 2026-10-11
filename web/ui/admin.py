@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import (Batch, Palletization, Product, Carton, InnerPack,
                      PalletizationInstruction, ErrorReport, SiteInfo, Customer,
                      Task, Notification, RecurringTask, UserProfile, PowerBIToken,
-                     HUPrintProject, HUPrintRun, UserModuleAccess,
+                     UserModuleAccess,
                      ZariaModel, ZariaModelRoleAccess, ZariaUserModelAccess, ZariaConfig,
                      ZariaUserBudget, ZariaConversation, ZariaMessage, EscalationRoute,
                      ZariaRolePermission, ZariaSystemPromptTemplate, ZariaMailLog,
@@ -14,26 +14,6 @@ class UserModuleAccessAdmin(admin.ModelAdmin):
     list_display = ("user", "module_key", "allowed", "updated_at")
     list_filter = ("module_key", "allowed")
     search_fields = ("user__username", "module_key")
-
-
-@admin.register(HUPrintProject)
-class HUPrintProjectAdmin(admin.ModelAdmin):
-    # next_number editable inline so a leader/admin can set each project's start number.
-    list_display = ("name", "label_text", "next_number", "digits", "is_active")
-    list_editable = ("next_number", "is_active")
-    search_fields = ("name", "label_text")
-
-
-@admin.register(HUPrintRun)
-class HUPrintRunAdmin(admin.ModelAdmin):
-    list_display = ("project", "quantity", "from_number", "to_number", "symbology",
-                    "username", "created_at")
-    list_filter = ("project", "symbology", "username")
-    readonly_fields = ("project", "user", "username", "quantity", "from_number", "to_number",
-                       "symbology", "created_at")
-
-    def has_add_permission(self, request):
-        return False   # runs are created only by the print view
 
 
 @admin.register(RecurringTask)

@@ -60,24 +60,6 @@ def csrf_failure(request, reason=""):
     return render(request, "ui/csrf_failure.html", {"reason": reason}, status=403)
 
 
-@_any_role
-def label_image(request):
-    """Generate a barcode/QR label PNG on the fly: ?value=...&type=code128|ean13|gs1|qr."""
-    from ..labels import barcode_png, qr_png
-    value = (request.GET.get("value") or "").strip()
-    if not value:
-        return HttpResponse(status=400)
-    kind = (request.GET.get("type") or "code128").lower()
-    with_text = request.GET.get("text", "1") not in ("0", "false", "no")
-    try:
-        png = qr_png(value) if kind == "qr" else barcode_png(value, kind, with_text)
-    except Exception as exc:
-        return HttpResponse(f"Błąd etykiety: {exc}", status=400)
-    resp = HttpResponse(png, content_type="image/png")
-    resp["Cache-Control"] = "max-age=3600"
-    return resp
-
-
 @_planner
 def planner_dashboard(request):
     active_products = Product.objects.filter(is_active=True)
@@ -468,7 +450,6 @@ __all__ = [
     'my_profile',
     'set_prefs',
     'GuardedPasswordResetView',
-    'label_image',
     'planner_dashboard',
     'planner_ref_materials',
     'pallet_custom_editor',

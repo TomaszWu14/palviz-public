@@ -37,7 +37,7 @@ class Command(BaseCommand):
         self.stdout.write(f"  {GROUP_TRANSPORT:<22} → wysyłki, przewoźnicy, kalkulator, podgląd instrukcji")
         self.stdout.write(f"  {GROUP_VIEWER:<22} → podgląd: instrukcje, produkty, occupancy, mapa 3D")
         self.stdout.write(f"  {GROUP_CLIENT:<22} → wąski dostęp: tylko baza klientów / odbiorców")
-        self.stdout.write(f"  {GROUP_WAREHOUSE:<22} → wydruk etykiet HU (moduł Wydruk HU)")
+        self.stdout.write(f"  {GROUP_WAREHOUSE:<22} → MATinfo (podgląd materiału)")
         self.stdout.write(f"  {GROUP_OPTIMIZER:<22} → optymalizacja wypełnienia palet (skrzynka zgłoszeń)")
 
         # 2. Optional superuser creation

@@ -57,31 +57,31 @@ class ModuleOverrideTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.admin = _user("adm2", GROUP_ADMIN)
-        cls.warehouse = _user("wh", GROUP_WAREHOUSE)      # role allows wydruk_hu
-        cls.controller = _user("ctrl", GROUP_CONTROLLER)  # role does NOT allow wydruk_hu
+        cls.allowed = _user("ctrl", GROUP_CONTROLLER)    # role allows kontrola_hu
+        cls.denied = _user("wh", GROUP_WAREHOUSE)       # role does NOT allow kontrola_hu
 
     def test_role_default_without_override(self):
-        self.assertTrue(can_open_module(self.warehouse, "wydruk_hu"))
-        self.assertFalse(can_open_module(self.controller, "wydruk_hu"))
+        self.assertTrue(can_open_module(self.allowed, "kontrola_hu"))
+        self.assertFalse(can_open_module(self.denied, "kontrola_hu"))
 
     def test_force_allow_grants_entry(self):
-        UserModuleAccess.objects.create(user=self.controller, module_key="wydruk_hu", allowed=True)
-        self.assertTrue(can_open_module(self.controller, "wydruk_hu"))
-        self.client.force_login(self.controller)
-        self.assertEqual(self.client.get(reverse("ui:hu_print_home")).status_code, 200)
-        self.assertIn("wydruk_hu", {m.key for m in modules_for(self.controller)})
+        UserModuleAccess.objects.create(user=self.denied, module_key="kontrola_hu", allowed=True)
+        self.assertTrue(can_open_module(self.denied, "kontrola_hu"))
+        self.client.force_login(self.denied)
+        self.assertEqual(self.client.get(reverse("ui:hu_control_hub")).status_code, 200)
+        self.assertIn("kontrola_hu", {m.key for m in modules_for(self.denied)})
 
     def test_force_deny_blocks_entry(self):
-        UserModuleAccess.objects.create(user=self.warehouse, module_key="wydruk_hu", allowed=False)
-        self.assertFalse(can_open_module(self.warehouse, "wydruk_hu"))
-        self.client.force_login(self.warehouse)
-        self.assertEqual(self.client.get(reverse("ui:hu_print_home")).status_code, 403)
-        self.assertNotIn("wydruk_hu", {m.key for m in modules_for(self.warehouse)})
+        UserModuleAccess.objects.create(user=self.allowed, module_key="kontrola_hu", allowed=False)
+        self.assertFalse(can_open_module(self.allowed, "kontrola_hu"))
+        self.client.force_login(self.allowed)
+        self.assertEqual(self.client.get(reverse("ui:hu_control_hub")).status_code, 403)
+        self.assertNotIn("kontrola_hu", {m.key for m in modules_for(self.allowed)})
 
     def test_superuser_bypasses_deny(self):
         su = get_user_model().objects.create_superuser("root", "r@x.pl", "x")
-        UserModuleAccess.objects.create(user=su, module_key="wydruk_hu", allowed=False)
-        self.assertTrue(can_open_module(su, "wydruk_hu"))   # superuser always passes
+        UserModuleAccess.objects.create(user=su, module_key="kontrola_hu", allowed=False)
+        self.assertTrue(can_open_module(su, "kontrola_hu"))   # superuser always passes
 
     def test_matrix_post_saves_overrides(self):
         self.client.force_login(self.admin)
@@ -89,9 +89,9 @@ class ModuleOverrideTests(TestCase):
         token = self.client.get(reverse("ui:admin_module_access")).context["matrix_token"]
         r = self.client.post(reverse("ui:admin_module_access"), {
             "matrix_token": token,
-            f"m_{self.controller.pk}_wydruk_hu": "allow",
-            f"m_{self.warehouse.pk}_wydruk_hu": "deny",
+            f"m_{self.denied.pk}_kontrola_hu": "allow",
+            f"m_{self.allowed.pk}_kontrola_hu": "deny",
         })
         self.assertRedirects(r, reverse("ui:admin_module_access"))
-        self.assertTrue(UserModuleAccess.objects.get(user=self.controller, module_key="wydruk_hu").allowed)
-        self.assertFalse(UserModuleAccess.objects.get(user=self.warehouse, module_key="wydruk_hu").allowed)
+        self.assertTrue(UserModuleAccess.objects.get(user=self.denied, module_key="kontrola_hu").allowed)
+        self.assertFalse(UserModuleAccess.objects.get(user=self.allowed, module_key="kontrola_hu").allowed)

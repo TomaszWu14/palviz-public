@@ -32,7 +32,7 @@ CSRF_FAILURE_VIEW = "ui.views.misc.csrf_failure"
 # Product / brand name shown across the UI (title bar, nav brand, login, e-mails).
 # Env-driven so the whole app can be rebranded without touching templates.
 APP_NAME = env.APP_NAME
-# Deployment variant: "" = full platform; "hu" = a Kontrola HU + Wydruk HU-only instance
+# Deployment variant: "" = full platform; "hu" = a Kontrola HU-only instance
 # (same code + DB, deployed separately under its own name/host). See platform_modules.
 GROOVE_VARIANT = (env.GROOVE_VARIANT or "").strip().lower()
 # Explicit served-module set (overrides the named variant) and portal cross-links.

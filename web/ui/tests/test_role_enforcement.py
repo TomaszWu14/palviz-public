@@ -76,7 +76,7 @@ class AnonymousGateTests(TestCase):
     Nowy moduł/endpoint → dopisz go tutaj (widoczny checklist bramek)."""
     GET_ENDPOINTS = [
         "planner_dashboard", "planner_products", "planner_shipments", "data_center",
-        "warehouse_map", "hu_control_hub", "hu_print_home", "tasks_home",
+        "warehouse_map", "hu_control_hub", "tasks_home",
         "planner_customers", "zaria_home",
         "admin_panel", "admin_users", "admin_module_access", "admin_role_matrix",
         "admin_access_audit",

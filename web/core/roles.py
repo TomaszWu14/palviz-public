@@ -7,7 +7,7 @@ from functools import wraps
 #   2. The vocabulary the SSO backend maps IdP claims onto (oidc.py imports
 #      ALL_GROUPS / GROUP_ADMIN to sync users from Keycloak role claims).
 #   3. Imported by 9+ modules (context_processors, models, notifications, oidc,
-#      platform_modules, admin/base/hu_print/warehouse_search views, mgmt cmds).
+#      platform_modules, admin/base/warehouse_search views, mgmt cmds).
 # RULE: never change a string on the right-hand side. Add a new GROUP_* constant
 # for a new group; to retire one, migrate auth_group rows + SSO claim mapping
 # first. The Python identifier on the left may be refactored freely; the literal
@@ -20,7 +20,7 @@ GROUP_CONTROLLER  = "Kontrola HU"
 GROUP_LEADER      = "Lider kontroli"
 GROUP_VIEWER      = "Podgląd"
 GROUP_CLIENT      = "Obsługa klienta"   # wąska rola: tylko baza klientów
-GROUP_WAREHOUSE   = "Magazyn"           # operator magazynowy: druk etykiet HU
+GROUP_WAREHOUSE   = "Magazyn"           # operator magazynowy: MATinfo
 GROUP_OPTIMIZER   = "Optymalizacja kartonów"   # operator optymalizacji wypełnienia palet
 
 ALL_GROUPS = [GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT, GROUP_CONTROLLER,
@@ -56,7 +56,6 @@ MODULE_ROLES = {
     "excel_templates":     [GROUP_ADMIN, GROUP_MASTER_DATA],
     "calculator":          [GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT],
     "user_management":     [GROUP_ADMIN],
-    "hu_print":            [GROUP_ADMIN, GROUP_WAREHOUSE],
     "carton_opt":          [GROUP_ADMIN, GROUP_OPTIMIZER, GROUP_MASTER_DATA],
 }
 
@@ -134,8 +133,6 @@ _md_or_tr      = role_required(GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT)
 _md_or_control = role_required(GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_CONTROLLER, GROUP_LEADER)
 # Customer database: managed by the narrow "Obsługa klienta" role plus the broader roles.
 _customer_mgr  = role_required(GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT, GROUP_CLIENT)
-# Warehouse label printing (HU labels): the dedicated "Magazyn" operator plus admin.
-_warehouse     = role_required(GROUP_ADMIN, GROUP_WAREHOUSE)
 # Optymalizacja kartonów: dedykowany operator + admin/master data.
 _optimizer     = role_required(GROUP_ADMIN, GROUP_OPTIMIZER, GROUP_MASTER_DATA)
 _any_role      = role_required(*ALL_GROUPS)

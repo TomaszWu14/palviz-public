@@ -17,7 +17,6 @@ MODULE_ICONS = {
     "transport": "truck",
     "magazyn": "warehouse",
     "kontrola_hu": "scan-barcode",
-    "wydruk_hu": "printer",
     "zadania": "bell",
     "klienci": "users",
     "zaria": "sparkles",

@@ -37,8 +37,6 @@ MODULES = [
            "warehouse_map", "🏭", "#10b981", (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT, GROUP_VIEWER), "Magazyn"),
     Module("kontrola_hu", _("Kontrola HU"), _("Skaner, kontrola zawartości, KPI i raporty"),
            "hu_control_hub", "📲", "#7c3aed", (GROUP_ADMIN, GROUP_CONTROLLER, GROUP_LEADER), "Operacje"),
-    Module("wydruk_hu", _("Wydruk HU"), _("Etykiety HU (Zebra/ZPL) — druk sekwencyjny per projekt"),
-           "hu_print_home", "🏷️", "#06b6d4", (GROUP_ADMIN, GROUP_WAREHOUSE), "Operacje"),
     Module("zadania", _("Zadania i powiadomienia"), _("Zadania zespołu i alerty o niezgodnościach stocku"),
            "tasks_home", "🔔", "#e11d48", (GROUP_ADMIN, GROUP_MASTER_DATA)),
     Module("klienci", _("Baza klientów"), _("Klienci / odbiorcy i ich wymagania dostaw"),
@@ -70,7 +68,7 @@ MODULE_BY_KEY = {m.key: m for m in MODULES}
 # Deployment variants — a single codebase/DB serving only a subset of modules when this
 # instance is deployed under its own name/host (e.g. a warehouse-floor "Kontrola HU" app).
 VARIANT_MODULES = {
-    "hu": ("kontrola_hu", "wydruk_hu"),
+    "hu": ("kontrola_hu",),
 }
 
 

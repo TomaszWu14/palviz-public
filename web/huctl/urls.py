@@ -80,9 +80,4 @@ urlpatterns = [
     path("control/status/", huctl_views.hu_control_status, name="hu_control_status"),
     path("control/report/", huctl_views.hu_error_report, name="hu_error_report"),
 
-    # ── Wydruk HU (etykiety ZPL — moduł „Magazyn") ──────────────────────────────
-    path("hu-print/", huctl_views.hu_print_home, name="hu_print_home"),
-    path("hu-print/generate/", huctl_views.hu_print_generate, name="hu_print_generate"),
-    path("hu-print/preview/", huctl_views.hu_print_preview, name="hu_print_preview"),
-    path("hu-print/log/", huctl_views.hu_print_log, name="hu_print_log"),
 ]

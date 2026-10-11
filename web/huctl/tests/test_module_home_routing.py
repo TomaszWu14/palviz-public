@@ -60,7 +60,7 @@ class ModuleHomeTests(TestCase):
         # GROOVE hub shows the platform modules ("tabs"). Admin reaches customers inside
         # Data Center, so the standalone "Baza klientów" tile is not duplicated here.
         self.assertEqual(labels, {"Data Center", "Paletyzacja", "Wycena przesyłek",
-                                  "Magazyn 3D", "Kontrola HU", "Wydruk HU",
+                                  "Magazyn 3D", "Kontrola HU",
                                   "Zadania i powiadomienia", "ZARIA",
                                   "MATinfo", "Optymalizacja kartonów"})
 

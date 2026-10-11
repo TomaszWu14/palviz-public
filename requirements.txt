@@ -33,8 +33,6 @@ django-redis==7.0.0       # Redis cache backend (reuses the Celery Redis; locmem
 django-celery-beat==2.9.0 # DB-editable periodic task schedules (driver reminders etc.)
 django-storages==1.14.6   # pluggable media/static backend (S3/object storage; opt-in via env)
 structlog==26.1.0         # structured logging (opt-in JSON renderer)
-python-barcode==0.16.1    # GS1/EAN/Code128 barcode + SSCC label generation
-qrcode==8.2               # QR codes for HU / location labels
 opentelemetry-sdk==1.44.0 # optional tracing (off unless OTEL_ENABLED=1)
 pydantic-settings==2.14.2 # typed, validated env config (fail-fast at startup — palletweb/config.py)
 anthropic==0.120.0        # ZARIA LLM calls (lazy import; only used when ZARIA_ANTHROPIC_API_KEY is set)

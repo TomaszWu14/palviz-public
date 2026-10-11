@@ -33,7 +33,6 @@ class NavGrouped(TestCase):
         groups, direct = nav_grouped(_user(GROUP_WAREHOUSE))
         keys = {m.key for _, items in groups for m, _ in items} | {m.key for m, _ in direct}
         self.assertIn("phv", keys)                  # MATinfo (Magazyn)
-        self.assertIn("wydruk_hu", keys)            # Operacje
         self.assertNotIn("data_center", keys)       # brak roli Master Data
 
     def test_navbar_renders_group_buttons(self):

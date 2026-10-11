@@ -312,7 +312,7 @@ def admin_role_matrix(request):
         "shipments_read": "Wysyłki — podgląd", "stock_write": "Ruchy towarowe — dodawanie",
         "occupancy_read": "Wypełnienie magazynu — podgląd", "warehouse_model": "Model magazynu 3D/2D",
         "excel_templates": "Szablony Excel / import", "calculator": "Kalkulator paletyzacji",
-        "user_management": "Zarządzanie użytkownikami", "hu_print": "Wydruk HU (etykiety)",
+        "user_management": "Zarządzanie użytkownikami",
     }
     cap_rows = [{
         "label": label,

@@ -1,4 +1,4 @@
-"""Deployment variant: GROOVE_VARIANT=hu serves ONLY the Kontrola HU + Wydruk HU modules
+"""Deployment variant: GROOVE_VARIANT=hu serves ONLY the Kontrola HU module
 from the same codebase/DB (a separate warehouse-floor app under its own name/host)."""
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
@@ -32,24 +32,23 @@ class VariantTests(TestCase):
     @override_settings(GROOVE_VARIANT="hu")
     def test_hu_variant_limits_modules(self):
         keys = {m.key for m in modules_for(self.admin)}
-        self.assertEqual(keys, {"kontrola_hu", "wydruk_hu"})   # only HU modules, even for admin
+        self.assertEqual(keys, {"kontrola_hu"})   # only HU module, even for admin
         self.assertFalse(can_open_module(self.admin, "data_center"))
         self.assertFalse(can_open_module(self.admin, "paletyzacja"))
         self.assertTrue(can_open_module(self.admin, "kontrola_hu"))
-        self.assertTrue(can_open_module(self.warehouse, "wydruk_hu"))
+        self.assertFalse(can_open_module(self.warehouse, "phv"))
 
     @override_settings(GROOVE_VARIANT="hu")
     def test_hu_variant_blocks_office_entry_view(self):
         self.client.force_login(self.admin)
-        # HU modules still reachable
+        # HU module still reachable
         self.assertEqual(self.client.get(reverse("ui:hu_control_hub")).status_code, 200)
-        self.assertEqual(self.client.get(reverse("ui:hu_print_home")).status_code, 200)
         # office module entry is blocked by module_required, even for an admin
         self.assertEqual(self.client.get(reverse("ui:data_center")).status_code, 403)
 
-    @override_settings(GROOVE_MODULES="kontrola_hu,wydruk_hu")
+    @override_settings(GROOVE_MODULES="kontrola_hu,phv")
     def test_explicit_module_set_overrides(self):
-        self.assertEqual(variant_modules(), {"kontrola_hu", "wydruk_hu"})
+        self.assertEqual(variant_modules(), {"kontrola_hu", "phv"})
         self.assertFalse(can_open_module(self.admin, "transport"))     # not served here
         self.assertTrue(can_open_module(self.admin, "kontrola_hu"))
 

@@ -47,7 +47,6 @@ urlpatterns = [
     path("", views.module_home, name="home"),
     path("search/", views.warehouse_search, name="warehouse_search"),
     path("magazyn/miejsca/", views.warehouse_bins, name="warehouse_bins"),
-    path("label.png", views.label_image, name="label_image"),
     path("i/<str:code>/", views.warehouse_instruction, name="warehouse_instruction"),
     path("i/<str:code>/<int:version>/", views.warehouse_instruction, name="warehouse_instruction_v"),
     path("report/<int:instr_id>/", views.report_error, name="report_error"),
