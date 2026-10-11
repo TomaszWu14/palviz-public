@@ -9,7 +9,6 @@ from .artwork import *  # noqa: F401,F403
 from .categories import *  # noqa: F401,F403
 from .data_center import *  # noqa: F401,F403
 from .pwa import *  # noqa: F401,F403
-from .ukraine import *  # noqa: F401,F403
 from .phv import *  # noqa: F401,F403
 from .imports_excel import *  # noqa: F401,F403
 from .imports_excel_md import *  # noqa: F401,F403

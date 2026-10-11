@@ -51,9 +51,6 @@ PHV_ISSUE_EMAIL = env.PHV_ISSUE_EMAIL
 # Webhook kanału Teams (Workflows) — powiadomienia zespołowe; puste = wyłączone.
 TEAMS_WEBHOOK_URL = env.TEAMS_WEBHOOK_URL
 
-# Moduł „Wysyłka UKRAINA": kody warehouse_type dla naszego magazynu ACME i zewnętrznego DLT.
-UKRAINE_WAREHOUSE_ACME = _csv(env.UKRAINE_WAREHOUSE_ACME)
-UKRAINE_WAREHOUSE_DLT = _csv(env.UKRAINE_WAREHOUSE_DLT)
 
 if not DEBUG:
     # (The dev-key refusal now lives in config.AppEnv, checked at startup.)

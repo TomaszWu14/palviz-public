@@ -17,7 +17,7 @@ from huctl.models import ControllerZone, HandlingUnit, HandlingUnitItem, HUStatu
 from transport.models import Shipment, ShipmentLine
 from ui.models import (
     Carton, Customer, CustomerPackagingRule, InnerPack, MaterialMaster, Message, MessageThread,
-    Notification, PalletizationInstruction, Product, ProductCategory, Task, UkraineOrderLine,
+    Notification, PalletizationInstruction, Product, ProductCategory, Task,
     UserModuleAccess, ZariaConversation, ZariaMessage, ZariaModel, ZariaModelRoleAccess,
 )
 from wh3d.models import (
@@ -135,7 +135,7 @@ class MaterialMasterFactory(factory.django.DjangoModelFactory):
     weight_unit_kg, weight_carton_kg = 0.05, 5.4
 
 
-# ── Klienci / reguły pakowania / Ukraina ────────────────────────────────────────────────────
+# ── Klienci / reguły pakowania ────────────────────────────────────────────────────
 class CustomerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Customer
@@ -155,16 +155,6 @@ class PackagingRuleFactory(factory.django.DjangoModelFactory):
     units_per_pack = 50
     note = "Pakować po 50 szt. — wymóg apteki szpitalnej"
 
-
-class UkraineOrderLineFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = UkraineOrderLine
-
-    customer = "ТОВ Медичні рішення (Київ)"    # cyrylica — realny odbiorca UA
-    order_ref = factory.Sequence(lambda n: f"UA-{n:05d}")
-    index_code = factory.Sequence(lambda n: f"REF{100000 + n}")
-    lot = factory.Sequence(lambda n: f"LOT{n:07d}")
-    requested_qty = 100
 
 
 # ── Transport / HU ──────────────────────────────────────────────────────────────────────────

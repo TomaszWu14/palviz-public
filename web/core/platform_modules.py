@@ -51,8 +51,6 @@ MODULES = [
            "zaria_home", "🤖", "#d946ef",
            (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT, GROUP_CONTROLLER,
             GROUP_LEADER, GROUP_VIEWER, GROUP_WAREHOUSE), "Dane"),
-    Module("wysylka_ukraina", _("Wysyłka UKRAINA"), _("Monitoring wskazanych partii: ACME vs DLT"),
-           "ukraine_home", "🇺🇦", "#6366f1", (GROUP_ADMIN, GROUP_TRANSPORT, GROUP_MASTER_DATA), "Transport"),
     Module("phv", _("MATinfo"), _("Podgląd materiału: szt → OPZ → karton → ładunek, przeliczniki, wagi, zgłoszenia"),
            "phv_home", "🧱", "#84cc16",
            (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_WAREHOUSE, GROUP_CONTROLLER, GROUP_LEADER), "Magazyn"),

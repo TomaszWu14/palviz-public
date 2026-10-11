@@ -169,7 +169,7 @@ def phv_suggest(request):
     """Podpowiedzi indeksu do wyszukiwarki (typeahead, od pierwszej litery).
     Guard: `_any_role` (nie `module_required("phv")`) — to reużywalny helper REF
     (zwraca tylko kod+nazwę aktywnych produktów, jak katalog) używany też przez
-    carton_opt, warehouse/search, ukraine i panel lidera (UX audyt #9).
+    carton_opt, warehouse/search, panel lidera (UX audyt #9).
     Priorytet: kody zaczynające się od zapytania (istartswith), potem kody/nazwy
     zawierające fragment. Szybkie — bez RapidFuzz (ten zostaje na submit)."""
     q = (request.GET.get("q") or "").strip()

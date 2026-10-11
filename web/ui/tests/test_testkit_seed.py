@@ -17,7 +17,7 @@ from core.platform_modules import modules_for
 from core.roles import ALL_GROUPS
 from testkit import factories as f
 from testkit import personas
-from testkit.seed import HU_STATUSES, SHIPMENT_STATUSES, UKRAINE_SETTINGS, ZONES, SeedDataMixin
+from testkit.seed import HU_STATUSES, SHIPMENT_STATUSES, ZONES, SeedDataMixin
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -151,12 +151,6 @@ class SeedTests(SeedDataMixin, TestCase):
         self.assertNotEqual(self.data.zaria.conversations["Master Data"].pk,
                             self.data.zaria.conversations["Transport"].pk)
         self.assertFalse(ZariaConversation.objects.filter(user=tr, title__contains="Master").exists())
-
-    def test_ukraine_stock_split_acme_dlt(self):
-        from ui.views.ukraine import stock_by_batch
-        with self.settings(**UKRAINE_SETTINGS):
-            got = stock_by_batch({("REF100001", "LOT0000001")})
-        self.assertEqual(got[("REF100001", "LOT0000001")], {"acme": 60.0, "dlt": 30.0, "other": 5.0})
 
     def test_seeded_data_renders_key_screens(self):
         client = personas.client_for("superuser")

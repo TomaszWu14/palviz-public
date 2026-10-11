@@ -287,12 +287,6 @@ urlpatterns = [
     path("optymalizacja/ab/<int:pk>/zapisz/", views.carton_opt_redesign_save,
          name="carton_opt_redesign_save"),
 
-    # ── Wysyłka UKRAINA (monitoring partii: ACME vs DLT) ───────────────────────
-    path("ukraina/", views.ukraine_home, name="ukraine_home"),
-    path("ukraina/import/", views.ukraine_import, name="ukraine_import"),
-    path("ukraina/linia/new/", views.ukraine_line_form, name="ukraine_line_new"),
-    path("ukraina/linia/<int:pk>/edit/", views.ukraine_line_form, name="ukraine_line_edit"),
-    path("ukraina/linia/<int:pk>/delete/", views.ukraine_line_delete, name="ukraine_line_delete"),
 
     # ── Picker activity heatmap ─────────────────────────────────────────────────
     path("magazyn/heatmapa/template/", views.heatmap_template_download, name="heatmap_template_download"),

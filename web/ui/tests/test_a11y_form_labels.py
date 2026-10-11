@@ -46,7 +46,7 @@ class FormLabelsTests(SeedDataMixin, TestCase):
             "/magazyn/lokalizacje/master/", "/magazyn/warianty/", "/magazyn/heatmapa/",
             "/planner/products/new/", "/planner/cartons/new/", "/planner/shipments/new/",
             "/planner/optimizer/", "/planner/quote-recipients/", "/planner/ref-materials/",
-            "/ukraina/", "/ukraina/linia/new/", "/tasks/", "/tasks/form/", "/profil/",
+            "/tasks/", "/tasks/form/", "/profil/",
             "/control/symulator/", "/control/report/", "/control/recipient/",
             "/optymalizacja/pilnosc/", "/optymalizacja/ab/", "/stock-warehouse/contents/",
             "/data-center/matrix/", "/wymiary-producenta/", "/phv/moje/", "/zgloszenia/"]

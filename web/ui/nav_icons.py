@@ -21,7 +21,6 @@ MODULE_ICONS = {
     "zadania": "bell",
     "klienci": "users",
     "zaria": "sparkles",
-    "wysylka_ukraina": "globe",
     "phv": "boxes",
     "carton_opt": "package",
 }

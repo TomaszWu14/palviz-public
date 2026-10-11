@@ -62,7 +62,7 @@ class ModuleHomeTests(TestCase):
         self.assertEqual(labels, {"Data Center", "Paletyzacja", "Wycena przesyłek",
                                   "Magazyn 3D", "Kontrola HU", "Wydruk HU",
                                   "Zadania i powiadomienia", "ZARIA",
-                                  "Wysyłka UKRAINA", "MATinfo", "Optymalizacja kartonów"})
+                                  "MATinfo", "Optymalizacja kartonów"})
 
     def test_single_module_user_redirected(self):
         from ui.roles import GROUP_CONTROLLER

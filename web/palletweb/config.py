@@ -190,13 +190,6 @@ class AppEnv(BaseSettings):
     # alerty reguł pakowania i przyszłe powiadomienia zespołowe. Puste = wyłączone.
     TEAMS_WEBHOOK_URL: str = ""
 
-    # ── Moduł „Wysyłka UKRAINA" ─────────────────────────────────────────────
-    # Wartości pola `warehouse_type` (SAP LGNUM) rozdzielające magazyny na ekranie
-    # monitoringu partii. CSV — można podać kilka kodów na magazyn. Puste = monitor
-    # grupuje stan pod „inne", dopóki kody nie zostaną ustawione.
-    UKRAINE_WAREHOUSE_ACME: str = ""
-    UKRAINE_WAREHOUSE_DLT: str = ""
-
     # ── Twilio SMS ───────────────────────────────────────────────────────────
     TWILIO_ACCOUNT_SID: str = ""
     TWILIO_AUTH_TOKEN: str = ""

@@ -8,8 +8,7 @@ Użycie:
 Pokrywa: 15 person, katalog (produkty, kartony, opakowania, instrukcje, dane SAP MaterialMaster),
 klientów z regułami pakowania, shipmenty w każdym statusie, HU w kontroli (wszystkie statusy,
 4 strefy, VIP, rezerwacje), zadania, powiadomienia (w tym pilne z potwierdzeniem), wątki,
-prywatne rozmowy ZARIA, snapshot zajętości, model magazynu z regałami, import zadań EWM i
-wysyłkę UKRAINA (stan ACME/DLT). Daty: przeszłe, dzisiejsze, przyszłe, przełom roku, oba
+prywatne rozmowy ZARIA, snapshot zajętości, model magazynu z regałami, import zadań EWM. Daty: przeszłe, dzisiejsze, przyszłe, przełom roku, oba
 przestawienia zegara; polskie znaki, maksymalnie długie nazwy, puste pola opcjonalne.
 """
 from datetime import timedelta
@@ -23,8 +22,6 @@ from .clock import KEY_DATES
 
 # Kody typów magazynu EWM użyte jako strefy kontroli HU (ControllerZone.code = warehouse_type)
 ZONES = ("0010", "0011", "0050", "0070")
-# Kody magazynów do modułu „Wysyłka UKRAINA” — nałóż w teście przez self.settings(**UKRAINE_SETTINGS)
-UKRAINE_SETTINGS = {"UKRAINE_WAREHOUSE_ACME": ["MAG1"], "UKRAINE_WAREHOUSE_DLT": ["DLT1"]}
 HU_STATUSES = ("planned", "in_control", "ok", "to_recheck", "escaped")
 SHIPMENT_STATUSES = ("draft", "confirmed", "sent", "cancelled")
 
@@ -173,18 +170,6 @@ def _warehouse(users):
                            task_batch=batch, ewm_tasks=ewm)
 
 
-def _ukraine(cat):
-    stock = f.ShipmentFactory(name="Stan magazynowy (stock)", is_stock=True)
-    for wt, qty in (("MAG1", 60), ("DLT1", 30), ("9999", 5)):
-        hu = f.HandlingUnitFactory(shipment=stock, warehouse_type=wt)
-        f.HandlingUnitItemFactory(hu=hu, ref_code="REF100001", lot="LOT0000001", base_qty=qty)
-    lines = [f.UkraineOrderLineFactory(index_code="REF100001", lot="LOT0000001", requested_qty=80,
-                                       product=cat.products[0]),
-             f.UkraineOrderLineFactory(index_code="REF100002", lot="L" * 32, requested_qty=10),
-             f.UkraineOrderLineFactory(status="closed", note="")]
-    return SimpleNamespace(stock_shipment=stock, lines=lines)
-
-
 def seed_all():
     """Buduje cały zestaw i zwraca przestrzeń nazw z uchwytami (users, catalog, hu, …)."""
     users = {name: personas.make(name) for name in personas.PERSONAS}
@@ -195,7 +180,7 @@ def seed_all():
     hus = _hu(ship, cat, users)
     return SimpleNamespace(users=users, dates=d, catalog=cat, customers=cust, shipments=ship,
                            hu=hus, comms=_comms(users, cat, hus), zaria=_zaria(users),
-                           warehouse=_warehouse(users), ukraine=_ukraine(cat))
+                           warehouse=_warehouse(users))
 
 
 class SeedDataMixin:
