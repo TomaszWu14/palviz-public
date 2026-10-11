@@ -86,7 +86,7 @@ jobs:
           # --noinput: bez pytania o usunięcie bazy testowej z poprzedniego biegu.
           # coverage run (TEST-003): parallel=true + concurrency=multiprocessing w pyproject.toml
           # zbiera dane z procesów --parallel do plików .coverage.* — łączy je krok niżej.
-          python -m coverage run web/manage.py test ui.tests wh3d.tests huctl.tests transport.tests -v 1 --parallel 2 --noinput 2>&1 | tee "$RUNNER_TEMP/test_output.log"
+          python -m coverage run web/manage.py test ui.tests huctl.tests transport.tests -v 1 --parallel 2 --noinput 2>&1 | tee "$RUNNER_TEMP/test_output.log"
 
       # TEST-003: próg pokrycia (lokalnie ~84%). Łączy dane palletizer + Django (--parallel).
       - name: Coverage report (próg 80%)
@@ -105,7 +105,7 @@ jobs:
       - name: Ruff — no star-imports outside views facades (IMP-01/IMP-02)
         run: |
           pip install "ruff==0.16.9"
-          python -m ruff check web/ui/views web/wh3d/views web/huctl/views web/transport/views --select F403,F405
+          python -m ruff check web/ui/views web/huctl/views web/transport/views --select F403,F405
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:

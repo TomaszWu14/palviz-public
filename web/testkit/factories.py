@@ -17,12 +17,9 @@ from huctl.models import ControllerZone, HandlingUnit, HandlingUnitItem, HUStatu
 from transport.models import Shipment, ShipmentLine
 from ui.models import (
     Carton, Customer, CustomerPackagingRule, InnerPack, MaterialMaster, Message, MessageThread,
-    Notification, PalletizationInstruction, Product, ProductCategory, Task,
-    UserModuleAccess,
-)
-from wh3d.models import (
-    WarehouseModel, WarehouseModelRack, WarehouseRackType, WarehouseSnapshot,
-    WarehouseSnapshotRow, WarehouseTask, WarehouseTaskBatch,
+    Notification, PalletizationInstruction, PickerActivity, PickerActivityBatch, Product,
+    ProductCategory, Task, UserModuleAccess, WarehouseRackType, WarehouseSnapshot,
+    WarehouseSnapshotRow,
 )
 
 PL = "zażółć gęślą jaźń ŻÓŁĆ"          # wszystkie polskie litery diakrytyczne
@@ -255,7 +252,7 @@ class MessageFactory(factory.django.DjangoModelFactory):
     body = "Proszę o sprawdzenie palety — źle zafoliowana."
 
 
-# ── Magazyn: snapshot, model 3D, zadania EWM ────────────────────────────────────────────────
+# ── Magazyn: snapshot, typy regałów, aktywność pickerów ────────────────────────────────────────────────
 class SnapshotFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = WarehouseSnapshot
@@ -281,39 +278,18 @@ class RackTypeFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence(lambda n: f"Regał paletowy typ {n}")
 
 
-class WarehouseModelFactory(factory.django.DjangoModelFactory):
+class PickerBatchFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = WarehouseModel
+        model = PickerActivityBatch
 
-    name = factory.Sequence(lambda n: f"Hala B0 — wariant {n}")
+    name = factory.Sequence(lambda n: f"Potwierdzenia SAP {n}")
 
 
-class RackFactory(factory.django.DjangoModelFactory):
+class PickerActivityFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = WarehouseModelRack
+        model = PickerActivity
 
-    model = factory.SubFactory(WarehouseModelFactory)
-    zone = "A"
-    rack_id = factory.Sequence(lambda n: f"{n + 1:02d}")
-    n_bays, n_levels = 6, 4
-    x_m = factory.Sequence(lambda n: 2.0 + 3.0 * n)
-    y_m = 5.0
-
-
-class TaskBatchFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = WarehouseTaskBatch
-
-    name = factory.Sequence(lambda n: f"Import /SCWM/MON {n}")
-    status = "done"
-
-
-class WarehouseTaskFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = WarehouseTask
-
-    batch = factory.SubFactory(TaskBatchFactory)
-    task_no = factory.Sequence(lambda n: f"{n + 1:012d}")
-    kind = "picking"
-    src_location, dst_location = "01-01-01", "WYDANIA-01"
+    batch = factory.SubFactory(PickerBatchFactory)
+    location_code = "B0-01-100A"
+    task_type = "picking"
     confirmed_at = factory.LazyFunction(timezone.now)

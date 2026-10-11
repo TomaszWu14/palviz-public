@@ -25,10 +25,6 @@ class CanonicalSuffixLevelTests(SimpleTestCase):
         self.assertEqual(views.SUFFIX_LEVEL["B"], 0)
         self.assertEqual(views.SUFFIX_LEVEL["W"], 5)
 
-    def test_editor3d_uses_canonical_map(self):
-        self.assertIs(views._ED3D_SUFFIX_LEVEL, views.SUFFIX_LEVEL)
-
-
 class LocationCodeFormatTests(SimpleTestCase):
     def test_valid_codes(self):
         for code in ("B0-01-100A", "B0-07-300C-1", "A1-12-005D", "b0-01-100a"):

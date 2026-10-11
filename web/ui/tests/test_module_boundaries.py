@@ -1,8 +1,7 @@
-"""STRUCT-01: strażnik granicy między aplikacjami-liśćmi (wh3d/huctl/transport).
+"""STRUCT-01: strażnik granicy między aplikacjami-liśćmi (huctl/transport).
 
 Żadna aplikacja-liść nie importuje siostrzanej aplikacji-liścia — każda może
-importować tylko wspólny rdzeń `ui` (patrz `test_wh3d_boundary.py`, który pina
-seam ui<->wh3d). Pęknięcie tego testu = sprzężenie sioster, którego architektura
+importować tylko wspólny rdzeń `ui`. Pęknięcie tego testu = sprzężenie sioster, którego architektura
 świadomie unika (PR #545-#549 rozdzieliły te aplikacje właśnie po to)."""
 import ast
 import pathlib
@@ -13,7 +12,7 @@ from django.test import SimpleTestCase
 _ROOT = pathlib.Path(__file__).resolve().parents[3]  # repo root
 _WEB = _ROOT / "web"
 
-_LEAF_APPS = ("wh3d", "huctl", "transport")
+_LEAF_APPS = ("huctl", "transport")
 
 
 class ModuleBoundaryTests(SimpleTestCase):
@@ -33,10 +32,10 @@ class ModuleBoundaryTests(SimpleTestCase):
         self.assertEqual(offenders, [])
 
     def test_ui_does_not_import_leaf_app_views(self):
-        """ARCH-001: rdzeń `ui` nie sięga do modułów WIDOKÓW liści (huctl/transport/wh3d
+        """ARCH-001: rdzeń `ui` nie sięga do modułów WIDOKÓW liści (huctl/transport
         .views) — także importami leniwymi wewnątrz funkcji. Logikę współdzieloną liść
         wystawia w module serwisowym (np. huctl.kpi, huctl.hu_import, transport.sms,
-        transport.kpi, wh3d.locations), a `ui` importuje właśnie ją."""
+        transport.kpi), a `ui` importuje właśnie ją."""
         forbidden = tuple(f"{a}.views" for a in _LEAF_APPS)
         ui_dir = _WEB / "ui"
         offenders = []

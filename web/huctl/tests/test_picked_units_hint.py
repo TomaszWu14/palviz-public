@@ -78,7 +78,7 @@ class ImportCarriesDetail(TestCase):
         csv = ("lokalizacja,data potw,potwierdzone przez,materiał,ilość,jm,partia\n"
                "L1,2026-08-01 08:00,Jan,A1,2,KAR,L100\n").encode("utf-8")
         f = SimpleUploadedFile("picks.csv", csv, content_type="text/csv")
-        self.client.post(reverse("ui:heatmap_upload"), {"file": f, "name": "t"})
+        self.client.post(reverse("ui:picker_activity_upload"), {"file": f, "name": "t"})
         pa = PickerActivity.objects.get(material_code="A1")
         self.assertEqual(pa.unit, "KAR")
         self.assertEqual(pa.qty, 2.0)
@@ -90,7 +90,7 @@ class ImportCarriesDetail(TestCase):
         csv = ("lokalizacja,data potw,potwierdzone przez\n"
                "L1,2026-08-01 08:00,Jan\n").encode("utf-8")
         f = SimpleUploadedFile("old.csv", csv, content_type="text/csv")
-        self.client.post(reverse("ui:heatmap_upload"), {"file": f, "name": "t"})
+        self.client.post(reverse("ui:picker_activity_upload"), {"file": f, "name": "t"})
         pa = PickerActivity.objects.get(location_code="L1")
         self.assertEqual(pa.material_code, "")
         self.assertIsNone(pa.qty)

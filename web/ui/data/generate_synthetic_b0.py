@@ -5,19 +5,11 @@ wysokości i udźwigi są zmyślone. Format plików (kolumny, arkusze, kody loka
 w stylu `B0-01-100A`, `B0-07-300C-1`) odpowiada temu, czego oczekują importery i testy.
 
 Generuje (deterministycznie, bez losowości):
-  web/ui/data/warehouse_layout_b0.xlsx    — rysunek elewacji (seed „Układ B0 (wzorcowy)”)
   web/ui/data/warehouse_map_b0.xlsx       — plan fizyczny (manage.py import_locations --map)
   web/ui/data/warehouse_locations_b0.csv  — lista lokalizacji w formacie eksportu SAP
-  web/wh3d/tests/data/ewm_b0_sample.csv   — próbka eksportu EWM dla testów „Wykryj z EWM”
 
 Uruchomienie (z katalogu głównego repo):
     python web/ui/data/generate_synthetic_b0.py
-
-Ograniczenia narzucone przez testy (nie zmieniaj bez poprawienia testów):
-  * układ: dokładnie 15 przejść, > 5000 lokalizacji, poziomy {1, 2, 3, 4}, półki C/D
-    (też dzielone -1/-2) — wh3d/tests/test_warehouse_layout.py;
-  * próbka EWM: przejścia/gniazda z wh3d/tests/ewm_sample.py (SAMPLE_N_BAYS), 18 szablonów
-    gniazd, 3327 kodów, numeracje i wyjątki z wh3d/tests/test_ewm_detect.py i test_ewm_service.py.
 """
 import re
 from pathlib import Path
@@ -26,7 +18,6 @@ import openpyxl
 
 WEB = Path(__file__).resolve().parents[2]
 UI_DATA = WEB / "ui" / "data"
-EWM_SAMPLE = WEB / "wh3d" / "tests" / "data" / "ewm_b0_sample.csv"
 
 # Litera → poziom fizyczny (zgodnie z ui.views.core.ewm_levels: B/C/D = półki poz. 1,
 # G/H = X podzielone pionowo, S–W = strefa kompaktowa poziomy 1–5).
@@ -163,113 +154,12 @@ def write_map_xlsx(codes, path):
     wb.save(path)
 
 
-def write_layout_xlsx(codes, path):
-    """Rysunek elewacji: stos = kolumna, półki w kolejnych wierszach; połówki -1/-2 w jednej
-    komórce („… | …”). Strefa kompaktowa S–W pominięta (seed ma poziomy 1–4)."""
-    codes = [c for c in codes if parts(c)[2] not in "STUVW"]
-    letter_rows = ["Z", "Y", "H", "G", "X", "D", "C", "B", "A"]          # od góry rysunku
-    band = len(letter_rows) + 2
-    aisles = sorted({parts(c)[0] for c in codes})
-    cols = stack_columns(codes)
-    cells = {}
-    for code in codes:
-        aisle, stack, letter, _half = parts(code)
-        r = 3 + aisles.index(aisle) * band + 1 + letter_rows.index(letter)
-        cells.setdefault((r, cols[stack]), []).append(code)
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    ws.title = "Arkusz1"
-    ws.cell(1, 1, "Hala B0 — elewacje regałów (dane fikcyjne)")
-    for ai, aisle in enumerate(aisles):
-        ws.cell(3 + ai * band, 1, f"PRZEJŚCIE {aisle}")
-    for (r, c), group in cells.items():
-        ws.cell(r, c, " | ".join(sorted(group, key=sort_key, reverse=True)))
-    wb.save(path)
-
-
-# --------------------------------------------------------------- próbka EWM
-# Szablony gniazd: (pozycji na belce, [(litera, dzielona, typ EWM)]).
-def _t(k, spec):
-    return k, [(s.rstrip("½").split(":")[0], s.endswith("½"), s.rstrip("½").split(":")[1]) for s in spec.split()]
-
-
-T = {
-    "pal": _t(3, "A:0052 X:0010 Y:0010 Z:0010"),
-    "pal_xy": _t(3, "A:0052 X:0010 Y:0010"),
-    "pal2": _t(2, "A:0052 X:0010 Y:0010 Z:0010"),
-    "pal_b": _t(3, "A:0052 B:0052 X:0010 Y:0010 Z:0010"),
-    "dziel": _t(3, "B:0052 C:0010½ D:0010½ X:0010 Y:0010 Z:0010"),
-    "dziel2": _t(2, "B:0052 C:0010½ D:0010½ X:0010 Y:0010 Z:0010"),
-    "dziel_a": _t(3, "A:0052 C:0010½ D:0010½ X:0010 Y:0010 Z:0010"),
-    "pal4": _t(4, "A:0052 X:0010 Y:0010 Z:0010"),
-    "gora": _t(3, "A:0010 X:0010 Y:0010 Z:0010"),
-    "pal_11": _t(3, "A:0052 X:0011 Y:0011 Z:0011"),
-    "pal_50": _t(3, "A:0050 X:0010 Y:0010 Z:0010"),
-    "polki": _t(3, "B:0010 C:0010 D:0010 X:0011 Y:0011 Z:0011"),
-    "polki_xy": _t(3, "B:0010 C:0010 D:0010 X:0011 Y:0011"),
-    "polki_12": _t(3, "B:0012 C:0012 D:0012 X:0012 Y:0012 Z:0012"),
-    "xyz": _t(3, "X:0010 Y:0010 Z:0010"),
-    "przejazd": _t(4, "Y:0010 Z:0010"),
-    "yz2": _t(2, "Y:0010 Z:0010"),
-    "jedna": _t(1, "A:0052 X:0010 Y:0010 Z:0010"),
-}
-
-# przejście → (numery gniazd, [(szablon, liczba gniazd)]) — pierwszy szablon = domyślny rzędu
-# (musi mieć najwięcej gniazd); kolejność gniazd przeplatana deterministycznie.
-EWM_AISLES = {
-    "07": (list(range(10, 49)), [("pal", 17), ("pal_b", 16), ("pal_xy", 5), ("pal2", 1)]),
-    "08": (list(range(10, 48)) + [50], [("pal", 39)]),
-    "34": (list(range(10, 52)), [("dziel", 39), ("dziel2", 1), ("dziel_a", 1), ("pal4", 1)]),
-    "38": (list(range(10, 29)) + list(range(30, 52)), [("gora", 20), ("pal_11", 11), ("pal_50", 10)]),
-    "48": (list(range(10, 46)), [("polki", 23), ("polki_xy", 3), ("polki_12", 10)]),
-    "54": ([29, 30] + list(range(33, 65)), [("xyz", 15), ("przejazd", 7), ("yz2", 6), ("jedna", 6)]),
-}
-# Pojedynczy wyjątek typu EWM (przejście, gniazdo, pozycja, litera) → typ.
-EWM_TYPE_EXCEPTIONS = {("08", 22, 1, "A"): "0050"}
-
-
-def _interleave(assign):
-    """[(szablon, n)] → lista szablonów przeplatana (domyślny na pierwszym gnieździe)."""
-    pools = [[name] * n for name, n in assign]
-    out = []
-    while any(pools):
-        for pool in pools:
-            if pool:
-                out.append(pool.pop())
-    return out
-
-
-def ewm_pairs():
-    pairs = []
-    for aisle, (bays, assign) in EWM_AISLES.items():
-        names = _interleave(assign)
-        assert len(names) == len(bays), aisle
-        for bay, name in zip(bays, names):
-            k, levels = T[name]
-            for p in range(k):
-                for letter, split, typ in levels:
-                    typ = EWM_TYPE_EXCEPTIONS.get((aisle, bay, p, letter), typ)
-                    for half in ((1, 2) if split else (0,)):
-                        pairs.append((f"B0-{aisle}-{bay:02d}{p}{letter}" + (f"-{half}" if half else ""), typ))
-    return pairs
-
-
-def write_ewm_sample(path):
-    pairs = ewm_pairs()
-    lines = ["# Próbka eksportu EWM — dane syntetyczne (generate_synthetic_b0.py): przejścia B0 "
-             + ", ".join(EWM_AISLES), "code;typ"] + [f"{c};{t}" for c, t in pairs]
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    return len(pairs)
-
-
 def main():
     codes = hall_codes()
     write_locations_csv(codes, UI_DATA / "warehouse_locations_b0.csv")
     write_map_xlsx(codes, UI_DATA / "warehouse_map_b0.xlsx")
-    write_layout_xlsx(codes, UI_DATA / "warehouse_layout_b0.xlsx")
-    n_ewm = write_ewm_sample(EWM_SAMPLE)
     aisles = {parts(c)[0] for c in codes}
-    print(f"Hala B0 (syntetyczna): {len(codes)} lokalizacji, {len(aisles)} przejść; próbka EWM: {n_ewm} kodów.")
+    print(f"Hala B0 (syntetyczna): {len(codes)} lokalizacji, {len(aisles)} przejść.")
 
 
 if __name__ == "__main__":

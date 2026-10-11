@@ -2,7 +2,6 @@
 
 - B-004: przyciski zapisu na listach danych podstawowych tylko dla Admin / MD / superuser
 - B-005: link „Django Admin” tylko dla is_staff
-- B-006: link „Mapa magazynu 3D” na stronie stanów tylko dla modułu „magazyn”
 - B-007: reguły pakowania klienta — kontrolki także dla Administratorów
 - B-008: zakładka MATinfo w skanerze wg modułu phv z nadpisaniami (UserModuleAccess)
 """
@@ -44,16 +43,6 @@ class AdminLinkTests(TestCase):             # B-005
     def test_django_admin_link_only_for_staff(self):
         self.assertNotIn('href="/admin/"', client_for("Master Data").get("/").content.decode())
         self.assertIn('href="/admin/"', client_for("superuser").get("/").content.decode())
-
-
-class StockMapLinkTests(TestCase):          # B-006
-    def test_map_link_only_with_magazyn_module(self):
-        url, map_url = reverse("ui:planner_stock"), reverse("ui:warehouse_map")
-        for persona, visible in (("Master Data", True), ("Kontrola HU", False), ("Lider kontroli", False)):
-            with self.subTest(persona=persona):
-                r = client_for(persona).get(url)
-                self.assertEqual(r.status_code, 200)
-                self.assertEqual(map_url in r.content.decode(), visible)
 
 
 class CustomerRulesTests(TestCase):         # B-007

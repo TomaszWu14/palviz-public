@@ -8,7 +8,7 @@ Użycie:
 Pokrywa: 15 person, katalog (produkty, kartony, opakowania, instrukcje, dane SAP MaterialMaster),
 klientów z regułami pakowania, shipmenty w każdym statusie, HU w kontroli (wszystkie statusy,
 4 strefy, VIP, rezerwacje), zadania, powiadomienia (w tym pilne z potwierdzeniem), wątki,
-snapshot zajętości, model magazynu z regałami, import zadań EWM. Daty: przeszłe, dzisiejsze, przyszłe, przełom roku, oba
+snapshot zajętości, typy regałów, aktywność pickerów. Daty: przeszłe, dzisiejsze, przyszłe, przełom roku, oba
 przestawienia zegara; polskie znaki, maksymalnie długie nazwy, puste pola opcjonalne.
 """
 from datetime import timedelta
@@ -142,17 +142,13 @@ def _warehouse(users):
     snap.save(update_fields=["row_count", "occupied_count", "blocked_count"])
     f.RackTypeFactory(code="0010", name="Regał paletowy wysoki", level_heights={"1": 1500})
     f.RackTypeFactory(code="ZONE", name="Strefa odkładcza", kind="zone")
-    model = f.WarehouseModelFactory(name="Hala B0")
-    racks = [f.RackFactory(model=model, rack_id=f"{i + 1:02d}") for i in range(4)]
-    batch = f.TaskBatchFactory(name="Zadania EWM — tydzień DST", uploaded_by=users["Master Data"],
-                               row_count=4)
+    batch = f.PickerBatchFactory(name="Potwierdzenia SAP — tydzień DST", row_count=4)
     stamps = (KEY_DATES["dst_jesien"], KEY_DATES["dst_jesien_drugi_raz"],
               KEY_DATES["dst_wiosna_po"], KEY_DATES["koniec_roku"])
-    ewm = [f.WarehouseTaskFactory(batch=batch, kind=k, confirmed_at=ts, material="REF100001",
-                                  created_at=ts - timedelta(minutes=10))
-           for k, ts in zip(("picking", "putaway", "replenishment", "outbound"), stamps, strict=True)]
-    return SimpleNamespace(snapshot=snap, snapshot_rows=rows, model=model, racks=racks,
-                           task_batch=batch, ewm_tasks=ewm)
+    picks = [f.PickerActivityFactory(batch=batch, task_type=k, confirmed_at=ts,
+                                     material_code="REF100001")
+             for k, ts in zip(("picking", "putaway", "replenishment", "outbound"), stamps, strict=True)]
+    return SimpleNamespace(snapshot=snap, snapshot_rows=rows, picker_batch=batch, picks=picks)
 
 
 def seed_all():

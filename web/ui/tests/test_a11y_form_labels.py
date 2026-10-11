@@ -42,8 +42,7 @@ class FormLabelsTests(SeedDataMixin, TestCase):
     URLS = ["/data-center/", "/planner/calc/",
             "/data-center/packaging/", "/planner/cartons/unify/", "/control/leader/",
             # 5c — formularze i filtry (widoki bez <pk>)
-            "/magazyn/editor3d/", "/magazyn/rack-generator/", "/magazyn/types/new/",
-            "/magazyn/lokalizacje/master/", "/magazyn/warianty/", "/magazyn/heatmapa/",
+            "/data-center/typy-regalow/new/",
             "/planner/products/new/", "/planner/cartons/new/", "/planner/shipments/new/",
             "/planner/optimizer/", "/planner/quote-recipients/", "/planner/ref-materials/",
             "/tasks/", "/tasks/form/", "/profil/",

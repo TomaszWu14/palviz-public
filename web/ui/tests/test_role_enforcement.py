@@ -76,7 +76,7 @@ class AnonymousGateTests(TestCase):
     Nowy moduł/endpoint → dopisz go tutaj (widoczny checklist bramek)."""
     GET_ENDPOINTS = [
         "planner_dashboard", "planner_products", "planner_shipments", "data_center",
-        "warehouse_map", "hu_control_hub", "tasks_home",
+        "planner_occupancy", "hu_control_hub", "tasks_home",
         "planner_customers",
         "admin_panel", "admin_users", "admin_module_access", "admin_role_matrix",
         "admin_access_audit",
@@ -147,10 +147,10 @@ class PlannerRequiresRoleTests(TestCase):
         cls.nogroup = get_user_model().objects.create_user(username="bez_grupy", password="x")
         cls.viewer = _user("viewer_p", GROUP_VIEWER)
 
-    def test_no_group_user_gets_403_on_planner_and_magazyn(self):
+    def test_no_group_user_gets_403_on_planner_and_occupancy(self):
         self.client.force_login(self.nogroup)
         self.assertEqual(self.client.get("/planner/products/").status_code, 403)
-        self.assertEqual(self.client.get("/magazyn/").status_code, 403)
+        self.assertEqual(self.client.get("/magazyn/zajetosc/").status_code, 403)
 
     def test_no_group_user_can_open_profile(self):
         self.client.force_login(self.nogroup)

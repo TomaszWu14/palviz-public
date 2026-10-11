@@ -52,7 +52,6 @@ MODULE_ROLES = {
     "shipments_read":      [GROUP_ADMIN, GROUP_TRANSPORT],
     "stock_write":         [GROUP_ADMIN, GROUP_MASTER_DATA],
     "occupancy_read":      [GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT, GROUP_VIEWER],
-    "warehouse_model":     [GROUP_ADMIN, GROUP_MASTER_DATA],
     "excel_templates":     [GROUP_ADMIN, GROUP_MASTER_DATA],
     "calculator":          [GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT],
     "user_management":     [GROUP_ADMIN],

@@ -1,6 +1,6 @@
 """Magazyn statyk: WhiteNoise (kompresja + hash w nazwie) bez przepisywania map źródłowych.
 
-Vendorowane biblioteki (three-mesh-bvh, …) mają `//# sourceMappingURL=…` do plików .map,
+Vendorowane biblioteki mogą mieć `//# sourceMappingURL=…` do plików .map,
 których nie dostarczamy — domyślny post-processing Django przerywa wtedy collectstatic.
 Mapy nie są potrzebne na produkcji, więc pomijamy tylko ten wzorzec; url()/@import w CSS
 nadal dostają zahashowane nazwy."""

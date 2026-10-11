@@ -22,8 +22,6 @@ psycopg2-binary==2.9.12   # PostgreSQL driver (used when DATABASE_URL is set)
 numpy==2.4.6              # vectorised packing geometry (layout ranking)
 django-htmx==1.27.0       # htmx integration: request.htmx + middleware (partial renders)
 django-ninja==1.6.2       # typed REST API (HU scanner) with auto OpenAPI docs
-django-filter==25.2       # filterable list views
-django-tables2==3.0.0     # sortable / paginated tables
 polars==1.43.2            # fast Excel/CSV ingest for large WMS exports (lazy; pandas fallback)
 XlsxWriter==3.2.9         # richer Excel export engine (formatting / freeze panes)
 weasyprint==70.0          # HTML→PDF for quotes / readiness reports (imported lazily)

@@ -348,8 +348,10 @@ def _location_card(code):
     """Karta lokalizacji dla skanera z ISTNIEJĄCYCH danych: master (wymiary/objętość/
     waga/typ/blokady) z aktywnej partii, strefa z prefiksu kodu (brak pola → wyliczamy),
     zawartość = stock-HU w tej lokalizacji (to samo zapytanie co panel mapy)."""
-    from wh3d.locations import active_master_qs
-    row = active_master_qs().filter(location_code__iexact=code).first()
+    from ..models import WarehouseLocationMaster
+    row = (WarehouseLocationMaster.objects
+           .filter(batch__is_active=True, location_code__iexact=code)
+           .order_by("-batch__uploaded_at").first())
     items = (HandlingUnitItem.objects
              .filter(hu__shipment__is_stock=True, hu__location__iexact=code)
              .select_related("hu", "product").order_by("hu__seq", "id")[:200])

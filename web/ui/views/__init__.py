@@ -32,4 +32,6 @@ from .tasks import *  # noqa: F401,F403
 
 
 
+from .warehouse_imports import *  # noqa: F401,F403
+from .warehouse_racktype import *  # noqa: F401,F403
 from .warehouse_search import *  # noqa: F401,F403

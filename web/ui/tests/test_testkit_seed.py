@@ -125,10 +125,9 @@ class SeedTests(SeedDataMixin, TestCase):
         self.assertTrue(d.hu.reserved.assigned_to and d.hu.reserved.called_at and d.hu.reserved.is_priority)
         self.assertTrue(d.hu.vip_shipment.customer.is_vip)
         self.assertTrue(any(n.requires_ack for n in d.comms.notifications))
-        from wh3d.models import WarehouseSnapshotRow
+        from ui.models import WarehouseSnapshotRow
         self.assertEqual(WarehouseSnapshotRow.objects.filter(snapshot=d.warehouse.snapshot).count(), 24)
-        self.assertEqual(len(d.warehouse.racks), 4)
-        self.assertEqual(d.warehouse.ewm_tasks[0].batch_id, d.warehouse.task_batch.pk)
+        self.assertEqual(d.warehouse.picks[0].batch_id, d.warehouse.picker_batch.pk)
         self.assertEqual(len(d.catalog.materials), 4)
         self.assertTrue(any(r.alert_email for r in d.customers.rules))
 
@@ -137,9 +136,9 @@ class SeedTests(SeedDataMixin, TestCase):
         dates = set(Shipment.objects.values_list("outbound_delivery_date", flat=True))
         for key in ("przeszla", "dzis", "przyszla", "koniec_roku"):
             self.assertIn(self.data.dates[key], dates, key)
-        from wh3d.models import WarehouseTask
-        stamps = list(WarehouseTask.objects.order_by("confirmed_at").values_list("confirmed_at", flat=True))
-        by_kind = dict(WarehouseTask.objects.values_list("kind", "confirmed_at"))
+        from ui.models import PickerActivity
+        stamps = list(PickerActivity.objects.order_by("confirmed_at").values_list("confirmed_at", flat=True))
+        by_kind = dict(PickerActivity.objects.values_list("task_type", "confirmed_at"))
         # 02:30 wystąpiło dwa razy (jesienna zmiana czasu) — w bazie to dwa momenty odległe o 1 h
         self.assertEqual((by_kind["putaway"] - by_kind["picking"]).total_seconds(), 3600)
         self.assertEqual(len(stamps), 4)

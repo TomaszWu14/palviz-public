@@ -156,90 +156,8 @@ def planner_excel_templates(request):
     return render(request, "ui/planner/excel_templates.html")
 
 @_any_role
-def warehouse_combined_template(request):
-    """Download a styled xlsx template for the combined upload."""
-    wb, ws, response = _make_xlsx_response("PalViz_lokalizacje_combined_wzor.xlsx")
-
-    columns = [
-        # (header, description, width, example)
-        ("location_code",  "Kod lokalizacji (wymagany), np. B0-01-100A",      18, "B0-01-100A"),
-        ("warehouse_type", "Typ regału/lokalizacji, np. PA, PP, HH",           14, "PA"),
-        ("height_mm",      "Wysokość / prześwit [mm]",                         14, 2494),
-        ("width_mm",       "Szerokość fizyczna miejsca [mm]",                  14, 800),
-        ("depth_mm",       "Głębokość regału [mm]",                            14, 1100),
-        ("max_weight_kg",  "Maksymalna waga [kg]",                             14, 1200),
-        ("max_volume_m3",  "Maksymalna objętość [m³]",                         14, 2.5),
-        ("level_heights",  'Wysokości poziomów JSON, np. {"1":2494,"2":2500}', 30, '{"1":2494,"2":2500,"3":2500}'),
-        ("level_cols",     'Kolumny per poziom JSON, np. {"1":1,"2":2}',       24, '{"1":1,"2":2,"3":1}'),
-    ]
-
-    _style_xlsx_header(ws, columns, title_color="1E40AF")
-
-    example_rows = [
-        ("B0-01-100A", "PA", 2494, 800, 1100, 1200, 2.5, '{"1":2494,"2":2500,"3":2500}', '{"1":1,"2":2,"3":1}'),
-        ("B0-01-100X", "PA", 2500, 800, 1100, 1200, 2.5, "", ""),
-        ("B0-01-100J", "PA", 2500, 800, 1100, 1200, 2.5, "", ""),
-        ("B0-01-100Y", "PA", 2500, 800, 1100, 1200, 2.5, "", ""),
-        ("B0-01-200A", "PP", 2200, 900, 1100, 800,  1.8, "", ""),
-        ("B0-02-100A", "PP", 2200, 900, 1100, 800,  1.8, "", ""),
-        ("B0-02-100X", "PP", 2200, 900, 1100, 800,  1.8, "", ""),
-        ("B0-02-100J", "PP", 2200, 900, 1100, 800,  1.8, "", ""),
-    ]
-
-    _add_example_rows(ws, columns, example_rows)
-
-    # ── Opis sheet ────────────────────────────────────────────────────────────
-    from openpyxl.styles import PatternFill, Font, Alignment
-
-    ws_desc = wb.create_sheet("Opis")
-    hdr_fill = PatternFill("solid", fgColor="1E40AF")
-    hdr_font = Font(bold=True, color="FFFFFF", size=11)
-
-    ws_desc.cell(row=1, column=1, value="Kolumna").fill = hdr_fill
-    ws_desc.cell(row=1, column=1).font = hdr_font
-    ws_desc.cell(row=1, column=2, value="Aliasy (alternatywne nazwy kolumn)").fill = hdr_fill
-    ws_desc.cell(row=1, column=2).font = hdr_font
-    ws_desc.cell(row=1, column=3, value="Opis").fill = hdr_fill
-    ws_desc.cell(row=1, column=3).font = hdr_font
-    ws_desc.column_dimensions["A"].width = 20
-    ws_desc.column_dimensions["B"].width = 50
-    ws_desc.column_dimensions["C"].width = 60
-
-    desc_data = [
-        ("location_code",  "lokalizacja, adres, miejsce, location, bin",
-         "Kod lokalizacji (wymagany). Format np. B0-01-100A. Używany do wyznaczenia pozycji na mapie 3D."),
-        ("warehouse_type", "typ, type, rack_type, typ_lok",
-         "Kod typu regału/lokalizacji. Musi istnieć w WarehouseRackType lub zostanie utworzony."),
-        ("height_mm",      "wysokość, height, clearance",
-         "Prześwit / wysokość miejsca w mm. Stosowany w master data lokalizacji."),
-        ("width_mm",       "szerokość, width",
-         "Szerokość fizyczna miejsca w mm."),
-        ("depth_mm",       "głębokość, depth",
-         "Głębokość regału w mm."),
-        ("max_weight_kg",  "waga_max, max_weight, waga",
-         "Maksymalna waga ładunku w kg."),
-        ("max_volume_m3",  "objetosc_max, max_volume, objetosc",
-         "Maksymalna objętość ładunku w m³."),
-        ("level_heights",  "wysokosci_poziomow",
-         'Wysokości poziomów jako JSON, np. {"1":2494,"2":2500,"3":2000}. Wystarczy podać w jednym wierszu danego typu.'),
-        ("level_cols",     "kolumny_poziomow",
-         'Liczba kolumn per poziom jako JSON, np. {"1":1,"2":2}. Wystarczy podać w jednym wierszu danego typu.'),
-    ]
-
-    for ri, (col, aliases, desc) in enumerate(desc_data, 2):
-        ws_desc.cell(row=ri, column=1, value=col).font = Font(bold=True, size=10)
-        ws_desc.cell(row=ri, column=2, value=aliases).font = Font(size=10, italic=True, color="374151")
-        ws_desc.cell(row=ri, column=3, value=desc).font = Font(size=10)
-        ws_desc.cell(row=ri, column=3).alignment = Alignment(wrap_text=True)
-        ws_desc.row_dimensions[ri].height = 30
-
-    ws.title = "Lokalizacje"
-
-    return _finalize_xlsx(wb, ws, response)
-
-@_any_role
-def heatmap_template_download(request):
-    wb, ws, response = _make_xlsx_response("PalViz_heatmapa_wzor.xlsx")
+def picker_activity_template(request):
+    wb, ws, response = _make_xlsx_response("PalViz_aktywnosc_pickerow_wzor.xlsx")
     ws.title = "Aktywności pickerów"
     cols = [
         ("location_code", "Kod lokalizacji np. B0-01-100A", 22, "B0-01-100A"),
@@ -258,10 +176,26 @@ def heatmap_template_download(request):
     _add_example_rows(ws, cols, rows)
     return _finalize_xlsx(wb, ws, response)
 
+
+@_any_role
+def warehouse_snapshot_template(request):
+    """Wzór eksportu SAP WMS dla snapshotu lokalizacji: same nagłówki SAP + przykłady.
+    Bez wiersza opisów — importer bierze każdy niepusty wiersz jako lokalizację."""
+    from openpyxl.styles import Font
+    wb, ws, response = _make_xlsx_response("PalViz_snapshot_lokalizacji_wzor.xlsx")
+    ws.title = "Lokalizacje"
+    ws.append(["Miejsce składowania", "Typ magazynu", "Puste miejsce skład.",
+               "Blok. wyd. z magaz.", "Blokada um. w magaz.", "Całkowite zdolności"])
+    for cell in ws[1]:
+        cell.font = Font(bold=True)
+    ws.append(["B0-01-100A", "0010", "", "", "", 1800])     # zajęte (puste = brak „X”)
+    ws.append(["B0-01-100X", "0010", "X", "", "X", 1500])   # puste, blokada umieszczania
+    return _finalize_xlsx(wb, ws, response)
+
 __all__ = [
     'planner_ref_materials_import',
     'excel_import_fix',
     'planner_excel_templates',
-    'warehouse_combined_template',
-    'heatmap_template_download',
+    'picker_activity_template',
+    'warehouse_snapshot_template',
 ]

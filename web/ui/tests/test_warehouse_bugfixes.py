@@ -1,6 +1,5 @@
 """Warehouse bugfixy (code-review): silnik niezgodności stanu dopasowuje lokalizacje
-case-insensitive (koniec z fałszywym „błędna lokalizacja" + gubieniem przepełnienia);
-heatmapa łączy aktywność z komórkami bez względu na wielkość liter."""
+case-insensitive (koniec z fałszywym „błędna lokalizacja" + gubieniem przepełnienia)."""
 from django.test import TestCase
 
 from ui.models import (Product, PalletizationInstruction, Shipment, HandlingUnit,

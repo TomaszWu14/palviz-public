@@ -3,7 +3,7 @@
 
 Convention (TEST-02, `.planning/phases/06-testy-per-app/06-CONTEXT.md` D-06): a
 permanent CI guard in "floor" shape — the CI test step's combined
-`ui.tests wh3d.tests huctl.tests transport.tests` run is `tee`'d to a log file,
+`ui.tests huctl.tests transport.tests` run is `tee`'d to a log file,
 and this script parses that log for the final `Ran N tests` line and compares it
 against the integer committed in the sibling `test_count_baseline.txt`. New tests
 never require a change here; only an intentional baseline bump does (a one-line

@@ -33,8 +33,6 @@ MODULES = [
            "planner_calc_index", "🧮", "#0ea5e9", (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT), "Operacje"),
     Module("transport", _("Wycena przesyłek"), _("Objętość, ładunek, przewoźnicy, wyceny"),
            "planner_shipments", "🚚", "#f59e0b", (GROUP_ADMIN, GROUP_TRANSPORT), "Transport"),
-    Module("magazyn", _("Magazyn 3D"), _("Lokalizacje, widok 3D, kompletacja i analiza"),
-           "warehouse_map", "🏭", "#10b981", (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT, GROUP_VIEWER), "Magazyn"),
     Module("kontrola_hu", _("Kontrola HU"), _("Skaner, kontrola zawartości, KPI i raporty"),
            "hu_control_hub", "📲", "#7c3aed", (GROUP_ADMIN, GROUP_CONTROLLER, GROUP_LEADER), "Operacje"),
     Module("zadania", _("Zadania i powiadomienia"), _("Zadania zespołu i alerty o niezgodnościach stocku"),

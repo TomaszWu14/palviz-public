@@ -178,7 +178,6 @@ urlpatterns = [
          name="planner_instruction_recalculate_async"),
 
     # ── Warehouse 3D map ────────────────────────────────────────────────────────
-    path("magazyn/combined-template/", views.warehouse_combined_template, name="warehouse_combined_template"),
 
     # ── Product categories ──────────────────────────────────────────────────────
     path("planner/categories/", views.planner_categories, name="planner_categories"),
@@ -270,9 +269,6 @@ urlpatterns = [
          name="carton_opt_redesign_save"),
 
 
-    # ── Picker activity heatmap ─────────────────────────────────────────────────
-    path("magazyn/heatmapa/template/", views.heatmap_template_download, name="heatmap_template_download"),
-
     # ── User management ──────────────────────────────────────────────────────────
     path("admin-panel/", views.admin_panel, name="admin_panel"),
     path("admin-panel/users/", views.admin_users, name="admin_users"),
@@ -291,8 +287,16 @@ urlpatterns = [
     path("admin-panel/control-zones/", views.admin_control_zones, name="admin_control_zones"),
 
 
+    # ── Dane magazynowe (Data Center): importy + typy regałów ────────────────────
+    path("data-center/import/snapshot/", views.warehouse_snapshot_upload, name="warehouse_snapshot_upload"),
+    path("data-center/import/pickerzy/", views.picker_activity_upload, name="picker_activity_upload"),
+    path("data-center/import/snapshot/wzor.xlsx", views.warehouse_snapshot_template, name="warehouse_snapshot_template"),
+    path("data-center/import/pickerzy/wzor.xlsx", views.picker_activity_template, name="picker_activity_template"),
+    path("data-center/typy-regalow/", views.warehouse_rack_type_list, name="warehouse_rack_type_list"),
+    path("data-center/typy-regalow/new/", views.warehouse_rack_type_form, name="warehouse_rack_type_new"),
+    path("data-center/typy-regalow/<int:pk>/edit/", views.warehouse_rack_type_form, name="warehouse_rack_type_edit"),
+    path("data-center/typy-regalow/<int:pk>/delete/", views.warehouse_rack_type_delete, name="warehouse_rack_type_delete"),
     # ── Leaf-app urlconfs (no prefix, no app_name — merge into namespace ui:) ────
-    path("", include("wh3d.urls")),
     path("", include("huctl.urls")),
     path("", include("transport.urls")),
 ]

@@ -12,7 +12,6 @@ media:
   /media/quality/…: {anon: 302, zalogowany: 200}
   /media/hu_control/…: {anon: 302, zalogowany: 200, uwaga: 'B-002 naprawione (PR #694)'}
   /media/phv/…: {anon: 302, zalogowany: 200, uwaga: 'B-002 naprawione (PR #694)'}
-  /media/ewm_tasks/…: {anon: 302, zalogowany: 200}
   /media/(grafiki, modele 3D, załączniki wycen): {anon: 200, uwaga: 'publiczne z założenia?'}
 trasy:
   csp_report:
@@ -126,7 +125,7 @@ trasy:
     uwaga: 'dokumentacja API tylko dla is_staff (staff_member_required, ACL-002 #740)'
   ui:admin_access_audit:
     sciezka: /admin-panel/access-audit/
-    widok: ui.views.admin_zaria.admin_access_audit
+    widok: ui.views.admin_misc.admin_access_audit
     straznik: roles
     metody: [GET, POST]
     oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
@@ -250,106 +249,6 @@ trasy:
       Magazyn: 403, Optymalizacja kartonów: 403}
     dozwolone: [Administratorzy]
     GET: 405
-  ui:admin_zaria_audit:
-    sciezka: /admin-panel/zaria/audit/
-    widok: ui.views.admin_zaria.admin_zaria_audit
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy]
-  ui:admin_zaria_config:
-    sciezka: /admin-panel/zaria/config/
-    widok: ui.views.admin_zaria.admin_zaria_config
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy]
-  ui:admin_zaria_model_delete:
-    sciezka: /admin-panel/zaria/models/<int:pk>/delete/
-    widok: ui.views.admin_zaria.admin_zaria_model_delete
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy]
-    wymaga_obiektu: true
-    GET: 405
-  ui:admin_zaria_model_edit:
-    sciezka: /admin-panel/zaria/models/<int:pk>/edit/
-    widok: ui.views.admin_zaria.admin_zaria_models
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy]
-    wymaga_obiektu: true
-  ui:admin_zaria_models:
-    sciezka: /admin-panel/zaria/models/
-    widok: ui.views.admin_zaria.admin_zaria_models
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy]
-  ui:admin_zaria_panel:
-    sciezka: /admin-panel/zaria/
-    widok: ui.views.admin_zaria.admin_zaria_panel
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy]
-  ui:admin_zaria_role_access:
-    sciezka: /admin-panel/zaria/role-access/
-    widok: ui.views.admin_zaria.admin_zaria_role_access
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy]
-  ui:admin_zaria_test:
-    sciezka: /admin-panel/zaria/test/
-    widok: ui.views.admin_zaria.admin_zaria_test
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy]
-    GET: 405
-  ui:admin_zaria_usage:
-    sciezka: /admin-panel/zaria/usage/
-    widok: ui.views.admin_zaria.admin_zaria_usage
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy]
-  ui:admin_zaria_usage_export_csv:
-    sciezka: /admin-panel/zaria/usage/export.csv
-    widok: ui.views.admin_zaria.admin_zaria_usage_export_csv
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy]
-  ui:admin_zaria_usage_export_xlsx:
-    sciezka: /admin-panel/zaria/usage/export.xlsx
-    widok: ui.views.admin_zaria.admin_zaria_usage_export_xlsx
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy]
-  ui:admin_zaria_user_access:
-    sciezka: /admin-panel/zaria/user-access/
-    widok: ui.views.admin_zaria.admin_zaria_user_access
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy]
   ui:assetlinks:
     sciezka: /.well-known/assetlinks.json
     widok: ui.views.pwa.assetlinks
@@ -366,41 +265,6 @@ trasy:
       Magazyn: 200, Optymalizacja kartonów: 200}
     dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
     wymaga_obiektu: true
-  ui:bay_template_delete:
-    sciezka: /magazyn/model/szablony/<int:pk>/usun/
-    widok: wh3d.views.bay_templates.bay_template_delete
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-    GET: 405
-  ui:bay_template_edit:
-    sciezka: /magazyn/model/szablony/<int:pk>/
-    widok: wh3d.views.bay_templates.bay_template_form
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-  ui:bay_template_list:
-    sciezka: /magazyn/model/szablony/
-    widok: wh3d.views.bay_templates.bay_template_list
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-  ui:bay_template_new:
-    sciezka: /magazyn/model/szablony/nowy/
-    widok: wh3d.views.bay_templates.bay_template_form
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
   ui:calc_optimal_layer:
     sciezka: /planner/calc/saved/p/<int:pid>/optimal-layer/
     widok: ui.views.calc.calc_optimal_layer
@@ -704,60 +568,6 @@ trasy:
     oczekiwane: {domyslnie: 200, zly_token: 404}
     wymaga_obiektu: true
     uwaga: publiczna z tokenem (przewoźnik/kierowca)
-  ui:ewm_tasks_delete:
-    sciezka: /magazyn/zadania-ewm/<int:pk>/usun/
-    widok: wh3d.views.warehouse_tasks.ewm_tasks_delete
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-    GET: 405
-  ui:ewm_tasks_detail:
-    sciezka: /magazyn/zadania-ewm/<int:pk>/
-    widok: wh3d.views.warehouse_tasks.ewm_tasks_detail
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-  ui:ewm_tasks_import:
-    sciezka: /magazyn/zadania-ewm/importuj/
-    widok: wh3d.views.warehouse_tasks.ewm_tasks_import
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    GET: 405
-  ui:ewm_tasks_list:
-    sciezka: /magazyn/zadania-ewm/
-    widok: wh3d.views.warehouse_tasks.ewm_tasks_list
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-  ui:ewm_tasks_preview:
-    sciezka: /magazyn/zadania-ewm/podglad/
-    widok: wh3d.views.warehouse_tasks.ewm_tasks_preview
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    GET: 405
-  ui:ewm_tasks_profile:
-    sciezka: /magazyn/zadania-ewm/<int:pk>/profil/
-    widok: wh3d.views.warehouse_design_day.ewm_tasks_profile
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-    wymaga_obiektu: true
   ui:excel_import_cartons:
     sciezka: /planner/excel-import/cartons/
     widok: ui.views.cartons.excel_import_cartons
@@ -945,59 +755,6 @@ trasy:
     oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 200, Podgląd: 403, Obsługa klienta: 403,
       Magazyn: 403, Optymalizacja kartonów: 403}
     dozwolone: [Administratorzy, Lider kontroli]
-  ui:heatmap_data_json:
-    sciezka: /magazyn/heatmapa/<int:pk>/data.json
-    widok: wh3d.views.warehouse_heatmap.heatmap_data_json
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-    wymaga_obiektu: true
-  ui:heatmap_delete:
-    sciezka: /magazyn/heatmapa/<int:pk>/delete/
-    widok: wh3d.views.warehouse_heatmap.heatmap_delete
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-    GET: 405
-  ui:heatmap_detail:
-    sciezka: /magazyn/heatmapa/<int:pk>/
-    widok: wh3d.views.warehouse_heatmap.heatmap_detail
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-    wymaga_obiektu: true
-  ui:heatmap_list:
-    sciezka: /magazyn/heatmapa/
-    widok: wh3d.views.warehouse_heatmap.heatmap_list
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-  ui:heatmap_template_download:
-    sciezka: /magazyn/heatmapa/template/
-    widok: ui.views.imports_excel.heatmap_template_download
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-  ui:heatmap_upload:
-    sciezka: /magazyn/heatmapa/upload/
-    widok: wh3d.views.warehouse_heatmap.heatmap_upload
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    GET: 405
   ui:home:
     sciezka: /
     widok: ui.views.warehouse_search.module_home
@@ -1408,40 +1165,6 @@ trasy:
       Magazyn: 403, Optymalizacja kartonów: 403}
     dozwolone: [Administratorzy, Kontrola HU, Lider kontroli]
     wymaga_obiektu: true
-  ui:hu_print_generate:
-    sciezka: /hu-print/generate/
-    widok: huctl.views.hu_print.hu_print_generate
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: ok, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Magazyn]
-    GET: 405
-  ui:hu_print_home:
-    sciezka: /hu-print/
-    widok: wydruk_hu.hu_print_home
-    straznik: module
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 200, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Magazyn]
-    uwaga: moduł huba „wydruk_hu” (+ nadpisania UserModuleAccess)
-  ui:hu_print_log:
-    sciezka: /hu-print/log/
-    widok: huctl.views.hu_print.hu_print_log
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 200, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Magazyn]
-  ui:hu_print_preview:
-    sciezka: /hu-print/preview/
-    widok: huctl.views.hu_print.hu_print_preview
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 200, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Magazyn]
   ui:hu_prod_codes:
     sciezka: /control/prod-codes/
     widok: huctl.views.hu_quality.hu_prod_codes
@@ -1594,38 +1317,6 @@ trasy:
     dozwolone: [Administratorzy, Master Data]
     wymaga_obiektu: true
     GET: 405
-  ui:label_image:
-    sciezka: /label.png
-    widok: ui.views.misc.label_image
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-  ui:location_master_browse:
-    sciezka: /magazyn/lokalizacje/master/
-    widok: wh3d.views.locations_master.location_master_browse
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-  ui:location_master_export_pdf:
-    sciezka: /magazyn/lokalizacje/master/export.pdf
-    widok: wh3d.views.locations_master.location_master_export_pdf
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-  ui:location_master_export_xlsx:
-    sciezka: /magazyn/lokalizacje/master/export.xlsx
-    widok: wh3d.views.locations_master.location_master_export_xlsx
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
   ui:login:
     sciezka: /login/
     widok: ui.views.misc.view
@@ -1845,16 +1536,6 @@ trasy:
     metody: [GET, POST]
     oczekiwane: {domyslnie: 200}
     uwaga: publiczna z założenia
-  ui:phv_assistant:
-    sciezka: /phv/assistant/
-    widok: phv.phv_assistant
-    straznik: module
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: ok, Lider kontroli: ok, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: ok, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data]
-    GET: 405
-    uwaga: moduł huba „phv” (+ nadpisania UserModuleAccess)
   ui:phv_home:
     sciezka: /phv/
     widok: phv.phv_home
@@ -1901,6 +1582,23 @@ trasy:
     oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
       Magazyn: 200, Optymalizacja kartonów: 200}
     dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
+  ui:picker_activity_template:
+    sciezka: /data-center/import/pickerzy/wzor.xlsx
+    widok: ui.views.imports_excel.picker_activity_template
+    straznik: roles
+    metody: [GET, POST]
+    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
+      Magazyn: 200, Optymalizacja kartonów: 200}
+    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
+  ui:picker_activity_upload:
+    sciezka: /data-center/import/pickerzy/
+    widok: ui.views.warehouse_imports.picker_activity_upload
+    straznik: roles
+    metody: [POST]
+    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
+      Magazyn: 403, Optymalizacja kartonów: 403}
+    dozwolone: [Administratorzy, Master Data]
+    GET: 405
   ui:planner_analytics:
     sciezka: /planner/analytics/
     widok: ui.views.misc.planner_analytics
@@ -2589,16 +2287,6 @@ trasy:
       Magazyn: 403, Optymalizacja kartonów: 403}
     dozwolone: [Administratorzy, Transport]
     wymaga_obiektu: true
-  ui:planner_shipment_route_map:
-    sciezka: /planner/shipments/<int:pk>/route-map.png
-    widok: transport.views.quotes.planner_shipment_route_map
-    straznik: roles
-    metody: [GET]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 200, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Transport]
-    wymaga_obiektu: true
-    uwaga: 'INT-005: proxy PNG mapy trasy (Static Maps pobierane po stronie serwera); 404 gdy Google niedostępne'
   ui:planner_shipment_requote:
     sciezka: /planner/shipments/<int:pk>/requote/
     widok: transport.views.shipments_core.planner_shipment_requote
@@ -2609,6 +2297,16 @@ trasy:
     dozwolone: [Administratorzy, Transport]
     wymaga_obiektu: true
     GET: 405
+  ui:planner_shipment_route_map:
+    sciezka: /planner/shipments/<int:pk>/route-map.png
+    widok: transport.views.quotes.planner_shipment_route_map
+    straznik: roles
+    metody: [GET]
+    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 200, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
+      Magazyn: 403, Optymalizacja kartonów: 403}
+    dozwolone: [Administratorzy, Transport]
+    wymaga_obiektu: true
+    uwaga: 'INT-005: proxy PNG mapy trasy (Static Maps pobierane po stronie serwera); 404 gdy Google niedostępne'
   ui:planner_shipment_select_offer:
     sciezka: /planner/shipments/<int:pk>/select-offer/<int:offer_id>/
     widok: transport.views.driver.planner_shipment_select_offer
@@ -3045,51 +2743,6 @@ trasy:
     oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
       Magazyn: 403, Optymalizacja kartonów: 403}
     dozwolone: [Administratorzy]
-  ui:ukraine_home:
-    sciezka: /ukraina/
-    widok: wysylka_ukraina.ukraine_home
-    straznik: module
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data, Transport]
-    uwaga: moduł huba „wysylka_ukraina” (+ nadpisania UserModuleAccess)
-  ui:ukraine_import:
-    sciezka: /ukraina/import/
-    widok: ui.views.ukraine.ukraine_import
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: ok, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data, Transport]
-    GET: 405
-  ui:ukraine_line_delete:
-    sciezka: /ukraina/linia/<int:pk>/delete/
-    widok: ui.views.ukraine.ukraine_line_delete
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: ok, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data, Transport]
-    wymaga_obiektu: true
-    GET: 405
-  ui:ukraine_line_edit:
-    sciezka: /ukraina/linia/<int:pk>/edit/
-    widok: ui.views.ukraine.ukraine_line_form
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data, Transport]
-    wymaga_obiektu: true
-  ui:ukraine_line_new:
-    sciezka: /ukraina/linia/new/
-    widok: ui.views.ukraine.ukraine_line_form
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data, Transport]
   ui:upload_csv:
     sciezka: /planner/calc/upload/
     widok: ui.views.calc.upload_csv
@@ -3098,15 +2751,6 @@ trasy:
     oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
       Magazyn: 403, Optymalizacja kartonów: 403}
     dozwolone: [Administratorzy, Master Data, Transport]
-  ui:warehouse_aisle_config:
-    sciezka: /magazyn/<int:pk>/aleje/
-    widok: wh3d.views.warehouse_map_core.warehouse_aisle_config
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-    wymaga_obiektu: true
   ui:warehouse_bins:
     sciezka: /magazyn/miejsca/
     widok: ui.views.warehouse_search.warehouse_bins
@@ -3115,49 +2759,6 @@ trasy:
     oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
       Magazyn: 200, Optymalizacja kartonów: 200}
     dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-  ui:warehouse_combined_template:
-    sciezka: /magazyn/combined-template/
-    widok: ui.views.imports_excel.warehouse_combined_template
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-  ui:warehouse_combined_upload:
-    sciezka: /magazyn/<int:layout_pk>/upload-combined/
-    widok: wh3d.views.warehouse_master.warehouse_combined_upload
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-    GET: 405
-  ui:warehouse_demo_seed:
-    sciezka: /magazyn/demo-seed/
-    widok: wh3d.views.warehouse_map_layouts.warehouse_demo_seed
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    GET: 405
-  ui:warehouse_editor:
-    sciezka: /magazyn/editor/
-    widok: wh3d.views.warehouse_editor.warehouse_editor
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-  ui:warehouse_editor3d:
-    sciezka: /magazyn/editor3d/
-    widok: wh3d.views.warehouse_editor.warehouse_editor3d
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
   ui:warehouse_instruction:
     sciezka: /i/<str:code>/
     widok: ui.views.instructions.warehouse_instruction
@@ -3174,261 +2775,9 @@ trasy:
     oczekiwane: {anon: 302, nieaktywny: 302, domyslnie: 200}
     wymaga_obiektu: true
     uwaga: tylko login — wszystkie zalogowane role (decyzja Q-43, 2026-09-28)
-  ui:warehouse_layout_cell_move:
-    sciezka: /magazyn/layout/cell/<int:cell_id>/move/
-    widok: wh3d.views.warehouse_editor.warehouse_layout_cell_move
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-    GET: 405
-  ui:warehouse_layout_delete:
-    sciezka: /magazyn/layout/<int:pk>/delete/
-    widok: wh3d.views.warehouse_map_layouts.warehouse_layout_delete
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-    GET: 405
-  ui:warehouse_layout_features:
-    sciezka: /magazyn/<int:pk>/elementy/
-    widok: wh3d.views.warehouse_map_core.warehouse_layout_features
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-  ui:warehouse_layout_list_upload:
-    sciezka: /magazyn/layout/upload-list/
-    widok: wh3d.views.warehouse_map_layouts.warehouse_layout_list_upload
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    GET: 405
-  ui:warehouse_layout_seed:
-    sciezka: /magazyn/layout/seed/
-    widok: wh3d.views.warehouse_map_layouts.warehouse_layout_seed
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    GET: 405
-  ui:warehouse_layout_upload:
-    sciezka: /magazyn/layout/upload/
-    widok: wh3d.views.warehouse_map_layouts.warehouse_layout_upload
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    GET: 405
-  ui:warehouse_location_contents:
-    sciezka: /magazyn/location-contents/
-    widok: wh3d.views.warehouse_map_core.warehouse_location_contents
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-  ui:warehouse_map:
-    sciezka: /magazyn/
-    widok: magazyn.warehouse_map
-    straznik: module
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 200, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data, Podgląd, Transport]
-    uwaga: moduł huba „magazyn” (+ nadpisania UserModuleAccess)
-  ui:warehouse_map_delete:
-    sciezka: /magazyn/<int:pk>/delete/
-    widok: wh3d.views.warehouse_map_layouts.warehouse_map_delete
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-  ui:warehouse_map_detail:
-    sciezka: /magazyn/<int:pk>/
-    widok: magazyn.warehouse_map_detail
-    straznik: module
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 200, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data, Podgląd, Transport]
-    wymaga_obiektu: true
-    uwaga: moduł huba „magazyn” (+ nadpisania UserModuleAccess)
-  ui:warehouse_map_upload:
-    sciezka: /magazyn/upload/
-    widok: wh3d.views.warehouse_map_core.warehouse_map_upload
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    GET: 405
-  ui:warehouse_master_delete:
-    sciezka: /magazyn/master/<int:pk>/delete/
-    widok: wh3d.views.warehouse_master.warehouse_master_delete
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-    GET: 405
-  ui:warehouse_master_upload:
-    sciezka: /magazyn/master/upload/
-    widok: wh3d.views.warehouse_master.warehouse_master_upload
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    GET: 405
-  ui:warehouse_model_blender_json:
-    sciezka: /magazyn/model/<int:pk>/blender.json
-    widok: wh3d.views.warehouse_blender.warehouse_model_blender_json
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-    wymaga_obiektu: true
-  ui:warehouse_model_compliance:
-    sciezka: /magazyn/model/<int:pk>/zgodnosc-ewm/
-    widok: wh3d.views.warehouse_model_ewm.warehouse_model_compliance
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-    wymaga_obiektu: true
-  ui:warehouse_model_coords:
-    sciezka: /magazyn/model/<int:pk>/coords/
-    widok: wh3d.views.warehouse_model.warehouse_model_coords
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-  ui:warehouse_model_delete:
-    sciezka: /magazyn/model/<int:pk>/delete/
-    widok: wh3d.views.warehouse_model.warehouse_model_delete
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-  ui:warehouse_model_detect:
-    sciezka: /magazyn/model/<int:pk>/wykryj-ewm/
-    widok: wh3d.views.warehouse_model_ewm.warehouse_model_detect
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-    wymaga_obiektu: true
-  ui:warehouse_model_detect_save:
-    sciezka: /magazyn/model/<int:pk>/wykryj-ewm/zapisz/
-    widok: wh3d.views.warehouse_model_ewm.warehouse_model_detect_save
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-    GET: 405
-  ui:warehouse_model_features:
-    sciezka: /magazyn/model/<int:pk>/features/
-    widok: wh3d.views.warehouse_model.warehouse_model_features
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-  ui:warehouse_model_flow_json:
-    sciezka: /magazyn/model/<int:pk>/przeplywy.json
-    widok: wh3d.views.warehouse_blender.warehouse_model_flow_json
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-    wymaga_obiektu: true
-  ui:warehouse_model_from_layout:
-    sciezka: /magazyn/model/z-mapy/
-    widok: wh3d.views.warehouse_model_asis.warehouse_model_from_layout
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    GET: 405
-  ui:warehouse_model_list:
-    sciezka: /magazyn/model/
-    widok: wh3d.views.warehouse_model.warehouse_model_list
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-  ui:warehouse_model_paste:
-    sciezka: /magazyn/model/<int:pk>/paste/
-    widok: wh3d.views.warehouse_model.warehouse_model_paste
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-  ui:warehouse_model_upload:
-    sciezka: /magazyn/model/upload/
-    widok: wh3d.views.warehouse_model.warehouse_model_upload
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-  ui:warehouse_model_view:
-    sciezka: /magazyn/model/<int:pk>/view/
-    widok: wh3d.views.warehouse_model.warehouse_model_view
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-    wymaga_obiektu: true
-  ui:warehouse_picking_route:
-    sciezka: /magazyn/picking-route/
-    widok: wh3d.views.warehouse_map_core.warehouse_picking_route
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-  ui:warehouse_rack_generator:
-    sciezka: /magazyn/rack-generator/
-    widok: wh3d.views.warehouse_editor.warehouse_rack_generator
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
   ui:warehouse_rack_type_delete:
-    sciezka: /magazyn/types/<int:pk>/delete/
-    widok: wh3d.views.warehouse_racktype.warehouse_rack_type_delete
+    sciezka: /data-center/typy-regalow/<int:pk>/delete/
+    widok: ui.views.warehouse_racktype.warehouse_rack_type_delete
     straznik: roles
     metody: [POST]
     oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
@@ -3437,8 +2786,8 @@ trasy:
     wymaga_obiektu: true
     GET: 405
   ui:warehouse_rack_type_edit:
-    sciezka: /magazyn/types/<int:pk>/edit/
-    widok: wh3d.views.warehouse_racktype.warehouse_rack_type_form
+    sciezka: /data-center/typy-regalow/<int:pk>/edit/
+    widok: ui.views.warehouse_racktype.warehouse_rack_type_form
     straznik: roles
     metody: [GET, POST]
     oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
@@ -3446,16 +2795,16 @@ trasy:
     dozwolone: [Administratorzy, Master Data]
     wymaga_obiektu: true
   ui:warehouse_rack_type_list:
-    sciezka: /magazyn/types/
-    widok: wh3d.views.warehouse_racktype.warehouse_rack_type_list
+    sciezka: /data-center/typy-regalow/
+    widok: ui.views.warehouse_racktype.warehouse_rack_type_list
     straznik: roles
     metody: [GET, POST]
     oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
       Magazyn: 200, Optymalizacja kartonów: 200}
     dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
   ui:warehouse_rack_type_new:
-    sciezka: /magazyn/types/new/
-    widok: wh3d.views.warehouse_racktype.warehouse_rack_type_form
+    sciezka: /data-center/typy-regalow/new/
+    widok: ui.views.warehouse_racktype.warehouse_rack_type_form
     straznik: roles
     metody: [GET, POST]
     oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
@@ -3468,59 +2817,23 @@ trasy:
     metody: [GET, POST]
     oczekiwane: {anon: 302, nieaktywny: 302, domyslnie: 200}
     uwaga: tylko login — wszystkie zalogowane role (decyzja Q-43, 2026-09-28)
-  ui:warehouse_variant_delete:
-    sciezka: /magazyn/warianty/<int:pk>/usun/
-    widok: wh3d.views.warehouse_variants.warehouse_variant_delete
+  ui:warehouse_snapshot_template:
+    sciezka: /data-center/import/snapshot/wzor.xlsx
+    widok: ui.views.imports_excel.warehouse_snapshot_template
     straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    wymaga_obiektu: true
-    GET: 405
-  ui:warehouse_variant_from_model:
-    sciezka: /magazyn/warianty/z-modelu/
-    widok: wh3d.views.warehouse_variants.warehouse_variant_from_model
-    straznik: roles
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Master Data]
-    GET: 405
-  ui:warehouse_variant_import:
-    sciezka: /magazyn/warianty/import/
-    widok: wh3d.views.warehouse_variants.warehouse_variant_import
+    metody: [GET, POST]
+    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
+      Magazyn: 200, Optymalizacja kartonów: 200}
+    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
+  ui:warehouse_snapshot_upload:
+    sciezka: /data-center/import/snapshot/
+    widok: ui.views.warehouse_imports.warehouse_snapshot_upload
     straznik: roles
     metody: [POST]
     oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: 403, Lider kontroli: 403, Podgląd: 403, Obsługa klienta: 403,
       Magazyn: 403, Optymalizacja kartonów: 403}
     dozwolone: [Administratorzy, Master Data]
     GET: 405
-  ui:warehouse_variant_json:
-    sciezka: /magazyn/warianty/<int:pk>.json
-    widok: wh3d.views.warehouse_variants.warehouse_variant_json
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-    wymaga_obiektu: true
-  ui:warehouse_variants:
-    sciezka: /magazyn/warianty/
-    widok: wh3d.views.warehouse_variants.warehouse_variants
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-  ui:warehouse_where_is:
-    sciezka: /magazyn/where-is/
-    widok: wh3d.views.warehouse_map_core.warehouse_where_is
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
-      Magazyn: 200, Optymalizacja kartonów: 200}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
   ui:wh_readiness_response:
     sciezka: /wh-readiness/<str:token>/
     widok: transport.views.readiness.wh_readiness_response
@@ -3537,156 +2850,3 @@ trasy:
     oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 200,
       Magazyn: 200, Optymalizacja kartonów: 200}
     dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
-  ui:zaria_accept_privacy:
-    sciezka: /zaria/c/<int:pk>/privacy-accept/
-    widok: zaria.zaria_accept_privacy
-    straznik: module
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: ok, Kontrola HU: ok, Lider kontroli: ok, Podgląd: ok, Obsługa klienta: 403, Magazyn: ok,
-      Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    wymaga_obiektu: true
-    GET: 405
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_api_chat:
-    sciezka: /api/chat
-    widok: ui.views.zaria_export.api_chat
-    straznik: none
-    metody: [POST]
-    oczekiwane: {anon: 401, domyslnie: ok}
-    GET: 405
-    uwaga: anon → 401 JSON; zalogowany → wg budżetu/modelu ZARIA
-  ui:zaria_compare_pick:
-    sciezka: /zaria/c/<int:pk>/compare/pick/
-    widok: zaria.zaria_compare_pick
-    straznik: module
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: ok, Kontrola HU: ok, Lider kontroli: ok, Podgląd: ok, Obsługa klienta: 403, Magazyn: ok,
-      Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    wymaga_obiektu: true
-    GET: 405
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_compare_start:
-    sciezka: /zaria/c/<int:pk>/compare/start/
-    widok: zaria.zaria_compare_start
-    straznik: module
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: ok, Kontrola HU: ok, Lider kontroli: ok, Podgląd: ok, Obsługa klienta: 403, Magazyn: ok,
-      Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    wymaga_obiektu: true
-    GET: 405
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_compare_stream:
-    sciezka: /zaria/c/<int:pk>/compare/stream/
-    widok: zaria.zaria_compare_stream
-    straznik: module
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: ok, Kontrola HU: ok, Lider kontroli: ok, Podgląd: ok, Obsługa klienta: 403, Magazyn: ok,
-      Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    wymaga_obiektu: true
-    GET: 405
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_conv_action:
-    sciezka: /zaria/c/<int:pk>/action/
-    widok: zaria.zaria_conv_action
-    straznik: module
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: ok, Kontrola HU: ok, Lider kontroli: ok, Podgląd: ok, Obsługa klienta: 403, Magazyn: ok,
-      Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    wymaga_obiektu: true
-    GET: 405
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_conversation:
-    sciezka: /zaria/c/<int:pk>/
-    widok: zaria.zaria_conversation
-    straznik: module
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 403,
-      Magazyn: 200, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    wymaga_obiektu: true
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_export:
-    sciezka: /zaria/c/<int:pk>/export/<str:fmt>/
-    widok: zaria.zaria_export
-    straznik: module
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 403,
-      Magazyn: 200, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    wymaga_obiektu: true
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_home:
-    sciezka: /zaria/
-    widok: zaria.zaria_home
-    straznik: module
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 403,
-      Magazyn: 200, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_mail:
-    sciezka: /zaria/c/<int:pk>/mail/
-    widok: zaria.zaria_mail
-    straznik: module
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 403,
-      Magazyn: 200, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    wymaga_obiektu: true
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_msg_xlsx:
-    sciezka: /zaria/m/<int:msg_id>/xlsx/
-    widok: zaria.zaria_msg_xlsx
-    straznik: module
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 403,
-      Magazyn: 200, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    wymaga_obiektu: true
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_new_conversation:
-    sciezka: /zaria/c/new/
-    widok: zaria.zaria_new_conversation
-    straznik: module
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: ok, Kontrola HU: ok, Lider kontroli: ok, Podgląd: ok, Obsługa klienta: 403, Magazyn: ok,
-      Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    GET: 405
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_send_message:
-    sciezka: /zaria/c/<int:pk>/send/
-    widok: zaria.zaria_send_message
-    straznik: module
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: ok, Kontrola HU: ok, Lider kontroli: ok, Podgląd: ok, Obsługa klienta: 403, Magazyn: ok,
-      Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    wymaga_obiektu: true
-    GET: 405
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_send_stream:
-    sciezka: /zaria/c/<int:pk>/stream/
-    widok: zaria.zaria_send_stream
-    straznik: module
-    metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: ok, Kontrola HU: ok, Lider kontroli: ok, Podgląd: ok, Obsługa klienta: 403, Magazyn: ok,
-      Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    wymaga_obiektu: true
-    GET: 405
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)
-  ui:zaria_user_panel:
-    sciezka: /zaria/panel/
-    widok: zaria.zaria_user_panel
-    straznik: module
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 200, Transport: 200, Kontrola HU: 200, Lider kontroli: 200, Podgląd: 200, Obsługa klienta: 403,
-      Magazyn: 200, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Podgląd, Transport]
-    uwaga: moduł huba „zaria” (+ nadpisania UserModuleAccess)

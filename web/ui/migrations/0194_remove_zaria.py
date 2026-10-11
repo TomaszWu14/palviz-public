@@ -2,6 +2,7 @@
 # zadań „Budżet ZARIA". Same DeleteModel (dzieci przed rodzicami) — autodetektor
 # generował RemoveField przed AlterUniqueTogether, co na SQLite wywraca remake tabeli.
 
+# contract: moduł ZARIA usunięty w tym samym PR (kod nie czyta tabel)
 from django.db import migrations, models
 
 

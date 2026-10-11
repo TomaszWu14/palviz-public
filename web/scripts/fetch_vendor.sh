@@ -22,15 +22,10 @@ fi
 SUMS='
 ca330dc6b8e6a0a88a0b707e40a5191110c3e86842c7c6431a7a7a2e972f08f5  three.module.js
 f260591ef315aa04888152e7f121865214e33fb54727145cf4e4445058db1297  addons/controls/OrbitControls.js
-cd65af67fff656b8ef464e125931ba1094f1acf3b8fd5db2face914a8f5b7599  addons/controls/TransformControls.js
-e21f41b7ef2016f2984a5d27850b42dffa797a6a194a138e288b06576d765a7b  addons/environments/RoomEnvironment.js
 e85a5018a689867ae6ee60211956fa59ec5260d70d2cb58316f1ddc4afae637c  addons/loaders/GLTFLoader.js
 b0c64fe6f3b9907262921b73fafc4ade874c07ba6b4876e164c87a830c2c2113  addons/utils/BufferGeometryUtils.js
 9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2  three.r128.min.js
 02bb4ade710f3e607329e37a21f098bc3ac70eb6e33daf8a65e79f4db785e7b2  OrbitControls.r128.js
-9014598e9a20a1657473b6c74afae6ea8f9bbe7ce20b661647d8e07f076e5965  three-mesh-bvh.module.js
-17a2a272ed499d7879f84015702e26257746c29635ec5127886bc8d814d881f8  camera-controls.module.js
-ff934a599715bfb72534dda8aea206bf23630b56a49e1aa0d9ad0ab5dfeab985  lil-gui.module.js
 449317ade7881e949510db614991e195c3a099c4c791c24dacec55f9f4a2a452  htmx.min.js
 57b37d7cae9a27d965fdae4adcc844245dfdc407e655aee85dcfff3a08036a3f  alpine.min.js
 '
@@ -63,10 +58,6 @@ echo "Vendoring front-end libraries into $DIR"
 # three.js — ESM (importmap) + its addons used across the 3D pages
 fetch "https://cdn.jsdelivr.net/npm/three@${TJS}/build/three.module.js"                          "three.module.js"
 fetch "https://cdn.jsdelivr.net/npm/three@${TJS}/examples/jsm/controls/OrbitControls.js"         "addons/controls/OrbitControls.js"
-fetch "https://cdn.jsdelivr.net/npm/three@${TJS}/examples/jsm/controls/TransformControls.js"     "addons/controls/TransformControls.js"
-# RoomEnvironment — studyjny IBL (PMREM) dla PBR renderu regałów (warehouse_model/view.html)
-fetch "https://cdn.jsdelivr.net/npm/three@${TJS}/examples/jsm/environments/RoomEnvironment.js"   "addons/environments/RoomEnvironment.js"
-sed -i.bak "s#} from 'three';#} from '../../three.module.js';#" "$DIR/addons/environments/RoomEnvironment.js" && rm -f "$DIR/addons/environments/RoomEnvironment.js.bak"
 fetch "https://cdn.jsdelivr.net/npm/three@${TJS}/examples/jsm/loaders/GLTFLoader.js"           "addons/loaders/GLTFLoader.js"
 fetch "https://cdn.jsdelivr.net/npm/three@${TJS}/examples/jsm/utils/BufferGeometryUtils.js"     "addons/utils/BufferGeometryUtils.js"
 # Stare przegladarki na skanerach (MC330L, Android 8.1) nie wspieraja <script type=importmap>
@@ -77,13 +68,6 @@ sed -i.bak "s#} from 'three';#} from '../../three.module.js';#" "$DIR/addons/uti
 # three.js r128 — UMD globals (carton designer & artwork box)
 fetch "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"                            "three.r128.min.js"
 fetch "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"         "OrbitControls.r128.js"
-# three.js add-on libraries (ESM, resolved via the importmap)
-#   three-mesh-bvh  — accelerated raycasting for the big InstancedMesh warehouse viewer
-#   camera-controls — smooth dolly-to-cursor orbit + animated camera presets (3D editor)
-#   lil-gui         — live calibration panel (aisle pitch, label height, split gap)
-fetch "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.7.6/build/index.module.js"                  "three-mesh-bvh.module.js"
-fetch "https://cdn.jsdelivr.net/npm/camera-controls@2.9.0/dist/camera-controls.module.js"        "camera-controls.module.js"
-fetch "https://cdn.jsdelivr.net/npm/lil-gui@0.19.2/dist/lil-gui.esm.js"                           "lil-gui.module.js"
 # htmx
 fetch "https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js"                                       "htmx.min.js"
 # Alpine.js — lightweight reactivity ("sprinkles") that pairs with htmx (UMD global)

@@ -7,8 +7,7 @@ z wartościami wszystkich FileField/ImageField w bazie.
     python manage.py media_orphans            # tylko raport (dry-run)
     python manage.py media_orphans --delete   # usuń osierocone pliki
 
-Pomija pliki młodsze niż 24 h (upload w toku / rekord jeszcze niezapisany)
-oraz katalogi z własną retencją (EXCLUDE_DIRS).
+Pomija pliki młodsze niż 24 h (upload w toku / rekord jeszcze niezapisany).
 """
 import time
 from pathlib import Path
@@ -19,8 +18,6 @@ from django.core.management.base import BaseCommand
 from django.db import models
 
 MIN_AGE_HOURS = 24
-# Pliki tymczasowe z własnym sprzątaniem (wh3d.ewm_tasks_import.purge_stale).
-EXCLUDE_DIRS = ("ewm_tasks",)
 
 
 def referenced_paths():
@@ -47,7 +44,7 @@ def find_orphans(media_root, now=None):
         if not p.is_file():
             continue
         rel = p.relative_to(root).as_posix()
-        if rel.split("/", 1)[0] in EXCLUDE_DIRS or rel in refs:
+        if rel in refs:
             continue
         st = p.stat()
         if st.st_mtime < cutoff:

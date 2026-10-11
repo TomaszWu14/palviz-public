@@ -91,14 +91,6 @@ class PhvRecentNoInnerHtmlTests(SimpleTestCase):   # SEC-006
         self.assertNotIn("innerHTML", block.group(1))
         self.assertIn("textContent", block.group(1))
 
-    def test_editor_2d_tooltip_builds_dom_without_innerhtml(self):
-        tpl = Path(__file__).resolve().parents[2] / "wh3d/templates/ui/warehouse_map/editor.html"
-        src = tpl.read_text(encoding="utf-8")
-        block = re.search(r"function showTooltip\(.*?\n\}\n", src, re.S)
-        self.assertIsNotNone(block, "nie znaleziono showTooltip w edytorze 2D")
-        self.assertNotRegex(block.group(0), r"innerHTML\s*\+?=")
-        self.assertIn("textContent", block.group(0))
-
     def test_carton_form_escapes_location_type_names(self):
         tpl = Path(__file__).resolve().parents[1] / "templates/ui/planner/carton_form.html"
         src = tpl.read_text(encoding="utf-8")

@@ -21,16 +21,12 @@ class SmokeDetailTests(TestCase):
             unit_weight=2.0, pcs_per_carton=10, demand_pcs=500)
         report = m.ErrorReport.objects.create(description="coś nie tak", product_code="P1", instruction=instr)
         loc = m.WarehouseLocationType.objects.create(name="L1", width_cm=80, depth_cm=120, total_height_cm=180)
-        snap = m.WarehouseSnapshot.objects.create(name="Snap")
-        wm = m.WarehouseModel.objects.create(name="WM")
-        m.WarehouseModelRack.objects.create(model=wm, zone="B0", rack_id="01")
         carrier = m.Carrier.objects.create(name="DHL")
         zone = m.CarrierZone.objects.create(carrier=carrier, name="PL")
         m.CarrierRate.objects.create(zone=zone, weight_from_kg=0, price_eur=10)
         ship = m.Shipment.objects.create(name="S1")
         m.ShipmentLine.objects.create(shipment=ship, product=prod, quantity=5)
         rtype = m.WarehouseRackType.objects.create(code="RT", name="Typ")
-        pab = m.PickerActivityBatch.objects.create(name="PA")
         batch = m.Batch.objects.create(name="B1")
         pal = m.Palletization.objects.create(batch=batch, sku="P1", carton_l=40, carton_w=30,
                                              carton_h=20, unit_weight=2.0, pcs_per_carton=10, demand_pcs=500)
@@ -46,15 +42,10 @@ class SmokeDetailTests(TestCase):
             ("ui:planner_report_detail", {"pk": report.pk}),
             ("ui:planner_location_edit", {"pk": loc.pk}),
             ("ui:planner_location_simulate", {"pk": loc.pk}),
-            ("ui:warehouse_model_view", {"pk": wm.pk}),
-            ("ui:warehouse_model_coords", {"pk": wm.pk}),
-            ("ui:warehouse_model_delete", {"pk": wm.pk}),
-            ("ui:warehouse_map_detail", {"pk": snap.pk}),
             ("ui:planner_shipment_detail", {"pk": ship.pk}),
             ("ui:planner_shipment_edit", {"pk": ship.pk}),
             ("ui:planner_carrier_edit", {"pk": carrier.pk}),
             ("ui:planner_carrier_rates", {"pk": carrier.pk}),
-            ("ui:heatmap_detail", {"pk": pab.pk}),
             ("ui:warehouse_rack_type_edit", {"pk": rtype.pk}),
             ("ui:pallet_detail", {"pid": pal.pk}),
             ("ui:pallet_panel", {"pid": pal.pk}),

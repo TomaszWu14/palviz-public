@@ -304,7 +304,7 @@ def admin_role_matrix(request):
         "instructions_write": "Instrukcje paletyzacji — edycja", "reports_manage": "Zgłoszenia — zarządzanie",
         "carriers_write": "Przewoźnicy — edycja", "shipments_write": "Wysyłki — tworzenie",
         "shipments_read": "Wysyłki — podgląd", "stock_write": "Ruchy towarowe — dodawanie",
-        "occupancy_read": "Wypełnienie magazynu — podgląd", "warehouse_model": "Model magazynu 3D/2D",
+        "occupancy_read": "Wypełnienie magazynu — podgląd",
         "excel_templates": "Szablony Excel / import", "calculator": "Kalkulator paletyzacji",
         "user_management": "Zarządzanie użytkownikami",
     }

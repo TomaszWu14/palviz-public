@@ -75,7 +75,7 @@ def admin_position_form(request, pk=None):
 @_md_or_tr
 def admin_import_status(request):
     """BLOK F: panel statusu importów — ostatni przebieg per źródło (ImportRun) +
-    istniejące batche (lokalizacje/snapshot/layout/heatmapa czytane wprost — bez
+    istniejące batche (lokalizacje/snapshot/layout/aktywność pickerów czytane wprost — bez
     dublowania śladu). Wiersz czerwony, gdy import starszy niż próg (default 24 h)."""
     from django.utils import timezone as _tz
     from ..models import (ImportRun, PickerActivityBatch,
@@ -103,7 +103,7 @@ def admin_import_status(request):
     _add("Layout magazynu", lay.uploaded_at if lay else None,
          count=lay.location_count if lay else 0)
     pab = PickerActivityBatch.objects.order_by("-uploaded_at").first()
-    _add("Aktywność pickerów (heatmapa)", pab.uploaded_at if pab else None,
+    _add("Aktywność pickerów", pab.uploaded_at if pab else None,
          count=pab.row_count if pab else 0)
 
     # Pozostałe źródła — ostatni ImportRun per kind.

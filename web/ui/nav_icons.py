@@ -15,7 +15,6 @@ MODULE_ICONS = {
     "data_center": "database",
     "paletyzacja": "layers",
     "transport": "truck",
-    "magazyn": "warehouse",
     "kontrola_hu": "scan-barcode",
     "zadania": "bell",
     "klienci": "users",

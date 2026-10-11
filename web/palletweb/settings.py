@@ -76,11 +76,8 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "axes",
     "django_htmx",
-    "django_filters",
-    "django_tables2",
     "core",   # shared kernel (bez modeli): role, middleware, context processors, hub, health
     "ui",
-    "wh3d",
     "huctl",
     "transport",
 ]
@@ -109,9 +106,6 @@ MIDDLEWARE = [
     # musi je zmienić, zanim wejdzie gdziekolwiek indziej.
     "core.middleware.PasswordChangeRequiredMiddleware",
 ]
-
-# django-tables2: use Bootstrap-free default template that inherits our CSS.
-DJANGO_TABLES2_TEMPLATE = "django_tables2/table.html"
 
 ROOT_URLCONF = "palletweb.urls"
 
