@@ -126,7 +126,7 @@ PROCESS_CHOICES = [(code, f"{code} — {name}") for code, name, _d in PICK_PROCE
 WAREHOUSE_CATEGORIES = [
     ("wydawcze", "Wydawcze"),
     ("zapasowe", "Zapasowe"),
-    ("dlt",      "DLT"),
+    ("zew",      "ZEW"),
     ("wysylka",  "Wysyłka"),
     ("inne",     "Inne"),
 ]
@@ -135,10 +135,10 @@ for _c in ("0050", "0051", "0052", "0070"):
     _CAT_BY_TYPE[_c] = "wydawcze"
 for _c in ("0010", "0011"):
     _CAT_BY_TYPE[_c] = "zapasowe"
-for _c in ("92EX", "92GE", "92GL", "92JU", "92T3", "94GL", "WCEX", "WCGE", "WCGL"):
+for _c in ("71EX", "71PL", "71PA", "71BU", "71T3", "73PA", "WDEX", "WDPL", "WDPA"):
     _CAT_BY_TYPE[_c] = "wysylka"
-# DLT = magazyn zewnętrzny; kody do potwierdzenia (na razie puste → trafiają do „Inne").
-# ponytail: uzupełnić zestaw, gdy znane kody typów DLT.
+# ZEW = magazyn zewnętrzny; kody do potwierdzenia (na razie puste → trafiają do „Inne").
+# ponytail: uzupełnić zestaw, gdy znane kody typów ZEW.
 _DLT_TYPES = set()
 
 # Sentinel do sortowania FEFO: palety bez daty ważności lądują na końcu listy.
@@ -162,23 +162,23 @@ def _stock_status_kind(code):
 
 
 def _wh_category(wt):
-    """Typ magazynu (SAP) → kubeł filtra (Wydawcze/Zapasowe/DLT/Wysyłka/Inne)."""
+    """Typ magazynu (SAP) → kubeł filtra (Wydawcze/Zapasowe/ZEW/Wysyłka/Inne)."""
     wt = (wt or "").strip().upper()
     if wt in _DLT_TYPES:
-        return "dlt"
+        return "zew"
     return _CAT_BY_TYPE.get(wt, "inne")
 
 
 def _wh_bucket(wt, location):
     """(kod_grupy, kategoria) dla wiersza stocku. Typ 9010 rozdziela się po LOKALIZACJI:
-    9010 z lokalizacją zawierającą „DLT" → magazyn zewnętrzny DLT; pozostałe 9010 →
+    9010 z lokalizacją zawierającą „ZEW" → magazyn zewnętrzny ZEW; pozostałe 9010 →
     GR-Zone (strefa przyjęć) → Inne. Reszta typów: kubeł wg samego kodu."""
     wt = (wt or "").strip().upper()
     if wt == "9010":
-        # „DLT" jako CAŁY segment kodu (word-boundary), nie luźny substring — inaczej
-        # „SPLIT…"/„LITER…" wpadłyby do DLT. Łapie „DLT", „DLT-01", „05.DLT" itp.
-        if re.search(r"\bDLT\b", (location or "").upper()):
-            return ("9010 (DLT)", "dlt")
+        # „ZEW" jako CAŁY segment kodu (word-boundary), nie luźny substring — inaczej
+        # „SPLIT…"/„LITER…" wpadłyby do ZEW. Łapie „ZEW", „ZEW-01", „05.ZEW" itp.
+        if re.search(r"\bZEW\b", (location or "").upper()):
+            return ("9010 (ZEW)", "zew")
         return ("9010 (GR-Zone)", "inne")
     return (wt, _wh_category(wt))
 
@@ -240,7 +240,7 @@ def _process_rows(hus, qty_by_loc):
 
 
 def _bucket_hus(hus):
-    """Kubły stocku (poza procesami pickingowymi); 9010 rozdzielone: DLT vs GR-Zone (po lokalizacji)."""
+    """Kubły stocku (poza procesami pickingowymi); 9010 rozdzielone: ZEW vs GR-Zone (po lokalizacji)."""
     known = {c for c, _n, _d in PICK_PROCESSES}
     by_bucket = {}
     for hu in hus.values():

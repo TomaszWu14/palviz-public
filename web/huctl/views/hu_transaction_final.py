@@ -11,7 +11,7 @@ from django.urls import reverse
 from ui.hu_metrics import hu_metrics
 from .hu_helpers import _ensure_started  # noqa: F401
 from .hu_count import _alt_conv, _annotate_picked_units, _count_tiles, _prefetch_instructions, _unit_factors  # noqa: F401
-from .hu_helpers import _call_queue, _is_gls, _log_status, _maybe_escalate_recheck, _notify_groups, _raise_corrective_tasks, _reserve, _type_controlled, _valid_photo, _zone_ok  # noqa: F401
+from .hu_helpers import _call_queue, _is_parcel, _log_status, _maybe_escalate_recheck, _notify_groups, _raise_corrective_tasks, _reserve, _type_controlled, _valid_photo, _zone_ok  # noqa: F401
 from .hu_quality import _notify_recheck  # noqa: F401
 from .hu_queue import _recipient_siblings  # noqa: F401
 
@@ -159,17 +159,17 @@ def hu_control_finalize(request, pk):
                                 f"jakościowe ({open_q}).")
         return redirect("ui:hu_control_detail", pk=pk)
 
-    # Strefa GLS: księgowanie wymaga rozliczenia konsolidacji (kartony → paczki) —
+    # Strefa PACZKI: księgowanie wymaga rozliczenia konsolidacji (kartony → paczki) —
     # zasila raport wydajności lidera. Bramka PRZED mutacjami pozycji (jak pozostałe).
-    gls_cartons = gls_parcels = None
-    if _is_gls(hu):
+    pack_cartons = pack_parcels = None
+    if _is_parcel(hu):
         try:
-            gls_cartons = int(request.POST.get("gls_cartons", ""))
-            gls_parcels = int(request.POST.get("gls_parcels", ""))
+            pack_cartons = int(request.POST.get("pack_cartons", ""))
+            pack_parcels = int(request.POST.get("pack_parcels", ""))
         except (TypeError, ValueError):
-            gls_cartons = gls_parcels = None
-        if not gls_cartons or not gls_parcels or gls_cartons < 1 or gls_parcels < 1:
-            messages.error(request, "Nie zaksięgowano — strefa GLS wymaga podania liczby "
+            pack_cartons = pack_parcels = None
+        if not pack_cartons or not pack_parcels or pack_cartons < 1 or pack_parcels < 1:
+            messages.error(request, "Nie zaksięgowano — strefa PACZKI wymaga podania liczby "
                                     "kartonów w przygotowaniu i zrobionych paczek.")
             return redirect("ui:hu_control_detail", pk=pk)
 
@@ -202,12 +202,12 @@ def hu_control_finalize(request, pk):
         # Live readiness: if this scan completed the last pallet, alert the planners once.
         from ui.notifications import notify_shipment_ready
         transaction.on_commit(lambda: notify_shipment_ready(hu.shipment))
-    if gls_cartons and gls_parcels:
-        from ui.models import GlsPackingEntry
+    if pack_cartons and pack_parcels:
+        from ui.models import ParcelPackingEntry
         vol = hu_metrics([hu]).get(hu.pk, {}).get("volume_m3")
-        GlsPackingEntry.objects.update_or_create(
-            hu=hu, defaults={"controller": request.user, "cartons": gls_cartons,
-                             "parcels": gls_parcels, "volume_m3": vol})
+        ParcelPackingEntry.objects.update_or_create(
+            hu=hu, defaults={"controller": request.user, "cartons": pack_cartons,
+                             "parcels": pack_parcels, "volume_m3": vol})
     messages.success(request, msg)
     return redirect("ui:hu_control_menu")
 

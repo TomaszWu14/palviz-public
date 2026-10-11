@@ -92,12 +92,12 @@ class QuoteRecipientTests(TestCase):
         self.assertEqual(heights, [160, 240])
 
     def test_list_search_filter(self):
-        Shipment.objects.create(name="PHARMO PL", recipient_name="PHARMO")
+        Shipment.objects.create(name="DOMEX PL", recipient_name="DOMEX")
         Shipment.objects.create(name="INNY", recipient_name="Acme")
-        resp = self.client.get(reverse("ui:planner_shipments"), {"q": "pharmo"})
+        resp = self.client.get(reverse("ui:planner_shipments"), {"q": "domex"})
         self.assertEqual(resp.status_code, 200)
         names = [s.name for s in resp.context["page_obj"]]
-        self.assertIn("PHARMO PL", names)
+        self.assertIn("DOMEX PL", names)
         self.assertNotIn("INNY", names)
 
     def test_detail_links_to_quote_screen(self):

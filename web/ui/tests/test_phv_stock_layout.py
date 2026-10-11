@@ -17,7 +17,7 @@ def _wh():
 
 
 def _product(code="R90"):
-    p = Product.objects.create(code=code, name="Rękawice", unit_length_cm=21,
+    p = Product.objects.create(code=code, name="Talerze", unit_length_cm=21,
                                unit_width_cm=12, unit_height_cm=5.5)
     PalletizationInstruction.objects.create(
         product=p, name="v1", is_active=True, version=1, unit_weight=0.4,

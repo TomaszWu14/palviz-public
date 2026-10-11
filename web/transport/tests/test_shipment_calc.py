@@ -140,8 +140,8 @@ class ShipmentFileImportTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = _user_all_roles()
-        Product.objects.create(code="DMOM10001", name="Rękawice M")
-        Product.objects.create(code="DMOL10001", name="Rękawice L")
+        Product.objects.create(code="DMOM10001", name="Talerze M")
+        Product.objects.create(code="DMOL10001", name="Talerze L")
 
     def setUp(self):
         self.client.force_login(self.user)
@@ -154,17 +154,17 @@ class ShipmentFileImportTests(TestCase):
     def test_groups_rows_by_document_into_shipments(self):
         body = (
             "Dokument;Produkt;Ilość;JS\n"
-            "81789764;DMOM10001;200;OP\n"
-            "81789764;DMOL10001;100;OP\n"
-            "81789765;DMOM10001;50;KAR\n"
+            "80009764;DMOM10001;200;OP\n"
+            "80009764;DMOL10001;100;OP\n"
+            "80009765;DMOM10001;50;KAR\n"
         )
         resp = self._import(body)
         self.assertEqual(resp.status_code, 302)
-        s1 = Shipment.objects.get(name="Dostawa 81789764")
+        s1 = Shipment.objects.get(name="Dostawa 80009764")
         self.assertEqual(s1.lines.count(), 2)
         line = s1.lines.get(product__code="DMOM10001")
         self.assertEqual((line.quantity, line.unit), (200.0, "szt"))   # OP → szt
-        s2 = Shipment.objects.get(name="Dostawa 81789765")
+        s2 = Shipment.objects.get(name="Dostawa 80009765")
         self.assertEqual(s2.lines.get().unit, "kar")                   # KAR → kar
 
     _HDR = ("Dokument;Produkt;Ilość;JS;Odbiorca materiałów;Opis odbiorcy materiałów;"
@@ -187,17 +187,17 @@ class ShipmentFileImportTests(TestCase):
         self.assertEqual(sh.lines.get().unit, "szt")            # SZT → szt
 
     def test_captures_client_requirements(self):
-        body = self._HDR + "81785384;DMOM10001;2500;SZT;21131719;MSF SUPPLY ASBL;Neder;1120;Paleta EURO\n"
+        body = self._HDR + "80005384;DMOM10001;2500;SZT;21131719;MSF SUPPLY ASBL;Neder;1120;Paleta EURO\n"
         self._import(body)
-        sh = Shipment.objects.get(name="Dostawa 81785384")
+        sh = Shipment.objects.get(name="Dostawa 80005384")
         self.assertEqual(sh.client_requirements, "Paleta EURO")
         self.assertEqual(sh.recipient_name, "MSF SUPPLY ASBL")
 
     def test_consolidate_merges_same_recipient(self):
         # Two documents → same recipient (21131719). With consolidation = ONE shipment.
         body = (self._HDR +
-                "81785384;DMOM10001;2500;SZT;21131719;MSF SUPPLY ASBL;Neder;1120;Paleta EURO\n"
-                "81785385;DMOL10001;5525;SZT;21131719;MSF SUPPLY ASBL;Neder;1120;Paleta EURO\n")
+                "80005384;DMOM10001;2500;SZT;21131719;MSF SUPPLY ASBL;Neder;1120;Paleta EURO\n"
+                "80005385;DMOL10001;5525;SZT;21131719;MSF SUPPLY ASBL;Neder;1120;Paleta EURO\n")
         f = SimpleUploadedFile("d.csv", body.encode("utf-8"), content_type="text/csv")
         self.client.post(reverse("ui:planner_shipments_import"), {"file": f, "consolidate": "1"})
         cons = Shipment.objects.filter(name__startswith="Konsolidacja")
@@ -205,13 +205,13 @@ class ShipmentFileImportTests(TestCase):
         sh = cons.get()
         self.assertEqual(sh.lines.count(), 2)                       # both products, one shipment
         self.assertEqual(sh.client_requirements, "Paleta EURO")
-        self.assertIn("81785384", sh.notes)
-        self.assertIn("81785385", sh.notes)
+        self.assertIn("80005384", sh.notes)
+        self.assertIn("80005385", sh.notes)
 
     def test_without_consolidate_keeps_separate(self):
         body = (self._HDR +
-                "81785384;DMOM10001;2500;SZT;21131719;MSF SUPPLY ASBL;Neder;1120;Paleta EURO\n"
-                "81785385;DMOL10001;5525;SZT;21131719;MSF SUPPLY ASBL;Neder;1120;Paleta EURO\n")
+                "80005384;DMOM10001;2500;SZT;21131719;MSF SUPPLY ASBL;Neder;1120;Paleta EURO\n"
+                "80005385;DMOL10001;5525;SZT;21131719;MSF SUPPLY ASBL;Neder;1120;Paleta EURO\n")
         self._import(body)                                          # no consolidate
         self.assertEqual(Shipment.objects.filter(name__startswith="Dostawa").count(), 2)
 
@@ -232,12 +232,12 @@ class ShipmentFileImportTests(TestCase):
     def test_author_and_email_captured_from_trailing_columns(self):
         body = (
             "Dokument;Produkt;Ilość;Jednostka miary;Autor;Mail\n"
-            "81789764;DMOM10001;200;OP;Jan Kowalski;jan@firma.pl\n"
-            "81789764;DMOL10001;100;OP;Jan Kowalski;jan@firma.pl\n"
+            "80009764;DMOM10001;200;OP;Jan Kowalski;jan@firma.pl\n"
+            "80009764;DMOL10001;100;OP;Jan Kowalski;jan@firma.pl\n"
         )
         resp = self._import(body)
         self.assertEqual(resp.status_code, 302)
-        s = Shipment.objects.get(name="Dostawa 81789764")
+        s = Shipment.objects.get(name="Dostawa 80009764")
         self.assertEqual(s.author, "Jan Kowalski")
         self.assertEqual(s.author_email, "jan@firma.pl")
         self.assertEqual(s.lines.get(product__code="DMOM10001").source_unit, "OP")
@@ -245,12 +245,12 @@ class ShipmentFileImportTests(TestCase):
     def test_destination_and_maps_url_from_file(self):
         body = (
             "Dokument;Produkt;Ilość;Jednostka miary;Opis odbiorcy materiałów;Miejscowość;Kod pocztowy\n"
-            "81782091;DMOM10001;50;SZT;PHARMO DEMO SRL;VALDEMO;25020\n"
+            "80002091;DMOM10001;50;SZT;DOMEX DEMO SRL;VALDEMO;25020\n"
         )
         resp = self._import(body)
         self.assertEqual(resp.status_code, 302)
-        s = Shipment.objects.get(name="Dostawa 81782091")
-        self.assertEqual(s.recipient_name, "PHARMO DEMO SRL")
+        s = Shipment.objects.get(name="Dostawa 80002091")
+        self.assertEqual(s.recipient_name, "DOMEX DEMO SRL")
         self.assertEqual(s.destination_city, "VALDEMO")
         self.assertEqual(s.destination_postal, "25020")
         self.assertIn("google.com/maps", s.google_maps_url())
@@ -260,21 +260,21 @@ class ShipmentFileImportTests(TestCase):
         from ui.models import Customer
         body = (
             "Dokument;Produkt;Ilość;JS;Odbiorca materiałów;Nazwa odbiorcy\n"
-            "81782091;DMOM10001;50;OP;100123;PHARMO DEMO SRL\n"
+            "80002091;DMOM10001;50;OP;100123;DOMEX DEMO SRL\n"
         )
         resp = self._import(body)
         self.assertEqual(resp.status_code, 302)
-        s = Shipment.objects.get(name="Dostawa 81782091")
+        s = Shipment.objects.get(name="Dostawa 80002091")
         self.assertIsNotNone(s.customer)
         self.assertEqual(s.customer.code, "100123")
-        self.assertEqual(s.customer.name, "PHARMO DEMO SRL")
+        self.assertEqual(s.customer.name, "DOMEX DEMO SRL")
         self.assertEqual(s.customer.kind, "consignee")
-        self.assertEqual(s.recipient_name, "PHARMO DEMO SRL")
+        self.assertEqual(s.recipient_name, "DOMEX DEMO SRL")
         # re-importing the same recipient number links to the same customer (no duplicate)
-        Shipment.objects.filter(name="Dostawa 81782091").delete()
-        self._import(body.replace("81782091", "81782092"))
+        Shipment.objects.filter(name="Dostawa 80002091").delete()
+        self._import(body.replace("80002091", "80002092"))
         self.assertEqual(Customer.objects.filter(code="100123").count(), 1)
-        s2 = Shipment.objects.get(name="Dostawa 81782092")
+        s2 = Shipment.objects.get(name="Dostawa 80002092")
         self.assertEqual(s2.customer.code, "100123")
 
     def test_recipient_number_only_does_not_become_name(self):
@@ -282,9 +282,9 @@ class ShipmentFileImportTests(TestCase):
         # Only the number column present → recipient_name must not be the bare number,
         # and the seeded consignee falls back to the code as a placeholder name.
         body = ("Dokument;Produkt;Ilość;JS;Odbiorca materiałów\n"
-                "81789764;DMOM10001;10;OP;100777\n")
+                "80009764;DMOM10001;10;OP;100777\n")
         self._import(body)
-        s = Shipment.objects.get(name="Dostawa 81789764")
+        s = Shipment.objects.get(name="Dostawa 80009764")
         self.assertEqual(s.recipient_name, "")          # not "100777"
         self.assertEqual(s.customer.code, "100777")
         self.assertTrue(Customer.objects.filter(code="100777").exists())
@@ -294,20 +294,20 @@ class ShipmentFileImportTests(TestCase):
         # A name accidentally landing in the number column (has spaces) must not seed a
         # junk customer keyed by the name.
         body = ("Dokument;Produkt;Ilość;JS;Odbiorca materiałów\n"
-                "81789764;DMOM10001;10;OP;PHARMO DEMO SRL\n")
+                "80009764;DMOM10001;10;OP;DOMEX DEMO SRL\n")
         self._import(body)
-        s = Shipment.objects.get(name="Dostawa 81789764")
+        s = Shipment.objects.get(name="Dostawa 80009764")
         self.assertIsNone(s.customer)
-        self.assertEqual(s.recipient_name, "PHARMO DEMO SRL")
-        self.assertFalse(Customer.objects.filter(code="PHARMO DEMO SRL").exists())
+        self.assertEqual(s.recipient_name, "DOMEX DEMO SRL")
+        self.assertFalse(Customer.objects.filter(code="DOMEX DEMO SRL").exists())
 
     def test_recipient_number_links_existing_customer(self):
         from ui.models import Customer
         existing = Customer.objects.create(code="555", name="ACME", kind="customer")
         body = ("Dokument;Produkt;Ilość;JS;Odbiorca materiałów\n"
-                "81789764;DMOM10001;10;OP;555\n")
+                "80009764;DMOM10001;10;OP;555\n")
         self._import(body)
-        s = Shipment.objects.get(name="Dostawa 81789764")
+        s = Shipment.objects.get(name="Dostawa 80009764")
         self.assertEqual(s.customer_id, existing.id)
         self.assertEqual(Customer.objects.filter(code="555").count(), 1)
 
@@ -315,12 +315,12 @@ class ShipmentFileImportTests(TestCase):
         # Same product twice in one document must not hit the unique constraint.
         body = (
             "Dokument;Produkt;Ilość;JS\n"
-            "81789764;DMOM10001;200;OP\n"
-            "81789764;DMOM10001;50;OP\n"
+            "80009764;DMOM10001;200;OP\n"
+            "80009764;DMOM10001;50;OP\n"
         )
         resp = self._import(body)
         self.assertEqual(resp.status_code, 302)
-        s = Shipment.objects.get(name="Dostawa 81789764")
+        s = Shipment.objects.get(name="Dostawa 80009764")
         self.assertEqual(s.lines.count(), 1)
         self.assertEqual(s.lines.get().quantity, 250.0)        # 200 + 50
 

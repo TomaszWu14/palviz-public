@@ -46,12 +46,12 @@ ROUTES = {
     "teams": (r"teams\.example\.test", Reply(status=202, body=b"")),
     "n8n": (r"n8n\.example\.test", Reply(json={"ok": True})),
     "master_data": (r"master-data\.example\.test", Reply(json={
-        "code": "REF100001", "name": "Rękawice nitrylowe", "ean": "5900000000001",
+        "code": "REF100001", "name": "Talerze ceramiczne", "ean": "5900000000001",
         "supplier_short": "", "unit_length_cm": 24.0, "unit_width_cm": 12.0,
         "unit_height_cm": 6.0, "stackable": True, "is_active": True})),
     "powerbi_dax": (r"api\.powerbi\.com/.+/executeQueries", Reply(json={"results": [{"tables": [{"rows": [
-        {"Stock_oraz_DLT[Materiał]": "REF100001", "Stock_oraz_DLT[Partia]": "LOT0000001",
-         "Stock_oraz_DLT[Ilość]": 120, "Stock_oraz_DLT[Miejsce]": "01-01-01"}]}]}]})),
+        {"Stock_oraz_ZEW[Materiał]": "REF100001", "Stock_oraz_ZEW[Partia]": "LOT0000001",
+         "Stock_oraz_ZEW[Ilość]": 120, "Stock_oraz_ZEW[Miejsce]": "01-01-01"}]}]}]})),
     "oidc_token": (r"sso\.example\.test/.+/token", Reply(json={
         "access_token": "at", "id_token": "it", "token_type": "Bearer", "expires_in": 300})),
     "oidc_userinfo": (r"sso\.example\.test/.+/userinfo", Reply(json={

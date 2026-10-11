@@ -21,7 +21,7 @@ from .packaging import artwork_upload_to  # noqa: F401
 
 # ── Kontrola HU (huctl) — W2: modele przeniesione, re-eksport dla kompatybilności ──
 from huctl.models import (  # noqa: E402,F401
-    ControlledWarehouseType, ControllerZone, EscalationRoute, GlsPackingEntry,
+    ControlledWarehouseType, ControllerZone, EscalationRoute, ParcelPackingEntry,
     HandlingUnit, HandlingUnitItem, HUControlAttempt, HUControlPhoto,
     HUQualityIssue, HUStatusEvent,
 )

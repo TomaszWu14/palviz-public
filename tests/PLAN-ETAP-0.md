@@ -17,7 +17,7 @@ szablony, więc część punktów ma odpowiednik, część nie dotyczy:
 | spółki (IDOR między spółkami) | **brak tenantów** — jedna organizacja | odpowiednik: obiekty per użytkownik (ZARIA prywatne, powiadomienia, wątki, zadania, rezerwacje HU) + warianty `GROOVE_VARIANT` — **P-4** |
 | kontenery, statusy 1–8, pasek postępu | statusy Shipment / kontroli HU / zadań / zgłoszeń | przejścia per rola — etap 2 |
 | ISO 6346 (cyfra kontrolna) | cyfry kontrolne GS1: EAN-13, SSCC (HU), kody lokalizacji EWM | formularz, API, import |
-| magazyny DLT / ACME / bez magazynu | moduł „Wysyłka UKRAINA” (`UKRAINE_WAREHOUSE_ACME/DLT`) + typy magazynu EWM | liczniki zgodne z rekordami |
+| magazyny ZEW / ACME / bez magazynu | moduł „Wysyłka UKRAINA” (`UKRAINE_WAREHOUSE_ACME/ZEW`) + typy magazynu EWM | liczniki zgodne z rekordami |
 | „obserwowane / specjalna troska” | VIP HU, reguły pakowania klient×indeks, pilne komunikaty ack | **P-5** |
 | kalendarz rok→miesiąc→dzień, `/dzis` | brak | pomijamy (albo: kalendarz transportu — P-5) |
 | SafeCube | Power BI (DAX/MSAL), Google Maps, Twilio, SMTP, OIDC, ZARIA LLM (Anthropic/OpenAI/Azure/Ollama), NBP, n8n, Teams, Master Data API | wszystkie mockowane, sieć zablokowana |

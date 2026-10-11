@@ -25,10 +25,10 @@ class PowerBiStockTests(TestCase):
         # (header, rows). Mock it so no network/credentials are needed.
         header = ["jednostka obsługi", "produkt", "ilość", "typ magazynu"]
         rows = [
-            ["HU001", "DMOM10001", "120", "WCGL"],
-            ["HU002", "DMOM10001", "60", "WCGL"],
+            ["HU001", "DMOM10001", "120", "WDPA"],
+            ["HU002", "DMOM10001", "60", "WDPA"],
         ]
-        m.Product.objects.create(code="DMOM10001", name="Rękawice M")
+        m.Product.objects.create(code="DMOM10001", name="Talerze M")
         with mock.patch("ui.powerbi.fetch_table", return_value=(header, rows)):
             r = self.client.post(reverse("ui:planner_stock_powerbi_import"))
         self.assertEqual(r.status_code, 302)
@@ -36,7 +36,7 @@ class PowerBiStockTests(TestCase):
         self.assertTrue(stock.is_stock)
         self.assertEqual(stock.handling_units.count(), 2)
         hu = stock.handling_units.get(code="HU001")
-        self.assertEqual(hu.warehouse_type, "WCGL")
+        self.assertEqual(hu.warehouse_type, "WDPA")
         self.assertEqual(hu.items.count(), 1)
 
     @override_settings(POWERBI_WORKSPACE_ID="w", POWERBI_DATASET_ID="d",

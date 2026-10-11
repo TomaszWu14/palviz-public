@@ -54,7 +54,7 @@ class MapsKeyLeakTests(TestCase):
     def setUpTestData(cls):
         cls.user = _user("tr", GROUP_TRANSPORT)
         cls.sh = Shipment.objects.create(name="Dostawa INT-005", stowage_efficiency_pct=80,
-                                         recipient_name="PHARMO", destination_city="VALDEMO",
+                                         recipient_name="DOMEX", destination_city="VALDEMO",
                                          destination_country="IT")
         p = Product.objects.create(code="RG-50", name="RG")
         PalletizationInstruction.objects.create(

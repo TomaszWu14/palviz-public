@@ -356,7 +356,7 @@
      "length_cm": 120.0,
      "location": "A-01",
      "picker": "jan",
-     "recipient_type": "Szpital",
+     "recipient_type": "Sklep",
      "seq": 1,
      "shipment__is_stock": false,
      "shipment__name": "D-1",

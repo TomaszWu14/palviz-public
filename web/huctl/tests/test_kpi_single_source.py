@@ -27,11 +27,11 @@ class KpiSingleSourceTests(TestCase):
         mk = lambda seq, wt, st, by=None: HandlingUnit.objects.create(
             shipment=self.sh, seq=seq, code=f"H{seq}", warehouse_type=wt, status=st,
             controlled_by=by, control_started_at=now if st == "in_control" else None)
-        mk(1, "92EX", "in_control", self.c1)
-        mk(2, "92EX", "in_control", self.c1)
-        mk(3, "92GE", "in_control", self.c2)
-        mk(4, "92EX", "to_recheck")
-        mk(5, "92EX", "planned")
+        mk(1, "71EX", "in_control", self.c1)
+        mk(2, "71EX", "in_control", self.c1)
+        mk(3, "71PL", "in_control", self.c2)
+        mk(4, "71EX", "to_recheck")
+        mk(5, "71EX", "planned")
         self.client.force_login(self.lead)
 
     def test_controllers_today_counts_holders_without_attempts(self):

@@ -1,4 +1,4 @@
-# Wybór AKTYWNEJ strefy kontroli (EXPORT / BUS+odbiory własne / GLS / GEIS).
+# Wybór AKTYWNEJ strefy kontroli (EXPORT / BUS+odbiory własne / PACZKI / PALETY).
 # Operator z przypisanymi strefami (UserProfile.allowed_sections) pracuje w jednej
 # strefie naraz; przełączenie = powrót na ten ekran (badge w nagłówku skanera).
 
@@ -8,11 +8,11 @@ from ui.theme import WAREHOUSE_THEMES, carrier_for, carrier_zone_filter
 
 # Nazwy stref na kaflach/komunikatach (ustalenia przebudowy 2026-09-01).
 SECTION_TITLES = {"EXPORT": "Eksport", "BUS": "BUS + odbiory własne",
-                  "GLS": "Paczka GLS", "GEIS": "GEIS"}
+                  "PACZKI": "Paczki", "PALETY": "PALETY"}
 
 
 def _active_section(user):
-    """Aktywna strefa kontroli (EXPORT/BUS/GLS/GEIS) użytkownika.
+    """Aktywna strefa kontroli (EXPORT/BUS/PACZKI/PALETY) użytkownika.
 
     None = bez filtra strefowego (lider/admin, superuser albo konto bez przypisanych
     `allowed_sections` — zachowanie sprzed przebudowy). "" = użytkownik MA przypisane

@@ -33,7 +33,7 @@ class OfflineSameGatesTests(TestCase):
         self.client.force_login(self.u)
         self.hu = HandlingUnit.objects.create(shipment=Shipment.objects.create(name="D1"),
                                               seq=1, code="H1", status="in_control",
-                                              controlled_by=self.u, warehouse_type="92EX")
+                                              controlled_by=self.u, warehouse_type="71EX")
         self.item = HandlingUnitItem.objects.create(hu=self.hu, ref_code="A1",
                                                     base_unit="OP", base_qty=5)
 
@@ -128,7 +128,7 @@ class OfflineMarkerTests(TestCase):
         self.u = _user("c1", GROUP_CONTROLLER)
         self.hu = HandlingUnit.objects.create(shipment=Shipment.objects.create(name="D1"),
                                               seq=1, code="H1", status="in_control",
-                                              controlled_by=self.u, warehouse_type="92EX")
+                                              controlled_by=self.u, warehouse_type="71EX")
         self.it_off = HandlingUnitItem.objects.create(hu=self.hu, ref_code="A1",
                                                       base_unit="OP", base_qty=5)
         self.it_on = HandlingUnitItem.objects.create(hu=self.hu, ref_code="A2",

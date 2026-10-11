@@ -11,9 +11,9 @@ class PhvSuggestTests(TestCase):
         self.admin = User.objects.create_superuser("phv_admin", "a@a.pl", "x")
         self.client.force_login(self.admin)
         from ui.models import Product
-        Product.objects.create(code="DMOM10001", name="Rękawice nitrylowe M")
-        Product.objects.create(code="DMOM10002", name="Rękawice nitrylowe L")
-        Product.objects.create(code="ABC-500", name="Kompresy gazowe do ran")
+        Product.objects.create(code="DMOM10001", name="Talerze ceramiczne M")
+        Product.objects.create(code="DMOM10002", name="Talerze ceramiczne L")
+        Product.objects.create(code="ABC-500", name="Kubki gazowe do ran")
         self.url = reverse("ui:phv_suggest")
 
     def _get(self, q):
@@ -37,5 +37,5 @@ class PhvSuggestTests(TestCase):
         self.assertEqual(self._get("ZZZZ"), [])
 
     def test_matches_name_fragment(self):
-        codes = [r["code"] for r in self._get("kompresy")]
+        codes = [r["code"] for r in self._get("kubki")]
         self.assertIn("ABC-500", codes)

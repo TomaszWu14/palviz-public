@@ -28,7 +28,7 @@ class LogisticsLabelTests(TestCase):
                                          destination_country="DE")
         cls.hu = HandlingUnit.objects.create(shipment=cls.sh, seq=1, code="HUE1",
                                              status="ok", verified_at=timezone.now())
-        HandlingUnitItem.objects.create(hu=cls.hu, ref_code="ZR-100", description="Kompresy",
+        HandlingUnitItem.objects.create(hu=cls.hu, ref_code="ZR-100", description="Kubki",
                                         base_qty=1200, base_unit="OP", alt_qty=24,
                                         alt_unit="KAR", lot="L123")
 

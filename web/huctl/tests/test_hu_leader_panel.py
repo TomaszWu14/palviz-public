@@ -95,7 +95,7 @@ class LeaderShiftRowsSingleSourceTests(TestCase):
         self.ctrl.groups.add(Group.objects.get_or_create(name=GROUP_CONTROLLER)[0])
         sh = Shipment.objects.create(name="D-SS")
         self.hu = HandlingUnit.objects.create(shipment=sh, seq=1, code="HUSS",
-                                              warehouse_type="92EX")
+                                              warehouse_type="71EX")
         self.it = HandlingUnitItem.objects.create(hu=self.hu, ref_code="R1", base_qty=5)
         self.client.force_login(self.lead)
 

@@ -23,7 +23,7 @@ H9 komunikaty błędów · H10 pomoc.
 |---|---|---|---|---|---|---|---|---|---|---|
 | Skaner: base/menu/zone/my_shift/status/find_recipient | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ | OK | OK | OK | ⚠ | ⚠ |
 | Skaner: hu_detail/investigation/recheck/history/quality/photo | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ | OK | ⚠ | ⚠ | OK | OK |
-| Lider: leader/hub/kpi/tv/gls/err_report | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ | ✗ | ⚠ | ⚠ | ⚠ |
+| Lider: leader/hub/kpi/tv/paczki/err_report | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ | ✗ | ⚠ | ⚠ | ⚠ |
 | Rdzeń ui + planner (products/stock/tasks/calc/legacy) | ⚠ | OK | ⚠ | ⚠ | ⚠ | OK | ⚠ | OK | ⚠ | ⚠ |
 | Admin/auth/messaging/ZARIA | ⚠ | ⚠ | ⚠ | ⚠ | ✗ | OK | ⚠ | ⚠ | ⚠ | OK |
 | carton_opt/phv/warehouse/packspec/slotting/ukraine/DC | ⚠ | OK | ⚠ | ⚠ | ⚠ | ⚠ | OK | OK | ⚠ | OK |
@@ -52,7 +52,7 @@ H9 komunikaty błędów · H10 pomoc.
 - `ui/scanner/base.html:472-481` — sync offline: `.catch()` gubi błąd serwera, kolejka wisi bez wyjaśnienia → komunikat „Synchronizacja nieudana — ponowię" [JS]
 - `base.html:304-307` — „Wyloguj" bez confirm przy niepustej kolejce offline → confirm gdy `queue().length>0` [JS]
 - `base.html:393` — `video.play().catch(e){}` — czarny ekran kamery bez komunikatu [JS]
-- `base.html:306` — „Wyloguj" mały cel dotykowy (<44px, rękawice) [szablon]
+- `base.html:306` — „Wyloguj" mały cel dotykowy (<44px, talerze) [szablon]
 - `menu.html:59` — „skaner gotowy" statyczny, nic nie sprawdza → usunąć lub powiązać z focusem [szablon]
 - `menu.html:72` — submit skanu bez blokady double-submit [JS]
 - `menu.html:63` — pole bez label i bez przykładu formatu (find_recipient ma „np. 111835083") [szablon]
@@ -80,7 +80,7 @@ H9 komunikaty błędów · H10 pomoc.
 - `notifications.html:3` — strzałka „←" inline zamiast „‹" z paska; oznaczanie przeczytanych — do sprawdzenia ręcznie [szablon/backend]
 - `photo_check.html:18` — „Prześlij i licz" bez disabled podczas uploadu; `:58` — nieodwoływany `createObjectURL` [JS]
 
-### 3. Panele lidera (leader, hub, kpi, tv, gls_report, hu_error_report, scanner_sim)
+### 3. Panele lidera (leader, hub, kpi, tv, parcel_report, hu_error_report, scanner_sim)
 
 - `leader.html:53-57,126-152,218-231,296-302` — żadna forma POST bez disabled/spinnera (double-submit = 2× wiadomość/potwierdzenie) → wspólny snippet onsubmit [szablon/JS]
 - `leader.html` — brak auto-odświeżania panelu „na żywo" (tv.html ma meta refresh) [szablon]
@@ -92,8 +92,8 @@ H9 komunikaty błędów · H10 pomoc.
 - `hub.html:61-68` — „Odśwież z Power BI" (DAX trwa) bez spinnera [szablon/JS]
 - `hub.html:83-87` — surowy `{{ powerbi_error }}` + instrukcja `manage.py powerbi_diag` dla lidera → skrót + `<details>` [szablon]
 - `hub.html:277-316` — „Zapisz wybór" typów zmienia zakres kontroli zakładu bez confirm [szablon]
-- `kpi.html:53` — nagłówek „wg kontrolera" na sztywno przy `?by=zone`; brak własnego zakresu dat (gls ma od/do) [szablon]
-- `gls_report.html:17-18` — brak walidacji od>do (cichy pusty wynik); `:62` — identyfikator `code|default:seq` zamiast `ref`; `:44` — próg `ratio>=2` niewyjaśniony; brak CSV (KPI ma) [backend/szablon]
+- `kpi.html:53` — nagłówek „wg kontrolera" na sztywno przy `?by=zone`; brak własnego zakresu dat (paczki ma od/do) [szablon]
+- `parcel_report.html:17-18` — brak walidacji od>do (cichy pusty wynik); `:62` — identyfikator `code|default:seq` zamiast `ref`; `:44` — próg `ratio>=2` niewyjaśniony; brak CSV (KPI ma) [backend/szablon]
 - `ui/planner/hu_error_report.html:3,5` — podświetla zakładkę „Wysyłki", breadcrumb nie prowadzi do huba; `:13` — parametry CSV bez `|urlencode`; `hu_reports.py` — brak paginacji raportu [szablon/backend]
 
 ### 4. Rdzeń ui + planner
@@ -177,7 +177,7 @@ H9 komunikaty błędów · H10 pomoc.
 | 5 | **wh3d mapa: spinner + try/catch fetch + guard WebGL** (dziś: czarny ekran bez słowa) | szablon/JS | detail.html, view.html |
 | 6 | `hu_detail`: confirm przy `?full=1` z niezapisanymi ilościami + disabled dla short_dated jak dla reqs | JS/szablon | 1 plik |
 | 7 | Surowe błędy techniczne w UI: `{exc}` SMTP/import, `powerbi_error`+manage.py, `health_detail` ZARIA, axes_lockout ścieżki adminowe → ludzkie komunikaty + szczegóły w `<details>`/logu | backend/szablon | 5 miejsc |
-| 8 | Daty bez `min`: quote_response, client_eta, wh_response (+walidacja od>do w gls_report) | szablon | transport/raporty |
+| 8 | Daty bez `min`: quote_response, client_eta, wh_response (+walidacja od>do w parcel_report) | szablon | transport/raporty |
 | 9 | Typeahead REF wielokrotnego użytku (wzorzec z phv/home) → carton_opt, warehouse/search, leader foto-task, ukraine | JS | 4 ekrany |
 | 10 | Surowe kody w hu_history (`result`, statusy) → etykiety PL; „Hist."→„Historia" z celem ≥44px | szablon | 1 plik |
 

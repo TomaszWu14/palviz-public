@@ -45,7 +45,7 @@ class DesignTokensTests(SimpleTestCase):
         ("--ok-fg", "--ok-bg"), ("--warn-fg", "--warn-bg"),
         ("--danger-fg", "--danger-bg"), ("--info-fg", "--info-bg"),
         ("--neutral-fg", "--neutral-bg"), ("--hu-control-fg", "--primary-soft"),
-        ("--wh-acme-fg", "--wh-acme-bg"), ("--wh-dlt-fg", "--wh-dlt-bg"),
+        ("--wh-acme-fg", "--wh-acme-bg"), ("--wh-zew-fg", "--wh-zew-bg"),
         ("--wh-other-fg", "--wh-other-bg"), ("--violet-fg", "--violet-bg"),
     ]
     SOLIDS = ["--primary", "--ok-solid", "--warn-solid", "--danger-solid", "--info-solid"]

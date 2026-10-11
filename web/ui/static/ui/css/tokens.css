@@ -49,9 +49,9 @@
   --hu-recheck-bg: var(--warn-bg);    --hu-recheck-fg: var(--warn-fg);
   --hu-escaped-bg: var(--danger-bg);  --hu-escaped-fg: var(--danger-fg);
 
-  /* Magazyny (Wysyłka UKRAINA): ACME / DLT / inny — ten sam kolor wszędzie */
+  /* Magazyny (Wysyłka UKRAINA): ACME / ZEW / inny — ten sam kolor wszędzie */
   --wh-acme: #0f766e; --wh-acme-bg: #0b2f2c; --wh-acme-fg: #5eead4;
-  --wh-dlt: #6d28d9;   --wh-dlt-bg: #231544;   --wh-dlt-fg: #c4b5fd;
+  --wh-zew: #6d28d9;   --wh-zew-bg: #231544;   --wh-zew-fg: #c4b5fd;
   --wh-other: #64748b; --wh-other-bg: #1b2740; --wh-other-fg: #cdd8ec;
 
   /* Kategoria dodatkowa (np. żeton paletyzacji) — fiolet z parą AA */
@@ -77,7 +77,7 @@
   --neutral-bg: #f1f5f9;--neutral-fg: #334155;
   --hu-control-fg: #1e40af;
   --wh-acme-bg: #f0fdfa; --wh-acme-fg: #115e59;
-  --wh-dlt-bg: #f5f3ff;   --wh-dlt-fg: #5b21b6;
+  --wh-zew-bg: #f5f3ff;   --wh-zew-fg: #5b21b6;
   --wh-other-bg: #f1f5f9; --wh-other-fg: #334155;
   --violet-bg: #f5f3ff;   --violet-fg: #5b21b6;
   --shadow-sm: 0 1px 2px rgb(2 6 23 / .06); --shadow: 0 2px 8px rgb(2 6 23 / .08); --shadow-lg: 0 8px 28px rgb(2 6 23 / .12);

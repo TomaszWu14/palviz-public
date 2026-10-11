@@ -61,7 +61,7 @@ class RelogTimingNotSkippedTests(TestCase):
         self.sh = Shipment.objects.create(name="S9")
         self.hu = HandlingUnit.objects.create(shipment=self.sh, seq=1, code="H9",
                                               status="in_control", controlled_by=self.ctrl,
-                                              warehouse_type="92EX")
+                                              warehouse_type="71EX")
         self.i1 = HandlingUnitItem.objects.create(hu=self.hu, ref_code="A1", base_qty=1)
         self.i2 = HandlingUnitItem.objects.create(hu=self.hu, ref_code="A2", base_qty=1)
 

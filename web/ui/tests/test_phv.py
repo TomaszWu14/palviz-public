@@ -43,7 +43,7 @@ class RefSuggestSharedTests(TestCase):
 
 def _product(code="DMOM10001", ppc=10, weight=0.458, cpp=99, layers=9, category=None):
     """Produkt à la DMOM10001: 10 szt/KAR, 99 KAR/PAL (9 warstw) → 990 szt/PAL, 453,4 kg."""
-    p = Product.objects.create(code=code, name="Rękawice nitrylowe", ean="5900000001500",
+    p = Product.objects.create(code=code, name="Talerze ceramiczne", ean="5900000001500",
                                unit_length_cm=21, unit_width_cm=12, unit_height_cm=5.5,
                                category=category)
     PalletizationInstruction.objects.create(
@@ -101,7 +101,7 @@ class SharedServiceNumbers(TestCase):
 
 class CategoryLevels(TestCase):
     def test_category_limits_levels(self):
-        cat = ProductCategory.objects.create(name="Rękawice", code="REK",
+        cat = ProductCategory.objects.create(name="Talerze", code="REK",
                                              hierarchy_levels="pallet,carton,unit")
         h = build_hierarchy(_product("R5", category=cat))
         self.assertEqual([l["key"] for l in h["levels"]], ["pallet", "carton", "unit"])
@@ -172,9 +172,9 @@ class PHVView(TestCase):
         self.assertContains(r, "Master data niekompletna")
 
     def test_product_card_shows_description_not_ref_ean_line(self):
-        p = _product("R30")                                  # name="Rękawice nitrylowe"
+        p = _product("R30")                                  # name="Talerze ceramiczne"
         r = self.client.get(reverse("ui:phv_home"), {"q": p.code})
-        self.assertContains(r, "Rękawice nitrylowe")          # opis materiału widoczny
+        self.assertContains(r, "Talerze ceramiczne")          # opis materiału widoczny
         self.assertNotContains(r, "· EAN:")                  # zdublowana linia REF·EAN usunięta
 
     def test_description_falls_back_to_mara(self):

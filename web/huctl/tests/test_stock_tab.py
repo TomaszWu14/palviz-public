@@ -23,7 +23,7 @@ class StockTabTests(TestCase):
         # REF chosen so it is NOT part of the search-box placeholder text.
         hu = m.HandlingUnit.objects.create(shipment=self.stock, seq=1, code="HU001",
                                             location="RACK-77-A", warehouse_type="PA", status="to_recheck")
-        m.HandlingUnitItem.objects.create(hu=hu, ref_code="MYREF777", description="Rękawice",
+        m.HandlingUnitItem.objects.create(hu=hu, ref_code="MYREF777", description="Talerze",
                                           lot="L1", base_qty=10, base_unit="szt")
         # An item on a transport shipment must NOT appear in the stock contents.
         other = m.HandlingUnit.objects.create(shipment=self.transport, seq=1, code="HU999")

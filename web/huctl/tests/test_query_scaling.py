@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from huctl.models import GlsPackingEntry, HUControlAttempt, HUErrorInvestigation
+from huctl.models import ParcelPackingEntry, HUControlAttempt, HUErrorInvestigation
 from testkit import factories as f
 from testkit.queries import QueryScalingMixin
 from ui.roles import GROUP_CONTROLLER, GROUP_LEADER
@@ -78,7 +78,7 @@ class LeaderPanelQueryScalingTests(_HUScreens):
 
 class HUReportsQueryScalingTests(_HUScreens):
     """Raporty HU (huctl/views/hu_reports.py): raport błędów, status stref, lista rekontroli,
-    KPI kontrolerów (per kontroler i per strefa) i raport konsolidacji GLS."""
+    KPI kontrolerów (per kontroler i per strefa) i raport konsolidacji PACZKI."""
 
     def _grow_errors(self, n):
         for _ in range(n):
@@ -129,13 +129,13 @@ class HUReportsQueryScalingTests(_HUScreens):
                                             params={"by": "zone"})
         self.assertEqual(len(resp.context["rows"]), 8)
 
-    def _grow_gls(self, n):
+    def _grow_parcel(self, n):
         for _ in range(n):
             ctrl = self._controller()
-            GlsPackingEntry.objects.create(hu=self._hu(status="in_control"), controller=ctrl,
+            ParcelPackingEntry.objects.create(hu=self._hu(status="in_control"), controller=ctrl,
                                            cartons=12, parcels=4, volume_m3=0.8)
 
-    def test_gls_packing_report(self):
-        _, _, resp = self.assertQueriesFlat(reverse("ui:gls_packing_report"), self._grow_gls)
+    def test_parcel_packing_report(self):
+        _, _, resp = self.assertQueriesFlat(reverse("ui:parcel_packing_report"), self._grow_parcel)
         self.assertEqual(len(resp.context["rows"]), 8)
         self.assertEqual(len(resp.context["recent"]), 8)

@@ -58,7 +58,7 @@ def hu_my_shift(request):
               .filter(controller=request.user, ended_at__isnull=True)
               .select_related("hu", "confirmed_by").first())
     sec = _active_section(request.user)
-    theme = theme_for_carrier(sec) or WAREHOUSE_THEMES["GEIS"]
+    theme = theme_for_carrier(sec) or WAREHOUSE_THEMES["PALETY"]
     return render(request, "ui/scanner/my_shift.html", {
         "mine": mine, "my_inv": my_inv, "queue_count": len(takeable), "next_hu": nxt,
         "next_badge": nxt_badge, "section": sec,

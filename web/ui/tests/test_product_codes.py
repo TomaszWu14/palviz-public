@@ -30,7 +30,7 @@ class NormalizeCodeTests(TestCase):
 
 class ResolveProductCodeTests(TestCase):
     def setUp(self):
-        self.p = Product.objects.create(code="MDOM10001", name="Kompresy")
+        self.p = Product.objects.create(code="MDOM10001", name="Kubki")
 
     def test_exact_code(self):
         self.assertEqual(resolve_product_code("MDOM10001"), self.p)
@@ -40,7 +40,7 @@ class ResolveProductCodeTests(TestCase):
         self.assertEqual(resolve_product_code("mdom10001_b1"), self.p)
 
     def test_vendor_prefix_resolves(self):
-        dmo = Product.objects.create(code="DMO", name="Rękawice")
+        dmo = Product.objects.create(code="DMO", name="Talerze")
         self.assertEqual(resolve_product_code("nieat-dmo"), dmo)
 
     def test_alias_table_for_real_rename(self):

@@ -2,9 +2,9 @@
 
 Kontynuacja `hu-control-cpi-spec.md` i `hu-control-konsultant-dane.md`. Aplikacja: HU-CHECK
 (Flask + PostgreSQL, Coolify/Hetzner). Strefy kontroli (decyzja 2026-09-02): **8 stref
-zgrupowanych w 5 procesów** — EXPORT (92EX, WCEX), GEIS/INNY (92GE, WCGE), GLS (94GL,
-WCGL), BUS (92JU), ODB. WŁASNE (92T3). Kolejki/kafelki w aplikacji per **proces**, strefa
-= atrybut. Pozostałe typy magazynu (0010, 0050, BROK, CRET, LABO, PPAP, RETV…) — poza
+zgrupowanych w 5 procesów** — EXPORT (71EX, WDEX), PALETY/INNY (71PL, WDPL), PACZKI (73PA,
+WDPA), BUS (71BU), ODB. WŁASNE (71T3). Kolejki/kafelki w aplikacji per **proces**, strefa
+= atrybut. Pozostałe typy magazynu (0010, 0050, USZK, ZWRT, LAB1, KJAK, ZWRV…) — poza
 kontrolą, ale słownik typów przyjeżdża w całości.
 
 ---
@@ -148,11 +148,11 @@ CREATE TABLE control_zone (            -- JA jestem właścicielem tej listy
     active  boolean NOT NULL DEFAULT true
 );
 -- seed (decyzja 2026-09-02: strefy WC* też w kontroli, kolejki per proces):
---   EXPORT      = 92EX, WCEX
---   GEIS/INNY  = 92GE, WCGE
---   GLS         = 94GL, WCGL
---   BUS         = 92JU
---   ODB. WŁASNE = 92T3
+--   EXPORT      = 71EX, WDEX
+--   PALETY/INNY  = 71PL, WDPL
+--   PACZKI         = 73PA, WDPA
+--   BUS         = 71BU
+--   ODB. WŁASNE = 71T3
 
 CREATE TABLE customer (
     kunnr  text PRIMARY KEY,
@@ -306,7 +306,7 @@ Merytoryka EWM (pytania 1–5) — już w `hu-control-cpi-spec.md` §Pytania. Tu
 5. Limity: max częstotliwość odpytywania, page size, timeout na endpoint `/open`
    (pełna lista otwartych HU — ile ich bywa w szczycie?).
 6. Środowisko testowe: czy jest QAS z reprezentatywnymi danymi EWM + osobny tenant CPI test?
-7. Retencja i wolumeny: ile HU/dzień w strefach 92EX/92GE/94GL/92JU/92T3 vs całość?
+7. Retencja i wolumeny: ile HU/dzień w strefach 71EX/71PL/73PA/71BU/71T3 vs całość?
    (wymiaruje delta i `/open`)
 8. Monitoring: jak dowiem się, że iFlow padł? (alert CPI vs mój watchdog na brak delty > X min)
 9. Zmiana kontraktu: wersjonowanie endpointów (v1 w ścieżce) i proces zgłaszania zmian pól.

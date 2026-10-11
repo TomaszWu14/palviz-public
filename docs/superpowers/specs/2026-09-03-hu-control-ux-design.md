@@ -37,7 +37,7 @@ czysta funkcja (testowalna) nad querysetem `_controllable`; bez zmian w modelach
 
 ## 2. Ekran liczenia (ewolucja `hu_detail`)
 
-1. **Klawiatura numeryczna pełnoekranowa** (nakładka JS, bez bibliotek) — rękawice/kciuk.
+1. **Klawiatura numeryczna pełnoekranowa** (nakładka JS, bez bibliotek) — talerze/kciuk.
 2. **Jednostki „czym pobierano"**: przy linii przyciski tylko jednostek realnie użytych
    w zadaniach (KAR+OPZ → dwa; sam KAR → jeden). Dziś: para AJM/PJM ze wsadu; po CPI:
    lista z pickTasks. UI od razu projektowane pod listę jednostek.

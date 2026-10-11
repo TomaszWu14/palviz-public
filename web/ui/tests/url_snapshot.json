@@ -140,7 +140,7 @@
   "ui:get_handling_unit": "api/v2/handling-units/<code>",
   "ui:get_location": "api/v2/locations/<code>",
   "ui:get_product": "api/v2/products/<code>",
-  "ui:gls_packing_report": "control/gls-report/",
+  "ui:parcel_packing_report": "control/paczki-report/",
   "ui:health": "api/v2/health",
   "ui:home": "",
   "ui:hu_call": "control/hu/<int:pk>/wywolaj/",

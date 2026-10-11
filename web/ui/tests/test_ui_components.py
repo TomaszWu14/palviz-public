@@ -97,7 +97,7 @@ class StyleguideTests(TestCase):
         self.assertEqual(r.status_code, 200)
         for marker in ("sg-icons", "sg-buttons", "sg-toolbar", "sg-table", "sg-badges", "sg-field",
                        "sg-feedback", "sg-states", 'class="toolbar"', 'class="filterbar"',
-                       "table-scroll", "cell-clip", "is-hu-to_recheck", "is-wh-dlt",
+                       "table-scroll", "cell-clip", "is-hu-to_recheck", "is-wh-zew",
                        'data-testid="empty-state"', "data-confirm=", "gv-skeleton"):
             self.assertContains(r, marker)
 

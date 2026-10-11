@@ -7,38 +7,38 @@ from ui.theme import theme_for, carrier_for, shipment_type_for, theme_for_carrie
 
 class ThemeMappingTests(SimpleTestCase):
     def test_known_zone_codes_map_to_carrier(self):
-        self.assertEqual(carrier_for("92T3"), "BUS")
-        self.assertEqual(carrier_for("92JU"), "BUS")
-        self.assertEqual(carrier_for("92GE"), "GEIS")
-        self.assertEqual(carrier_for("92EX"), "EXPORT")
-        self.assertEqual(carrier_for("94GL"), "GLS")   # (poprawiony klucz: było błędnie 92GL)
+        self.assertEqual(carrier_for("71T3"), "BUS")
+        self.assertEqual(carrier_for("71BU"), "BUS")
+        self.assertEqual(carrier_for("71PL"), "PALETY")
+        self.assertEqual(carrier_for("71EX"), "EXPORT")
+        self.assertEqual(carrier_for("73PA"), "PACZKI")   # (poprawiony klucz: było błędnie 71PA)
 
     def test_case_insensitive(self):
-        self.assertEqual(carrier_for("94gl"), "GLS")
+        self.assertEqual(carrier_for("73pa"), "PACZKI")
 
     def test_unknown_and_blank_fall_back_to_geis(self):
-        self.assertEqual(carrier_for("ZZZ"), "GEIS")
-        self.assertEqual(carrier_for(""), "GEIS")
-        self.assertEqual(carrier_for(None), "GEIS")
+        self.assertEqual(carrier_for("ZZZ"), "PALETY")
+        self.assertEqual(carrier_for(""), "PALETY")
+        self.assertEqual(carrier_for(None), "PALETY")
 
     def test_theme_for_returns_full_dict(self):
-        t = theme_for("94GL")
-        self.assertEqual(t["carrier_label"], "GLS")
+        t = theme_for("73PA")
+        self.assertEqual(t["carrier_label"], "PACZKI")
         self.assertIn("header_bg", t)
         self.assertIn("app_bar_bg", t)
 
     def test_zone_label_override(self):
-        # 92T3 = odbiór własny: etykieta per strefa, kolory zostają z grupy BUS.
-        t = theme_for("92t3")
+        # 71T3 = odbiór własny: etykieta per strefa, kolory zostają z grupy BUS.
+        t = theme_for("71t3")
         self.assertEqual(t["carrier_label"], "ODB. WŁASNY")
-        self.assertEqual(t["header_bg"], theme_for("92JU")["header_bg"])
-        # 92JU bez nadpisania — dalej BUS.
-        self.assertEqual(theme_for("92JU")["carrier_label"], "BUS")
+        self.assertEqual(t["header_bg"], theme_for("71BU")["header_bg"])
+        # 71BU bez nadpisania — dalej BUS.
+        self.assertEqual(theme_for("71BU")["carrier_label"], "BUS")
 
     def test_theme_for_carrier_none_when_unknown(self):
         self.assertIsNone(theme_for_carrier(""))
         self.assertIsNone(theme_for_carrier("NOPE"))
-        self.assertIsNotNone(theme_for_carrier("gls"))
+        self.assertIsNotNone(theme_for_carrier("paczki"))
 
 
 class ShipmentTypeTests(SimpleTestCase):

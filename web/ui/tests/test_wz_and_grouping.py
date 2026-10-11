@@ -19,7 +19,7 @@ def _tr(name="tr"):
 
 class WZDocument(TestCase):
     def setUp(self):
-        self.cust = Customer.objects.create(name="Klinika Przykładowa", country="UA", wz_copies=3)
+        self.cust = Customer.objects.create(name="Hurtownia Przykładowa", country="UA", wz_copies=3)
         self.sh = Shipment.objects.create(name="D1", customer=self.cust,
                                           wz_number="WZ/2026/77")
         hu = HandlingUnit.objects.create(shipment=self.sh, seq=1, code="H1")
@@ -36,7 +36,7 @@ class WZDocument(TestCase):
         body = r.content.decode() if r["Content-Type"].startswith("text") else ""
         if body:                                   # fallback HTML (brak WeasyPrint)
             self.assertIn("WZ/2026/77", body)
-            self.assertIn("Klinika Przykładowa", body)
+            self.assertIn("Hurtownia Przykładowa", body)
             self.assertEqual(body.count("Kopia "), 3)     # wz_copies klienta
             self.assertIn("15", body)                     # 10+5 zagregowane w jedną linię
         else:

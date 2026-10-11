@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='userprofile',
             name='section',
-            field=models.CharField(blank=True, choices=[('GLS', 'GLS'), ('BUS', 'BUS'), ('GEIS', 'GEIS'), ('EXPORT', 'EXPORT')], default='', max_length=20, verbose_name='Sekcja'),
+            field=models.CharField(blank=True, choices=[('PACZKI', 'PACZKI'), ('BUS', 'BUS'), ('PALETY', 'PALETY'), ('EXPORT', 'EXPORT')], default='', max_length=20, verbose_name='Sekcja'),
         ),
     ]

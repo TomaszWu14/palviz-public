@@ -21,7 +21,7 @@ class ErrorLockTests(TestCase):
         self.sh = Shipment.objects.create(name="D1")
         self.hu = HandlingUnit.objects.create(shipment=self.sh, seq=1, code="H1",
                                               status="in_control", controlled_by=self.u,
-                                              warehouse_type="92EX")
+                                              warehouse_type="71EX")
         self.item = HandlingUnitItem.objects.create(hu=self.hu, ref_code="A1",
                                                     base_unit="OP", base_qty=10)
 
@@ -49,7 +49,7 @@ class MdAjmReportTests(TestCase):
     def test_ajm_report_builds_conversion(self):
         u = _ctrl("c2"); self.client.force_login(u)
         sh = Shipment.objects.create(name="D2")
-        hu = HandlingUnit.objects.create(shipment=sh, seq=1, code="H2", warehouse_type="92EX")
+        hu = HandlingUnit.objects.create(shipment=sh, seq=1, code="H2", warehouse_type="71EX")
         it = HandlingUnitItem.objects.create(hu=hu, ref_code="B1", base_unit="OP", base_qty=5)
         self.client.post(reverse("ui:hu_md_report", args=[it.pk]),
                          {"md_aspect": "ajm", "md_unit": "karton", "md_factor": "10", "md_base": "OP"})

@@ -14,7 +14,7 @@ class HuProdCodesTests(TestCase):
     def setUpTestData(cls):
         cls.u = get_user_model().objects.create_user("c1", password="x")
         cls.u.groups.add(Group.objects.get_or_create(name=GROUP_CONTROLLER)[0])
-        Product.objects.create(code="NL100-100", name="NONVI lux", is_active=True)
+        Product.objects.create(code="NL100-100", name="SERWETKI lux", is_active=True)
         Product.objects.create(code="XX200-1", name="Inny", is_active=True)
 
     def setUp(self):

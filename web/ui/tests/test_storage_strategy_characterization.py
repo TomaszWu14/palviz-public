@@ -76,7 +76,7 @@ def sc_processes():
 
 
 def sc_buckets():
-    """Kubły: FEFO (wiele lotów, brak dat), statusy, objętości, blokady mastera, 9010 DLT/GR,
+    """Kubły: FEFO (wiele lotów, brak dat), statusy, objętości, blokady mastera, 9010 ZEW/GR,
     wysyłka, nieznany typ, pusty typ (tylko w sumie), 0051 (wydawcze, nie proces)."""
     b = _Builder()
     b.hu("0010", "C1-01", items=((10, D(2027, 5, 1), "L1"), (5, D(2026, 12, 1), "L2")),
@@ -86,11 +86,11 @@ def sc_buckets():
     b.hu("0010", "", items=((1, D(2026, 1, 1), ""),), status="ZZ", code="")
     b.hu("0010", "c1-04", items=((3, None, ""),), status=" ")
     b.hu("0011", "C2-01", items=((8, None, ""),))
-    b.hu("9010", "DLT-01", items=((30, None, ""),))
+    b.hu("9010", "ZEW-01", items=((30, None, ""),))
     b.hu("9010", "GR-02", items=((20, None, ""),))
     b.hu("9010", "SPLIT-3", items=((1, None, ""),))
-    b.hu("92ex", "W1", items=((50, None, ""),), dims=(100, 100, 100))
-    b.hu("BROK", "X1", items=((6, None, ""),))
+    b.hu("71ex", "W1", items=((50, None, ""),), dims=(100, 100, 100))
+    b.hu("USZK", "X1", items=((6, None, ""),))
     b.hu("", "Z1", items=((9, None, ""),))
     b.hu("0051", "P1", items=((4, None, ""),))
     _master(["C1-01"], pick=True)

@@ -747,14 +747,6 @@ trasy:
       Magazyn: 200, Optymalizacja kartonów: 200}
     dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
     wymaga_obiektu: true
-  ui:gls_packing_report:
-    sciezka: /control/gls-report/
-    widok: huctl.views.hu_reports.gls_packing_report
-    straznik: roles
-    metody: [GET, POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 200, Podgląd: 403, Obsługa klienta: 403,
-      Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Lider kontroli]
   ui:home:
     sciezka: /
     widok: ui.views.warehouse_search.module_home
@@ -1500,6 +1492,14 @@ trasy:
       Magazyn: 200, Optymalizacja kartonów: 200}
     dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Magazyn, Master Data, Obsługa klienta, Optymalizacja kartonów, Podgląd, Transport]
     wymaga_obiektu: true
+  ui:parcel_packing_report:
+    sciezka: /control/paczki-report/
+    widok: huctl.views.hu_reports.parcel_packing_report
+    straznik: roles
+    metody: [GET, POST]
+    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: 200, Administratorzy: 200, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: 200, Podgląd: 403, Obsługa klienta: 403,
+      Magazyn: 403, Optymalizacja kartonów: 403}
+    dozwolone: [Administratorzy, Lider kontroli]
   ui:password_change:
     sciezka: /haslo/zmien/
     widok: ui.views.imports_users.view

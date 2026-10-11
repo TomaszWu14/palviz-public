@@ -40,8 +40,8 @@ czasowe eksportów / palety bez dostawy (rozstrzygnie porównanie z TEST_HU_CONT
   „Liczba jedn. wysyłk." = oczekiwana liczba HU; flaga „Eksport" wprost z dostawy;
 - KNA1/MAKT/MCH1: pokrycie 100% dla danych stref kontroli.
 
-Strefy kontroli (decyzja 2026-09-02): 8 stref / 5 procesów — EXPORT (92EX, WCEX),
-GEIS/INNY (92GE, WCGE), GLS (94GL, WCGL), BUS (92JU), ODB. WŁASNE (92T3).
+Strefy kontroli (decyzja 2026-09-02): 8 stref / 5 procesów — EXPORT (71EX, WDEX),
+PALETY/INNY (71PL, WDPL), PACZKI (73PA, WDPA), BUS (71BU), ODB. WŁASNE (71T3).
 
 Finalny kontrakt endpointów na bazie tych wyników: **`hu-control-cpi-endpointy.md`**.
 Sekcje poniżej (1–4) zostają jako historia dojścia + pełna lista pól.

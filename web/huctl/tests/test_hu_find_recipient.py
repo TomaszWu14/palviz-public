@@ -8,7 +8,7 @@ from ui.models import Shipment, HandlingUnit, ControllerZone
 
 class FindRecipientScanTests(TestCase):
     def setUp(self):
-        self.sh1 = Shipment.objects.create(recipient_name="PHARMO", kunnr="K1")
+        self.sh1 = Shipment.objects.create(recipient_name="DOMEX", kunnr="K1")
         self.sh2 = Shipment.objects.create(recipient_name="INNY", kunnr="K2")
         # Ten sam odbiorca (K1), DWIE różne strefy magazynu.
         self.hu1 = HandlingUnit.objects.create(shipment=self.sh1, seq=1, code="P1", warehouse_type="A")
@@ -23,7 +23,7 @@ class FindRecipientScanTests(TestCase):
         self.assertEqual(r.status_code, 200)
         codes = {h.code for h in r.context["hus"]}
         self.assertEqual(codes, {"P2"})                      # rodzeństwo K1, bez P1 i bez K2
-        self.assertEqual(r.context["recipient_label"], "PHARMO")
+        self.assertEqual(r.context["recipient_label"], "DOMEX")
 
     def test_out_of_zone_flag_for_controller(self):
         u = User.objects.create_user("ctrl", "c@c.pl", "x")

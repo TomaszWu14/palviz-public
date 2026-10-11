@@ -42,8 +42,8 @@ GROOVE_MODULE_URLS = env.GROOVE_MODULE_URLS or ""
 MASTER_DATA_URL = (env.MASTER_DATA_URL or "").rstrip("/")
 MASTER_DATA_API_KEY = env.MASTER_DATA_API_KEY or ""
 
-# Kontrola HU: kody warehouse_type strefy GLS (wymóg rozliczenia kartony→paczki).
-GLS_ZONE_CODES = _csv(env.GLS_ZONE_CODES)
+# Kontrola HU: kody warehouse_type strefy PACZKI (wymóg rozliczenia kartony→paczki).
+PARCEL_ZONE_CODES = _csv(env.PARCEL_ZONE_CODES)
 
 # Moduł „Hierarchia opakowań" (PHV): adresat maili o zgłoszeniach master daty.
 PHV_ISSUE_EMAIL = env.PHV_ISSUE_EMAIL

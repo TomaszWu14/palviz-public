@@ -172,15 +172,15 @@ class AppEnv(BaseSettings):
     POWERBI_PUBLIC_CLIENT_ID: str = ""
     POWERBI_WORKSPACE_ID: str = ""
     POWERBI_DATASET_ID: str = ""
-    POWERBI_STOCK_TABLE: str = "Stock_oraz_DLT"
+    POWERBI_STOCK_TABLE: str = "Stock_oraz_ZEW"
     POWERBI_ACCESS_TOKEN: str = ""
     POWERBI_CA_BUNDLE: str = ""
     POWERBI_SSL_VERIFY: bool = True
 
-    # ── Kontrola HU: strefa GLS (konsolidacja kartony→paczki) ───────────────
-    # Kody warehouse_type traktowane jako strefa GLS: po zaksięgowaniu palety kontroler
+    # ── Kontrola HU: strefa PACZKI (konsolidacja kartony→paczki) ───────────────
+    # Kody warehouse_type traktowane jako strefa PACZKI: po zaksięgowaniu palety kontroler
     # musi podać kartony w przygotowaniu + zrobione paczki (raport konsolidacji).
-    GLS_ZONE_CODES: str = "GLS"
+    PARCEL_ZONE_CODES: str = "PACZKI"
 
     # ── Moduł „Hierarchia opakowań" (PHV) ───────────────────────────────────
     # Adres, na który idą maile o zgłoszeniach błędów master daty z PHV.

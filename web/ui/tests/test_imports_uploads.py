@@ -87,14 +87,14 @@ class CustomerImportExtras(TestCase):
         u.groups.add(Group.objects.get_or_create(name=GROUP_MASTER_DATA)[0])
         self.client.force_login(u)
         csv = ("Klient,Nazwa 1,Kraj,Miasto,Kategoria,Przewoźnik,Wysokość [cm]\n"
-               "100245,Szpital Przykładowy,UA,Lwów,VIP,GLS,160\n"
-               "100310,Klinika Demo,PL,Warszawa,Delta,GEIS,180\n")
+               "100245,Sklep Przykładowy,UA,Lwów,VIP,PACZKI,160\n"
+               "100310,Hurtownia Demo,PL,Warszawa,Delta,PALETY,180\n")
         f = SimpleUploadedFile("k.csv", csv.encode("utf-8"), content_type="text/csv")
         self.client.post(reverse("ui:planner_customer_import"), {"file": f})
         c1 = Customer.objects.get(code="100245")
         self.assertEqual(c1.category, "vip")
         self.assertTrue(c1.is_vip)               # kategoria VIP ustawia flagę
-        self.assertEqual(c1.carrier, "GLS")
+        self.assertEqual(c1.carrier, "PACZKI")
         self.assertEqual(c1.max_pallet_height_cm, 160)
         c2 = Customer.objects.get(code="100310")
         self.assertEqual(c2.category, "delta")

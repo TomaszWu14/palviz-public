@@ -336,7 +336,7 @@ def admin_control_zones(request):
     from django.contrib.auth.models import User
 
     codes = set(t for t in HandlingUnit.objects.values_list("warehouse_type", flat=True) if t)
-    # Z katalogu tylko typy REGAŁOWE — strefy techniczne (BROK, LABO, wysyłkowe…) nie są
+    # Z katalogu tylko typy REGAŁOWE — strefy techniczne (USZK, LAB1, wysyłkowe…) nie są
     # miejscem kontroli HU; jeśli realnie wystąpią na HU, i tak wejdą z pierwszego seta.
     codes |= set(WarehouseRackType.objects.filter(kind="rack").values_list("code", flat=True))
     zone_codes = sorted(codes)

@@ -14,7 +14,7 @@ def _product_with_packaging(code="R100", ean="5900000000017"):
                                      ean="5901111111114")
     carton = Carton.objects.create(name="K", length_cm=29, width_cm=25, height_cm=22,
                                    unit_weight_kg=0.5, ean="5902222222225", inner_pack=inner)
-    p = Product.objects.create(code=code, name="Rękawice", ean=ean,
+    p = Product.objects.create(code=code, name="Talerze", ean=ean,
                                unit_length_cm=21, unit_width_cm=12, unit_height_cm=5.5)
     PalletizationInstruction.objects.create(
         product=p, name="v1", is_active=True, version=1,

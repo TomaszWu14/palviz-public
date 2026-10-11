@@ -16,7 +16,7 @@ class PhotoTaskTests(TestCase):
         self.leader.groups.add(Group.objects.get_or_create(name=GROUP_LEADER)[0])
         self.picker = U.objects.create_user(username="pick", password="x")
         self.picker.groups.add(Group.objects.get_or_create(name=GROUP_CONTROLLER)[0])
-        Product.objects.create(code="DMOM10001", name="Rękawice")
+        Product.objects.create(code="DMOM10001", name="Talerze")
         self.client.force_login(self.leader)
 
     def _post(self, **data):

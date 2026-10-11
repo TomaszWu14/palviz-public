@@ -40,11 +40,11 @@ def _dates():
 
 
 def _catalog(d):
-    cat = f.ProductCategoryFactory(code="MED", name="Medyczne — rękawice i opatrunki")
+    cat = f.ProductCategoryFactory(code="CER", name="Ceramika — talerze i serwetki")
     products = [
-        f.ProductFactory(code="REF100001", name="Rękawice nitrylowe „Łódź” rozm. M", category=cat),
+        f.ProductFactory(code="REF100001", name="Talerze ceramiczne „Łódź” rozm. M", category=cat),
         f.ProductFactory(code="REF100002", name=f.long_text(250)),                  # max długość
-        f.ProductFactory(code="REF100003", name="Opatrunek jałowy żółty", ean="",   # puste pola
+        f.ProductFactory(code="REF100003", name="Serwetka jałowy żółty", ean="",   # puste pola
                          unit_length_cm=None, unit_width_cm=None, unit_height_cm=None),
         f.ProductFactory(code="REF100004", name="Maseczka FFP2 (nieaktywna)", is_active=False),
         f.ProductFactory(code="R" + "9" * 99, name="Kod na pełne 100 znaków"),
@@ -62,13 +62,13 @@ def _catalog(d):
 
 
 def _customers(cat):
-    vip = f.CustomerFactory(name="Szpital Kliniczny Demo", is_vip=True, category="vip")
-    export = f.CustomerFactory(name="Klinika Lwów (eksport)", country="UA", city="Lwów",
+    vip = f.CustomerFactory(name="Sklep Kliniczny Demo", is_vip=True, category="vip")
+    export = f.CustomerFactory(name="Hurtownia Lwów (eksport)", country="UA", city="Lwów",
                                category="export", label_language="en")
     empty = f.CustomerFactory(name="Odbiorca bez danych", code="", country="", city="")
     long_ = f.CustomerFactory(name=f.long_text(200), code="K" + "9" * 39)
     rules = [f.PackagingRuleFactory(customer=vip, product=cat.products[0], units_per_pack=50,
-                                    alert_email="apteka@example.test"),
+                                    alert_email="drogeria@example.test"),
              f.PackagingRuleFactory(customer=export, product=cat.products[1], units_per_pack=20,
                                     is_active=False)]
     return SimpleNamespace(vip=vip, export=export, empty=empty, long=long_, rules=rules)

@@ -68,7 +68,7 @@ class EscalationTests(TestCase):
         self.assertContains(r, "paleta 7 w toku / ETA 14:30")
 
     def test_recipient_group_shows_incomplete_badge(self):
-        self.sh.recipient_name = "Szpital X"
+        self.sh.recipient_name = "Sklep X"
         self.sh.save(update_fields=["recipient_name"])
         adm = get_user_model().objects.create_user("adm", password="x", is_superuser=True)
         self.client.force_login(adm)

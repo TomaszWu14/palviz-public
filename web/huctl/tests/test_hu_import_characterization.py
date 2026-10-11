@@ -151,7 +151,7 @@ class HuImportRowsCharacterizationTests(TestCase):
                     "kraj": "deu", "skompletowana": "X", "status zapasu": "B6-DŁUGI-STATUS",
                     "picking_done": "tak", "potwierdzone przez": "jan",
                     "miejsce składowania": "A-01", "typ magazynu": "WT01",
-                    "nazwa odbiorcy 1": "Szpital", "waga": "12,5", "długość": "120",
+                    "nazwa odbiorcy 1": "Sklep", "waga": "12,5", "długość": "120",
                     "szerokość": "80,0", "wysokość": "1 45", "ilość": "1 000,5"}),
             # 2: ta sama HU, REF złożony → BP-30F bez instrukcji (ppc 0) → alt = base.
             _row(**{"materiał": "(48301)V(BP-30F)", "termin ważności": "31/12/2027",
@@ -179,8 +179,8 @@ class HuImportRowsCharacterizationTests(TestCase):
         self._check("full_feed", self._run(FULL_HDR, rows))
 
     def test_minimal_old_feed_headers(self):
-        hdr = ["stock_oraz_dlt[jednostka obsługi]", "stock_oraz_dlt[produkt]",
-               "stock_oraz_dlt[podst. jedn. miary]", "[sumdostępna_ilość]"]
+        hdr = ["stock_oraz_zew[jednostka obsługi]", "stock_oraz_zew[produkt]",
+               "stock_oraz_zew[podst. jedn. miary]", "[sumdostępna_ilość]"]
         self._check("old_feed", self._run(hdr, [["HU9", "(48301)V(BP-30F)", "Sztuka", "10"],
                                                 ["HU9", "P1", "", "8"]]))
 

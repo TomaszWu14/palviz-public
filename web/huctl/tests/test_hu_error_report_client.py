@@ -12,12 +12,12 @@ class HUErrorReportClientTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = _user_all_roles("ctrl-client")
-        cls.cust = Customer.objects.create(name="Apteka Testowa", code="KL-77",
+        cls.cust = Customer.objects.create(name="Drogeria Testowa", code="KL-77",
                                            kunnr="0000123")
         cls.sh = Shipment.objects.create(name="Dostawa 1", stowage_efficiency_pct=80,
-                                         recipient_name="PHARMO DEMO SRL",
+                                         recipient_name="DOMEX DEMO SRL",
                                          customer=cls.cust)
-        p = Product.objects.create(code="NL100-100", name="NONVI lux")
+        p = Product.objects.create(code="NL100-100", name="SERWETKI lux")
         PalletizationInstruction.objects.create(
             product=p, version=1, carton_l=40, carton_w=30, carton_h=25,
             unit_weight=0.5, pcs_per_carton=10, demand_pcs=100, is_active=True)
@@ -37,12 +37,12 @@ class HUErrorReportClientTests(TestCase):
 
     def test_report_shows_client(self):
         resp = self.client.get(reverse("ui:hu_error_report"))
-        self.assertContains(resp, "Apteka Testowa")
+        self.assertContains(resp, "Drogeria Testowa")
         self.assertContains(resp, "KL-77")
 
     def test_client_filter_hits_and_misses(self):
         # Trafia po nazwie i KUNNR; pudło daje pustą listę.
-        hit = self.client.get(reverse("ui:hu_error_report"), {"client": "apteka"})
+        hit = self.client.get(reverse("ui:hu_error_report"), {"client": "drogeria"})
         self.assertContains(hit, self.it.ref_code)
         kunnr = self.client.get(reverse("ui:hu_error_report"), {"client": "0000123"})
         self.assertContains(kunnr, self.it.ref_code)
@@ -52,7 +52,7 @@ class HUErrorReportClientTests(TestCase):
     def test_csv_contains_client(self):
         csv = self.client.get(reverse("ui:hu_error_report"), {"export": "csv"})
         body = csv.content.decode("utf-8-sig")
-        self.assertIn("Apteka Testowa", body)
+        self.assertIn("Drogeria Testowa", body)
         self.assertIn("KL-77", body)
 
     def test_report_shows_ref_and_daily_trend(self):

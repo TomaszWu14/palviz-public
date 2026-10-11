@@ -56,17 +56,17 @@ class UserImportTests(TestCase):
 
     def test_creates_user_with_roles_profile_zones_and_modules(self):
         self._post([["jkowalski", "Jan", "Kowalski", "j@z.pl", "", "", 1, 0, 0,
-                     f"{GROUP_CONTROLLER}; {GROUP_MASTER_DATA}", "600100200", "Magazyn", "GLS",
-                     "92JU; 92EX", "kontrola_hu", "paletyzacja"]])
+                     f"{GROUP_CONTROLLER}; {GROUP_MASTER_DATA}", "600100200", "Magazyn", "PACZKI",
+                     "71BU; 71EX", "kontrola_hu", "paletyzacja"]])
         u = get_user_model().objects.get(username="jkowalski")
         self.assertEqual((u.first_name, u.last_name, u.email), ("Jan", "Kowalski", "j@z.pl"))
         self.assertEqual(set(u.groups.values_list("name", flat=True)),
                          {GROUP_CONTROLLER, GROUP_MASTER_DATA})
         prof = UserProfile.objects.get(user=u)
         self.assertEqual((prof.phone, prof.department, prof.section),
-                         ("600100200", "Magazyn", "GLS"))
+                         ("600100200", "Magazyn", "PACZKI"))
         self.assertEqual(set(ControllerZone.objects.filter(user=u).values_list("code", flat=True)),
-                         {"92JU", "92EX"})
+                         {"71BU", "71EX"})
         self.assertTrue(UserModuleAccess.objects.get(user=u, module_key="kontrola_hu").allowed)
         self.assertFalse(UserModuleAccess.objects.get(user=u, module_key="paletyzacja").allowed)
 

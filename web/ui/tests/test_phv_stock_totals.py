@@ -1,5 +1,5 @@
 """PHV domknięcie 3 decyzji: headline = CAŁY stock on-hand (proces + kubły), podliczenie
-niepobieralnego (blocked/quality/returns), 9010 DLT po całym segmencie (nie substring)."""
+niepobieralnego (blocked/quality/returns), 9010 ZEW po całym segmencie (nie substring)."""
 from django.test import TestCase
 
 from ui.models import Product, Shipment, HandlingUnit, HandlingUnitItem
@@ -32,8 +32,8 @@ class PhvStockTotalTests(TestCase):
         self.assertEqual(st["blocked_qty"], 50)       # z tego niepobieralne
 
     def test_9010_dlt_segment_not_substring(self):
-        # „SPLIT"/„LITER" NIE są DLT; „DLT-05" jest.
-        self.assertEqual(_wh_bucket("9010", "SPLIT-01")[1], "inne")   # GR-Zone, nie DLT
+        # „SPLIT"/„LITER" NIE są ZEW; „ZEW-05" jest.
+        self.assertEqual(_wh_bucket("9010", "SPLIT-01")[1], "inne")   # GR-Zone, nie ZEW
         self.assertEqual(_wh_bucket("9010", "LITER-2")[1], "inne")
-        self.assertEqual(_wh_bucket("9010", "DLT-05")[1], "dlt")
-        self.assertEqual(_wh_bucket("9010", "05.DLT")[1], "dlt")
+        self.assertEqual(_wh_bucket("9010", "ZEW-05")[1], "zew")
+        self.assertEqual(_wh_bucket("9010", "05.ZEW")[1], "zew")

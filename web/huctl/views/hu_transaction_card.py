@@ -11,7 +11,7 @@ from django.urls import reverse
 from urllib.parse import urlencode
 from .hu_helpers import _ensure_started  # noqa: F401
 from .hu_count import _alt_conv, _annotate_picked_units, _count_tiles, _prefetch_instructions, _unit_factors  # noqa: F401
-from .hu_helpers import _call_queue, _is_gls, _log_status, _maybe_escalate_recheck, _notify_groups, _raise_corrective_tasks, _reserve, _type_controlled, _valid_photo, _zone_ok  # noqa: F401
+from .hu_helpers import _call_queue, _is_parcel, _log_status, _maybe_escalate_recheck, _notify_groups, _raise_corrective_tasks, _reserve, _type_controlled, _valid_photo, _zone_ok  # noqa: F401
 from .hu_quality import _notify_recheck  # noqa: F401
 from .hu_queue import _recipient_siblings  # noqa: F401
 from .hu_transaction_final import _dispatched  # noqa: F401
@@ -143,8 +143,8 @@ def hu_control_detail(request, pk):
         "shipment_incomplete": bool(hu.shipment_id and not hu.shipment.picking_complete),
         # BIZ-009: wysyłka anulowana — HU nie ma w kolejce; kontroler widzi to na karcie.
         "shipment_cancelled": bool(hu.shipment_id and hu.shipment.status == "cancelled"),
-        # Strefa GLS: formularz księgowania wymaga rozliczenia kartony→paczki.
-        "is_gls": _is_gls(hu),
+        # Strefa PACZKI: formularz księgowania wymaga rozliczenia kartony→paczki.
+        "is_parcel": _is_parcel(hu),
     })
 
 

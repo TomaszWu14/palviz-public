@@ -20,12 +20,12 @@ def _user(*groups):
 class ScannerLoginDropdownTests(TestCase):
     def test_dropdown_lists_zones_and_roles(self):
         u = _user(GROUP_CONTROLLER)
-        ControllerZone.objects.create(user=u, code="92JU")
+        ControllerZone.objects.create(user=u, code="71BU")
         self.client.force_login(u)
         html = self.client.get(reverse("ui:hu_control_menu")).content.decode()
         self.assertIn("op-menu", html)                         # dropdown obecny
         self.assertIn("Strefy do kontroli", html)
-        self.assertIn("92JU", html)                            # moja strefa
+        self.assertIn("71BU", html)                            # moja strefa
         self.assertIn("Uprawnienia", html)
         self.assertIn("Kontrola HU", html)                     # etykieta roli
         self.assertNotIn("· wszystkie strefy", html)           # stary zawijający się napis zniknął

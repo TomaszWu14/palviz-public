@@ -22,7 +22,7 @@ HEADER = (
 def _row(code, opis, szt_dim, kar_dim, kar_qty, producent="O013",
          op_dim="", op_qty="", opz_dim="", opz_qty=""):
     cols = [""] * 23
-    cols[0] = code; cols[1] = opis; cols[4] = "01: OPATRUNKI"; cols[5] = producent; cols[6] = opis
+    cols[0] = code; cols[1] = opis; cols[4] = "01: SERWETKI"; cols[5] = producent; cols[6] = opis
     cols[7] = szt_dim
     cols[11] = op_dim; cols[13] = op_qty
     cols[15] = opz_dim; cols[17] = opz_qty

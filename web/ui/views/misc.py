@@ -1,7 +1,7 @@
 # Auto-split from the former monolithic views.py. Feature views live in
 # sibling modules; shared imports/constants/helpers stay in core.py.
 from .core import (
-    settings, _any_role, HttpResponse, _planner, Product, PalletizationInstruction,
+    settings, _planner, Product, PalletizationInstruction,
     WarehouseSnapshot, Count, Q, Carton, ErrorReport, render, MaterialReference,
     Paginator, get_object_or_404, json, require_POST, _md_role, JsonResponse,
     OptimizerForm, _form_max_height, _best_box, _suggest_packaging,

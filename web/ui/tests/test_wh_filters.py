@@ -1,5 +1,5 @@
 """Panel „Dane magazynowe": agregacja typów magazynu do filtrów (Wydawcze/Zapasowe/
-DLT/Wysyłka/Inne) + ilość (bieżący zapas) przy wierszach fix/procesów."""
+ZEW/Wysyłka/Inne) + ilość (bieżący zapas) przy wierszach fix/procesów."""
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.test import TestCase
@@ -29,31 +29,31 @@ class WarehouseCategoryTest(TestCase):
     def test_category_mapping(self):
         self.assertEqual(_wh_category("0050"), "wydawcze")
         self.assertEqual(_wh_category("0010"), "zapasowe")
-        self.assertEqual(_wh_category("92EX"), "wysylka")
-        self.assertEqual(_wh_category("WCGL"), "wysylka")
-        self.assertEqual(_wh_category("BROK"), "inne")      # nieznany → Inne
+        self.assertEqual(_wh_category("71EX"), "wysylka")
+        self.assertEqual(_wh_category("WDPA"), "wysylka")
+        self.assertEqual(_wh_category("USZK"), "inne")      # nieznany → Inne
         self.assertEqual(_wh_category(""), "inne")
 
     def test_stock_groups_have_category_and_present_list(self):
         p = Product.objects.create(code="REF-C", name="X")
         _stock(p, "0010", "C1-01-010A", 100, 1)             # zapasowe
-        _stock(p, "92EX", "W1-02-020B", 50, 2)              # wysylka
+        _stock(p, "71EX", "W1-02-020B", 50, 2)              # wysylka
         s = _storage_strategy(p)
         cats = {g["code"]: g["category"] for g in s["stock_groups"]}
         self.assertEqual(cats["0010"], "zapasowe")
-        self.assertEqual(cats["92EX"], "wysylka")
+        self.assertEqual(cats["71EX"], "wysylka")
         keys = [c["key"] for c in s["stock_categories"]]
         self.assertEqual(keys, ["zapasowe", "wysylka"])     # kolejność wg WAREHOUSE_CATEGORIES
 
     def test_9010_splits_dlt_vs_grzone_by_location(self):
         p = Product.objects.create(code="REF-L", name="X")
-        _stock(p, "9010", "DLT-01-001A", 30, 1)             # 9010 + lokalizacja DLT → DLT
+        _stock(p, "9010", "ZEW-01-001A", 30, 1)             # 9010 + lokalizacja ZEW → ZEW
         _stock(p, "9010", "GR-02-002B", 20, 2)              # 9010 inne → GR-Zone → Inne
         s = _storage_strategy(p)
         by = {g["code"]: g["category"] for g in s["stock_groups"]}
-        self.assertEqual(by["9010 (DLT)"], "dlt")
+        self.assertEqual(by["9010 (ZEW)"], "zew")
         self.assertEqual(by["9010 (GR-Zone)"], "inne")
-        self.assertIn("dlt", [c["key"] for c in s["stock_categories"]])
+        self.assertIn("zew", [c["key"] for c in s["stock_categories"]])
 
     def test_stock_total_sums_across_types(self):
         p = Product.objects.create(code="REF-T", name="X")
@@ -85,7 +85,7 @@ class WarehouseCategoryTest(TestCase):
         p = Product.objects.create(code="REF-V", name="X")
         _stock(p, "0050", "B0-38-471A", 240, 1)
         _stock(p, "0010", "C1-01-010A", 100, 2)
-        _stock(p, "92EX", "W1-02-020B", 50, 3)
+        _stock(p, "71EX", "W1-02-020B", 50, 3)
         r = self.client.get(reverse("ui:phv_home"), {"q": "REF-V"})
         self.assertContains(r, "phvFilterCat")              # filtr obecny
         self.assertContains(r, "Zapasowe")

@@ -157,8 +157,8 @@ class UserProfile(models.Model):
     # Sekcja operatora — steruje motywem całej aplikacji skanera (pasek, tło, akcenty).
     # Puste = motyw bazowy (teal). Kody = przewoźnicy z ui.theme.WAREHOUSE_THEMES.
     section = models.CharField(max_length=20, blank=True, default="",
-                              choices=[("GLS", "GLS"), ("BUS", "BUS"),
-                                       ("GEIS", "GEIS"), ("EXPORT", "EXPORT")],
+                              choices=[("PACZKI", "PACZKI"), ("BUS", "BUS"),
+                                       ("PALETY", "PALETY"), ("EXPORT", "EXPORT")],
                               verbose_name="Sekcja")
     # Strefy kontroli, w których użytkownik MOŻE pracować (CSV kodów sekcji, np.
     # "BUS,EXPORT"). `section` wyżej = strefa AKTYWNA (jedna naraz, przełączana na
@@ -167,7 +167,7 @@ class UserProfile(models.Model):
     allowed_sections = models.CharField(max_length=40, blank=True, default="",
                                         verbose_name="Dozwolone strefy kontroli")
 
-    SECTION_CODES = ("GLS", "BUS", "GEIS", "EXPORT")
+    SECTION_CODES = ("PACZKI", "BUS", "PALETY", "EXPORT")
 
     @property
     def allowed_sections_list(self):

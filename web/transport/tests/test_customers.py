@@ -25,7 +25,7 @@ class CustomerCrudTests(TestCase):
 
     def test_create_and_list_customer(self):
         resp = self.client.post(reverse("ui:planner_customer_new"), {
-            "name": "PHARMO", "code": "F01", "kind": "customer",
+            "name": "DOMEX", "code": "F01", "kind": "customer",
             "country": "PL", "city": "Łódź", "postal": "90-001",
             "max_pallet_height_cm": "190", "requires_fumigated_pallet": "on",
             "pallet_type": "euro", "is_active": "on",
@@ -37,7 +37,7 @@ class CustomerCrudTests(TestCase):
         self.assertTrue(c.has_requirements())
         # Appears on the list page.
         lst = self.client.get(reverse("ui:planner_customers"))
-        self.assertContains(lst, "PHARMO")
+        self.assertContains(lst, "DOMEX")
 
 
 class CustomerHeightCapTests(TestCase):

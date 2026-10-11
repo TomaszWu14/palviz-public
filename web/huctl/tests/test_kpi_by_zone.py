@@ -13,9 +13,9 @@ class KpiByZoneTest(TestCase):
     def test_group_by_zone(self):
         sh = Shipment.objects.create(name="D-Z")
         hu_a = HandlingUnit.objects.create(shipment=sh, seq=1, code="HA",
-                                           status="in_control", warehouse_type="92JU")
+                                           status="in_control", warehouse_type="71BU")
         hu_b = HandlingUnit.objects.create(shipment=sh, seq=2, code="HB",
-                                           status="in_control", warehouse_type="92EX")
+                                           status="in_control", warehouse_type="71EX")
         c = User.objects.create_user("kpi_z")
         HUControlAttempt.objects.create(hu=hu_a, item=hu_a.items.create(ref_code="R1"),
                                         controller=c, result="ok")
@@ -25,12 +25,12 @@ class KpiByZoneTest(TestCase):
         end = timezone.now() + timedelta(hours=1)
         rows, _ = _kpi_stats(start, end, by="zone")
         labels = {r["controller"] for r in rows}                 # 'controller' = etykieta wiersza
-        self.assertEqual(labels, {"92JU", "92EX"})               # przekrój per strefa
+        self.assertEqual(labels, {"71BU", "71EX"})               # przekrój per strefa
 
     def test_default_still_by_controller(self):
         sh = Shipment.objects.create(name="D-C")
         hu = HandlingUnit.objects.create(shipment=sh, seq=1, code="HC",
-                                         status="in_control", warehouse_type="92JU")
+                                         status="in_control", warehouse_type="71BU")
         c = User.objects.create_user("kpi_ctrl")
         HUControlAttempt.objects.create(hu=hu, item=hu.items.create(ref_code="R"),
                                         controller=c, result="ok")

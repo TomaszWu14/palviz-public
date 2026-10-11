@@ -484,16 +484,16 @@
 
   <form method="post" action="{% url 'ui:hu_control_finalize' hu.pk %}">
     {% csrf_token %}
-    {% if is_gls %}
-    {# Strefa GLS: rozliczenie konsolidacji wymagane do zaksięgowania (raport wydajności). #}
+    {% if is_parcel %}
+    {# Strefa paczkowa: rozliczenie konsolidacji wymagane do zaksięgowania (raport wydajności). #}
     <div class="pcard" style="padding:12px 14px;margin-bottom:10px;border-left:4px solid #0d9488">
-      <div style="font-weight:800;font-size:14px;margin-bottom:8px">{% icon "package" %} GLS — rozliczenie pakowania</div>
+      <div style="font-weight:800;font-size:14px;margin-bottom:8px">{% icon "package" %} Paczki — rozliczenie pakowania</div>
       <div style="display:flex;gap:10px">
         <label style="flex:1;font-size:12px;font-weight:700;color:#475569">Kartony w przygotowaniu
-          <input type="number" name="gls_cartons" min="1" required inputmode="numeric" value="{{ request.GET.gls_cartons }}"
+          <input type="number" name="pack_cartons" min="1" required inputmode="numeric" value="{{ request.GET.pack_cartons }}"
                  style="width:100%;font-size:22px;font-weight:800;padding:8px;border:1px solid #cbd5e1;border-radius:10px;margin-top:4px" placeholder="np. 5"></label>
         <label style="flex:1;font-size:12px;font-weight:700;color:#475569">Zrobione paczki
-          <input type="number" name="gls_parcels" min="1" required inputmode="numeric" value="{{ request.GET.gls_parcels }}"
+          <input type="number" name="pack_parcels" min="1" required inputmode="numeric" value="{{ request.GET.pack_parcels }}"
                  style="width:100%;font-size:22px;font-weight:800;padding:8px;border:1px solid #cbd5e1;border-radius:10px;margin-top:4px" placeholder="np. 2"></label>
       </div>
     </div>
@@ -599,7 +599,7 @@
     });
 
     // ── Klawiatura numeryczna pełnoekranowa (spec UX §2.1): focus na .uconv otwiera
-    //    nakładkę z wielkimi cyframi (rękawice/kciuk). Zapis → event 'input' (przeliczenia).
+    //    nakładkę z wielkimi cyframi (talerze/kciuk). Zapis → event 'input' (przeliczenia).
     (function(){
       var kbTarget = null, kb = null, buf = '';
       function render(){ var d = kb.querySelector('.pvkb__val'); d.textContent = buf || '0'; }
