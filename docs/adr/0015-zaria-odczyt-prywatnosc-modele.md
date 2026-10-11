@@ -1,9 +1,13 @@
 # ADR-0015: ZARIA — tylko odczyt, prywatne rozmowy, model lokalny dla danych wrażliwych
 
-- **Status:** Przyjęta
+- **Status:** Wycofana
 - **Data:** 2026-07-30
 
 ## Kontekst
+
+Moduł ZARIA i oparty na jego kodzie asystent produktu w MATinfo zostały usunięte z aplikacji
+2026-10-11 (kod, modele, tabele, zależności `anthropic`/`openai`) — decyzja nie ma już zastosowania.
+
 
 Asystent AI ZARIA odpowiada na pytania o dane firmy (RAG), pomaga w pisaniu i dotyka danych
 wrażliwych oraz kosztów tokenów. Zakres ustalił wywiad 30 pytań (2026-07-30).
@@ -26,6 +30,5 @@ wrażliwych oraz kosztów tokenów. Zakres ustalił wywiad 30 pytań (2026-07-30
 
 ## Źródła
 
-- `ROADMAP_HU_ZARIA.md` (§ZARIA — Decyzje), `docs/ollama-feasibility.md`
-- `web/ui/zaria_rag.py`, `web/ui/zaria_llm.py`, `web/ui/views/admin_zaria.py`, `web/ui/views/phv_views.py`
-- `web/ui/tests/test_zaria.py`
+- `ROADMAP_HU_ZARIA.md` (sekcje ZARIA usunięte 2026-10-11; decyzje opisane powyżej)
+- Migracja usuwająca tabele: `web/ui/migrations/0194_remove_zaria.py`

@@ -8,7 +8,7 @@ from django.db import transaction
 from django.db.models import Max, Q
 from django.utils import timezone
 
-from huctl.hu_import_parse import (  # noqa: F401  (re-eksport: stare nazwy dla hu.py/ukraine)
+from huctl.hu_import_parse import (  # noqa: F401  (re-eksport: stare nazwy dla hu.py)
     _HU_ALIASES, _TRUTHY, _map_hu_columns, _match_product_in_ref, _parse_date_any,
     cell as _cell, is_truthy, item_units, parse_float, parse_qty, resolve_product_code,
 )

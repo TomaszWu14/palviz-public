@@ -1,6 +1,6 @@
 @echo off
 rem Testy z poprawnym env (Windows). Tryby jak web/scripts/test.sh (i Makefile):
-rem   test.bat                 -> manage.py check + 4 zestawy Django (ui/wh3d/huctl/transport)
+rem   test.bat                 -> manage.py check + 3 zestawy Django (ui/huctl/transport)
 rem   test.bat fast            -> palletizer + check + Django --failfast        (= make test)
 rem   test.bat full            -> + limit 500 linii, makemigrations --check, pokrycie, straznik
 rem                               liczby testow; raport HTML w htmlcov\         (= make test-full)
@@ -19,7 +19,7 @@ set DJANGO_ALLOWED_HOSTS=*
 set PYTHONPATH=.
 set PY=python
 if exist ".venv\Scripts\python.exe" set PY=.venv\Scripts\python.exe
-set SUITES=ui.tests wh3d.tests huctl.tests transport.tests
+set SUITES=ui.tests huctl.tests transport.tests
 
 if /i "%~1"=="fast" goto fast
 if /i "%~1"=="full" goto full

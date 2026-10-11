@@ -5,7 +5,7 @@ wymusił, co postanowiono i z jakimi skutkami. Rejestr odpowiada na pytanie „c
 czy zaległość?”, zanim ktoś ją cofnie. Obejmuje decyzje architektoniczne (np. monolit, WSGI),
 infrastrukturalne (CI, baza) i procesowe (reguły Kontroli HU, statusy wysyłek).
 
-Dokumenty analityczne i feasibility (np. [`ollama-feasibility.md`](../ollama-feasibility.md)) żyją
+Dokumenty analityczne i feasibility (np. [`deploy-hardening-audit.md`](../deploy-hardening-audit.md)) żyją
 w `docs/*.md`; wiążąca decyzja, która z nich wynika, trafia tutaj jako ADR.
 
 ## Zasady
@@ -63,7 +63,7 @@ Co zyskujemy, co tracimy, co trzeba pilnować (test / strażnik CI).
 | [0012](0012-wymuszenie-skanu-bez-datawedge.md) | Wymuszenie realnego skanu HU bez DataWedge | Przyjęta | 2026-08-19 |
 | [0013](0013-kontrola-hu-decyzje-epiku.md) | Kontrola HU — kluczowe decyzje epiku | Przyjęta | 2026-07-30 |
 | [0014](0014-zasady-testow-p1-p6.md) | Zasady systemu testów regresji (P-1…P-6) | Przyjęta | 2026-09-26 |
-| [0015](0015-zaria-odczyt-prywatnosc-modele.md) | ZARIA — tylko odczyt, prywatne rozmowy, model lokalny | Przyjęta | 2026-07-30 |
+| [0015](0015-zaria-odczyt-prywatnosc-modele.md) | ZARIA — tylko odczyt, prywatne rozmowy, model lokalny | Wycofana | 2026-07-30 |
 | [0016](0016-nawigacja-launcher-ctrl-k.md) | Nawigacja — launcher Ctrl+K zamiast grupowania paska | Przyjęta | 2026-08-08 |
 | [0017](0017-migracje-expand-contract.md) | Migracje expand → contract | Przyjęta | 2026-09-28 |
 | [0018](0018-decyzje-procesowe-2026-09-28.md) | Decyzje procesowe 2026-09-28 | Przyjęta | 2026-09-28 |

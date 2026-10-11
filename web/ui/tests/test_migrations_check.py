@@ -1,7 +1,7 @@
 """DATA-02: strażnik higieny łańcucha migracji — zero brakujących migracji.
 
 Pina na stałe wynik `makemigrations --check --dry-run` dla wszystkich czterech
-appek (`ui`, `wh3d`, `huctl`, `transport`), obok istniejącego hooka pre-commit
+appek (`ui`, `huctl`, `transport`), obok istniejącego hooka pre-commit
 (`web/scripts/migrations_check.py`), który działa tylko przy zmianach `models*`.
 Ten test biegnie zawsze w ramach `manage.py test ui.tests` (CI + lokalnie), więc
 łapie też rozbieżności wprowadzone poza commitem zmieniającym pliki modeli."""
@@ -22,7 +22,7 @@ class MigrationsCheckTests(SimpleTestCase):
         out = StringIO()
         try:
             call_command(
-                "makemigrations", "ui", "wh3d", "huctl", "transport",
+                "makemigrations", "ui", "huctl", "transport",
                 check=True, dry_run=True, stdout=out, stderr=out, verbosity=1,
             )
         except SystemExit:

@@ -31,7 +31,6 @@ const VIEWS: [string, string | null, string][] = [
   ['kartony', 'superuser', '/planner/cartons/'],
   ['klienci', 'superuser', '/planner/customers/'],
   ['wysylki', 'superuser', '/planner/shipments/'],
-  ['magazyn', 'Transport', '/magazyn/'],
   ['skaner-menu', 'Kontrola HU', '/control/'],
   ['skaner-zmiana', 'Kontrola HU', '/control/my/'],
 ];

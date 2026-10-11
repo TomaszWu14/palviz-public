@@ -25,9 +25,10 @@ STAFF = {"ninja_api:openapi-json", "ninja_api:openapi-view"}   # docs_decorator=
 TOKEN = {"ui:quote_response", "ui:wh_readiness_response", "ui:driver_form", "ui:driver_confirm"}
 IN_VIEW = {  # widoki sprawdzające dostęp w środku (bez dekoratora)
     "ui:notifications_poll": ("login_miekki", "anon → 200 z pustym JSON (bez danych); zalogowany → 200"),
-    "ui:zaria_api_chat": ("login_401", "anon → 401 JSON; zalogowany → wg budżetu/modelu ZARIA"),
     "ui:password_change": ("login", "PasswordChangeView (login_required w dispatch)"),
 }
+# Ręczne uwagi do tras (przeżywają regenerację pliku).
+ROUTE_NOTE = {"ui:planner_shipment_route_map": "INT-005: proxy PNG mapy trasy (Static Maps pobierane po stronie serwera); 404 gdy Google niedostępne"}
 DECISIONS = {}   # B-001 / B-003 naprawione (PR #694) — strażnicy widoków są już docelowi
 NARROW = ["Obsługa klienta", "Magazyn", "Kontrola HU", "Lider kontroli", "Optymalizacja kartonów"]
 # Q-43 (decyzja właściciela 2026-09-28): trasy „tylko login” dostępne dla KAŻDEJ zalogowanej roli —
@@ -92,6 +93,7 @@ def main():
             entry["wymaga_obiektu"] = True
         if r["methods"] == ["POST"]:
             entry["GET"] = 405
+        note = note or ROUTE_NOTE.get(r["name"])
         if note:
             entry["uwaga"] = note
         out[r["name"]] = entry
@@ -114,7 +116,6 @@ def main():
             "/media/quality/…": {"anon": 302, "zalogowany": 200},
             "/media/hu_control/…": {"anon": 302, "zalogowany": 200, "uwaga": "B-002 naprawione (PR #694)"},
             "/media/phv/…": {"anon": 302, "zalogowany": 200, "uwaga": "B-002 naprawione (PR #694)"},
-            "/media/ewm_tasks/…": {"anon": 302, "zalogowany": 200},
             "/media/(grafiki, modele 3D, załączniki wycen)": {"anon": 200, "uwaga": "publiczne z założenia?"},
         },
     }

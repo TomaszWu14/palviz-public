@@ -40,7 +40,7 @@ class DocsDriftTests(SimpleTestCase):
     """CLAUDE.md/README to instrukcja dla ludzi i asystentów — rozjazd z kodem (audyt DOC-001/002:
     polecenie testów uruchamiało 133 z 286 modułów, „seven role groups” przy 9 grupach)."""
 
-    SUITES = ("ui.tests", "wh3d.tests", "huctl.tests", "transport.tests")
+    SUITES = ("ui.tests", "huctl.tests", "transport.tests")
 
     def test_documented_test_command_runs_all_app_suites(self):
         for doc in ("CLAUDE.md", "README.md"):

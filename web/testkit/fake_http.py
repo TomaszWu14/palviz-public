@@ -1,6 +1,5 @@
-"""Fałszywy HTTP dla trzech transportów używanych w GROOVE: ``requests`` (NBP, Teams,
-Power BI, Master Data API, OIDC, MSAL), ``urllib.request.urlopen`` (Twilio, Google Maps, n8n,
-health-check Ollamy) i ``httpx`` (SDK Anthropic/OpenAI). Jedna tabela tras dla wszystkich.
+"""Fałszywy HTTP dla dwóch transportów używanych w GROOVE: ``requests`` (NBP, Teams,
+Power BI, Master Data API, OIDC, MSAL), ``urllib.request.urlopen`` (Twilio, Google Maps, n8n). Jedna tabela tras dla obu.
 
     with FakeHTTP() as http:
         http.add(r"api\\.nbp\\.pl", Reply(json={"rates": [{"mid": 4.25}]}))
@@ -94,17 +93,6 @@ class FakeHTTP:
             raise urllib.error.HTTPError(full, reply.status, "testkit", hdrs, io.BytesIO(reply.content()))
         return urllib.response.addinfourl(io.BytesIO(reply.content()), hdrs, full, reply.status)
 
-    # ── httpx (SDK Anthropic / OpenAI) ────────────────────────────────────────────────────
-    def _httpx_handle(self, transport, request):
-        import httpx
-        reply = self._match(request.method, str(request.url), request.read())
-        if reply.raises == "timeout":
-            raise httpx.ReadTimeout("testkit: timeout", request=request)
-        if reply.raises == "connection":
-            raise httpx.ConnectError("testkit: brak połączenia", request=request)
-        return httpx.Response(reply.status, headers=reply.header_map(), content=reply.content(),
-                              request=request)
-
     def __enter__(self):
         fake = self
         self._patches = [mock.patch("urllib.request.urlopen", side_effect=self._urlopen)]
@@ -113,13 +101,6 @@ class FakeHTTP:
             self._patches.append(mock.patch.object(
                 requests.adapters.HTTPAdapter, "send",
                 lambda adapter, request, **kw: fake._requests_send(adapter, request, **kw)))
-        except ImportError:
-            pass
-        try:
-            import httpx
-            self._patches.append(mock.patch.object(
-                httpx.HTTPTransport, "handle_request",
-                lambda transport, request: fake._httpx_handle(transport, request)))
         except ImportError:
             pass
         for p in self._patches:

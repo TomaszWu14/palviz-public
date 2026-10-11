@@ -1,7 +1,6 @@
 """Limiter żądań dla publicznych formularzy (audyt SEC-014): reset hasła, linki z tokenem.
 
-Okno stałe w cache (Redis na prod; IGNORE_EXCEPTIONS — awaria Redisa = limit nieegzekwowany,
-jak w ui/zaria_ratelimit.py). Liczymy tylko POST — GET formularza nic nie wysyła."""
+Okno stałe w cache (Redis na prod; IGNORE_EXCEPTIONS — awaria Redisa = limit nieegzekwowany). Liczymy tylko POST — GET formularza nic nie wysyła."""
 from functools import wraps
 
 from django.conf import settings

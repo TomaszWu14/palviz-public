@@ -7,7 +7,7 @@ Guidance for AI assistants (and humans) working in this repository.
 PalViz is a warehouse / palletization planning application for **ACME
 Group**. It started as a CLI palletization calculator (`main.py` + the `palletizer`
 package) and grew into a full Django web app (`web/`) covering product master data,
-carton/pallet optimization, warehouse 3D maps, shipments & freight quoting, driver
+carton/pallet optimization, shipments & freight quoting, driver
 dispatch, slotting/picking analytics, and a barcode-scanner Handling-Unit (HU) control
 module.
 
@@ -35,14 +35,14 @@ There are two largely independent code surfaces that share the same packing core
 1. **`palletizer/`** — a standalone, framework-free Python package: pure packing
    geometry, domain dataclasses, CSV/CLI IO, and matplotlib/plotly visualization.
    Driven by `main.py`. Has no Django dependency.
-2. **`web/`** — the Django project (`palletweb`) with four domain apps plus a shared kernel: **`ui`** (the core —
-   master data, palletization, tasks, ZARIA, PWA, plus shared infra: roles, api,
-   middleware, context processors), **`wh3d`** (warehouse 3D map/editor/heatmap),
-   **`huctl`** (Kontrola HU scanner module), and **`transport`** (shipments, quoting,
+2. **`web/`** — the Django project (`palletweb`) with three domain apps plus a shared kernel: **`ui`** (the core —
+   master data, palletization, tasks, PWA, warehouse data — SAP WMS snapshots, layout,
+   rack types, picker activity, slotting — plus shared infra: roles, api,
+   middleware, context processors), **`huctl`** (Kontrola HU scanner module), and **`transport`** (shipments, quoting,
    driver dispatch). It imports `palletizer` as a local dependency for layer-packing
    math. Shared kernel **`core`** (roles, middleware, context processors, hub module
-   registry, health) has no models. Tests live per app: `ui/tests`, `wh3d/tests`,
-   `huctl/tests`, `transport/tests` (~295 modules).
+   registry, health) has no models. Tests live per app: `ui/tests`,
+   `huctl/tests`, `transport/tests`.
 
 ## Layout
 
@@ -72,10 +72,10 @@ web/
   manage.py
   palletweb/                Django project: settings, urls, wsgi, celery
     config.py               Typed/validated env config (pydantic-settings, fail-fast)
-  ui/                       Core Django app (master data, palletization, tasks, ZARIA)
+  ui/                       Core Django app (master data, palletization, tasks, warehouse data)
     models/                 Domain-split package: catalog, packaging, packspec,
-                            customers, warehouse, carton_opt, comms, tasks_users,
-                            integrations, zaria (re-exported via __init__.py)
+                            customers, warehouse, warehouse_data, carton_opt, comms,
+                            tasks_users, integrations (re-exported via __init__.py)
     views/                  Feature-split view package (see below)
     forms.py, forms_calc.py, forms_master.py, forms_transport.py
     admin.py, roles.py, oidc.py, tasks.py, powerbi.py
@@ -84,21 +84,16 @@ web/
     platform_modules.py     GROOVE hub module registry (MODULES / modules_for)
     notifications.py        Notifications + stock-discrepancy → task engine
     context_processors.py   Injects role flags + branding into every template
-    api.py, nbp.py, slotting.py, labels.py,
-    tables.py, filters.py, health_urls.py
+    api.py, nbp.py, slotting.py, labels.py
     templatetags/           palviz_extras
     management/commands/    create_roles, import_locations, powerbi_connect
     migrations/             ~190 migrations
     templates/ui/           Templates grouped by feature
     static/ui/              JS (vendored three.js/echarts/plotly), icons, css
     tests/                  Django tests for ui (other apps have their own tests/)
-  wh3d/                     App: warehouse 3D map/editor/heatmap/rack types
-    models.py, views/       warehouse_map*, warehouse_editor, warehouse_heatmap,
-                            warehouse_model, warehouse_master, warehouse_racktype,
-                            locations_master
   huctl/                    App: Kontrola HU (scanner)
     models*.py, views/      hu, hu_control, hu_count, hu_queue, hu_leader,
-                            hu_transaction*, hu_print, hu_reports, hu_stock, …
+                            hu_transaction*, hu_reports, hu_stock, …
   transport/                App: shipments, quoting, drivers
     models*.py, views/      shipments*, quotes, driver, carriers, readiness,
                             mailing, kpi, docs, customers, imports_excel
@@ -115,7 +110,7 @@ run.bat, setup.bat          Windows local-dev convenience scripts
 
 ### The `views/` packages
 
-Views were split from a former monolithic `views.py`. Each app (`ui`, `wh3d`, `huctl`,
+Views were split from a former monolithic `views.py`. Each app (`ui`, `huctl`,
 `transport`) has a `views/` package; each feature lives in its own module (<500 lines)
 and `views/__init__.py` re-exports everything with `from .x import *`. Shared imports,
 constants, and helpers live under `ui/views/core/`:
@@ -129,9 +124,8 @@ constants, and helpers live under `ui/views/core/`:
 
 `ui/views/` feature modules include: `data_center`, `products*`, `cartons`,
 `inner_packs`, `categories`, `instructions`, `calc`, `carton_opt*`, `packspec`, `phv*`,
-`locations`, `warehouse_search`, `slotting`, `reports`, `tasks`, `zaria*`, `admin*`,
-`pwa`, `imports_*`, `artwork`, `misc`. Warehouse-3D views are in `wh3d/views/`, HU
-views in `huctl/views/`, shipment/quote/driver views in `transport/views/`.
+`locations`, `warehouse_search`, `warehouse_imports`, `warehouse_racktype`, `slotting`,
+`reports`, `tasks`, `admin*`, `pwa`, `imports_*`, `artwork`, `misc`. HU views in `huctl/views/`, shipment/quote/driver views in `transport/views/`.
 
 When adding a view: put it in the right app's feature module, register the URL in
 `web/ui/urls.py` (all URLs stay in the `ui` namespace, so reverse as `ui:<name>`), and
@@ -165,7 +159,7 @@ pallets").
 Authorization is group-based — see `web/ui/roles.py`. **Nine** Polish-named groups:
 `Administratorzy`, `Master Data`, `Transport`, `Kontrola HU`, `Lider kontroli`,
 `Podgląd`, `Obsługa klienta` (a narrow role limited to the customer database),
-`Magazyn` (warehouse operator: HU label printing), and `Optymalizacja kartonów`
+`Magazyn` (warehouse operator: MATinfo product lookup), and `Optymalizacja kartonów`
 (carton-fill optimization operator).
 Superusers always pass. Guard views with `@role_required(...)` (or the convenience
 decorators defined at the bottom of `roles.py`: `_admin_only`, `_master_data`,
@@ -266,13 +260,13 @@ cd web
 DJANGO_SECRET_KEY=ci-test-secret DJANGO_DEBUG=true DJANGO_ALLOWED_HOSTS='*' \
   PYTHONPATH=.. python manage.py check
 DJANGO_SECRET_KEY=ci-test-secret DJANGO_DEBUG=true DJANGO_ALLOWED_HOSTS='*' \
-  PYTHONPATH=.. python manage.py test ui.tests wh3d.tests huctl.tests transport.tests -v 1
+  PYTHONPATH=.. python manage.py test ui.tests huctl.tests transport.tests -v 1
 ```
 The Django app must be able to import `palletizer`, hence `PYTHONPATH` points at the
 repo root. Tests use Django's `unittest`-style runner (no pytest config is required in
-CI). The ~295 test modules (split per app: ui / wh3d / huctl / transport) are mostly
+CI). The test modules (split per app: ui / huctl / transport) are mostly
 `SimpleTestCase` smoke/render tests plus targeted logic tests (packing, roles,
-shipments, HU control, warehouse, imports, Power BI, tasks, ZARIA).
+shipments, HU control, warehouse, imports, Power BI, tasks).
 
 **Shortcut:** `sh web/scripts/test.sh [labels…]` (Windows cmd: `web\scripts\test.bat`)
 sets the env, runs `manage.py check`, then the given test labels (no labels = full
@@ -296,10 +290,8 @@ suite runs before the PR (and in CI):**
 | `palletizer/` | `python -m unittest discover -s palletizer/tests` + `test_packing test_calc_optimal_layer` |
 | `huctl/` (Kontrola HU) | `huctl.tests.test_hu_control huctl.tests.test_hu_count_gates huctl.tests.test_hu_queue_order huctl.tests.test_hu_leader_panel huctl.tests.test_kpi_by_zone huctl.tests.test_scan_enforce` |
 | `transport/` | `transport.tests.test_shipment_calc ui.tests.test_shipment_ffd transport.tests.test_quote transport.tests.test_quote_calc transport.tests.test_driver huctl.tests.test_incomplete_shipment` |
-| `wh3d/` | `wh3d.tests.test_warehouse_layout wh3d.tests.test_warehouse_model_view wh3d.tests.test_warehouse_builder wh3d.tests.test_map_locations_json ui.tests.test_wh3d_boundary` |
 | `ui/roles.py` / access | `ui.tests.test_group_contract ui.tests.test_role_enforcement ui.tests.test_platform_modules` |
 | PHV scanner | `ui.tests.test_phv ui.tests.test_phv_bugfixes ui.tests.test_phv_stock_totals` |
-| ZARIA | `ui.tests.test_zaria ui.tests.test_zaria_api ui.tests.test_zaria_rag` |
 | `views/__init__` wiring / URLs | `ui.tests.test_views_package` (+ `manage.py check`) |
 
 ## Configuration (environment variables)
@@ -348,9 +340,8 @@ Below is the operational/runtime shortlist:
 
 - **Everything is synchronous (WSGI).** No `async def` anywhere; prod runs gunicorn
   sync workers (`palletweb.wsgi`, `WEB_CONCURRENCY`). Long work goes to **Celery**
-  (`tasks.py`), and long-lived responses (ZARIA SSE in `zaria_stream.py`, print jobs in
-  `huctl/views/hu_print.py`) use sync `StreamingHttpResponse` generators — note each
-  such stream ties up a whole gunicorn worker. Write new views sync; don't introduce
+  (`tasks.py`). There are no streaming (`StreamingHttpResponse`/SSE) views — if you add
+  one, remember each open stream ties up a whole gunicorn worker. Write new views sync; don't introduce
   `async def` views without switching to ASGI first.
 - **After editing models or URLs, run `manage.py check`** (2 s, allowlisted) — it
   catches broken star-exports and import errors before the test suite does. Pre-commit

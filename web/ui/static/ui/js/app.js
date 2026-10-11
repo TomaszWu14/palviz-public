@@ -93,7 +93,7 @@
 
 /* ── Strażnik double-submit (UX audyt 2026-09, top-1) ──
    Każdy form[method=post]: po submit blokuje ponowny submit, wyłącza przyciski
-   i pokazuje spinner. Opt-out: data-no-guard. Szanuje preventDefault (fetch/ZARIA). */
+   i pokazuje spinner. Opt-out: data-no-guard. Szanuje preventDefault (fetch). */
 (function () {
   "use strict";
   function submitButtons(f) {

@@ -15,13 +15,9 @@ MODULE_ICONS = {
     "data_center": "database",
     "paletyzacja": "layers",
     "transport": "truck",
-    "magazyn": "warehouse",
     "kontrola_hu": "scan-barcode",
-    "wydruk_hu": "printer",
     "zadania": "bell",
     "klienci": "users",
-    "zaria": "sparkles",
-    "wysylka_ukraina": "globe",
     "phv": "boxes",
     "carton_opt": "package",
 }

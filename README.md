@@ -4,13 +4,13 @@
 
 ![Załadunek luzem — kartony ułożone w kontenerze 40' HC w widoku 3D](docs/img/zaladunek-3d.png)
 
-**Platforma magazynowa dla zespołów magazynu, transportu i obsługi klienta: planuje palety i załadunek w 3D, wycenia przesyłki, pokazuje mapę magazynu i prowadzi kontrolę HU na skanerach.**
+**Platforma magazynowa dla zespołów magazynu, transportu i obsługi klienta: planuje palety i załadunek w 3D, wycenia przesyłki, analizuje zajętość magazynu i prowadzi kontrolę HU na skanerach.**
 
 > **Projekt portfolio.** Nazwy firm są zamienione na fikcyjne, a dane demo i testowe są syntetyczne.
 
 Aplikacja magazynowo-paletyzacyjna dla **ACME**. Platforma
 GROOVE (modularny monolit Django) obejmuje master data, paletyzację, wycenę przesyłek,
-mapę 3D magazynu z heatmapą, kontrolę HU (skaner), zadania/powiadomienia i bazę klientów.
+dane magazynowe (zajętość, slotting), kontrolę HU (skaner), zadania/powiadomienia i bazę klientów.
 Rdzeń pakowania to samodzielny, bezframeworkowy pakiet `palletizer/` (używany też przez
 web). Szczegóły architektury: [`ARCHITECTURE.md`](ARCHITECTURE.md); wskazówki dla
 asystentów AI i pełny opis modułów: [`CLAUDE.md`](CLAUDE.md).
@@ -22,7 +22,7 @@ asystentów AI i pełny opis modułów: [`CLAUDE.md`](CLAUDE.md).
 | | |
 |---|---|
 | **Problem** | Planowanie palet i wysyłek, kontrola HU i obraz magazynu rozproszone w Excelu i SAP — brak wspólnego narzędzia dla magazynu, transportu i obsługi klienta. |
-| **Rozwiązanie** | Modularny monolit: master data i optymalizacja kartonów, paletyzacja (heurystyki + OR-Tools/py3dbp), wycena przesyłek, kontrola HU na skanerach (PWA), mapa 3D magazynu z heatmapą ruchu, zadania i powiadomienia, asystent AI. |
+| **Rozwiązanie** | Modularny monolit: master data i optymalizacja kartonów, paletyzacja (heurystyki + OR-Tools/py3dbp), wycena przesyłek, kontrola HU na skanerach (PWA), zajętość magazynu i slotting, zadania i powiadomienia. |
 | **Stack** | Python 3.11, Django 5.2 LTS, PostgreSQL 16, Celery, django-ninja (API), three.js / ECharts, Playwright, Docker, Coolify. |
 | **Jakość** | Testy jednostkowe paletyzatora + testy Django z pokryciem (próg 80%), CI na GitHub Actions z PostgreSQL, CodeQL i skany bezpieczeństwa. |
 | **Dane** | Wszystkie dane są fikcyjne — m.in. układ hali B0 pochodzi z generatora `web/ui/data/generate_synthetic_b0.py`. |
@@ -31,7 +31,7 @@ asystentów AI i pełny opis modułów: [`CLAUDE.md`](CLAUDE.md).
 
 - **Projekt i implementacja całości** — jestem jedynym autorem: od analizy procesów magazynowych, przez model danych i architekturę, po UI, testy, CI/CD i wdrożenie.
 - **Rdzeń pakowania** `palletizer/` — heurystyki warstw (MaxRects, wzory cegiełkowe, pasy mieszane) + OR-Tools/py3dbp, bez zależności od Django.
-- **Skala:** ok. 2700 testów (biblioteka pakowania + Django na PostgreSQL w CI), ok. 420 tras URL w modułach `ui`, `wh3d`, `huctl`, `transport`, `core`.
+- **Skala:** ok. 2700 testów (biblioteka pakowania + Django na PostgreSQL w CI), ok. 420 tras URL w modułach `ui`, `huctl`, `transport`, `core`.
 - **Proces i jakość:** 18 zapisanych decyzji architektonicznych ([`docs/adr/`](docs/adr/)), rejestr błędów wykrytych przez testy regresji ([`BUGS-FOUND.md`](BUGS-FOUND.md)), auto-merge przez PR i deploy na Coolify.
 
 ## Dlaczego ten stack
@@ -41,7 +41,6 @@ Django jako modularny monolit z hubem modułów daje jeden deploy, wspólne upra
 ## Ograniczenia i co dalej
 
 - **SAP tylko do odczytu, bez czasu rzeczywistego** — integracja SAP real-time jest zawieszona ([`ROADMAP_HU_ZARIA.md`](ROADMAP_HU_ZARIA.md)).
-- **Asystent ZARIA** — streaming, załączniki i RAG czekają na klucz API / serwer Ollama; dostawcy zgodni z OpenAI wymagają doinstalowania pakietu `openai` (B-010 w [`BUGS-FOUND.md`](BUGS-FOUND.md)).
 - **CSP w trybie report-only** — polityka jest raportowana, a nie wymuszana ([ADR-0008](docs/adr/0008-csp-report-only.md)).
 - **Zatwierdzanie błędów kontroli HU przez lidera** odroczone — workflow do zaprojektowania.
 - **Monolit** — rozbicie na usługi jest tylko rozważane ([`ARCHITECTURE-MICROSERVICES.md`](ARCHITECTURE-MICROSERVICES.md)); dziś wszystko wdraża się razem.
@@ -123,7 +122,7 @@ python -m unittest discover -s palletizer/tests -p "test_*.py"
 # Django (z web/, z env)
 cd web
 DJANGO_SECRET_KEY=ci-test-secret DJANGO_DEBUG=true DJANGO_ALLOWED_HOSTS='*' \
-  PYTHONPATH=.. python manage.py test ui.tests wh3d.tests huctl.tests transport.tests -v 1
+  PYTHONPATH=.. python manage.py test ui.tests huctl.tests transport.tests -v 1
 ```
 
 CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml))

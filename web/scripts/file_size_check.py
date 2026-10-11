@@ -7,12 +7,11 @@ Convention (`.planning/codebase/CONVENTIONS.md`, "File size convention"):
   and the exact file `web/palletweb/settings.py` (documented exception).
 
 STRUCT-02 compliance decision (recorded at the time this gate was added): the
-real tree is clean under the limit. Three files sit close to 500 and are
+real tree is clean under the limit. Two files sit close to 500 and are
 deliberately left unsplit — splitting a 495-line file to satisfy a "~500"
 convention is churn with no benefit:
   - web/ui/urls.py (495)
   - web/ui/tests/test_hu_control.py (495)
-  - web/wh3d/views/warehouse_map_core.py (494)
 
 Usage:
     python web/scripts/file_size_check.py

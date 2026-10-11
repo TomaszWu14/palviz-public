@@ -7,14 +7,8 @@ from .core import (
 )
 from ..roles import ALL_GROUPS, ROLE_LABELS, MODULE_ROLES
 from ..platform_modules import MODULES, NAV_GROUP_ORDER, can_open_module
-from ..models import (UserModuleAccess, ZariaAdminAudit,
-                      AccessAudit)
+from ..models import UserModuleAccess, AccessAudit
 
-
-
-def _zaria_audit(request, action, detail=""):
-    """Zapisz zdarzenie administracyjne ZARIA do audytu (bez treści rozmów)."""
-    ZariaAdminAudit.objects.create(actor=request.user, action=action[:60], detail=str(detail)[:400])
 
 
 def _access_audit(request, action, target_user=None, detail=""):
@@ -310,9 +304,9 @@ def admin_role_matrix(request):
         "instructions_write": "Instrukcje paletyzacji — edycja", "reports_manage": "Zgłoszenia — zarządzanie",
         "carriers_write": "Przewoźnicy — edycja", "shipments_write": "Wysyłki — tworzenie",
         "shipments_read": "Wysyłki — podgląd", "stock_write": "Ruchy towarowe — dodawanie",
-        "occupancy_read": "Wypełnienie magazynu — podgląd", "warehouse_model": "Model magazynu 3D/2D",
+        "occupancy_read": "Wypełnienie magazynu — podgląd",
         "excel_templates": "Szablony Excel / import", "calculator": "Kalkulator paletyzacji",
-        "user_management": "Zarządzanie użytkownikami", "hu_print": "Wydruk HU (etykiety)",
+        "user_management": "Zarządzanie użytkownikami",
     }
     cap_rows = [{
         "label": label,
@@ -390,7 +384,7 @@ def admin_control_zones(request):
     })
 
 __all__ = [
-    '_zaria_audit', '_access_audit', '_online_user_ids', '_role_groups',
+    '_access_audit', '_online_user_ids', '_role_groups',
     'admin_panel', 'admin_users', 'admin_user_form', 'admin_users_import',
     'admin_user_delete', 'admin_user_toggle_active', 'admin_module_access',
     'admin_role_matrix', 'admin_control_zones',

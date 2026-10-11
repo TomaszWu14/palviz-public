@@ -25,7 +25,7 @@ def _wh(name="mag", group=GROUP_WAREHOUSE):
 
 class RefSuggestSharedTests(TestCase):
     """UX #9: typeahead REF (phv_suggest) jest współdzielony przez carton_opt,
-    warehouse/search, ukraine i panel lidera — guard `_any_role`, więc rola bez
+    warehouse/search, panel lidera — guard `_any_role`, więc rola bez
     modułu phv (np. Optymalizacja kartonów) też dostaje podpowiedzi, a nie 403."""
 
     def test_optimizer_without_phv_module_gets_suggestions(self):

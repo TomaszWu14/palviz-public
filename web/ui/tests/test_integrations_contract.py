@@ -2,7 +2,7 @@
 (ok, http_4xx, http_5xx, timeout, empty, bad_format) na PRAWDZIWYM kodzie aplikacji.
 
 Sprawdza, że awaria dostawcy kończy się udokumentowanym zachowaniem funkcji (None / False /
-wyjątek łapany przez wołającego / przyjazny ZariaLLMError), a nie 500. Sieć jest zablokowana
+wyjątek łapany przez wołającego), a nie 500. Sieć jest zablokowana
 (testkit.net) — każda odpowiedź pochodzi z testkit.integrations.
 """
 import unittest
@@ -82,10 +82,6 @@ class BestEffortIntegrationTests(SimpleTestCase):
             emit_event("x", {})
         self.assertIn(b'"kind": "x"', http.calls[0].body)
 
-    def test_ollama_health_check(self):
-        from ui.zaria_llm import provider_health
-        self.run_matrix("ollama", lambda: provider_health("ollama")[0], lambda s: s not in FAILS)
-
 
 @override_settings(**it.INTEGRATION_SETTINGS)
 class RaisingIntegrationTests(TestCase):
@@ -152,41 +148,6 @@ class RaisingIntegrationTests(TestCase):
                 else:
                     with self.assertRaises(requests.RequestException):
                         backend.get_token({"code": "c"})
-
-
-@override_settings(**it.INTEGRATION_SETTINGS)
-class ZariaLLMTests(SimpleTestCase):
-    MODEL = SimpleNamespace(provider="anthropic", key="claude-haiku-4-5-20251001")
-    MSG = [{"role": "user", "content": "Ile kartonów na palecie?"}]
-
-    def test_anthropic_every_scenario(self):
-        from ui.zaria_llm import ZariaLLMError, complete
-        for scenario in ALL:
-            with self.subTest(scenario=scenario), it.integration("anthropic", scenario) as http:
-                if scenario == OK:
-                    text, tin, tout, _ms = complete(self.MODEL, self.MSG, "system")
-                    self.assertEqual((text, tin, tout), ("Na palecie EU zmieści się 48 kartonów.", 12, 9))
-                    self.assertNotIn(b"sk-ant-test", http.calls[0].body)   # klucz tylko w nagłówku
-                else:
-                    with self.assertRaises(ZariaLLMError) as ctx:
-                        complete(self.MODEL, self.MSG, "system")
-                    self.assertNotIn("sk-ant", str(ctx.exception))
-
-    def test_local_and_openai_failures_are_friendly(self):
-        from ui.zaria_llm import ZariaLLMError, complete
-        for provider in ("ollama", "openai", "azure_openai"):
-            model = SimpleNamespace(provider=provider, key="llama3.1")
-            for scenario in ALL[1:]:
-                with self.subTest(provider=provider, scenario=scenario), it.integration(provider, scenario):
-                    with self.assertRaises(ZariaLLMError):
-                        complete(model, self.MSG, "system")
-
-    # B-010 (naprawione): pakiet `openai` w requirements.txt
-    def test_ollama_answers_when_server_ok(self):
-        from ui.zaria_llm import complete
-        with it.integration("ollama", "ok"):
-            text, *_ = complete(SimpleNamespace(provider="ollama", key="llama3.1"), self.MSG, "")
-        self.assertEqual(text, "Odpowiedź testowa.")
 
 
 class SentryAndMailTests(TestCase):

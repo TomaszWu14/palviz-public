@@ -83,14 +83,9 @@ _SALES_FC = ["#fde68a","#fde68a", "#fcd34d","#fcd34d", "#f59e0b","#f59e0b",
              "#f59e0b","#f59e0b", "#fbbf24","#fbbf24", "#fbbf24","#fbbf24"]
 
 
-
-
-
-
 # ═══════════════════════════════════════════════════════════════════════════════
 #  Analytics
 # ═══════════════════════════════════════════════════════════════════════════════
-
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -98,13 +93,7 @@ _SALES_FC = ["#fde68a","#fde68a", "#fcd34d","#fcd34d", "#f59e0b","#f59e0b",
 # ═══════════════════════════════════════════════════════════════════════════════
 
 
-
-
-
-
-
 # ─── Warehouse 3D Map ─────────────────────────────────────────────────────────
-
 
 
 # SAP WMS column name map (Polish SAP export)
@@ -129,108 +118,12 @@ _SAP_COLS = {
 }
 
 
-
-
-
 _COL_IDX = {'A': 0, 'B': 1, 'C': 2, 'D': 3,
              'S': 0, 'T': 1, 'U': 2, 'V': 3, 'W': 4,
              'G': 0, 'H': 1,
              'X': 0, 'J': 1, 'K': 2,
              'Y': 0, 'L': 1, 'M': 2,
              'Z': 0, 'N': 1, 'O': 2}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# ── Combined upload (layout cells + master data + rack types) ─────────────────
-
-# Column alias mapping for the combined upload
-_COMBINED_COL_ALIASES = {
-    # Dopasowanie: substring, PIERWSZA pasująca komórka w kolejności kolumn wygrywa —
-    # dzięki temu w surowym eksporcie EWM "typ"→"Typ magazynu" (kol. B) łapie się przed
-    # "Typ st. miej. skł.", a "waga"→"Maksymalna waga" przed "Wykorzyst. waga".
-    "location_code":  ["lokalizacja", "adres", "miejsce składowania", "miejsce",
-                       "location", "bin", "location_code"],
-    "warehouse_type": ["typ magazynu", "typ", "type", "rack_type", "typ_lok", "warehouse_type"],
-    "height_mm":      ["wysokość", "wysokosc", "height", "clearance", "height_mm"],
-    "width_mm":       ["szerokość", "szerokosc", "width", "width_mm"],
-    "depth_mm":       ["głębokość", "glebokosc", "depth", "depth_mm"],
-    "max_weight_kg":  ["maksymalna waga", "waga_max", "max_weight", "waga", "max_weight_kg"],
-    # EWM: pełna nazwa z diakrytykami — samo "objetosc" nie łapie "Maksymalna objętość",
-    # a generyczne "objętość" złapałoby wcześniejszą kolumnę "Objętość ładunku".
-    "max_volume_m3":  ["maksymalna objętość", "objetosc_max", "max_volume", "objetosc",
-                       "max_volume_m3"],
-    "level_heights":  ["level_heights", "wysokosci_poziomow"],
-    "level_cols":     ["level_cols", "kolumny_poziomow"],
-}
-
-# FALLBACK (col_idx, level) dla liter SPOZA konwencji EWM (legacy J/K/L/M/N/O) oraz
-# kolumna boku dla 4-członowych kodów generatora (B0-01-100-2B). Litery EWM w kodach
-# 3-członowych idą przez ewm_levels.letter_slot (jedno źródło prawdy litera → poziom).
-_COL_CODE_MAP = {
-    'A': (0, 1), 'B': (1, 1), 'C': (2, 1), 'D': (3, 1),
-    'S': (0, 1), 'T': (1, 1), 'U': (2, 1), 'V': (3, 1),
-    'G': (0, 1), 'H': (1, 1),
-    'X': (0, 2), 'J': (1, 2), 'K': (2, 2),
-    'Y': (0, 3), 'L': (1, 3), 'M': (2, 3),
-    'Z': (0, 4), 'N': (1, 4), 'O': (2, 4),
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# ── Rack Type CRUD ────────────────────────────────────────────────────────────
-
-
-
-
-
-
-
-# ═══════════════════════════════════════════════════════════════════════════════
-#  Warehouse editor — 2D interactive map
-# ═══════════════════════════════════════════════════════════════════════════════
-
-# Module-level constants for editor3d (avoid re-allocating per request).
-# Levels come from the canonical SUFFIX_LEVEL map (defined near the top).
-_ED3D_SUFFIX_LEVEL  = SUFFIX_LEVEL
-_ED3D_COMPACT       = {'S', 'T', 'U', 'V', 'W'}
-_ED3D_STANDARD      = {'X', 'Y', 'Z'}
-_ED3D_FLOOR         = {'A', 'B', 'C', 'D', 'C-1', 'C-2', 'D-1', 'D-2'}
-_ED3D_PICKING_TYPES = {'0050', '0052'}
-_ED3D_LOC_PAT       = _re.compile(r'^([A-Za-z0-9]+(?:-[A-Za-z0-9]+)*)-(\d+)-(\d+)([A-Z].*)$')
-
-
-
-
-
-
 
 
 # ─── Shipment calculation helper ─────────────────────────────────────────────
@@ -242,53 +135,18 @@ _PRODUCT_COLORS = [
 ]
 
 
-
-
-
 # ─── Carrier views ────────────────────────────────────────────────────────────
-
-
-
-
-
-
-
 
 
 # ─── Shipment views ───────────────────────────────────────────────────────────
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # ─── User management (admin only) ─────────────────────────────────────────────
-
-
-
-
-
-
-
-
-
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
 #  Picker Activity Heatmap
 # ═══════════════════════════════════════════════════════════════════════════════
-
 
 
 _DT_FORMATS = [
@@ -305,9 +163,8 @@ __all__ = [
     # unqualified), but the test suite imports it directly via `ui.views.SUFFIX_LEVEL`
     # (test_location_codes.py) — must stay bound + re-exported through base.py.
     'SUFFIX_LEVEL',
-    'PALLET_BASE_HEIGHT_CM', '_CARTON_FC', '_CARTON_LAYER_PALETTES', '_COL_CODE_MAP',
-    '_COL_IDX', '_COMBINED_COL_ALIASES', '_DT_FORMATS', '_ED3D_COMPACT', '_ED3D_FLOOR',
-    '_ED3D_LOC_PAT', '_ED3D_PICKING_TYPES', '_ED3D_STANDARD', '_ED3D_SUFFIX_LEVEL',
+    'PALLET_BASE_HEIGHT_CM', '_CARTON_FC', '_CARTON_LAYER_PALETTES',
+    '_COL_IDX', '_DT_FORMATS',
     '_FACE_I', '_FACE_J', '_FACE_K', '_INNER_PACK_FC', '_PALLET_BOARD_FC',
     '_PALLET_STRINGER_FC', '_PRODUCT_COLORS', '_RACK_FC', '_SALES_FC', '_SAP_COLS',
     '_UNIT_FC', '_re',

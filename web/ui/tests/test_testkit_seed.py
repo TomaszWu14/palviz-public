@@ -17,7 +17,7 @@ from core.platform_modules import modules_for
 from core.roles import ALL_GROUPS
 from testkit import factories as f
 from testkit import personas
-from testkit.seed import HU_STATUSES, SHIPMENT_STATUSES, UKRAINE_SETTINGS, ZONES, SeedDataMixin
+from testkit.seed import HU_STATUSES, SHIPMENT_STATUSES, ZONES, SeedDataMixin
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -125,10 +125,9 @@ class SeedTests(SeedDataMixin, TestCase):
         self.assertTrue(d.hu.reserved.assigned_to and d.hu.reserved.called_at and d.hu.reserved.is_priority)
         self.assertTrue(d.hu.vip_shipment.customer.is_vip)
         self.assertTrue(any(n.requires_ack for n in d.comms.notifications))
-        from wh3d.models import WarehouseSnapshotRow
+        from ui.models import WarehouseSnapshotRow
         self.assertEqual(WarehouseSnapshotRow.objects.filter(snapshot=d.warehouse.snapshot).count(), 24)
-        self.assertEqual(len(d.warehouse.racks), 4)
-        self.assertEqual(d.warehouse.ewm_tasks[0].batch_id, d.warehouse.task_batch.pk)
+        self.assertEqual(d.warehouse.picks[0].batch_id, d.warehouse.picker_batch.pk)
         self.assertEqual(len(d.catalog.materials), 4)
         self.assertTrue(any(r.alert_email for r in d.customers.rules))
 
@@ -137,26 +136,12 @@ class SeedTests(SeedDataMixin, TestCase):
         dates = set(Shipment.objects.values_list("outbound_delivery_date", flat=True))
         for key in ("przeszla", "dzis", "przyszla", "koniec_roku"):
             self.assertIn(self.data.dates[key], dates, key)
-        from wh3d.models import WarehouseTask
-        stamps = list(WarehouseTask.objects.order_by("confirmed_at").values_list("confirmed_at", flat=True))
-        by_kind = dict(WarehouseTask.objects.values_list("kind", "confirmed_at"))
+        from ui.models import PickerActivity
+        stamps = list(PickerActivity.objects.order_by("confirmed_at").values_list("confirmed_at", flat=True))
+        by_kind = dict(PickerActivity.objects.values_list("task_type", "confirmed_at"))
         # 02:30 wystąpiło dwa razy (jesienna zmiana czasu) — w bazie to dwa momenty odległe o 1 h
         self.assertEqual((by_kind["putaway"] - by_kind["picking"]).total_seconds(), 3600)
         self.assertEqual(len(stamps), 4)
-
-    def test_zaria_conversations_are_per_user(self):
-        from ui.models import ZariaConversation
-        md, tr = self.data.users["Master Data"], self.data.users["Transport"]
-        self.assertEqual(ZariaConversation.objects.filter(user=md).count(), 1)
-        self.assertNotEqual(self.data.zaria.conversations["Master Data"].pk,
-                            self.data.zaria.conversations["Transport"].pk)
-        self.assertFalse(ZariaConversation.objects.filter(user=tr, title__contains="Master").exists())
-
-    def test_ukraine_stock_split_acme_dlt(self):
-        from ui.views.ukraine import stock_by_batch
-        with self.settings(**UKRAINE_SETTINGS):
-            got = stock_by_batch({("REF100001", "LOT0000001")})
-        self.assertEqual(got[("REF100001", "LOT0000001")], {"acme": 60.0, "dlt": 30.0, "other": 5.0})
 
     def test_seeded_data_renders_key_screens(self):
         client = personas.client_for("superuser")

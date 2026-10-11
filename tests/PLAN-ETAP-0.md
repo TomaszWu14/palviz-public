@@ -3,6 +3,9 @@
 Stan na 2026-09-26, `main` @ 1a0b6d9. Etap 0 nie dodaje testów — tylko inwentarz, macierze
 (`tests/permissions.yaml`, `tests/ui-permissions.yaml`), plan i pytania. **Czeka na akceptację.**
 
+> Migawka historyczna. 2026-10-11 usunięto moduły Magazyn 3D (app `wh3d`), Wydruk HU, ZARIA
+> i Wysyłka UKRAINA — wzmianki o nich poniżej opisują stan z 2026-09-26.
+
 ## 1. Przełożenie wymagań na realia PalViz/GROOVE
 
 Wymagania pisane były pod aplikację FastAPI + React (kontenery, SafeCube). GROOVE to Django +

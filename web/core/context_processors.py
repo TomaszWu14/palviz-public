@@ -73,7 +73,7 @@ def user_roles(request):
             "role_is_admin", "role_is_master_data", "role_is_transport", "role_is_viewer",
             "role_is_control", "role_is_leader", "role_is_planner", "role_is_warehouse",
             "can_write_products", "can_write_shipments", "can_use_calculator", "can_manage_users",
-            "can_open_matinfo", "can_open_magazyn", "role_is_optimizer",
+            "can_open_matinfo", "role_is_optimizer",
         )}
 
     is_super = user.is_superuser
@@ -90,8 +90,7 @@ def user_roles(request):
         "role_is_leader":      has(GROUP_ADMIN, GROUP_LEADER),
         "role_is_warehouse":   has(GROUP_ADMIN, GROUP_WAREHOUSE),
         "role_is_optimizer":   has(GROUP_ADMIN, GROUP_OPTIMIZER, GROUP_MASTER_DATA),
-        # role_is_planner gates warehouse-modelling tools (e.g. the 3D editor link);
-        # same owners as warehouse_model write access in roles.py.
+        # role_is_planner = Admin / Master Data (narzędzia planisty).
         "role_is_planner":     has(GROUP_ADMIN, GROUP_MASTER_DATA),
         # role_is_viewer = true for anyone with at least one PalViz role.
         "role_is_viewer":      has(*ALL_GROUPS),
@@ -102,7 +101,6 @@ def user_roles(request):
         # Linki do modułów = ta sama reguła co strażnik widoku (@module_required): rola ALBO
         # nadpisanie per użytkownik (UserModuleAccess) — B-008. Leniwie (szablon woła callable),
         # więc zapytanie o nadpisania leci tylko na stronach, które flagi używają.
-        # MATinfo = moduł phv (zakładka w skanerze); magazyn = mapa 3D (link na stronie stanów, B-006).
+        # MATinfo = moduł phv (zakładka w skanerze).
         "can_open_matinfo": lambda: can_open_module(user, "phv"),
-        "can_open_magazyn": lambda: can_open_module(user, "magazyn"),
     }

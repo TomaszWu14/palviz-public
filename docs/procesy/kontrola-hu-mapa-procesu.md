@@ -211,5 +211,4 @@ Rezerwacje: `hu_helpers.py:318-329`, wygasanie `:58-72` (`HU_RESERVED_MAX_HOURS`
 foto `:243-252` (`HU_PHOTO_ENFORCE`). Liczenie i ślepa bramka: `hu_count.py:212-277,358-391`.
 Finalizacja (kolejność bramek): `hu_transaction_final.py:63-193`; rekontrola inną osobą:
 `hu_helpers.py:165-171`. Panel lidera: `hu_leader.py:11-120`. Etykieta logistyczna:
-`hu_transaction_card.py:180-204`. Role: `ui/roles.py:80-87,130-131`. Wydruk HU (projekty
-Polska/Export/VIP…) to osobny moduł `hu_print.py` — poza przepływem kontroli.
+`hu_transaction_card.py:180-204`. Role: `ui/roles.py:80-87,130-131`. (Osobny moduł Wydruk HU usunięto 2026-10-11.)

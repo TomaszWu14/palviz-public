@@ -33,26 +33,13 @@ MODULES = [
            "planner_calc_index", "🧮", "#0ea5e9", (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT), "Operacje"),
     Module("transport", _("Wycena przesyłek"), _("Objętość, ładunek, przewoźnicy, wyceny"),
            "planner_shipments", "🚚", "#f59e0b", (GROUP_ADMIN, GROUP_TRANSPORT), "Transport"),
-    Module("magazyn", _("Magazyn 3D"), _("Lokalizacje, widok 3D, kompletacja i analiza"),
-           "warehouse_map", "🏭", "#10b981", (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT, GROUP_VIEWER), "Magazyn"),
     Module("kontrola_hu", _("Kontrola HU"), _("Skaner, kontrola zawartości, KPI i raporty"),
            "hu_control_hub", "📲", "#7c3aed", (GROUP_ADMIN, GROUP_CONTROLLER, GROUP_LEADER), "Operacje"),
-    Module("wydruk_hu", _("Wydruk HU"), _("Etykiety HU (Zebra/ZPL) — druk sekwencyjny per projekt"),
-           "hu_print_home", "🏷️", "#06b6d4", (GROUP_ADMIN, GROUP_WAREHOUSE), "Operacje"),
     Module("zadania", _("Zadania i powiadomienia"), _("Zadania zespołu i alerty o niezgodnościach stocku"),
            "tasks_home", "🔔", "#e11d48", (GROUP_ADMIN, GROUP_MASTER_DATA)),
     Module("klienci", _("Baza klientów"), _("Klienci / odbiorcy i ich wymagania dostaw"),
            "planner_customers", "🤝", "#0d9488",
            (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT, GROUP_CLIENT), "Dane"),
-    # Otwarte dla wszystkich ról wewnętrznych (bez GROUP_CLIENT). Nowe role widzą kafelek,
-    # ale czat działa dopiero po nadaniu im ZariaModelRoleAccess w panelu (krok wdrożeniowy);
-    # cap pieniężny ożywa migracją danych 0100.
-    Module("zaria", _("ZARIA"), _("Asystent AI — czat z modelami LLM"),
-           "zaria_home", "🤖", "#d946ef",
-           (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_TRANSPORT, GROUP_CONTROLLER,
-            GROUP_LEADER, GROUP_VIEWER, GROUP_WAREHOUSE), "Dane"),
-    Module("wysylka_ukraina", _("Wysyłka UKRAINA"), _("Monitoring wskazanych partii: ACME vs DLT"),
-           "ukraine_home", "🇺🇦", "#6366f1", (GROUP_ADMIN, GROUP_TRANSPORT, GROUP_MASTER_DATA), "Transport"),
     Module("phv", _("MATinfo"), _("Podgląd materiału: szt → OPZ → karton → ładunek, przeliczniki, wagi, zgłoszenia"),
            "phv_home", "🧱", "#84cc16",
            (GROUP_ADMIN, GROUP_MASTER_DATA, GROUP_WAREHOUSE, GROUP_CONTROLLER, GROUP_LEADER), "Magazyn"),
@@ -72,7 +59,7 @@ MODULE_BY_KEY = {m.key: m for m in MODULES}
 # Deployment variants — a single codebase/DB serving only a subset of modules when this
 # instance is deployed under its own name/host (e.g. a warehouse-floor "Kontrola HU" app).
 VARIANT_MODULES = {
-    "hu": ("kontrola_hu", "wydruk_hu"),
+    "hu": ("kontrola_hu",),
 }
 
 

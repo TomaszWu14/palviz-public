@@ -106,7 +106,7 @@ from ...models import (
     Product, ProductCategory, Carton, CartonArtwork, InnerPack, PalletizationInstruction, ErrorReport,
     WarehouseLocationType,
     WarehouseSnapshot, WarehouseSnapshotRow,
-    WarehouseLayout, WarehouseLayoutCell, WarehouseAisleConfig,
+    WarehouseLayout, WarehouseLayoutCell,
     WarehouseLocationMasterBatch, WarehouseLocationMaster,
     WarehouseRackType,
     MaterialReference,
@@ -114,7 +114,6 @@ from ...models import (
     WarehouseReadiness, DriverAssignment, Shipment, ShipmentLine, SiteInfo,
     HandlingUnit, HandlingUnitItem, HUQualityIssue, HUControlAttempt, ControlledWarehouseType,
     ControllerZone, HUStatusEvent,
-    WarehouseModel, WarehouseModelRack, WarehouseHallFeature,
     PickerActivityBatch, PickerActivity,
 )
 
@@ -126,9 +125,8 @@ from django.db import transaction
 
 from .base_tables import (  # noqa: F401  (tabele stalych — re-exported, not consumed here)
     SUFFIX_LEVEL,
-    PALLET_BASE_HEIGHT_CM, _CARTON_FC, _CARTON_LAYER_PALETTES, _COL_CODE_MAP,
-    _COL_IDX, _COMBINED_COL_ALIASES, _DT_FORMATS, _ED3D_COMPACT, _ED3D_FLOOR,
-    _ED3D_LOC_PAT, _ED3D_PICKING_TYPES, _ED3D_STANDARD, _ED3D_SUFFIX_LEVEL,
+    PALLET_BASE_HEIGHT_CM, _CARTON_FC, _CARTON_LAYER_PALETTES,
+    _COL_IDX, _DT_FORMATS,
     _FACE_I, _FACE_J, _FACE_K, _INNER_PACK_FC, _PALLET_BOARD_FC,
     _PALLET_STRINGER_FC, _PRODUCT_COLORS, _RACK_FC, _SALES_FC, _SAP_COLS,
     _UNIT_FC,
@@ -469,9 +467,9 @@ __all__ = [
     'PickerActivity', 'PickerActivityBatch', 'PlotlyJSONEncoder', 'Product',
     'ProductCategory', 'ProductForm', 'Q', 'QuoteRecipient', 'Shipment', 'ShipmentForm',
     'ShipmentLine', 'ShipmentQuoteOffer', 'SiteInfo', 'UploadCSVForm',
-    'WarehouseAisleConfig', 'WarehouseHallFeature', 'WarehouseLayout',
+    'WarehouseLayout',
     'WarehouseLayoutCell', 'WarehouseLocationMaster', 'WarehouseLocationMasterBatch',
-    'WarehouseLocationType', 'WarehouseModel', 'WarehouseModelRack', 'WarehouseRackType',
+    'WarehouseLocationType', 'WarehouseRackType',
     'WarehouseReadiness', 'WarehouseSnapshot', 'WarehouseSnapshotRow', 'csv', 'date',
     'datetime', 'get_object_or_404', 'get_pallet_preset', 'go', 'has_role', 'io',
     'json', 'logging', 'login_required', 'mark_safe', 'math', 'messages',
@@ -485,9 +483,8 @@ __all__ = [
     '_planner', '_re', '_safe_next', '_safe_referer', '_transport_mgr', 'safe_json',
     # re-exported from base_tables.py (only base.py forwards these to core/__init__.py)
     'SUFFIX_LEVEL',
-    'PALLET_BASE_HEIGHT_CM', '_CARTON_FC', '_CARTON_LAYER_PALETTES', '_COL_CODE_MAP',
-    '_COL_IDX', '_COMBINED_COL_ALIASES', '_DT_FORMATS', '_ED3D_COMPACT', '_ED3D_FLOOR',
-    '_ED3D_LOC_PAT', '_ED3D_PICKING_TYPES', '_ED3D_STANDARD', '_ED3D_SUFFIX_LEVEL',
+    'PALLET_BASE_HEIGHT_CM', '_CARTON_FC', '_CARTON_LAYER_PALETTES',
+    '_COL_IDX', '_DT_FORMATS',
     '_FACE_I', '_FACE_J', '_FACE_K', '_INNER_PACK_FC', '_PALLET_BOARD_FC',
     '_PALLET_STRINGER_FC', '_PRODUCT_COLORS', '_RACK_FC', '_SALES_FC', '_SAP_COLS',
     '_UNIT_FC',

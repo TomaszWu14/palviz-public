@@ -348,8 +348,10 @@ def _location_card(code):
     """Karta lokalizacji dla skanera z ISTNIEJĄCYCH danych: master (wymiary/objętość/
     waga/typ/blokady) z aktywnej partii, strefa z prefiksu kodu (brak pola → wyliczamy),
     zawartość = stock-HU w tej lokalizacji (to samo zapytanie co panel mapy)."""
-    from wh3d.locations import active_master_qs
-    row = active_master_qs().filter(location_code__iexact=code).first()
+    from ..models import WarehouseLocationMaster
+    row = (WarehouseLocationMaster.objects
+           .filter(batch__is_active=True, location_code__iexact=code)
+           .order_by("-batch__uploaded_at").first())
     items = (HandlingUnitItem.objects
              .filter(hu__shipment__is_stock=True, hu__location__iexact=code)
              .select_related("hu", "product").order_by("hu__seq", "id")[:200])
@@ -408,48 +410,6 @@ def _material_desc(product):
     return ""   # nazwa == kod i brak MARA → brak opisu (nagłówek pokaże „zgłoś")
 
 
-def _assistant_context(product, material_desc, hierarchy, strategy):
-    """Zwięzły opis PL wszystkiego, co system wie o REF — kontekst dla lokalnego modelu.
-    Tylko dane z master daty + stocku (te same, które widać na ekranie MatInfo)."""
-    lines = [f"REF (indeks): {product.code}"]
-    if material_desc:
-        lines.append(f"Opis materiału: {material_desc}")
-    if product.ean:
-        lines.append(f"EAN sztuki: {product.ean}")
-    lines.append("\nPoziomy opakowań (jednostki):")
-    for l in hierarchy["levels"]:
-        parts = [f"- {l['title']} ({l['key']}): {l.get('dims', '')}"]
-        if l.get("qty"):
-            parts.append(f"ilość: {l['qty']}")
-        if l.get("ean"):
-            parts.append(f"EAN: {l['ean']}")
-        if l.get("mult"):
-            parts.append(f"×{l['mult']} jednostki niżej")
-        lines.append(", ".join(parts))
-    s = hierarchy.get("summary") or {}
-    if s.get("pcs_per_pallet"):
-        lines.append(f"Na palecie: {s['pcs_per_pallet']} {s.get('pallet_unit', 'szt')}, "
-                     f"waga ~{s.get('pallet_weight_kg', '?')} kg")
-    if hierarchy.get("alerts"):
-        lines.append("Braki / alerty danych: " + "; ".join(hierarchy["alerts"]))
-    if strategy and strategy.get("processes"):
-        lines.append("\nLokalizacje / strategia magazynowa:")
-        for p in strategy["processes"]:
-            # locations = [{code, qty}] (_process_rows); qty None = brak ilości w stocku
-            locs = ", ".join(f"{l['code']} ({l['qty']} szt)" if l.get("qty") else l["code"]
-                             for l in p["locations"])
-            lines.append(f"- {p['code']} {p['name']}: {locs}")
-    elif strategy and not strategy.get("has_process"):
-        lines.append("Brak przypisanego procesu pickingowego (brak stocku w procesach).")
-    if strategy and strategy.get("stock_groups"):
-        lines.append("\nDane magazynowe (stock wg typu magazynu):")
-        for g in strategy["stock_groups"]:
-            qty = f", {g['base_qty']} szt" if g.get("base_qty") else ""
-            vol = f", ~{g['total_volume_m3']} m³" if g.get("total_volume_m3") else ""
-            locs = ", ".join(sorted({r["location"] for r in g["rows"]})[:8])
-            lines.append(f"- {g['code']}: {g['count']} palet{qty}{vol}; lokalizacje: {locs}")
-    return "\n".join(lines)
-
 __all__ = [
     'OPTIMIZATION_ISSUE_TYPES',
     'MISSING_CONVERSION_UNITS',
@@ -474,5 +434,4 @@ __all__ = [
     '_storage_strategy',
     '_location_card',
     '_material_desc',
-    '_assistant_context',
 ]

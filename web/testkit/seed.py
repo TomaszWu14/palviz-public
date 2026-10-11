@@ -8,8 +8,7 @@ Użycie:
 Pokrywa: 15 person, katalog (produkty, kartony, opakowania, instrukcje, dane SAP MaterialMaster),
 klientów z regułami pakowania, shipmenty w każdym statusie, HU w kontroli (wszystkie statusy,
 4 strefy, VIP, rezerwacje), zadania, powiadomienia (w tym pilne z potwierdzeniem), wątki,
-prywatne rozmowy ZARIA, snapshot zajętości, model magazynu z regałami, import zadań EWM i
-wysyłkę UKRAINA (stan ACME/DLT). Daty: przeszłe, dzisiejsze, przyszłe, przełom roku, oba
+snapshot zajętości, typy regałów, aktywność pickerów. Daty: przeszłe, dzisiejsze, przyszłe, przełom roku, oba
 przestawienia zegara; polskie znaki, maksymalnie długie nazwy, puste pola opcjonalne.
 """
 from datetime import timedelta
@@ -23,8 +22,6 @@ from .clock import KEY_DATES
 
 # Kody typów magazynu EWM użyte jako strefy kontroli HU (ControllerZone.code = warehouse_type)
 ZONES = ("0010", "0011", "0050", "0070")
-# Kody magazynów do modułu „Wysyłka UKRAINA” — nałóż w teście przez self.settings(**UKRAINE_SETTINGS)
-UKRAINE_SETTINGS = {"UKRAINE_WAREHOUSE_ACME": ["MAG1"], "UKRAINE_WAREHOUSE_DLT": ["DLT1"]}
 HU_STATUSES = ("planned", "in_control", "ok", "to_recheck", "escaped")
 SHIPMENT_STATUSES = ("draft", "confirmed", "sent", "cancelled")
 
@@ -137,21 +134,6 @@ def _comms(users, cat, hus):
     return SimpleNamespace(tasks=tasks, notifications=notes, thread=thread)
 
 
-def _zaria(users):
-    model = f.ZariaModelFactory()
-    local = f.ZariaModelFactory(key="llama3.1:8b", display_name="Llama lokalna", provider="ollama")
-    for group in ("Administratorzy", "Master Data", "Transport", "Podgląd"):
-        f.ZariaRoleAccessFactory(model=model, group_name=group)
-    convs = {}
-    for owner in ("Master Data", "Transport"):      # dwie prywatne rozmowy — test izolacji (P-4)
-        conv = f.ZariaConversationFactory(user=users[owner], model=model, title=f"Rozmowa {owner}")
-        f.ZariaMessageFactory(conversation=conv, role="user")
-        f.ZariaMessageFactory(conversation=conv, role="assistant", content="Około 48 kartonów.",
-                              model=model, prompt_tokens=12, completion_tokens=9)
-        convs[owner] = conv
-    return SimpleNamespace(model=model, local=local, conversations=convs)
-
-
 def _warehouse(users):
     snap = f.SnapshotFactory(name="Snapshot B0 — 2026-09-26")
     rows = [f.SnapshotRowFactory(snapshot=snap, is_empty=(i % 3 == 0), blocked_pick=(i == 5),
@@ -160,29 +142,13 @@ def _warehouse(users):
     snap.save(update_fields=["row_count", "occupied_count", "blocked_count"])
     f.RackTypeFactory(code="0010", name="Regał paletowy wysoki", level_heights={"1": 1500})
     f.RackTypeFactory(code="ZONE", name="Strefa odkładcza", kind="zone")
-    model = f.WarehouseModelFactory(name="Hala B0")
-    racks = [f.RackFactory(model=model, rack_id=f"{i + 1:02d}") for i in range(4)]
-    batch = f.TaskBatchFactory(name="Zadania EWM — tydzień DST", uploaded_by=users["Master Data"],
-                               row_count=4)
+    batch = f.PickerBatchFactory(name="Potwierdzenia SAP — tydzień DST", row_count=4)
     stamps = (KEY_DATES["dst_jesien"], KEY_DATES["dst_jesien_drugi_raz"],
               KEY_DATES["dst_wiosna_po"], KEY_DATES["koniec_roku"])
-    ewm = [f.WarehouseTaskFactory(batch=batch, kind=k, confirmed_at=ts, material="REF100001",
-                                  created_at=ts - timedelta(minutes=10))
-           for k, ts in zip(("picking", "putaway", "replenishment", "outbound"), stamps, strict=True)]
-    return SimpleNamespace(snapshot=snap, snapshot_rows=rows, model=model, racks=racks,
-                           task_batch=batch, ewm_tasks=ewm)
-
-
-def _ukraine(cat):
-    stock = f.ShipmentFactory(name="Stan magazynowy (stock)", is_stock=True)
-    for wt, qty in (("MAG1", 60), ("DLT1", 30), ("9999", 5)):
-        hu = f.HandlingUnitFactory(shipment=stock, warehouse_type=wt)
-        f.HandlingUnitItemFactory(hu=hu, ref_code="REF100001", lot="LOT0000001", base_qty=qty)
-    lines = [f.UkraineOrderLineFactory(index_code="REF100001", lot="LOT0000001", requested_qty=80,
-                                       product=cat.products[0]),
-             f.UkraineOrderLineFactory(index_code="REF100002", lot="L" * 32, requested_qty=10),
-             f.UkraineOrderLineFactory(status="closed", note="")]
-    return SimpleNamespace(stock_shipment=stock, lines=lines)
+    picks = [f.PickerActivityFactory(batch=batch, task_type=k, confirmed_at=ts,
+                                     material_code="REF100001")
+             for k, ts in zip(("picking", "putaway", "replenishment", "outbound"), stamps, strict=True)]
+    return SimpleNamespace(snapshot=snap, snapshot_rows=rows, picker_batch=batch, picks=picks)
 
 
 def seed_all():
@@ -194,8 +160,8 @@ def seed_all():
     ship = _shipments(cat, cust, d, users)
     hus = _hu(ship, cat, users)
     return SimpleNamespace(users=users, dates=d, catalog=cat, customers=cust, shipments=ship,
-                           hu=hus, comms=_comms(users, cat, hus), zaria=_zaria(users),
-                           warehouse=_warehouse(users), ukraine=_ukraine(cat))
+                           hu=hus, comms=_comms(users, cat, hus),
+                           warehouse=_warehouse(users))
 
 
 class SeedDataMixin:

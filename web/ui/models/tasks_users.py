@@ -8,7 +8,7 @@ class Task(models.Model):
     STATUS = [("todo", "Do zrobienia"), ("in_progress", "W toku"), ("done", "Zrobione")]
     PRIORITY = [("low", "Niski"), ("normal", "Normalny"), ("high", "Wysoki")]
     CATEGORY = [("manual", "Ręczne"), ("stock_discrepancy", "Niezgodność stocku"),
-                ("recurring", "Cykliczne"), ("zaria_budget", "Budżet ZARIA"),
+                ("recurring", "Cykliczne"),
                 ("hu_fix", "Naprawcze (kontrola HU)"), ("hu_stale", "HU zniknęła z importu"),
                 ("md_exception", "Niezgodność master daty"),
                 ("carton_dim_mismatch", "Rozjazd wymiarów kartonu")]
@@ -152,7 +152,7 @@ class UserProfile(models.Model):
                                  related_name="users", verbose_name="Stanowisko")
     leader = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True, blank=True,
                                related_name="subordinates", verbose_name="Lider (przełożony)")
-    # Dział / zespół — źródło grupowania w raporcie zużycia ZARIA (per dział).
+    # Dział / zespół użytkownika.
     department = models.CharField(max_length=80, blank=True, verbose_name="Dział")
     # Sekcja operatora — steruje motywem całej aplikacji skanera (pasek, tło, akcenty).
     # Puste = motyw bazowy (teal). Kody = przewoźnicy z ui.theme.WAREHOUSE_THEMES.
@@ -311,7 +311,3 @@ class AccessAudit(models.Model):
 
     def __str__(self):
         return f"{self.created_at:%Y-%m-%d %H:%M} {self.action}"
-
-
-# ─── ZARIA — wewnętrzny asystent AI (czat z modelami LLM) ─────────────────────
-

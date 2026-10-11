@@ -1,6 +1,6 @@
 """Smoke WeasyPrint: HTML→PDF daje prawdziwy PDF (strażnik podbić wersji, np. 69→70).
 
-Widoki PDF (WZ, lokalizacje, ZARIA) po cichu degradują do HTML, gdy WeasyPrint
+Widoki PDF (WZ, lokalizacje) po cichu degradują do HTML, gdy WeasyPrint
 nie działa — ich testy przechodzą w obu przypadkach, więc nie wyłapałyby
 zepsutego podbicia. Ten test woła bibliotekę wprost. Pomijany, gdy brak natywnych
 bibliotek (Pango) — typowo na Windows bez GTK.

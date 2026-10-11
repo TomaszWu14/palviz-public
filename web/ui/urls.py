@@ -47,7 +47,6 @@ urlpatterns = [
     path("", views.module_home, name="home"),
     path("search/", views.warehouse_search, name="warehouse_search"),
     path("magazyn/miejsca/", views.warehouse_bins, name="warehouse_bins"),
-    path("label.png", views.label_image, name="label_image"),
     path("i/<str:code>/", views.warehouse_instruction, name="warehouse_instruction"),
     path("i/<str:code>/<int:version>/", views.warehouse_instruction, name="warehouse_instruction_v"),
     path("report/<int:instr_id>/", views.report_error, name="report_error"),
@@ -83,22 +82,6 @@ urlpatterns = [
     path("wiadomosci/panel-boczny/", views.messages_drawer, name="messages_drawer"),
     path("wiadomosc/<int:pk>/", views.message_thread, name="message_thread"),
 
-    # ── ZARIA (asystent AI) ──────────────────────────────────────────────────────
-    path("zaria/", views.zaria_home, name="zaria_home"),
-    path("zaria/panel/", views.zaria_user_panel, name="zaria_user_panel"),
-    path("zaria/c/new/", views.zaria_new_conversation, name="zaria_new_conversation"),
-    path("zaria/c/<int:pk>/", views.zaria_conversation, name="zaria_conversation"),
-    path("zaria/c/<int:pk>/send/", views.zaria_send_message, name="zaria_send_message"),
-    path("zaria/c/<int:pk>/stream/", views.zaria_send_stream, name="zaria_send_stream"),
-    path("zaria/c/<int:pk>/compare/start/", views.zaria_compare_start, name="zaria_compare_start"),
-    path("zaria/c/<int:pk>/compare/stream/", views.zaria_compare_stream, name="zaria_compare_stream"),
-    path("zaria/c/<int:pk>/compare/pick/", views.zaria_compare_pick, name="zaria_compare_pick"),
-    path("zaria/c/<int:pk>/privacy-accept/", views.zaria_accept_privacy, name="zaria_accept_privacy"),
-    path("zaria/c/<int:pk>/action/", views.zaria_conv_action, name="zaria_conv_action"),
-    path("zaria/c/<int:pk>/mail/", views.zaria_mail, name="zaria_mail"),
-    path("zaria/c/<int:pk>/export/<str:fmt>/", views.zaria_export, name="zaria_export"),
-    path("zaria/m/<int:msg_id>/xlsx/", views.zaria_msg_xlsx, name="zaria_msg_xlsx"),
-    path("api/chat", views.api_chat, name="zaria_api_chat"),
 
     # ── Planner dashboard ───────────────────────────────────────────────────────
     path("planner/", views.planner_dashboard, name="planner_dashboard"),
@@ -195,7 +178,6 @@ urlpatterns = [
          name="planner_instruction_recalculate_async"),
 
     # ── Warehouse 3D map ────────────────────────────────────────────────────────
-    path("magazyn/combined-template/", views.warehouse_combined_template, name="warehouse_combined_template"),
 
     # ── Product categories ──────────────────────────────────────────────────────
     path("planner/categories/", views.planner_categories, name="planner_categories"),
@@ -255,7 +237,6 @@ urlpatterns = [
     # ── Hierarchia opakowań (PHV) ───────────────────────────────────────────────
     path("phv/", views.phv_home, name="phv_home"),
     path("phv/suggest/", views.phv_suggest, name="phv_suggest"),
-    path("phv/assistant/", views.phv_assistant, name="phv_assistant"),
     path("phv/report/", views.phv_report, name="phv_report"),
     path("phv/location-report/", views.phv_location_report, name="phv_location_report"),
     path("phv/moje/", views.phv_my_issues, name="phv_my_issues"),
@@ -287,15 +268,6 @@ urlpatterns = [
     path("optymalizacja/ab/<int:pk>/zapisz/", views.carton_opt_redesign_save,
          name="carton_opt_redesign_save"),
 
-    # ── Wysyłka UKRAINA (monitoring partii: ACME vs DLT) ───────────────────────
-    path("ukraina/", views.ukraine_home, name="ukraine_home"),
-    path("ukraina/import/", views.ukraine_import, name="ukraine_import"),
-    path("ukraina/linia/new/", views.ukraine_line_form, name="ukraine_line_new"),
-    path("ukraina/linia/<int:pk>/edit/", views.ukraine_line_form, name="ukraine_line_edit"),
-    path("ukraina/linia/<int:pk>/delete/", views.ukraine_line_delete, name="ukraine_line_delete"),
-
-    # ── Picker activity heatmap ─────────────────────────────────────────────────
-    path("magazyn/heatmapa/template/", views.heatmap_template_download, name="heatmap_template_download"),
 
     # ── User management ──────────────────────────────────────────────────────────
     path("admin-panel/", views.admin_panel, name="admin_panel"),
@@ -314,24 +286,17 @@ urlpatterns = [
     path("admin-panel/access-audit/", views.admin_access_audit, name="admin_access_audit"),
     path("admin-panel/control-zones/", views.admin_control_zones, name="admin_control_zones"),
 
-    # ── ZARIA admin (asystent AI) ────────────────────────────────────────────────
-    path("admin-panel/zaria/", views.admin_zaria_panel, name="admin_zaria_panel"),
-    path("admin-panel/zaria/models/", views.admin_zaria_models, name="admin_zaria_models"),
-    path("admin-panel/zaria/models/<int:pk>/edit/", views.admin_zaria_models, name="admin_zaria_model_edit"),
-    path("admin-panel/zaria/models/<int:pk>/delete/", views.admin_zaria_model_delete, name="admin_zaria_model_delete"),
-    path("admin-panel/zaria/role-access/", views.admin_zaria_role_access, name="admin_zaria_role_access"),
-    path("admin-panel/zaria/user-access/", views.admin_zaria_user_access, name="admin_zaria_user_access"),
-    path("admin-panel/zaria/config/", views.admin_zaria_config, name="admin_zaria_config"),
-    path("admin-panel/zaria/usage/", views.admin_zaria_usage, name="admin_zaria_usage"),
-    path("admin-panel/zaria/usage/export.xlsx", views.admin_zaria_usage_export_xlsx,
-         name="admin_zaria_usage_export_xlsx"),
-    path("admin-panel/zaria/usage/export.csv", views.admin_zaria_usage_export_csv,
-         name="admin_zaria_usage_export_csv"),
-    path("admin-panel/zaria/audit/", views.admin_zaria_audit, name="admin_zaria_audit"),
-    path("admin-panel/zaria/test/", views.admin_zaria_test, name="admin_zaria_test"),
 
+    # ── Dane magazynowe (Data Center): importy + typy regałów ────────────────────
+    path("data-center/import/snapshot/", views.warehouse_snapshot_upload, name="warehouse_snapshot_upload"),
+    path("data-center/import/pickerzy/", views.picker_activity_upload, name="picker_activity_upload"),
+    path("data-center/import/snapshot/wzor.xlsx", views.warehouse_snapshot_template, name="warehouse_snapshot_template"),
+    path("data-center/import/pickerzy/wzor.xlsx", views.picker_activity_template, name="picker_activity_template"),
+    path("data-center/typy-regalow/", views.warehouse_rack_type_list, name="warehouse_rack_type_list"),
+    path("data-center/typy-regalow/new/", views.warehouse_rack_type_form, name="warehouse_rack_type_new"),
+    path("data-center/typy-regalow/<int:pk>/edit/", views.warehouse_rack_type_form, name="warehouse_rack_type_edit"),
+    path("data-center/typy-regalow/<int:pk>/delete/", views.warehouse_rack_type_delete, name="warehouse_rack_type_delete"),
     # ── Leaf-app urlconfs (no prefix, no app_name — merge into namespace ui:) ────
-    path("", include("wh3d.urls")),
     path("", include("huctl.urls")),
     path("", include("transport.urls")),
 ]

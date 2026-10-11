@@ -8,9 +8,9 @@ od razu — bez zgadywania.
 | Architektura platformy (żywa, ręcznie pisana) | root [`ARCHITECTURE.md`](../ARCHITECTURE.md) | Hub/moduły, marka, konwencje strukturalne — aktualizowany przy zmianie modułów/konwencji |
 | Mapa kodu (auto-generowana) | [`.planning/codebase/`](../.planning/codebase/) — w tym jej **własny** `.planning/codebase/ARCHITECTURE.md` | **To NIE jest ten sam plik co root `ARCHITECTURE.md`.** Generowany przez `gsd-map-codebase`, snapshot struktury/diagram ASCII — nie edytować ręcznie, nie traktować jako kanon |
 | ADR / decyzja | [`docs/adr/`](adr/README.md) — pliki `NNNN-krotki-tytul.md` | Jedna świadoma decyzja = jeden plik (kontekst/decyzja/skutki/źródła) + wiersz w indeksie; nie edytuje się wstecz — zastępuje nowym ADR |
-| Analiza / feasibility | `docs/*.md` (np. `ollama-feasibility.md`) | Dokument analityczny z wariantami i rekomendacją; wiążąca decyzja z niego trafia do `docs/adr/` |
+| Analiza / feasibility | `docs/*.md` (np. `deploy-hardening-audit.md`) | Dokument analityczny z wariantami i rekomendacją; wiążąca decyzja z niego trafia do `docs/adr/` |
 | Spec / kontrakt integracji | `docs/*.md` (np. `compare-export-spec.md`) | Kontrakty międzysystemowe |
-| Setup / procedura IT | `docs/*.md` (np. `outlook-setup.md`, `zaria-server-setup.md`, `postgres-switch.md`, `blender-mcp-setup.md`) | Konfiguracja infrastruktury |
+| Setup / procedura IT | `docs/*.md` (np. `postgres-switch.md`, `celery-coolify.md`) | Konfiguracja infrastruktury |
 | Runbooki operacyjne i przekazanie | [`runbook-operatora.md`](runbook-operatora.md), [`runbook-odtworzenie.md`](runbook-odtworzenie.md) | Utrzymanie bez głównego developera (w tym rollback), odtworzenie po awarii |
 | Mapa procesu biznesowego | `docs/procesy/` | Dla pracowników magazynu, nie deweloperów |
 | Audyt UI/UX | `docs/ui-audit/` | Migawka stanu w czasie, nie żywa specyfikacja |

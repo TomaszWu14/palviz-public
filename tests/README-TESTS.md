@@ -50,8 +50,8 @@ trace jako artefakt przy porażce. Nie jest bramką PR-ów.
 |---|---|
 | `runner.py` | `TEST_RUNNER` (`settings.py`): blokada sieci także w procesach `--parallel`, szybki hasher haseł (MD5 tylko w testach), wypisuje wersję bazy (`[testkit] baza testowa: …`) |
 | `net.py` | każde połączenie poza loopback → `NetworkBlocked` (+ lista prób `net.blocked`) |
-| `fake_http.py` | `FakeHTTP` — jedna tabela tras dla `requests`, `urllib.request.urlopen`, `httpx` |
-| `integrations.py` | nagrane odpowiedzi: NBP, Google Maps, Twilio, Teams, n8n, Master Data API, Power BI (DAX), OIDC, Anthropic, OpenAI, Azure OpenAI, Ollama × `ok / http_4xx / http_5xx / timeout / empty / bad_format`; `fake_msal`, `capture_sentry`, `FailingEmailBackend` (SMTP); `INTEGRATION_SETTINGS` |
+| `fake_http.py` | `FakeHTTP` — jedna tabela tras dla `requests` i `urllib.request.urlopen` |
+| `integrations.py` | nagrane odpowiedzi: NBP, Google Maps, Twilio, Teams, n8n, Master Data API, Power BI (DAX), OIDC × `ok / http_4xx / http_5xx / timeout / empty / bad_format`; `fake_msal`, `capture_sentry`, `FailingEmailBackend` (SMTP); `INTEGRATION_SETTINGS` |
 | `clock.py` | `frozen("dst_jesien")` (time-machine), `KEY_DATES` (przeszłość, dziś, przyszłość, przełom roku, obie zmiany czasu), `warsaw(...)` |
 | `factories.py` | factory_boy dla modeli domenowych; polskie znaki domyślnie, `long_text(n)` na limit kolumny |
 | `personas.py` | 15 person: 13 z `permissions.yaml` + `zablokowany` (axes) + `nadpisanie_modulu` (`UserModuleAccess`); `client_for()`, `login_form()` |
@@ -107,7 +107,7 @@ z pokryciem (`coverage`, konfiguracja z `pyproject.toml`). „Przed” = `main` 
 | zestaw Django — sam przebieg | 194,6 s | **104,3 s** (−46 %: szybki hasher haseł w testach) |
 | zestaw Django — z tworzeniem baz | 243 s | 147 s |
 | pokrycie łącznie | 82,9 % (21 531 instr.) | 83,3 % (21 549 instr.) |
-| — `ui` / `huctl` / `transport` / `wh3d` / `palletizer` | 78,8 / 91,1 / 86,4 / 86,4 / 82,9 % | 79,4 / 91,3 / 87,7 / 86,4 / 82,9 % |
+| — `ui` / `huctl` / `transport` / `wh3d` (app usunięty 2026-10-11) / `palletizer` | 78,8 / 91,1 / 86,4 / 86,4 / 82,9 % | 79,4 / 91,3 / 87,7 / 86,4 / 82,9 % |
 
 PostgreSQL 17.11 (`docker-compose.test.yml`, `--parallel 4`): 1 834 OK w 159,5 s; migracje od zera +
 `seed_testdata` na czystej bazie — OK.

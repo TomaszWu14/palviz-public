@@ -4,11 +4,11 @@ from django.db import migrations
 
 
 # W2: zdjęcie modeli magazynu ze stanu aplikacji ui — tabele ui_* zostają
-# (przejęte przez wh3d.0001_initial). Zero SQL.
+# (przejęte przez wh3d.0001_initial). Zero SQL. Aplikacja wh3d została usunięta,
+# a współdzielone modele wróciły do ui w 0195 — stąd brak zależności od wh3d.
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("wh3d", "0001_initial"),
         ('ui', '0185_importrun'),
     ]
 

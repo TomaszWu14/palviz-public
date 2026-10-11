@@ -1,6 +1,6 @@
 # Agregator zgodnosci (W3): pociety na submoduly, importy dzialaja bez zmian.
 from .phv_views import (
-    phv_home, phv_suggest, phv_assistant, phv_report, phv_location_report,
+    phv_home, phv_suggest, phv_report, phv_location_report,
     phv_my_issues, reports_admin,
 )
 # Not in __all__ (facade surface unchanged) — re-exported for direct-import consumers
@@ -14,7 +14,6 @@ from .phv_data import (  # noqa: F401
 __all__ = [
     "phv_home",
     "phv_suggest",
-    "phv_assistant",
     "phv_report",
     "phv_location_report",
     "phv_my_issues",

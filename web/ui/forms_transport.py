@@ -1,7 +1,6 @@
 from django import forms
 from .models import (
     Carrier, CarrierZone, CarrierRate, Shipment, ShipmentLine, Customer,
-    WarehouseModel, WarehouseModelRack,
 )
 
 PALLET_CHOICES = [
@@ -143,30 +142,5 @@ class ShipmentLineForm(forms.ModelForm):
             "notes":    forms.TextInput(attrs={"class": "form-control form-control--sm", "placeholder": "opcjonalnie"}),
         }
 
-
-class WarehouseModelForm(forms.ModelForm):
-    class Meta:
-        model = WarehouseModel
-        fields = ["name", "floor_width_m", "floor_depth_m", "notes"]
-        widgets = {
-            "name":          forms.TextInput(attrs={"class": "form-control"}),
-            "floor_width_m": forms.NumberInput(attrs={"class": "form-control", "step": "0.5"}),
-            "floor_depth_m": forms.NumberInput(attrs={"class": "form-control", "step": "0.5"}),
-            "notes":         forms.Textarea(attrs={"class": "form-control", "rows": 2}),
-        }
-
-
-class WarehouseModelRackForm(forms.ModelForm):
-    class Meta:
-        model = WarehouseModelRack
-        fields = ["x_m", "y_m", "angle_deg", "bay_width_cm", "depth_cm", "level_height_cm"]
-        widgets = {
-            "x_m":            forms.NumberInput(attrs={"class": "form-control form-control--sm", "step": "0.1"}),
-            "y_m":            forms.NumberInput(attrs={"class": "form-control form-control--sm", "step": "0.1"}),
-            "angle_deg":      forms.NumberInput(attrs={"class": "form-control form-control--sm", "step": "1"}),
-            "bay_width_cm":   forms.NumberInput(attrs={"class": "form-control form-control--sm", "step": "1"}),
-            "depth_cm":       forms.NumberInput(attrs={"class": "form-control form-control--sm", "step": "1"}),
-            "level_height_cm":forms.NumberInput(attrs={"class": "form-control form-control--sm", "step": "1"}),
-        }
 
 __all__ = [n for n in list(globals().keys()) if not n.startswith('__')]

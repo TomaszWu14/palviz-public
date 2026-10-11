@@ -12,13 +12,12 @@
     </div>
     <div>
       <div class="page-header__title">Stock magazynowy</div>
-      <div class="page-header__sub">Zaimportowany stan magazynowy (HU) — wspólne źródło dla kontroli HU i modelowania mapy 3D</div>
+      <div class="page-header__sub">Zaimportowany stan magazynowy (HU) — źródło dla kontroli HU i MATinfo</div>
     </div>
   </div>
   <div class="page-header__actions">
     <a href="{% url 'ui:planner_stock_contents' %}" class="btn btn-primary">{% icon "clipboard-list" %} Podgląd stocku</a>
     {% if can_control %}<a href="{% url 'ui:hu_control_hub' %}" class="btn btn-secondary">{% icon "search" %} Kontrola HU</a>{% endif %}
-    {% if can_open_magazyn %}<a href="{% url 'ui:warehouse_map' %}" class="btn btn-secondary">{% icon "map" %} Mapa magazynu 3D</a>{% endif %}
   </div>
 </div>
 

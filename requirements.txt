@@ -22,8 +22,6 @@ psycopg2-binary==2.9.12   # PostgreSQL driver (used when DATABASE_URL is set)
 numpy==2.4.6              # vectorised packing geometry (layout ranking)
 django-htmx==1.27.0       # htmx integration: request.htmx + middleware (partial renders)
 django-ninja==1.6.2       # typed REST API (HU scanner) with auto OpenAPI docs
-django-filter==25.2       # filterable list views
-django-tables2==3.0.0     # sortable / paginated tables
 polars==1.43.2            # fast Excel/CSV ingest for large WMS exports (lazy; pandas fallback)
 XlsxWriter==3.2.9         # richer Excel export engine (formatting / freeze panes)
 weasyprint==70.0          # HTML→PDF for quotes / readiness reports (imported lazily)
@@ -33,9 +31,5 @@ django-redis==7.0.0       # Redis cache backend (reuses the Celery Redis; locmem
 django-celery-beat==2.9.0 # DB-editable periodic task schedules (driver reminders etc.)
 django-storages==1.14.6   # pluggable media/static backend (S3/object storage; opt-in via env)
 structlog==26.1.0         # structured logging (opt-in JSON renderer)
-python-barcode==0.16.1    # GS1/EAN/Code128 barcode + SSCC label generation
-qrcode==8.2               # QR codes for HU / location labels
 opentelemetry-sdk==1.44.0 # optional tracing (off unless OTEL_ENABLED=1)
 pydantic-settings==2.14.2 # typed, validated env config (fail-fast at startup — palletweb/config.py)
-anthropic==0.120.0        # ZARIA LLM calls (lazy import; only used when ZARIA_ANTHROPIC_API_KEY is set)
-openai==2.54.0            # ZARIA: Ollama / OpenAI / Azure (zgodne API; lazy import) — B-010; 2.x = ten sam httpx co anthropic

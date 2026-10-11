@@ -31,24 +31,6 @@ INTEGRATION_SETTINGS = {
     "N8N_EVENT_URL": "https://n8n.example.test/webhook/groove", "N8N_EVENT_SECRET": "s3cret",
     "MASTER_DATA_URL": "https://master-data.example.test/api/v2", "MASTER_DATA_API_KEY": "md-key",
     "POWERBI_ACCESS_TOKEN": "pbi-test-token", "POWERBI_WORKSPACE_ID": "ws", "POWERBI_DATASET_ID": "ds",
-    "ZARIA_ANTHROPIC_API_KEY": "sk-ant-test", "ZARIA_OPENAI_API_KEY": "sk-test",
-    "ZARIA_AZURE_OPENAI_API_KEY": "az-test",
-    "ZARIA_AZURE_OPENAI_ENDPOINT": "https://zaria.openai.azure.example.test",
-    "ZARIA_OLLAMA_BASE_URL": "http://ollama.example.test:11434/v1",
-    "ZARIA_MAX_RETRIES": 0,          # SDK bez ponowień z backoffem — testy błędów są natychmiastowe
-}
-
-_ANTHROPIC_OK = {
-    "id": "msg_test", "type": "message", "role": "assistant", "model": "claude-haiku-4-5-20251001",
-    "content": [{"type": "text", "text": "Na palecie EU zmieści się 48 kartonów."}],
-    "stop_reason": "end_turn", "stop_sequence": None,
-    "usage": {"input_tokens": 12, "output_tokens": 9},
-}
-_OPENAI_OK = {
-    "id": "chatcmpl-test", "object": "chat.completion", "created": 0, "model": "test",
-    "choices": [{"index": 0, "finish_reason": "stop",
-                 "message": {"role": "assistant", "content": "Odpowiedź testowa."}}],
-    "usage": {"prompt_tokens": 10, "completion_tokens": 3, "total_tokens": 13},
 }
 
 # nazwa → (wzorzec URL, odpowiedź „ok”)
@@ -86,10 +68,6 @@ ROUTES = {
         "metadata": [{"preferred_network": "login.microsoftonline.com", "preferred_cache": "login.windows.net",
                       "aliases": ["login.microsoftonline.com", "login.windows.net", "login.microsoft.com",
                                   "sts.windows.net"]}]})),
-    "anthropic": (r"api\.anthropic\.com/v1/messages", Reply(json=_ANTHROPIC_OK)),
-    "openai": (r"api\.openai\.com/v1/chat/completions", Reply(json=_OPENAI_OK)),
-    "azure_openai": (r"zaria\.openai\.azure\.example\.test", Reply(json=_OPENAI_OK)),
-    "ollama": (r"ollama\.example\.test:11434", Reply(json=_OPENAI_OK)),
 }
 
 _BAD_FORMAT = Reply(status=200, body=b"<html><body>502 Bad Gateway (proxy)</body></html>",

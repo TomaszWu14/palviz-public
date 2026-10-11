@@ -27,8 +27,8 @@ EXTRA_VARS = ("CELERY_WORKER", "CELERY_BEAT", "CELERY_CONCURRENCY", "WEB_CONCURR
 # literówki. Bez ogólnych (AWS_, OTEL_, SESSION_, DEFAULT_…): te czytają też boto3,
 # OpenTelemetry i system, więc dawałyby fałszywe alarmy.
 APP_PREFIXES = ("DJANGO_", "DB_", "DATABASE_", "CELERY_", "HU_", "GDPR_", "BACKUP_", "POWERBI_",
-                "ZARIA_", "TWILIO_", "EMAIL_", "OIDC_", "GROOVE_", "PALVIZ_", "SENTRY_", "N8N_",
-                "UKRAINE_", "TWA_", "GOOGLE_MAPS_", "DRIVER_REMINDER_", "DEVICE_CONFIRM_",
+                "TWILIO_", "EMAIL_", "OIDC_", "GROOVE_", "PALVIZ_", "SENTRY_", "N8N_",
+                "TWA_", "GOOGLE_MAPS_", "DRIVER_REMINDER_", "DEVICE_CONFIRM_",
                 "MASTER_DATA_", "PHV_", "GLS_", "TEAMS_", "CSP_", "SHIPMENT_", "PALLET_",
                 "WAREHOUSE_", "COMPANY_")
 

@@ -32,7 +32,7 @@ CSRF_FAILURE_VIEW = "ui.views.misc.csrf_failure"
 # Product / brand name shown across the UI (title bar, nav brand, login, e-mails).
 # Env-driven so the whole app can be rebranded without touching templates.
 APP_NAME = env.APP_NAME
-# Deployment variant: "" = full platform; "hu" = a Kontrola HU + Wydruk HU-only instance
+# Deployment variant: "" = full platform; "hu" = a Kontrola HU-only instance
 # (same code + DB, deployed separately under its own name/host). See platform_modules.
 GROOVE_VARIANT = (env.GROOVE_VARIANT or "").strip().lower()
 # Explicit served-module set (overrides the named variant) and portal cross-links.
@@ -51,9 +51,6 @@ PHV_ISSUE_EMAIL = env.PHV_ISSUE_EMAIL
 # Webhook kanału Teams (Workflows) — powiadomienia zespołowe; puste = wyłączone.
 TEAMS_WEBHOOK_URL = env.TEAMS_WEBHOOK_URL
 
-# Moduł „Wysyłka UKRAINA": kody warehouse_type dla naszego magazynu ACME i zewnętrznego DLT.
-UKRAINE_WAREHOUSE_ACME = _csv(env.UKRAINE_WAREHOUSE_ACME)
-UKRAINE_WAREHOUSE_DLT = _csv(env.UKRAINE_WAREHOUSE_DLT)
 
 if not DEBUG:
     # (The dev-key refusal now lives in config.AppEnv, checked at startup.)
@@ -79,11 +76,8 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "axes",
     "django_htmx",
-    "django_filters",
-    "django_tables2",
     "core",   # shared kernel (bez modeli): role, middleware, context processors, hub, health
     "ui",
-    "wh3d",
     "huctl",
     "transport",
 ]
@@ -112,9 +106,6 @@ MIDDLEWARE = [
     # musi je zmienić, zanim wejdzie gdziekolwiek indziej.
     "core.middleware.PasswordChangeRequiredMiddleware",
 ]
-
-# django-tables2: use Bootstrap-free default template that inherits our CSS.
-DJANGO_TABLES2_TEMPLATE = "django_tables2/table.html"
 
 ROOT_URLCONF = "palletweb.urls"
 
@@ -318,9 +309,6 @@ CELERY_TASK_TIME_LIMIT = env.CELERY_TASK_TIME_LIMIT
 CELERY_BEAT_SCHEDULE = {
     "driver-pickup-reminders": {"task": "ui.send_driver_reminders", "schedule": 300.0},  # every 5 min
     "generate-recurring-tasks": {"task": "ui.generate_recurring_tasks", "schedule": 21600.0},  # every 6h
-    # Retencja ZARIA (F3): raz na dobę usuwa niezapisane wątki starsze niż retention_days
-    # (no-op gdy retention_days=0). Ostrzeżenie w UI 7 dni wcześniej.
-    "zaria-retention": {"task": "ui.zaria_purge_old_conversations", "schedule": 86400.0},  # daily
     # Retencja zdjęć kontroli HU: raz na dobę kasuje foto starsze niż HU_PHOTO_RETAIN_DAYS.
     "hu-photo-retention": {"task": "ui.purge_old_hu_control_photos", "schedule": 86400.0},  # daily
     "gdpr-retention": {"task": "ui.gdpr_retention", "schedule": 86400.0},  # daily; no-op przy 0 dni
@@ -553,21 +541,6 @@ PALVIZ_API_TOKENS = env.PALVIZ_API_TOKENS
 # n8n event webhook (outbound). Empty → emit_event is a no-op (zero regresji).
 N8N_EVENT_URL = env.N8N_EVENT_URL
 N8N_EVENT_SECRET = env.N8N_EVENT_SECRET
-
-# ── ZARIA (wewnętrzny asystent AI) ──────────────────────────────────────────────
-# Server-side-only vendor keys; the model catalog/pricing/limits live in the DB
-# (ZariaConfig/ZariaModel) and are editable in the admin panel.
-ZARIA_ANTHROPIC_API_KEY     = env.ZARIA_ANTHROPIC_API_KEY
-ZARIA_OPENAI_API_KEY        = env.ZARIA_OPENAI_API_KEY
-ZARIA_AZURE_OPENAI_API_KEY  = env.ZARIA_AZURE_OPENAI_API_KEY
-ZARIA_AZURE_OPENAI_ENDPOINT = env.ZARIA_AZURE_OPENAI_ENDPOINT
-ZARIA_OLLAMA_BASE_URL       = env.ZARIA_OLLAMA_BASE_URL
-ZARIA_DEFAULT_MODEL_KEY     = env.ZARIA_DEFAULT_MODEL_KEY
-ZARIA_RATE_LIMIT_PER_MINUTE = env.ZARIA_RATE_LIMIT_PER_MINUTE
-ZARIA_RATE_LIMIT_PER_DAY    = env.ZARIA_RATE_LIMIT_PER_DAY
-ZARIA_REQUEST_TIMEOUT_SEC   = env.ZARIA_REQUEST_TIMEOUT_SEC
-ZARIA_MAX_RETRIES           = env.ZARIA_MAX_RETRIES
-ZARIA_LOG_CONVERSATIONS     = env.ZARIA_LOG_CONVERSATIONS
 
 # Symulator skanera (podgląd modułów w iframe na tej samej domenie).
 X_FRAME_OPTIONS = "SAMEORIGIN"

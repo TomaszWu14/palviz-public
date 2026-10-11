@@ -39,14 +39,13 @@ class _Fields(HTMLParser):
 
 
 class FormLabelsTests(SeedDataMixin, TestCase):
-    URLS = ["/data-center/", "/planner/calc/", "/zaria/",
+    URLS = ["/data-center/", "/planner/calc/",
             "/data-center/packaging/", "/planner/cartons/unify/", "/control/leader/",
             # 5c — formularze i filtry (widoki bez <pk>)
-            "/magazyn/editor3d/", "/magazyn/rack-generator/", "/magazyn/types/new/",
-            "/magazyn/lokalizacje/master/", "/magazyn/warianty/", "/magazyn/heatmapa/",
+            "/data-center/typy-regalow/new/",
             "/planner/products/new/", "/planner/cartons/new/", "/planner/shipments/new/",
             "/planner/optimizer/", "/planner/quote-recipients/", "/planner/ref-materials/",
-            "/ukraina/", "/ukraina/linia/new/", "/tasks/", "/tasks/form/", "/profil/",
+            "/tasks/", "/tasks/form/", "/profil/",
             "/control/symulator/", "/control/report/", "/control/recipient/",
             "/optymalizacja/pilnosc/", "/optymalizacja/ab/", "/stock-warehouse/contents/",
             "/data-center/matrix/", "/wymiary-producenta/", "/phv/moje/", "/zgloszenia/"]

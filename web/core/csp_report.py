@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from core.middleware import client_ip
-from ui.zaria_ratelimit import _incr
+from core.ratelimit import hit
 
 log = logging.getLogger(__name__)
 
@@ -41,8 +41,8 @@ def csp_report(request):
     if len(body) > MAX_BODY:
         return HttpResponse(status=413)
     ip = client_ip(request) or "?"
-    key = f"csp:rl:{ip}:{timezone.now().strftime('%Y%m%d%H%M')}"
-    if (_incr(key, timeout=60) or 0) > PER_MINUTE:
+    key = f"csp:{ip}:{timezone.now().strftime('%Y%m%d%H%M')}"
+    if not hit(key, PER_MINUTE, 60):
         return HttpResponse(status=429)
     try:
         payload = json.loads(body or b"null")

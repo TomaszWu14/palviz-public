@@ -4,15 +4,11 @@ Wątki systemowe tworzy ``notifications.py`` bez ``created_by``, a ich wiadomoś
 ``sender=None`` (też: autor usunięty → SET_NULL). Szablony miały ``default:x.sender.username``
 — argument filtra nie jest wyciszany jak zwykła zmienna, więc ``None.username`` wywracał
 panel lidera, widok wątku i szufladkę wiadomości. Teraz ``{% if x %}…{% else %}system``.
-
-B-013: ten sam wzorzec w dzienniku wydruku HU (``hu_print/log.html``, ``r.user`` SET_NULL) —
-autor z migawki ``username``, bez sięgania do ``r.user``.
 """
 
 from django.test import TestCase
 from django.urls import reverse
 
-from huctl.models_print import HUPrintProject, HUPrintRun
 from testkit import factories as f
 from testkit.personas import client_for, make
 
@@ -43,13 +39,3 @@ class MessagingWithoutAuthorTests(TestCase):
         r = self.client.get(reverse("ui:messages_drawer"))
         self.assertEqual(r.status_code, 200)
         self.assertContains(r, "system")
-
-
-class PrintLogWithoutUserTests(TestCase):
-    def test_log_renders_run_of_deleted_user(self):
-        project = HUPrintProject.objects.create(name="Projekt Alfa")
-        HUPrintRun.objects.create(project=project, user=None, username="usunięty",
-                                  quantity=10, from_number=1, to_number=10)
-        r = client_for("superuser").get(reverse("ui:hu_print_log"))
-        self.assertEqual(r.status_code, 200)
-        self.assertContains(r, "usunięty")  # autor z migawki username

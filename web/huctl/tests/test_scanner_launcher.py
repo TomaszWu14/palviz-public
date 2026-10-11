@@ -62,7 +62,7 @@ class LauncherRouting(TestCase):
         self.assertNotIn("pv_scanner", r.cookies)
 
     def test_scanner_cookie_no_longer_bounces_home(self):
-        self.client.force_login(_user("mag2", GROUP_WAREHOUSE))
+        self.client.force_login(_user("md2", GROUP_MASTER_DATA))   # kilka modułów → hub
         self.client.cookies["pv_scanner"] = "1"
         r = self.client.get(reverse("ui:home"))
         self.assertEqual(r.status_code, 200)

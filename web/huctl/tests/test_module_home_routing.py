@@ -60,9 +60,9 @@ class ModuleHomeTests(TestCase):
         # GROOVE hub shows the platform modules ("tabs"). Admin reaches customers inside
         # Data Center, so the standalone "Baza klientów" tile is not duplicated here.
         self.assertEqual(labels, {"Data Center", "Paletyzacja", "Wycena przesyłek",
-                                  "Magazyn 3D", "Kontrola HU", "Wydruk HU",
-                                  "Zadania i powiadomienia", "ZARIA",
-                                  "Wysyłka UKRAINA", "MATinfo", "Optymalizacja kartonów"})
+                                  "Kontrola HU",
+                                  "Zadania i powiadomienia",
+                                  "MATinfo", "Optymalizacja kartonów"})
 
     def test_single_module_user_redirected(self):
         from ui.roles import GROUP_CONTROLLER

@@ -26,14 +26,14 @@ exclude = ['migrations/', 'vendor/']
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "palletweb.settings"
 pythonpath = [".", "web"]
-testpaths = ["web/ui/tests", "web/wh3d/tests", "web/huctl/tests", "web/transport/tests", "palletizer/tests"]
+testpaths = ["web/ui/tests", "web/huctl/tests", "web/transport/tests", "palletizer/tests"]
 python_files = ["test_*.py"]
 # pytest-env (requirements-test.txt): env jak w web/scripts/test.sh; "D:" = tylko gdy nieustawione
 env = ["D:DJANGO_SECRET_KEY=ci-test-secret", "D:DJANGO_DEBUG=true", "D:DJANGO_ALLOWED_HOSTS=*"]
 # Tests still run via `manage.py test` in CI; pytest is a developer convenience.
 
 [tool.coverage.run]
-source = ["web/ui", "web/wh3d", "web/huctl", "web/transport", "palletizer"]
+source = ["web/ui", "web/huctl", "web/transport", "palletizer"]
 omit = ["*/migrations/*", "*/tests/*", "*/vendor/*"]
 # Django's `test --parallel` runs tests in worker subprocesses; capture their coverage too.
 concurrency = ["multiprocessing"]

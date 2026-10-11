@@ -19,14 +19,12 @@ class MediaOrphansTests(TestCase):
         root = Path(self.tmp.name)
         old = time.time() - 48 * 3600
         (root / "site").mkdir()
-        (root / "ewm_tasks").mkdir()
         self.linked = root / "site" / "mapa.png"
         self.orphan = root / "site" / "stara.png"
         self.fresh = root / "site" / "nowa.png"
-        self.temp = root / "ewm_tasks" / ("a" * 32 + ".csv")
-        for p in (self.linked, self.orphan, self.fresh, self.temp):
+        for p in (self.linked, self.orphan, self.fresh):
             p.write_bytes(b"x" * 10)
-        for p in (self.linked, self.orphan, self.temp):
+        for p in (self.linked, self.orphan):
             os.utime(p, (old, old))
         SiteInfo.objects.create(site_map="site/mapa.png")
         self.override = override_settings(MEDIA_ROOT=self.tmp.name)
@@ -44,7 +42,6 @@ class MediaOrphansTests(TestCase):
         self.assertIn("Osierocone pliki: 1", out)
         self.assertNotIn("mapa.png", out)
         self.assertNotIn("nowa.png", out)
-        self.assertNotIn("ewm_tasks", out)
         self.assertTrue(self.orphan.exists())   # dry-run nic nie kasuje
 
     def test_delete_removes_only_orphan(self):
@@ -52,4 +49,3 @@ class MediaOrphansTests(TestCase):
         self.assertFalse(self.orphan.exists())
         self.assertTrue(self.linked.exists())
         self.assertTrue(self.fresh.exists())
-        self.assertTrue(self.temp.exists())

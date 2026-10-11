@@ -11,7 +11,7 @@ import re
 from django.test import SimpleTestCase
 
 WEB = pathlib.Path(__file__).resolve().parents[2]
-BASELINE = {"ui": 192, "wh3d": 4, "huctl": 4, "transport": 2}
+BASELINE = {"ui": 192, "huctl": 4, "transport": 2}
 DESTRUCTIVE = re.compile(r"migrations\.(RemoveField|DeleteModel|RenameField|RenameModel)\(")
 
 

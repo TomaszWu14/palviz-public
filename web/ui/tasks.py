@@ -368,24 +368,6 @@ def scheduled_powerbi_stock_pull():
             "discrepancies": discrepancies}
 
 
-@shared_task(name="ui.zaria_purge_old_conversations")
-def zaria_purge_old_conversations():
-    """Retencja ZARIA (F3): usuwa NIEzapisane rozmowy starsze niż ZariaConfig.retention_days.
-    Zapisane (is_saved) są wyłączone. 0 = retencja wyłączona. Ostrzeżenie w UI pojawia się
-    7 dni wcześniej (patrz _retention_warning_days) — tu tylko właściwe usunięcie."""
-    from datetime import timedelta
-    from django.utils import timezone
-    from .models import ZariaConfig, ZariaConversation
-    days = ZariaConfig.load().retention_days or 0
-    if not days:
-        return {"ok": True, "deleted": 0, "reason": "retention_off"}
-    cutoff = timezone.now() - timedelta(days=days)
-    qs = ZariaConversation.objects.filter(is_saved=False, updated_at__lt=cutoff)
-    n = qs.count()
-    qs.delete()
-    return {"ok": True, "deleted": n}
-
-
 @shared_task(name="ui.purge_old_hu_control_photos")
 def purge_old_hu_control_photos():
     """Retencja zdjęć kontroli HU: kasuje HUControlPhoto WRAZ Z PLIKIEM starsze niż

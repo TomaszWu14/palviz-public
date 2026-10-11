@@ -62,6 +62,15 @@ def data_center(request):
         {"key": "producer_dims", "label": "Wymiary producenta", "icon": "ruler", "color": "#f97316",
          "desc": "Porównanie wymiarów kartonu wg dostawców z master data", "url": "ui:producer_dims",
          "count": None},
+        {"key": "rack_types", "label": "Typy regałów", "icon": "warehouse", "color": "#10b981",
+         "desc": "Wymiary i nośność wg kodu typu magazynu; katalog stref Kontroli HU",
+         "url": "ui:warehouse_rack_type_list", "count": None},
+        {"key": "occupancy", "label": "Zajętość magazynu", "icon": "chart-column", "color": "#059669",
+         "desc": "Zajętość lokalizacji z ostatniego snapshotu SAP WMS", "url": "ui:planner_occupancy",
+         "count": None},
+        {"key": "slotting", "label": "Slotting", "icon": "map-pin", "color": "#0d9488",
+         "desc": "Klasyfikacja ABC i symulacja drogi kompletacji", "url": "ui:slotting_analysis",
+         "count": None},
     ]
 
     # Unified import/update center — gather the scattered template + upload endpoints.
@@ -89,6 +98,12 @@ def data_center(request):
         # Fixy (stałe lokalizacje pickingowe) z SAP — zasila „Zapas / min" na karcie produktu.
         {"label": "Fixy — stałe lokalizacje pickingowe (min/maks z SAP)", "icon": "map-pin",
          "tpl": "ui:excel_template_fix", "imp": "ui:excel_import_fix"},
+        # Zajętość + blokady lokalizacji (Zajętość, miejsca, dashboard).
+        {"label": "Snapshot lokalizacji SAP WMS (zajętość, blokady)", "icon": "warehouse",
+         "tpl": "ui:warehouse_snapshot_template", "imp": "ui:warehouse_snapshot_upload"},
+        # Podpowiedzi „w jakiej jednostce pobrano" w Kontroli HU + statystyki MATinfo.
+        {"label": "Aktywność pickerów (potwierdzenia zadań SAP)", "icon": "users",
+         "tpl": "ui:picker_activity_template", "imp": "ui:picker_activity_upload"},
     ]
     # Import kont widoczny tylko dla adminów (tworzy użytkowników i nadaje role).
     if request.user.is_superuser or has_role(request.user, GROUP_ADMIN):

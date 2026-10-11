@@ -153,41 +153,4 @@ class CustomerPackagingRule(models.Model):
         return f"{self.customer} · {self.product.code}: {self.units_per_pack} szt/opak."
 
 
-class UkraineOrderLine(models.Model):
-    """Jedna wskazana partia do wysyłki dla klienta z Ukrainy (moduł „Wysyłka UKRAINA").
-
-    Klient odgórnie wskazuje konkretny indeks + partię (LOT) + żądaną ilość; ilości rosną/
-    zmieniają się w czasie. Stan „ile gotowe" NIE jest tu przechowywany — liczymy go w locie z
-    istniejącego stocku (HandlingUnitItem po ref_code+lot, kubełkowany po warehouse_type na
-    ACME/DLT). `index_code` to trwały klucz łączenia ze stockiem (= HandlingUnitItem.ref_code),
-    niezależny od tego, czy produkt jest w bazie."""
-    STATUS = [("open", "Otwarte"), ("closed", "Zamknięte")]
-    customer    = models.CharField(max_length=120, verbose_name="Klient (Ukraina)")
-    order_ref   = models.CharField(max_length=60, blank=True, verbose_name="Nr zlecenia")
-    product     = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
-    index_code  = models.CharField(max_length=50, db_index=True, verbose_name="Indeks")
-    lot         = models.CharField(max_length=32, verbose_name="Partia (LOT)")
-    requested_qty = models.FloatField(default=0, verbose_name="Żądana ilość")
-    unit        = models.CharField(max_length=20, default="szt", verbose_name="Jednostka")
-    status      = models.CharField(max_length=8, choices=STATUS, default="open", verbose_name="Status")
-    note        = models.CharField(max_length=300, blank=True, verbose_name="Uwagi")
-    created_by  = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True, blank=True,
-                                    related_name="ukraine_lines")
-    created_at  = models.DateTimeField(auto_now_add=True)
-    updated_at  = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ["customer", "order_ref", "index_code", "lot"]
-        verbose_name = "Linia wysyłki UKRAINA"
-        verbose_name_plural = "Linie wysyłki UKRAINA"
-        indexes = [models.Index(fields=["index_code", "lot"])]
-        # Klucz upsertu przy imporcie: ta sama (klient, zlecenie, indeks, partia) → aktualizacja.
-        constraints = [
-            models.UniqueConstraint(fields=["customer", "order_ref", "index_code", "lot"],
-                                    name="ukr_line_uniq"),
-        ]
-
-    def __str__(self):
-        return f"{self.customer} · {self.index_code}/{self.lot} × {self.requested_qty:g}"
-
 

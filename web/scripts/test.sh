@@ -1,7 +1,7 @@
 #!/bin/sh
 # Testy z poprawnym env — zamiast recznego DJANGO_SECRET_KEY=... PYTHONPATH=..
 # Uzycie (Makefile w katalogu glownym woła te tryby; Windows: web\scripts\test.bat):
-#   web/scripts/test.sh                      # check + 4 zestawy Django (ui/wh3d/huctl/transport)
+#   web/scripts/test.sh                      # check + 3 zestawy Django (ui/huctl/transport)
 #   web/scripts/test.sh fast                 # make test:      palletizer + check + Django, --failfast
 #   web/scripts/test.sh full                 # make test-full: + limit 500 linii, makemigrations --check,
 #                                            #   pokrycie (raport + htmlcov/), strażnik liczby testów
@@ -14,7 +14,7 @@ export DJANGO_SECRET_KEY=ci-test-secret DJANGO_DEBUG=true DJANGO_ALLOWED_HOSTS='
 PY=python
 [ -x .venv/Scripts/python.exe ] && PY=.venv/Scripts/python.exe   # Windows venv
 [ -x .venv/bin/python ] && PY=.venv/bin/python                   # Unix venv
-SUITES="ui.tests wh3d.tests huctl.tests transport.tests"
+SUITES="ui.tests huctl.tests transport.tests"
 MODE="$1"
 case "$MODE" in fast|full|role) shift ;; esac
 

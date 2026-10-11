@@ -17,7 +17,7 @@ _PATTERN = re.compile(r"""_json["']?\]?\s*[:=]\s*_?json\.dumps\(""")
 class SafeJsonGuardTests(SimpleTestCase):
     def test_no_raw_json_dumps_into_template_json_keys(self):
         offenders = []
-        for app in ("ui", "wh3d", "huctl", "transport"):
+        for app in ("ui", "huctl", "transport"):
             for p in (_WEB / app).rglob("*.py"):
                 if "tests" in p.parts or "migrations" in p.parts:
                     continue
