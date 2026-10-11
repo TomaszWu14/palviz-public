@@ -46,7 +46,7 @@ Brak świeżej kopii → **nie nadpisuj niczego**; zrób najpierw kopię tego, c
 
 ## Scenariusz D — przejęcie serwera / ransomware
 1. Odłącz serwer od sieci (firewall dostawcy: deny all), **nie wyłączaj** (dowody).
-2. Rotuj wszystkie sekrety: `DJANGO_SECRET_KEY` (wyloguje wszystkich), hasło bazy, `PALVIZ_API_TOKEN(S)`, `ZARIA_*_API_KEY`, `TWILIO_*`, `EMAIL_HOST_PASSWORD`, `POWERBI_*`, `GOOGLE_MAPS_API_KEY`, tokeny GitHub (AUTOMERGE_PAT, runner), hasła Coolify.
+2. Rotuj wszystkie sekrety: `DJANGO_SECRET_KEY` (wyloguje wszystkich), hasło bazy, `PALVIZ_API_TOKEN(S)`, `TWILIO_*`, `EMAIL_HOST_PASSWORD`, `POWERBI_*`, `GOOGLE_MAPS_API_KEY`, tokeny GitHub (AUTOMERGE_PAT, runner), hasła Coolify.
 3. Postaw nowy serwer (Scenariusz A) z kopii **sprzed** incydentu, z **kopii off-site** (kopia na przejętym serwerze jest niewiarygodna).
 4. Zgłoszenie naruszenia do UODO w 72 h, jeśli wyciekły dane osobowe (IOD).
 

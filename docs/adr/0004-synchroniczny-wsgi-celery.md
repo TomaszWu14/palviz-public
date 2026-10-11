@@ -12,14 +12,15 @@ Celery wszedł commitem `c480fd7` (2026-05-23), gunicorn z wdrożeniem Docker/Co
 ## Decyzja
 
 Cały kod jest synchroniczny (WSGI, `palletweb.wsgi`), bez `async def`. Długie zadania idą do
-Celery (broker Redis, worker + beat). Długie odpowiedzi (strumień ZARIA SSE, druk HU) to
-synchroniczne generatory `StreamingHttpResponse`. W DEBUG Celery działa eager
+Celery (broker Redis, worker + beat). W DEBUG Celery działa eager
 (`CELERY_TASK_ALWAYS_EAGER = DEBUG`) — lokalnie bez Redisa i workera.
 
 ## Skutki
 
 - Prosty model wykonania, brak mieszania sync/async w ORM.
-- Każdy otwarty strumień zajmuje cały worker gunicorna — ich liczbę ogranicza `WEB_CONCURRENCY`.
+- Brak widoków strumieniowych (`StreamingHttpResponse`/SSE; ostatnie — czat ZARIA i druk HU —
+  usunięto 2026-10-11). Nowy strumień zajmowałby cały worker gunicorna na czas połączenia
+  (limit `WEB_CONCURRENCY`).
 - Widok `async def` wymaga najpierw przejścia na ASGI (nowy ADR).
 - Na produkcji muszą działać procesy `celery worker` i `celery beat`.
 
@@ -27,5 +28,4 @@ synchroniczne generatory `StreamingHttpResponse`. W DEBUG Celery działa eager
 
 - `CLAUDE.md` (§Conventions & gotchas)
 - `web/palletweb/wsgi.py`, `web/palletweb/celery.py`, `web/palletweb/settings.py`, `web/ui/tasks.py`
-- `web/ui/views/zaria_stream.py`, `web/huctl/views/hu_print.py`
 - `docker-entrypoint.sh`, `docs/celery-coolify.md`

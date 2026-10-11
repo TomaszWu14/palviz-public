@@ -18,10 +18,9 @@ Po zmianie zmiennych: **Redeploy**. Wyłączenie = usunięcie `CELERY_WORKER`/`C
 
 ## Skutki włączenia
 
-- Działają `.delay()` (przeliczanie instrukcji, duże importy zadań EWM).
+- Działają `.delay()` (przeliczanie instrukcji).
 - Beat: przypomnienia SMS kierowców (tylko z `TWILIO_*`), zadania cykliczne, retencja zdjęć
-  HU (`HU_PHOTO_RETAIN_DAYS`, domyślnie 30; `0` = wyłączona), retencja ZARIA
-  (`retention_days` w konfiguracji ZARIA), KPI transportu; opcjonalnie raport HU, backup,
+  HU (`HU_PHOTO_RETAIN_DAYS`, domyślnie 30; `0` = wyłączona), KPI transportu; opcjonalnie raport HU, backup,
   Power BI (flagi w `settings.py`).
 - Cache Django przechodzi na Redis (wspólny dla procesów gunicorna; awaria Redisa = pusty cache,
   nie błąd).

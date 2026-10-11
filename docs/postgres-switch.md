@@ -95,7 +95,7 @@ python manage.py showmigrations | grep -c "\[ \]"            # 0 = wszystkie mig
 
 ```bash
 python manage.py loaddata /app/data/dump.json
-python manage.py sqlsequencereset ui wh3d huctl transport auth django_celery_beat \
+python manage.py sqlsequencereset ui huctl transport auth django_celery_beat \
   simple_history | python manage.py dbshell
 ```
 (Reset sekwencji jest obowiązkowy — inaczej pierwszy INSERT po imporcie kończy się
@@ -108,7 +108,7 @@ python manage.py policz_wiersze --porownaj /app/data/wiersze_sqlite.json
 python manage.py check --deploy
 ```
 - `policz_wiersze` musi wypisać **„✓ Zgodne”**. Błąd = **nie przełączaj**, przejdź do Rollback.
-- Zaloguj się: hub i moduły, lista HU w Kontroli HU, jedna wysyłka z liniami, mapa 3D,
+- Zaloguj się: hub i moduły, lista HU w Kontroli HU, jedna wysyłka z liniami, Zajętość magazynu,
   jedno wyszukanie produktu. Utwórz i usuń testowe zadanie (sprawdza sekwencje).
 
 ### 6. Koniec okna
@@ -141,7 +141,7 @@ python manage.py check --deploy
 ## Weryfikacja kompatybilności (2026-09-05)
 
 Pełna suita Django przepuszczona lokalnie na **PostgreSQL 16 (kontener)**:
-`huctl+transport+wh3d` 826/826 OK, `ui.tests` 734/734 OK (3 skipy) — **zero różnic
+`huctl+transport+wh3d` (app `wh3d` usunięty 2026-10-11) 826/826 OK, `ui.tests` 734/734 OK (3 skipy) — **zero różnic
 SQLite↔Postgres**. Kod gotowy; pozostaje wyłącznie procedura powyżej.
 
 ### Grabie z lokalnego przećwiczenia (Windows)

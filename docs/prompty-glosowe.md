@@ -11,7 +11,6 @@ Dodaj te słowa w apce Wispr Flow na telefonie (Settings → Dictionary / Vocabu
 
 ```
 GROOVE
-ZARIA
 PalViz
 paletyzacja
 paleta
@@ -20,7 +19,7 @@ SKU
 Kontrola HU
 Handling Unit
 Data Center
-Magazyn 3D
+MATinfo
 graphify
 Coolify
 ```
@@ -37,9 +36,9 @@ Zasada: nie podajesz plików. Ekran nazywasz po ludzku — Claude znajdzie kod g
 
 ## 3. Nazwy ekranów (slot "na ekranie")
 
-Paletyzacja · Wycena przesyłek · Magazyn 3D + heatmapa · Kontrola HU ·
+Paletyzacja · Wycena przesyłek · Zajętość magazynu · Slotting · Kontrola HU · MATinfo ·
 Zadania i powiadomienia · Baza klientów · Data Center · widok 3D shipmentu ·
-kalkulator palet · ZARIA (czat)
+kalkulator palet
 
 ## 4. Przykłady dobrych promptów głosowych
 

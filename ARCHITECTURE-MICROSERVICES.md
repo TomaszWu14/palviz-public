@@ -1,6 +1,6 @@
 # GROOVE — plan przejścia na mikroserwisy (dokument roboczy)
 
-> Kierunek docelowy: **jedna domena, 6–7 niezależnych aplikacji** — każda z własnym
+> Kierunek docelowy: **jedna domena, ok. 5 niezależnych aplikacji** — każda z własnym
 > repozytorium, własną bazą i osobnym deployem — spięte bramą (Traefik) i wspólnym
 > logowaniem (SSO). Migracja metodą **strangler fig**: wydzielamy serwis po serwisie,
 > bez przepisywania wszystkiego naraz. To propozycja do dyskusji z zespołem, nie wiążący projekt.
@@ -32,11 +32,11 @@ jest w całości używalny.
                      ┌────────────▼─────────────┐
                      │  Traefik — brama / gateway │  routing po ścieżce lub subdomenie + TLS
                      └────────────┬─────────────┘
-   ┌─────────┬──────────┬─────────┼──────────┬──────────┬──────────┬─────────┐
-   ▼         ▼          ▼         ▼          ▼          ▼          ▼         ▼
- portal  master-data  paletyzacja transport magazyn-3d kontrola-hu wydruk-hu zadania
-  (—)     (core DB)    (własna)   (własna)  (własna)   (własna)   (własna)  (własna)
-   └─────────┴──────────┴────┬────┴──────────┴──────────┴──────────┴─────────┘
+   ┌─────────┬──────────┬─────────┼──────────┬──────────┐
+   ▼         ▼          ▼         ▼          ▼          ▼
+ portal  master-data  paletyzacja transport kontrola-hu zadania
+  (—)     (core DB)    (własna)   (własna)  (własna)   (własna)
+   └─────────┴──────────┴────┬────┴──────────┴──────────┘
                              │
         ┌────────────────────┴─────────────────────┐
         ▼                                           ▼
@@ -58,12 +58,10 @@ tylko przez API właściciela — nigdy bezpośrednio z jego bazy.
 
 | Serwis | Moduły dziś | Własna baza — co posiada | Czyta z |
 |---|---|---|---|
-| `master-data` | Data Center, Baza klientów | Produkty, kartony, opakowania, klienci, **HU (rejestr)** | — |
+| `master-data` | Data Center, Baza klientów, MATinfo | Produkty, kartony, opakowania, klienci, **HU (rejestr)**, dane magazynowe (lokalizacje, typy regałów, aktywność pickerów) | — |
 | `paletyzacja` | Paletyzacja | Kalkulacje, warianty układów | `master-data` (produkty) |
 | `transport` | Wycena przesyłek | Wysyłki, przewoźnicy, wyceny, trasy | `master-data` (klienci, HU) |
-| `magazyn-3d` | Magazyn 3D + heatmapa | Lokalizacje, model regałów, sloty, aktywność | `master-data` (HU, stan) |
 | `kontrola-hu` | Kontrola HU | Wyniki kontroli, statusy, zdarzenia, jakość | `master-data` (HU, produkty) |
-| `wydruk-hu` | Wydruk HU | Projekty numeracji, przebiegi druku | — (prawie samodzielny) |
 | `zadania` | Zadania i powiadomienia | Zadania, powiadomienia, subskrypcje | zdarzenia z innych serwisów |
 
 > **Kluczowy szew:** `HandlingUnit` tworzy dziś Transport (z wysyłki), a konsumuje Kontrola
@@ -80,7 +78,7 @@ tylko przez API właściciela — nigdy bezpośrednio z jego bazy.
    przez jego **API**, a nie `FK/JOIN`. Część zapytań trzeba przeprojektować.
 3. **⏳ Spójność ostateczna** — „stan świata" jest rozproszony. Zmiany propagują się
    **zdarzeniami** (event bus), z opóźnieniem. Trzeba projektować pod chwilową niespójność.
-4. **🛠️ Narzut operacyjny** — 6–7 deployów, 6–7 baz, gateway, SSO, event bus,
+4. **🛠️ Narzut operacyjny** — ok. 5 deployów, 5 baz, gateway, SSO, event bus,
    obserwowalność. Dla małego zespołu to realny, **stały** koszt utrzymania.
 
 ---
@@ -93,9 +91,9 @@ tylko przez API właściciela — nigdy bezpośrednio z jego bazy.
 | **1. Brama + portal** | Traefik routuje domenę do usług; hub GROOVE = portal. Usługi to na razie warianty jednego obrazu nad wspólną bazą. | jedna domena · ~3–5 dni · niskie ryzyko |
 | **2. SSO (Keycloak)** | Centralny login **zanim** rozjedziemy bazy użytkowników. Wszystkie warianty logują przez OIDC; role/macierz z Keycloak. | nowa usługa · ~1–2 tyg. · średnie ryzyko |
 | **3. `master-data` + API** | Rdzeń (produkty, klienci, rejestr HU) zostaje w obecnej bazie i dostaje REST API. Reszta przestaje sięgać do tych tabel bezpośrednio. | API + kontrakty · ~2–3 tyg. · wysokie ryzyko |
-| **4. Wyprowadzanie serwisów** | Po jednym, od najbardziej samodzielnych: `wydruk-hu` → `kontrola-hu` → `zadania`. Każdy: własne repo + baza, czyta core przez API. | ~1–2 tyg./serwis · własność zespołów |
+| **4. Wyprowadzanie serwisów** | Po jednym, od najbardziej samodzielnych: `zadania` → `kontrola-hu`. Każdy: własne repo + baza, czyta core przez API. | ~1–2 tyg./serwis · własność zespołów |
 | **5. Event bus** | Redis/RabbitMQ do zdarzeń domenowych — serwisy reagują asynchronicznie zamiast odpytywać się nawzajem. | infrastruktura · ~1 tydz. |
-| **6. Domknięcie** | Wyprowadzenie `transport`, `magazyn-3d`, `paletyzacja` + obserwowalność per serwis (Sentry/OTel już w kodzie). Monolit znika. | iteracyjnie · pełne mikroserwisy |
+| **6. Domknięcie** | Wyprowadzenie `transport`, `paletyzacja` + obserwowalność per serwis (Sentry/OTel już w kodzie). Monolit znika. | iteracyjnie · pełne mikroserwisy |
 
 ---
 
@@ -103,8 +101,8 @@ tylko przez API właściciela — nigdy bezpośrednio z jego bazy.
 
 - **Fazy 1–2 to fundament** — brama + SSO. Bez SSO nie ma sensu rozdzielać baz (login się
   rozsypie). Zrób je zanim ruszysz dane.
-- **Nie rób 7 baz naraz.** Wyprowadź najpierw jeden, najbardziej samodzielny serwis
-  (`wydruk-hu`) — „próba generalna" całego wzorca na niskim ryzyku.
+- **Nie rób wszystkich baz naraz.** Wyprowadź najpierw jeden, najbardziej samodzielny serwis
+  (`zadania`) — „próba generalna" całego wzorca na niskim ryzyku.
 - **Rejestr HU i dane wzorcowe = jedno źródło prawdy** w `master-data`. To najczęstsze
   miejsce, gdzie mikroserwisy się wykrwawiają — priorytet.
 - **Zważ koszt.** Dla małego zespołu pełne mikroserwisy to duży, stały narzut. Jeśli głównym

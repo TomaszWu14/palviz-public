@@ -5,7 +5,7 @@
 
 ## Kontekst
 
-GROOVE obejmuje kilkanaście obszarów (paletyzacja, wyceny, Magazyn 3D, Kontrola HU, ZARIA…)
+GROOVE obejmuje kilkanaście obszarów (paletyzacja, wyceny, Kontrola HU, MATinfo, dane magazynowe…)
 utrzymywanych przez mały zespół na jednym serwerze (Coolify/Hetzner). 2026-06-20 przez chwilę
 budowano wariant „połączonych aplikacji” z SSO (commit `ea7594e`), tego samego dnia wycofany
 (commit `e548a29`: „Pivot back to a single repository … no microservices/separate repos”).
@@ -14,7 +14,7 @@ budowano wariant „połączonych aplikacji” z SSO (commit `ea7594e`), tego sa
 
 Jedno repo, jeden projekt Django (`palletweb`), jedna baza, jeden login. Moduły to kafelki hubu
 z rejestru `MODULES` / `modules_for(user)`, bramkowane rolą. Domeny żyją w appkach
-`ui`/`wh3d`/`huctl`/`transport`, wspólny rdzeń `core` nie ma modeli. Nowy obszar = wpis
+`ui`/`huctl`/`transport` (app `wh3d` usunięty 2026-10-11), wspólny rdzeń `core` nie ma modeli. Nowy obszar = wpis
 w `MODULES`, nie nowe repo ani serwis.
 
 ## Skutki

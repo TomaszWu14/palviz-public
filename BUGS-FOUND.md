@@ -6,20 +6,20 @@ bez zgody właściciela** — każdy wpis czeka na decyzję. B-001…B-011 napra
 
 | ID | Waga | Obszar | Tytuł | Status |
 |---|---|---|---|---|
-| B-001 | 🔴 | Uprawnienia | Widok 3D snapshotu zajętości dostępny bez logowania | ✅ naprawiony (PR #694) |
+| B-001 | 🔴 | Uprawnienia | Widok 3D snapshotu zajętości dostępny bez logowania | ✅ naprawiony (PR #694) (moduł Magazyn 3D usunięty 2026-10-11) |
 | B-002 | 🟠 | Uprawnienia / media | Zdjęcia kontroli HU i zgłoszeń MATinfo pobieralne bez logowania | ✅ naprawiony (PR #694) |
 | B-003 | 🟠 | Uprawnienia | Każdy zalogowany (także „Podgląd”, bez roli) uruchamia przeliczenie wszystkich instrukcji | ✅ naprawiony (PR #694) |
 | B-004 | 🟡 | UI / uprawnienia | Listy danych podstawowych pokazują przyciski zapisu 7 rolom, które dostają 403 | ✅ naprawiony (PR #697) |
 | B-005 | 🟡 | UI | Link „Django Admin” widoczny dla każdego (panel wpuszcza tylko `is_staff`) | ✅ naprawiony (PR #697) |
-| B-006 | 🟡 | UI | „Mapa magazynu 3D” na stronie stanów prowadzi Kontrolę HU i Lidera do 403 | ✅ naprawiony (PR #697) |
+| B-006 | 🟡 | UI | „Mapa magazynu 3D” na stronie stanów prowadzi Kontrolę HU i Lidera do 403 | ✅ naprawiony (PR #697) (moduł Magazyn 3D usunięty 2026-10-11) |
 | B-007 | 🟡 | UI / uprawnienia | Reguły pakowania klienta ukryte przed Administratorami (widok je przyjmuje) | ✅ naprawiony (PR #697) |
 | B-008 | 🟡 | UI / uprawnienia | Flagi szablonów ignorują indywidualne nadpisania modułów (`UserModuleAccess`) | ✅ naprawiony (PR #697) |
 | B-009 | 🟠 | Bezpieczeństwo / dostępność | Blokada django-axes po samym IP — 5 błędnych logowań blokuje wszystkich za tym samym adresem (proxy Coolify/NAT hali) | ✅ naprawiony (PR #695) |
-| B-010 | 🟠 | ZARIA / MATinfo | Dostawcy Ollama / OpenAI / Azure zawsze zwracają błąd — brak pakietu `openai` w `requirements.txt` | ✅ naprawiony (PR #696) |
+| B-010 | 🟠 | ZARIA / MATinfo | Dostawcy Ollama / OpenAI / Azure zawsze zwracają błąd — brak pakietu `openai` w `requirements.txt` | ✅ naprawiony (PR #696) (ZARIA i asystent MATinfo usunięte 2026-10-11) |
 | B-011 | 🟡 | Wydajność / Transport | Awaria NBP nie jest zapamiętywana — przy niedostępnym API każdy widok shipmentów/wycen czeka do 4 s na kurs | ✅ naprawiony (PR #696) |
 | B-012 | 🟠 | Komunikator / Kontrola HU | Panel nadzoru wiadomości (`/wiadomosci/panel/`) — błąd 500, gdy istnieje wątek systemowy bez autora (także widok wątku i szufladka) | ✅ naprawiony (PR #713) |
-| B-013 | 🟡 | Wydruk HU | Dziennik wydruku (`/hu-print/log/`) — błąd 500, gdy autor wydruku został usunięty | ✅ naprawiony (PR #714) |
-| B-014 | 🟠 | Magazyn / analityka | Kolory `var(--…)` przekazane do canvas / ECharts / Plotly — heatmapa maluje puste lokalizacje kolorem sąsiada, wykresy analityki bez kolorów | ✅ naprawiony (PR #722) |
+| B-013 | 🟡 | Wydruk HU | Dziennik wydruku (`/hu-print/log/`) — błąd 500, gdy autor wydruku został usunięty | ✅ naprawiony (PR #714) (moduł Wydruk HU usunięty 2026-10-11) |
+| B-014 | 🟠 | Magazyn / analityka | Kolory `var(--…)` przekazane do canvas / ECharts / Plotly — heatmapa maluje puste lokalizacje kolorem sąsiada, wykresy analityki bez kolorów | ✅ naprawiony (PR #722) (heatmapa z modułem Magazyn 3D usunięta 2026-10-11) |
 | B-015 | 🟡 | Zadania / dostępność | Link zadania bez „źródła” ma jako treść samą strzałkę „→” (brak nazwy dostępnej, cel 10 px) | ✅ naprawiony (PR #728) |
 
 ---

@@ -30,13 +30,9 @@ przy jednym dostępnym module wchodzi od razu, operatorzy „control-only" idą 
 | **Data Center** — master data: opakowania, stock, klienci, produkty | `data_center` | Admin, Master Data |
 | **Paletyzacja** — jak układać ładunek i dobierać opakowanie | `planner_calc_index` | Admin, MD, Transport |
 | **Wycena przesyłek** — objętość, ładunek, przewoźnicy, wyceny | `planner_shipments` | Admin, Transport |
-| **Magazyn 3D** — lokalizacje, widok 3D, kompletacja i analiza | `warehouse_map` | Admin, MD, Transport, Podgląd |
 | **Kontrola HU** — skaner, kontrola zawartości, KPI i raporty | `hu_control_hub` | Admin, Kontrola HU, Lider |
-| **Wydruk HU** — etykiety HU (Zebra/ZPL), druk sekwencyjny per projekt | `hu_print_home` | Admin, Magazyn |
 | **Zadania i powiadomienia** — zadania zespołu i alerty o niezgodnościach stocku | `tasks_home` | Admin, Master Data |
 | **Baza klientów** — klienci / odbiorcy i ich wymagania dostaw | `planner_customers` | Admin, MD, Transport, Obsługa klienta |
-| **ZARIA** — asystent AI, czat z modelami LLM | `zaria_home` | Admin, MD, Transport, Kontrola HU, Lider, Podgląd, Magazyn |
-| **Wysyłka UKRAINA** — monitoring wskazanych partii: ACME vs DLT | `ukraine_home` | Admin, Transport, MD |
 | **MATinfo** — podgląd materiału: szt → OPZ → karton → ładunek, przeliczniki, wagi, zgłoszenia | `phv_home` | Admin, MD, Magazyn, Kontrola HU, Lider |
 | **Optymalizacja kartonów** — zarządzanie wypełnieniem ładunku: zgłoszenia ze skanera, pilność, warianty kartonów | `carton_opt_inbox` | Admin, Optymalizacja kartonów, MD |
 
@@ -44,6 +40,9 @@ przy jednym dostępnym module wchodzi od razu, operatorzy „control-only" idą 
 odświeżeniu stocku (import HU / Power BI) skanuje HU i tworzy zadania (z deduplikacją) +
 powiadomienia dla Master Data/Admin. Reguły: brak danych opakowania, przeterminowane/krótka
 data, błędna lokalizacja (kod spoza master), objętość > pojemności lokalizacji.
+
+Rola **Podgląd** nie ma obecnie żadnego kafelka w hubie, a **Magazyn** ma dokładnie jeden
+(MATinfo). Moduły Magazyn 3D, Wydruk HU, ZARIA i Wysyłka UKRAINA usunięto 2026-10-11.
 
 ### Dodanie / zmiana modułu
 
@@ -57,6 +56,10 @@ data, błędna lokalizacja (kod spoza master), objętość > pojemności lokaliz
 Moduł `data_center` (`ui/views/data_center.py` → `ui/data_center.html`) to centralny hub
 master data: kafelki + liczniki linkujące do ekranów produktów, kartonów/opakowań, kategorii,
 klientów, stocku (zaimportowane HU), materiałów referencyjnych oraz szablonów/importu Excel.
+Dane magazynowe (dawniej moduł Magazyn 3D) też są tutaj: kafelki Typy regałów
+(`/data-center/typy-regalow/`), Zajętość magazynu (`/magazyn/zajetosc/`) i Slotting oraz
+importy „Snapshot lokalizacji SAP WMS” (`ui:warehouse_snapshot_upload`) i „Aktywność
+pickerów” (`ui:picker_activity_upload`). Modele tych danych żyją w `ui/models/warehouse_data.py`.
 
 ## Konwencje strukturalne
 
@@ -70,7 +73,7 @@ narzędziowo: `web/scripts/file_size_check.py` (`LIMIT = 500`; wyjątki: katalog
 `migrations`/`vendor` i dokładnie `palletweb/settings.py`), krok w CI
 (`.github/workflows/ci.yml`, "File size limit gate") i w pre-commit.
 
-**Granice aplikacji.** `ui` vs `wh3d`/`huctl`/`transport` — brak cross-importów
+**Granice aplikacji.** `ui` vs `huctl`/`transport` — brak cross-importów
 między leaf appami; strażnik `web/ui/tests/test_module_boundaries.py` (Faza 2)
 pilnuje tego testem.
 
@@ -78,7 +81,7 @@ pilnuje tego testem.
 mieszka w osobnej appce `core` **bez modeli i migracji**: `roles.py` (słownik ról +
 kontrakt SSO), `middleware.py`, `context_processors.py`, `platform_modules.py`
 (rejestr hubu), `health_urls.py`. Podział intencyjny: **`core` = shared kernel,
-`ui`/`wh3d`/`huctl`/`transport` = domeny.** Stare ścieżki importu (`ui.roles`,
+`ui`/`huctl`/`transport` = domeny.** Stare ścieżki importu (`ui.roles`,
 `ui.platform_modules`) działają dalej przez cienkie shimy re-eksportujące w `ui/`
 (martwe shimy `ui.middleware`/`ui.context_processors`/`ui.health_urls` usunięte — ARCH-004) — kontrakt SSO (`oidc.py`)
 i 160+ importerów bez zmian (`test_group_contract` zielony). Modele zostają w `ui`,
@@ -95,26 +98,24 @@ re-eksportuje przez `from .x import *`; widok jest osiągalny tylko gdy jest
 wyeksportowany ORAZ wpięty w `urls.py` (namespace `ui:`).
 
 **URL-e per app (Faza 5).** Nowy widok → wpis w `urls.py` appki, w której żyje
-funkcja widoku (`wh3d`/`huctl`/`transport`), nie w `ui/urls.py`. `ui/urls.py`
+funkcja widoku (`huctl`/`transport`), nie w `ui/urls.py`. `ui/urls.py`
 włącza leaf-urlconfy BEZ prefiksu; żaden z nich nie deklaruje własnego
 `app_name` — wszystkie nazwy scalają się do jednego namespace ui:, więc
 `reverse("ui:<name>")` i `{% url %}` działają identycznie niezależnie od tego,
-w której appce żyje widok. Przykład: `path("", include("wh3d.urls"))`.
+w której appce żyje widok. Przykład: `path("", include("huctl.urls"))`.
 Strażnik regresji: `web/ui/tests/test_urls_snapshot.py`.
 
 **Wzorzec nazw plików modeli w appkach.** Gdy modele appki rosną poza jedną
 domenę: pakiet `models/__init__.py` re-eksportujący `from .domena import *`
 (`ui`) ALBO fasada `models.py` (kilka linii, `from .models_domena import *`) +
-pliki `models_<domena>.py` obok (`huctl`: `models_hu.py`/`models_control.py`/
-`models_print.py`; `transport`: `models_quoting.py`/`models_shipment.py`) — obie
+pliki `models_<domena>.py` obok (`huctl`: `models_hu.py`/`models_control.py`; `transport`: `models_quoting.py`/`models_shipment.py`) — obie
 formy są zgodne z konwencją, wybór zależy od tego, czy app zaczynał jako pakiet
-czy jako pojedynczy plik. Mały, jednoplikowy `models.py` (wh3d) jest zgodny z
-konwencją, dopóki app nie urośnie ponad limit ~500 linii/plik.
+czy jako pojedynczy plik.
 
 **Higiena migracji.** `makemigrations` zawsze przy zmianie modeli; nigdy nie
 edytować zaaplikowanej migracji — dodać nową. Wymuszane pre-commit
 (`makemigrations --check`) oraz testem-strażnikiem `web/ui/tests/test_migrations_check.py`
-(`makemigrations --check --dry-run` dla `ui`/`wh3d`/`huctl`/`transport`, biegnie
+(`makemigrations --check --dry-run` dla `ui`/`huctl`/`transport`, biegnie
 w ramach `manage.py test ui.tests`).
 
 **Migracje expand → contract (BUILD-001).** `docker-entrypoint.sh` odpala `migrate` przy

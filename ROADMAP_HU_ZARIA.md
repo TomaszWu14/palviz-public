@@ -1,6 +1,10 @@
-# Roadmapa: Kontrola HU + ZARIA
+# Roadmapa: Kontrola HU
 
-Wynik wywiadu 30 pytań (2026-07-30, TW). Priorytety rozwoju dwóch modułów.
+Wynik wywiadu 30 pytań (2026-07-30, TW). Priorytety rozwoju modułu Kontrola HU.
+
+> Wywiad obejmował też asystenta AI ZARIA. Moduł ZARIA usunięto 2026-10-11 (decyzje historyczne:
+> [ADR-0015](docs/adr/0015-zaria-odczyt-prywatnosc-modele.md), status *Wycofana*), więc jego sekcje
+> usunięto z tej roadmapy. Nazwa pliku zostaje dla stabilności odnośników.
 
 ## Kontrola HU
 
@@ -35,48 +39,17 @@ załadunkiem), wydajność kontrolerów ORAZ ślad audytowy. Moduł jest krytycz
 14. **Bolączki do zaadresowania:** za dużo kroków, rozjazd danych stock↔rzeczywistość,
     brak widoczności wyników ekipy (motywacja/ranking), wolne ładowanie na słabym WiFi.
 
-## ZARIA
-
-### Zastosowania (wszystkie)
-Pytania o dane firmy (RAG), pomoc w pisaniu, wiedza ogólna, automatyzacje (docelowo).
-
-### Decyzje
-- **Modele:** Anthropic Claude + model lokalny (Ollama). Routing **auto tani→mocny**
-  (proste pytania → tani/lokalny; złożone → Claude).
-- **Budżety:** limity tokenów per rola (konstrukcja już istnieje); rate-limity łagodne.
-- **Dostęp:** docelowo wszyscy; kolejność wdrożenia: admini → Master Data → Transport.
-- **RODO:** akceptacja regulaminu raz (jak dziś).
-- **RAG — pełny zakres:** stock i lokalizacje, produkty/opakowania/instrukcje,
-  wysyłki i wyceny, klienci i wymagania.
-- **Akcje:** na start TYLKO odczyt (żadnych zmian w systemie).
-- **Funkcje czatu:** załączniki (pliki/zdjęcia), streaming, wyszukiwanie w historii,
-  szablony promptów (mail do przewoźnika, tłumaczenia itp.).
-- **Ton:** polski, przyjazny.
-- **Prywatność rozmów:** rozmowy PRYWATNE — nikt nie czyta cudzych; audyt tylko
-  zbiorczych statystyk kosztów. (Uwaga: obecny panel audytu admina pokazuje treści —
-  do ograniczenia!)
-- **Hala:** ZARIA głosowo na skanerze („gdzie leży ZR-1001?") — speech-to-text.
-- **Zadania:** bez integracji z modułem Zadań.
-- **Miary sukcesu (3 mies.):** regularne użycie tygodniowe, trafność odpowiedzi
-  o dane, koszt pod kontrolą, oszczędność czasu biura.
-
 ## Sugerowana kolejność wdrożenia
-1. ZARIA fundament: konfiguracja modeli (Claude + Ollama), streaming, szablony,
-   ton PL; ograniczenie audytu do statystyk.
-2. HU szybkie wygrane: mniej kliknięć w potwierdzeniu pozycji, KPI o pozycjach
+1. HU szybkie wygrane: mniej kliknięć w potwierdzeniu pozycji, KPI o pozycjach
    i jednostkach, auto-task naprawczy.
-3. Rekontrola 2.0 (eskalacje/terminy/raport) + panel lidera (live, przydzielanie,
+2. Rekontrola 2.0 (eskalacje/terminy/raport) + panel lidera (live, przydzielanie,
    zatwierdzanie).
-4. Shelf-life per klient (pole w master dacie klienta) + etykieta logistyczna.
-5. ZARIA RAG na danych GROOVE (odczyt) + załączniki.
-6. TV board 2.0, raporty e-mail, auto-import Power BI na harmonogramie.
-7. ZARIA głosowa na hali. (SAP real-time — zawieszone, patrz pkt 9 wyżej.)
+3. Shelf-life per klient (pole w master dacie klienta) + etykieta logistyczna.
+4. TV board 2.0, raporty e-mail, auto-import Power BI na harmonogramie.
+(SAP real-time — zawieszone, patrz pkt 9 wyżej.)
 
 ## Status wykonania (2026-07-30)
-- Fala 1 — ZROBIONA (commit 42c034d): mniej kliknięć, KPI jednostek, auto-task,
-  prywatność ZARII.
-- Fala 2 — ZROBIONA częściowo (85aed2d): Ollama, routing auto, ton PL, szablony,
-  szukanie; streaming + załączniki czekają na klucz API.
+- Fala 1 — ZROBIONA (commit 42c034d): mniej kliknięć, KPI jednostek, auto-task.
 - Fala 3 — ZROBIONA (25046e3): Rekontrola 2.0 (eskalacja wiekowa, wiek na liście)
   + panel lidera (live, przydzielanie, zaległości); zatwierdzanie błędów przez
   lidera odroczone (workflow do zaprojektowania).
@@ -85,5 +58,4 @@ Pytania o dane firmy (RAG), pomoc w pisaniu, wiedza ogólna, automatyzacje (doce
   150×100, przycisk po zaksięgowaniu, pozycje+jednostki+LOT/EXP, odbiorca z wysyłki,
   notatki i stały tekst klienta, bez kodów, język per klient (PL/EN/DE), flaga
   requires_logistics_label w master dacie klienta.
-- Fala 5+ — czeka na: klucz Anthropic / serwer Ollama (RAG, streaming), decyzje
-  o etykiecie; SAP real-time zawieszone.
+- Fala 5+ — czeka na: decyzje o etykiecie; SAP real-time zawieszone.

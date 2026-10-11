@@ -24,6 +24,8 @@ kalendarz) na realia GROOVE i zostawił sześć pytań do decyzji właściciela 
 - B-001…B-003 naprawione wg P-1…P-3 (PR #694); macierz uprawnień koduje docelowe zachowanie.
 - P-6 w praktyce: E2E Playwright biegną nocą na `ubuntu-latest` (runner self-hosted nie ma
   przeglądarek), testy wizualne zostają lokalne.
+- Po usunięciu modułów 2026-10-11 (Magazyn 3D, ZARIA) przestały istnieć snapshot `/magazyn/<pk>/`
+  (P-1), media `ewm_tasks/` (P-3) i rozmowy ZARIA (P-4); reszta reguł obowiązuje bez zmian.
 - P-2 potwierdzone ponownie 2026-09-28 (Q-43, [ADR-0018](0018-decyzje-procesowe-2026-09-28.md)).
 
 ## Źródła
