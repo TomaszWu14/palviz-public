@@ -15,12 +15,12 @@ class SlaTests(TestCase):
         sh = Shipment.objects.create(name=f"D{seq}", kunnr="200",
                                      outbound_delivery_date=delivery_date)
         return HandlingUnit.objects.create(shipment=sh, seq=seq, code=f"H{seq}",
-                                           warehouse_type="92EX")
+                                           warehouse_type="71EX")
 
     def test_no_date_is_level_none(self):
         hu = HandlingUnit.objects.create(
             shipment=Shipment.objects.create(name="DX", kunnr="200"),
-            seq=9, code="H9", warehouse_type="92EX")
+            seq=9, code="H9", warehouse_type="71EX")
         s = sla_for(hu)
         self.assertEqual(s.level, "none")
         self.assertEqual(s.label, "")
@@ -49,7 +49,7 @@ class SlaTests(TestCase):
         near = self._hu(datetime.date(2026, 9, 10), seq=2)
         none = HandlingUnit.objects.create(
             shipment=Shipment.objects.create(name="DZ", kunnr="200"),
-            seq=3, code="H3", warehouse_type="92EX")
+            seq=3, code="H3", warehouse_type="71EX")
         now = timezone.make_aware(datetime.datetime(2026, 9, 9, 8, 0))
         hus = [far, near, none]
         order = sorted(hus, key=lambda h: rank_key(h, set(), now=now))

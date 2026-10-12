@@ -25,7 +25,7 @@ class InvestigationTests(TestCase):
         self.picker = _user("jkowal", GROUP_CONTROLLER)   # login = pole picker z SAP
         sh = Shipment.objects.create(name="D1")
         self.hu = HandlingUnit.objects.create(
-            shipment=sh, seq=1, code="H1", warehouse_type="92EX", picker="JKOWAL")
+            shipment=sh, seq=1, code="H1", warehouse_type="71EX", picker="JKOWAL")
         self.item = HandlingUnitItem.objects.create(
             hu=self.hu, ref_code="REF1", base_qty=10)
         self.client.force_login(self.ctrl)

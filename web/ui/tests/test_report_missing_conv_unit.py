@@ -17,20 +17,20 @@ class MissingConvUnitTests(TestCase):
 
     def test_missing_conversion_requires_unit(self):
         r = self.client.post(reverse("ui:phv_report"), {
-            "ref_code": "DMOM10001", "issue_type": "missing_conversion",
+            "ref_code": "ACME10001", "issue_type": "missing_conversion",
             "correct_value": "30 szt/karton"})       # brak unit
         self.assertEqual(PackagingIssue.objects.count(), 0)   # odrzucone
         self.assertEqual(r.status_code, 302)                  # redirect z komunikatem
 
     def test_unit_stored_when_provided(self):
         self.client.post(reverse("ui:phv_report"), {
-            "ref_code": "DMOM10001", "issue_type": "missing_conversion",
+            "ref_code": "ACME10001", "issue_type": "missing_conversion",
             "unit": "KAR", "correct_value": "30 szt/karton"})
         issue = PackagingIssue.objects.get()
         self.assertEqual(issue.current_value, "KAR")          # jednostka zapisana
 
     def test_bad_unit_rejected(self):
         self.client.post(reverse("ui:phv_report"), {
-            "ref_code": "DMOM10001", "issue_type": "missing_conversion",
+            "ref_code": "ACME10001", "issue_type": "missing_conversion",
             "unit": "XYZ", "correct_value": "30 szt/karton"})
         self.assertEqual(PackagingIssue.objects.count(), 0)

@@ -111,6 +111,7 @@
   </style>
 </head>
 <body>
+{% include "ui/_demo_banner.html" with fixed=1 %}
   <div class="login-card">
     <div class="login-head">
       <span class="login-brand">
@@ -126,6 +127,17 @@
     </div>
 
     <div class="login-body">
+      {% if demo_mode %}
+      <form method="post" action="{% url 'ui:demo_login' %}" style="margin:0">
+        {% csrf_token %}
+        <button type="submit" class="btn-login" data-testid="demo-login">Wejdź jako demo</button>
+      </form>
+      <p style="margin:8px 0 0;font-size:12px;color:var(--muted);text-align:center">
+        Dane fikcyjne, bez zakładania konta.{% if demo_password %}
+        Lub zaloguj się: <strong>{{ demo_user }}</strong> / <strong>{{ demo_password }}</strong>{% endif %}
+      </p>
+      <div class="qr-sep"><span>albo kontem</span></div>
+      {% endif %}
       {% if oidc_enabled %}
       <a class="btn-qr" href="/oidc/authenticate/{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}"
          style="margin-bottom:14px">

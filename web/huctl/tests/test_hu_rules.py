@@ -72,7 +72,7 @@ class ShortDatedSameEverywhereTests(TestCase):
     def _hu(self, code, months=None, days=300, status="in_control"):
         cust = Customer.objects.create(name=f"K{code}", min_shelf_life_months=months)
         hu = HandlingUnit.objects.create(shipment=Shipment.objects.create(name=code, customer=cust),
-                                         code=code, status=status, warehouse_type="92EX",
+                                         code=code, status=status, warehouse_type="71EX",
                                          controlled_by=self.u if status == "in_control" else None)
         HandlingUnitItem.objects.create(hu=hu, ref_code="A1", base_unit="OP", base_qty=1,
                                         expiry=self.today + timedelta(days=days))
@@ -117,7 +117,7 @@ class StatusGroupsAndThroughputTests(TestCase):
         self.client.force_login(self.leader)
         sh = Shipment.objects.create(name="S")
         mk = lambda seq, status, **kw: HandlingUnit.objects.create(
-            shipment=sh, seq=seq, code=f"H{seq}", status=status, warehouse_type="92EX", **kw)
+            shipment=sh, seq=seq, code=f"H{seq}", status=status, warehouse_type="71EX", **kw)
         self.planned = mk(1, "planned")
         self.ok = mk(2, "ok", verified_at=timezone.now())
         self.escaped = mk(3, "escaped")

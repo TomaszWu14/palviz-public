@@ -15,7 +15,7 @@ class AbuseSignalsTests(TestCase):
         self.c1 = get_user_model().objects.create_user("c1", password="x")
         self.c1.groups.add(Group.objects.get_or_create(name=GROUP_CONTROLLER)[0])
         sh = Shipment.objects.create(name="D1")
-        self.hu = HandlingUnit.objects.create(shipment=sh, seq=1, code="H1", warehouse_type="92EX")
+        self.hu = HandlingUnit.objects.create(shipment=sh, seq=1, code="H1", warehouse_type="71EX")
         self.it = HandlingUnitItem.objects.create(hu=self.hu, ref_code="A1", base_qty=5)
         self.client.force_login(self.lead)
 

@@ -160,7 +160,7 @@ class HUShelfLifeTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = _ctrl_user()
-        cls.cust = Customer.objects.create(name="MED", min_shelf_life_months=6)
+        cls.cust = Customer.objects.create(name="CER", min_shelf_life_months=6)
         cls.sh = Shipment.objects.create(name="Dostawa S", customer=cls.cust)
         cls.hu = HandlingUnit.objects.create(shipment=cls.sh, seq=1, code="SH1", status="in_control")
         from django.utils import timezone as _tz

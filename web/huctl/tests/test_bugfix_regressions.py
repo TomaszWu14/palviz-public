@@ -57,7 +57,7 @@ class DeepBugHuntRegressions(TestCase):
         self.u.groups.add(Group.objects.get_or_create(name=GROUP_CONTROLLER)[0])
         self.sh = Shipment.objects.create(name="DBH")
         self.hu = HandlingUnit.objects.create(shipment=self.sh, seq=1, code="HB1",
-                                              warehouse_type="92EX")
+                                              warehouse_type="71EX")
         self.client.force_login(self.u)
 
     def test_request_bring_no_500_double_redirect(self):
@@ -77,9 +77,9 @@ class DeepBugHuntRegressions(TestCase):
         from huctl.views.hu_dashboard import families_in_progress
         sh2 = Shipment.objects.create(name="DBH2", kunnr="900")
         h1 = HandlingUnit.objects.create(shipment=sh2, seq=1, code="HE1",
-                                         warehouse_type="92EX", status="escaped")
+                                         warehouse_type="71EX", status="escaped")
         h2 = HandlingUnit.objects.create(shipment=sh2, seq=2, code="HE2",
-                                         warehouse_type="92EX")
+                                         warehouse_type="71EX")
         self.assertIn("900", families_in_progress([h1, h2]))
 
     def test_investigation_detail_blocked_for_viewer_role(self):

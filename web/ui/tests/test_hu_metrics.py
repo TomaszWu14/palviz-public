@@ -15,7 +15,7 @@ def _instr(product, **over):
 
 class HuMetricsTests(TestCase):
     def setUp(self):
-        self.p = Product.objects.create(code="ZR-1", name="Kompresy")
+        self.p = Product.objects.create(code="ZR-1", name="Kubki")
         self.sh = Shipment.objects.create(name="D-1")
 
     def test_weight_from_feed_wins_volume_from_master(self):

@@ -140,8 +140,8 @@ class LocationScan(TestCase):
         self.assertIsNone(loc["master"])
 
     def test_product_ref_not_treated_as_location(self):
-        _product("DMOM10001")
-        r = self.client.get(reverse("ui:phv_home"), {"q": "DMOM10001"})
+        _product("ACME10001")
+        r = self.client.get(reverse("ui:phv_home"), {"q": "ACME10001"})
         self.assertIsNone(r.context["location"])             # REF ≠ kształt lokalizacji
         self.assertIsNotNone(r.context["product"])
 

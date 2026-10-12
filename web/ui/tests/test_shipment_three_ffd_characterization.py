@@ -234,7 +234,9 @@ class ShipmentThreeFfdCharacterizationTests(SimpleTestCase):
         warned = {name for name, lines, kw in _cases()
                   if "warnings" in (_run(lines, kw) or {})}
         self.assertEqual(warned, {"carton_heavier_than_cap", "carton_taller_than_load",
-                                  "oversize_skipped_others_kept"})
+                                  "oversize_skipped_others_kept",
+                                  # przepakowanie do wyceny ponad limit wysokości (P19)
+                                  "target_forces_repack", "target_mono_and_pool_repack"})
 
     def test_oversize_carton_warned_not_silently_dropped(self):
         # Karton większy niż paleta w obu orientacjach nie trafia do 3D, ale scena to mówi.
@@ -260,7 +262,8 @@ class ShipmentThreeFfdCharacterizationTests(SimpleTestCase):
     def test_repack_within_weight_no_warning(self):
         data = _run([_line("A", 10, dims=(50, 40, 30)), _line("B", 20, dims=(40, 30, 35))],
                     {"max_h": 120, "max_w": 1000, "target_bins": 1})
-        self.assertNotIn("warnings", data)
+        # Waga w limicie → brak ostrzeżenia o wadze (wysokość 214 > 120 ostrzega osobno, P19).
+        self.assertFalse([w for w in data.get("warnings", []) if "wagi" in w])
 
     def test_repack_to_target_exceeds_height(self):
         # „Dociśnij do wyceny”: przepakowanie do budżetu ignoruje limit wysokości (zamierzone).
@@ -270,3 +273,13 @@ class ShipmentThreeFfdCharacterizationTests(SimpleTestCase):
         self.assertEqual(data["n_pallets"], 1)
         self.assertEqual(len(data["pallets"][0]["boxes"]), 50)
         self.assertGreater(data["pallets"][0]["height_cm"], 120)
+        # …ale scena to mówi — inaczej nagłówek „N palet przy X m” jest nieosiągalny po cichu (P19).
+        self.assertEqual(data["warnings"], [
+            "Dociśnięcie do wyceny (1 palet): 1 palet przekracza limit wysokości 120 cm "
+            "(maks. 244 cm)"])
+
+    def test_repack_within_height_no_height_warning(self):
+        # Przepakowanie mieszczące się w limicie wysokości nie ostrzega o wysokości.
+        data = _run([_line(c, 3, dims=(60, 40, 30), w=40.0) for c in ("HA", "HB", "HC")],
+                    {"max_h": 200, "max_w": 1000, "target_bins": 1})
+        self.assertNotIn("warnings", data)

@@ -1,7 +1,7 @@
 # Kontrola HU ↔ SAP przez CPI — kontrakt endpointów (wersja zweryfikowana)
 
 HU-CHECK (narzędzie kontroli jakości palet ACME) prowadzi kolejkę kontroli Handling Units
-przed wydaniem w 8 strefach magazynowych (5 procesów: EXPORT, GEIS/INNY, GLS, BUS,
+przed wydaniem w 8 strefach magazynowych (5 procesów: EXPORT, PALETY/INNY, PACZKI, BUS,
 ODB. WŁASNE). Dziś dane wchodzą ręcznym eksportem xlsx; docelowo dostarcza je CPI.
 
 **Kontrakt jest WYŁĄCZNIE do odczytu** — HU-CHECK nigdy nie zapisuje do SAP. Wszystkie
@@ -35,7 +35,7 @@ i stref — filtr stref jest po stronie HU-CHECK.
 | `deliveryPickingStatus` | LIKP „Pobr./um. w mag. — nagłówek" (A/B/C) — kompletacja CAŁEJ dostawy | [✓] |
 | `expectedHUCount` | LIKP „Liczba jedn. wysyłk." — oczekiwana liczba palet dostawy (drugi sygnał niedokompletowania) | [✓] |
 | `createdOn`, `createdAt` | LIKP „Data utworzenia" + godzina | [✓] |
-| `processGroup` | zlecenie dostawy EWM, pozycja: **„GrStrPrzyg"** (grupa stref przygotowania, np. 92GE/92GL — widoczna w /SCWM/MON) — **autorytatywne źródło PROCESU**, zaplanowane na dostawie zanim powstanie paleta; `warehouseType` z AQUA zostaje jako weryfikacja | [✓ w MON; tabela do wskazania] |
+| `processGroup` | zlecenie dostawy EWM, pozycja: **„GrStrPrzyg"** (grupa stref przygotowania, np. 71PL/71PA — widoczna w /SCWM/MON) — **autorytatywne źródło PROCESU**, zaplanowane na dostawie zanim powstanie paleta; `warehouseType` z AQUA zostaje jako weryfikacja | [✓ w MON; tabela do wskazania] |
 | `stagingArea`, `door` | jw.: „StrPrz" (strefa przygotowania, np. GEST/GL21) + **„Brama"** (brama załadunku) — brama grupuje fizyczny transport | [✓ w MON; tabela do wskazania] |
 | `freightNo` | **numer frachtu wychodzącego** (dokument transportowy, do którego przypięta jest dostawa) — kandydaci: EWM Transport Unit / zlecenie frachtu TM / dawne VTTK-TKNUM; źródło do wskazania przez Konsultant | [?] |
 | `lastChanged` | znacznik zmiany na poziomie HU — kandydat: max(LIKP „Data zmiany", czasy zadań ORDIM_C, zmiana HU) — do ustalenia z Konsultant | [?] |
@@ -161,10 +161,10 @@ pokazuje go człowiekowi dosłownie.
 „HU stockowej"). **Jeden `huNo` = jedna fizyczna paleta**; dwie dostawy pod jednym
 numerem = sygnał błędu.
 
-**Proces i „rodzina" palet.** Proces (EXPORT/GEIS/GLS/BUS/ODB. WŁASNE) wynika
+**Proces i „rodzina" palet.** Proces (EXPORT/PALETY/PACZKI/BUS/ODB. WŁASNE) wynika
 z `processGroup` dostawy (fallback: strefa `warehouseType`). **Rodzina = odbiorca**
 — celowo obejmuje palety RÓŻNYCH procesów (konsolidacja!). Reguły po stronie HU-CHECK:
-- kontroler widzi w rodzinie palety spoza swojego procesu (np. w GEIS widzi HU na GLS),
+- kontroler widzi w rodzinie palety spoza swojego procesu (np. w PALETY widzi HU na PACZKI),
   ale **NIE może ich do siebie przypisać**;
 - zamiast przypisania wysyła **wiadomość z prośbą o przyniesienie** HU/paczki/palety
   na swoją strefę — po dostarczeniu kontroluje i wysyła razem po konsolidacji;
@@ -185,10 +185,10 @@ Częstotliwość odpytywania: §1 co 5–15 min, §2 co 30–60 min, §4 co 30�
    granica jest inna — wskażcie właściwą.
 3. **GrStrPrzyg / StrPrz / Brama** — w której tabeli zlecenia dostawy EWM żyją te pola
    z /SCWM/MON (kandydat: /SCDL/DB_PROCI lub tabela stref przygotowania) + słownik mapowania
-   grup (92GL vs 94GL) na procesy.
+   grup (71PA vs 73PA) na procesy.
 4. **Numer frachtu wychodzącego** — gdzie w Waszej konfiguracji żyje dokument
    transportowy dostawy (EWM TU? zlecenie frachtu TM? VTTK-TKNUM?) i jak spiąć go
    z dostawą. Potrzebny do grupowania: dostawy jednego odbiorcy różnymi przewoźnikami
-   (GLS vs GEIS) mają osobne frachty i NIE są jedną rodziną.
+   (PACZKI vs PALETY) mają osobne frachty i NIE są jedną rodziną.
 5. **Uwierzytelnienie i limity** — OAuth2 client credentials preferowane; page size,
    timeouty, max częstotliwość odpytywania; środowisko testowe (QAS + tenant CPI test).

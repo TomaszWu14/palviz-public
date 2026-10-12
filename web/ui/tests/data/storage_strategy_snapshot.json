@@ -637,9 +637,9 @@
    "0010",
    "9010 (GR-Zone)",
    "0011",
-   "9010 (DLT)",
-   "92EX",
-   "BROK"
+   "9010 (ZEW)",
+   "71EX",
+   "USZK"
   ],
   "processes": [],
   "stock_categories": [
@@ -652,8 +652,8 @@
     "label": "Zapasowe"
    },
    {
-    "key": "dlt",
-    "label": "DLT"
+    "key": "zew",
+    "label": "ZEW"
    },
    {
     "key": "wysylka",
@@ -793,15 +793,15 @@
    },
    {
     "base_qty": 30,
-    "category": "dlt",
-    "code": "9010 (DLT)",
+    "category": "zew",
+    "code": "9010 (ZEW)",
     "count": 1,
     "rows": [
      {
       "blocked": false,
       "expiry": null,
       "hu_code": "HU007",
-      "location": "DLT-01",
+      "location": "ZEW-01",
       "lot": "",
       "status": "",
       "status_kind": "free",
@@ -813,7 +813,7 @@
    {
     "base_qty": 50,
     "category": "wysylka",
-    "code": "92EX",
+    "code": "71EX",
     "count": 1,
     "rows": [
      {
@@ -832,7 +832,7 @@
    {
     "base_qty": 6,
     "category": "inne",
-    "code": "BROK",
+    "code": "USZK",
     "count": 1,
     "rows": [
      {

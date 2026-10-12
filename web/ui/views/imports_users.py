@@ -105,7 +105,7 @@ def excel_import_users(request):
                 prof.phone = str(row.get("phone") or prof.phone or "")[:20]
                 prof.department = str(row.get("department") or prof.department or "")[:80]
                 section = str(row.get("section") or "").strip().upper()
-                if section in ("GLS", "BUS", "GEIS", "EXPORT"):
+                if section in ("PACZKI", "BUS", "PALETY", "EXPORT"):
                     prof.section = section
                 # Wymuszenie zmiany hasła: domyślnie TAK, gdy import ustawił hasło.
                 prof.must_change_password = _flag(row.get("must_change_password"),
@@ -162,15 +162,15 @@ def excel_template_users(request):
         ("groups",     f"Role po średniku. Dozwolone: {roles}",           34, "Kontrola HU; Podgląd"),
         ("phone",      "Telefon (SMS)",                                   14, "600100200"),
         ("department", "Dział",                                         18, "Magazyn"),
-        ("section",    "Sekcja skanera: GLS / BUS / GEIS / EXPORT",       12, "GLS"),
-        ("control_zones", "Typy magazynu do kontroli, po średniku (puste = wszystkie)", 22, "92JU; 92EX"),
+        ("section",    "Sekcja skanera: PACZKI / BUS / PALETY / EXPORT",       12, "PACZKI"),
+        ("control_zones", "Typy magazynu do kontroli, po średniku (puste = wszystkie)", 22, "71BU; 71EX"),
         ("modules_allow", "Moduły wymuszone na TAK (klucze, po średniku)", 22, "kontrola_hu"),
         ("modules_deny",  "Moduły zablokowane (klucze, po średniku)",      22, ""),
     ]
     _style_xlsx_header(ws, cols, "0E5E74")
     rows = [
         ["jkowalski", "Jan", "Kowalski", "j.kowalski@example.com", "", 1, 1, 0, 0,
-         "Kontrola HU", "600100200", "Magazyn", "GLS", "92JU; 92EX", "", ""],
+         "Kontrola HU", "600100200", "Magazyn", "PACZKI", "71BU; 71EX", "", ""],
         ["anowak", "Anna", "Nowak", "a.nowak@example.com", "", 1, 1, 0, 0,
          "Master Data; Podgląd", "", "Master Data", "", "", "", ""],
         ["plider", "Piotr", "Lider", "p.lider@example.com", "", 1, 1, 0, 0,
@@ -188,21 +188,21 @@ def excel_template_customers(request):
     ws.title = "Klienci"
     cols = [
         ("Klient",        "Numer klienta (KUNNR) — WYMAGANE, klucz aktualizacji", 14, "0000123456"),
-        ("Nazwa 1",       "Nazwa klienta — WYMAGANE",                             28, "Szpital Miejski"),
+        ("Nazwa 1",       "Nazwa klienta — WYMAGANE",                             28, "Sklep Miejski"),
         ("Nazwa 2",       "Druga linia nazwy (opcjonalnie)",                      24, "Oddział Chirurgii"),
         ("Ulica",         "Ulica i numer",                                        26, "ul. Lipowa 12"),
         ("Kod pocztowy",  "Kod pocztowy",                                         13, "26-600"),
         ("Miasto",        "Miejscowość",                                          18, "Radom"),
         ("Kraj",          "Kod kraju (2 znaki)",                                  8,  "PL"),
         ("Telefon",       "Telefon kontaktowy",                                   16, "32 100 20 30"),
-        ("Kategoria",     "Kategoria klienta (opcjonalnie)",                      16, "Szpital"),
-        ("Przewoźnik",    "Domyślny przewoźnik (opcjonalnie)",                    16, "GLS"),
+        ("Kategoria",     "Kategoria klienta (opcjonalnie)",                      16, "Sklep"),
+        ("Przewoźnik",    "Domyślny przewoźnik (opcjonalnie)",                    16, "PACZKI"),
         ("Wysokość",      "Standardowa wys. palety [cm] 50–280 (opcjonalnie)",    14, 180),
     ]
     _style_xlsx_header(ws, cols, "F59E0B")
     rows = [
-        ["0000123456", "Szpital Miejski", "Oddział Chirurgii", "ul. Lipowa 12", "26-600",
-         "Radom", "PL", "32 100 20 30", "Szpital", "GLS", 180],
+        ["0000123456", "Sklep Miejski", "Oddział Chirurgii", "ul. Lipowa 12", "26-600",
+         "Radom", "PL", "32 100 20 30", "Sklep", "PACZKI", 180],
         ["0000123457", "Pogotowie Ratunkowe", "", "ul. Przemysłowa 4", "26-600",
          "Cieszyn", "PL", "", "Pogotowie", "BUS", 200],
     ]
@@ -218,24 +218,24 @@ def excel_template_stock_hu(request):
     ws.title = "Stock HU"
     cols = [
         ("Jednostka obsługi", "pickHU / SSCC — WYMAGANE, grupuje pozycje w paletę", 20, "111835082"),
-        ("Produkt",           "REF / kod materiału — WYMAGANE",                     18, "DMOM10001"),
+        ("Produkt",           "REF / kod materiału — WYMAGANE",                     18, "ACME10001"),
         ("Dostawa",           "Nr dostawy (puste = stock magazynowy)",              14, ""),
-        ("Opis",              "Nazwa materiału",                                    28, "Rękawice nitrylowe M"),
+        ("Opis",              "Nazwa materiału",                                    28, "Talerze ceramiczne M"),
         ("Partia",            "Nr partii / serii",                                  14, "693623613N"),
         ("Termin ważności",   "Data ważności (RRRR-MM-DD)",                         15, "2030-12-30"),
         ("Ilość",             "Ilość dostępna",                                     10, 50),
         ("Jedn. miary",       "JM: OP / KAR / PAL",                                 11, "KAR"),
         ("Miejsce składowania", "Kod lokalizacji",                                  18, "23L.04"),
-        ("Typ magazynu",      "Typ magazynu (np. 92JU)",                            13, "92JU"),
+        ("Typ magazynu",      "Typ magazynu (np. 71BU)",                            13, "71BU"),
         ("Kod klienta",       "KUNNR odbiorcy (dla dostaw)",                        14, ""),
         ("Waga",              "Waga brutto [kg] (opcjonalnie)",                     11, 453.4),
     ]
     _style_xlsx_header(ws, cols, "10B981")
     rows = [
-        ["111835082", "DMOM10001", "", "Rękawice nitrylowe M", "693623613N", "2030-12-30",
-         50, "KAR", "23L.04", "92JU", "", 453.4],
-        ["111835083", "DMOM10003", "", "Rękawice nitrylowe L", "693623159N", "2030-12-23",
-         30, "KAR", "23L.03", "92JU", "", 280.0],
+        ["111835082", "ACME10001", "", "Talerze ceramiczne M", "693623613N", "2030-12-30",
+         50, "KAR", "23L.04", "71BU", "", 453.4],
+        ["111835083", "ACME10003", "", "Talerze ceramiczne L", "693623159N", "2030-12-23",
+         30, "KAR", "23L.03", "71BU", "", 280.0],
     ]
     _add_example_rows(ws, cols, rows)
     return _finalize_xlsx(wb, ws, response)
@@ -270,18 +270,18 @@ def excel_template_control_data(request):
         ("Potwierdzone przez", "Kompletujący — kogo wezwać przy niezgodności",      16, "JKOWAL"),
         ("Nagłówki.Nazwa odbiorcy 1", "Nazwa klienta (wyświetlana)",               26, "ADRIA DEMO D.O.O."),
         ("Nagłówki.Utworzono o godz.", "Godzina utworzenia (GG:MM:SS)",            13, "09:18:50"),
-        ("Lokalizacje.Typ magazynu", "Typ magazynu — DECYDUJE, czy HU podlega kontroli", 16, "92EX"),
+        ("Lokalizacje.Typ magazynu", "Typ magazynu — DECYDUJE, czy HU podlega kontroli", 16, "71EX"),
     ]
     _style_xlsx_header(ws, cols, "7C3AED")
     rows = [
         ["11582503", "DM15300-F", "Opaska gipsowa 10 cm", "193716114N",
          "2031-05-01", 2880, "SZT", "PAZ", 1, "05L.01", "81828209", "11131116",
          "2026-08-14", "PTESTOWY", "BA", "Zakończone", "JKOWAL", "ADRIA DEMO D.O.O.",
-         "09:18:50", "92EX"],
-        ["11582504", "DM1710121", "Kompres jałowy 17N 12W 10cmx10cm", "333620520N",
+         "09:18:50", "71EX"],
+        ["11582504", "DM1710121", "Kubek jałowy 17N 12W 10cmx10cm", "333620520N",
          "2030-09-21", 1200, "OP", "KAR", 60, "05L.01", "81812296", "11123259",
          "2026-08-14", "BPRZYKLAD", "MU", "Częściowo zakończone", "CTESTER",
-         "ISLE DEMO LTD", "07:46:17", "WCEX"],
+         "ISLE DEMO LTD", "07:46:17", "WDEX"],
     ]
     _add_example_rows(ws, cols, rows)
     return _finalize_xlsx(wb, ws, response)
@@ -297,7 +297,7 @@ def excel_template_fix(request):
     ws.title = "Fixy"
     cols = [
         ("Miejsce składowania", "Kod lokalizacji fixowej — WYMAGANE",   18, "B0-38-471A"),
-        ("Produkt",             "REF / kod materiału — WYMAGANE",       18, "DMOM10001"),
+        ("Produkt",             "REF / kod materiału — WYMAGANE",       18, "ACME10001"),
         ("Typ magazynu",        "Typ magazynu (np. 0050)",              13, "0050"),
         ("Ilość minimalna",     "Próg uzupełnienia (min) — WYMAGANE",   14, 60),
         ("Maksymalna ilość",    "Pojemność fixa (maks)",                14, 260),
@@ -306,8 +306,8 @@ def excel_template_fix(request):
     ]
     _style_xlsx_header(ws, cols, "0F7D79")
     rows = [
-        ["B0-38-471A", "DMOM10001", "0050", 60, 260, "OP", "2026-08-01"],
-        ["B0-12-100A", "DMOM10003", "0050", 40, 180, "OP", "2026-08-01"],
+        ["B0-38-471A", "ACME10001", "0050", 60, 260, "OP", "2026-08-01"],
+        ["B0-12-100A", "ACME10003", "0050", 40, 180, "OP", "2026-08-01"],
     ]
     _add_example_rows(ws, cols, rows)
     return _finalize_xlsx(wb, ws, response)
@@ -320,7 +320,7 @@ def excel_template_marm(request):
     wb, ws, response = _make_xlsx_response("GROOVE_sap_marm_wzor.xlsx")
     ws.title = "SAP MARM"
     cols = [
-        ("material", "Numer materiału (MATNR) — WYMAGANE",                18, "DMOM10001"),
+        ("material", "Numer materiału (MATNR) — WYMAGANE",                18, "ACME10001"),
         ("unit",     "Jednostka miary (MEINH): JP/OP/KAR/PAL — WYMAGANE", 10, "KAR"),
         ("umrez",    "Licznik przelicznika (ile JP w tej JM)",            12, 10),
         ("umren",    "Mianownik przelicznika",                            12, 1),
@@ -336,9 +336,9 @@ def excel_template_marm(request):
     ]
     _style_xlsx_header(ws, cols, "64748B")
     rows = [
-        ["DMOM10001", "OP",  1,  1, 21,  12,  5.5, "CM", 0.00139, "M3", 0.458, "KG", "5900000001500"],
-        ["DMOM10001", "KAR", 10, 1, 29,  25,  22,  "CM", 0.01595, "M3", 4.58,  "KG", ""],
-        ["DMOM10001", "PAL", 990, 1, 120, 80, 213, "CM", 2.0448,  "M3", 453.4, "KG", ""],
+        ["ACME10001", "OP",  1,  1, 21,  12,  5.5, "CM", 0.00139, "M3", 0.458, "KG", "5900000001500"],
+        ["ACME10001", "KAR", 10, 1, 29,  25,  22,  "CM", 0.01595, "M3", 4.58,  "KG", ""],
+        ["ACME10001", "PAL", 990, 1, 120, 80, 213, "CM", 2.0448,  "M3", 453.4, "KG", ""],
     ]
     _add_example_rows(ws, cols, rows)
     return _finalize_xlsx(wb, ws, response)

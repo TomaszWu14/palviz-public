@@ -13,7 +13,7 @@ class MatInfoNoRulerTests(TestCase):
     def _product(self):
         carton = Carton.objects.create(name="K", length_cm=40, width_cm=30, height_cm=25,
                                        unit_weight_kg=0.5, pieces_per_carton=10)
-        p = Product.objects.create(code="DMOM10001", name="Rękawice nitrylowe M",
+        p = Product.objects.create(code="ACME10001", name="Talerze ceramiczne M",
                                    unit_length_cm=10, unit_width_cm=8, unit_height_cm=5)
         PalletizationInstruction.objects.create(
             product=p, version=1, is_active=True, unit_weight=0.5, pcs_per_carton=10,

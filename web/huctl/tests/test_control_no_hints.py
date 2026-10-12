@@ -24,9 +24,9 @@ class CountingScreenHasNoQuantityHints(TestCase):
         cls.user = _controller()
         sh = Shipment.objects.create(name="Dostawa", is_stock=True)
         cls.hu = HandlingUnit.objects.create(shipment=sh, seq=1, code="HU-NOHINT",
-                                             location="23L.04", warehouse_type="92JU")
-        HandlingUnitItem.objects.create(hu=cls.hu, ref_code="DMOM10001",
-                                        description="Rękawice", base_unit="OP", base_qty=130,
+                                             location="23L.04", warehouse_type="71BU")
+        HandlingUnitItem.objects.create(hu=cls.hu, ref_code="ACME10001",
+                                        description="Talerze", base_unit="OP", base_qty=130,
                                         alt_unit="KAR", alt_qty=13)
 
     def setUp(self):
@@ -57,7 +57,7 @@ class CountingScreenHasNoQuantityHints(TestCase):
         from django.utils import timezone
         from ui.models import PickerActivity, PickerActivityBatch
         batch = PickerActivityBatch.objects.create(name="feed")
-        PickerActivity.objects.create(batch=batch, material_code="DMOM10001", qty=13,
+        PickerActivity.objects.create(batch=batch, material_code="ACME10001", qty=13,
                                       unit="KAR", location_code="23L.04",
                                       confirmed_at=timezone.now() - timedelta(hours=2))
         r = self.client.get(reverse("ui:hu_control_detail", args=[self.hu.pk]))

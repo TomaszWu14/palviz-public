@@ -34,7 +34,7 @@ class DictionaryViewTests(TestCase):
         self.assertContains(r, "Wydanie z magazynu")
 
     def test_search_filters(self):
-        r = self.client.get(reverse("ui:data_center_dictionary"), {"q": "GEIS"})
+        r = self.client.get(reverse("ui:data_center_dictionary"), {"q": "PALETY"})
         self.assertEqual(r.status_code, 200)
-        self.assertContains(r, "GEIS")
+        self.assertContains(r, "PALETY")
         self.assertNotContains(r, "Inwentaryzacja")          # odfiltrowane

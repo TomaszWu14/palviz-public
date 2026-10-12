@@ -857,7 +857,7 @@
 .status-badge.is-hu-to_recheck { color:var(--hu-recheck-fg); background:var(--hu-recheck-bg); border-color:transparent; }
 .status-badge.is-hu-escaped    { color:var(--hu-escaped-fg); background:var(--hu-escaped-bg); border-color:transparent; }
 .status-badge.is-wh-acme { color:var(--wh-acme-fg); background:var(--wh-acme-bg); border-color:var(--wh-acme); }
-.status-badge.is-wh-dlt   { color:var(--wh-dlt-fg);   background:var(--wh-dlt-bg);   border-color:var(--wh-dlt); }
+.status-badge.is-wh-zew   { color:var(--wh-zew-fg);   background:var(--wh-zew-bg);   border-color:var(--wh-zew); }
 .status-badge.is-wh-other { color:var(--wh-other-fg); background:var(--wh-other-bg); border-color:var(--wh-other); }
 
 /* Przycisk destrukcyjny w modalu potwierdzenia (data-confirm, app.js). */

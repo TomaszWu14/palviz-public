@@ -19,7 +19,7 @@ class MyShiftTests(TestCase):
         self.sh_vip = Shipment.objects.create(name="DV", customer=vip_c, kunnr="100")
         self.sh_std = Shipment.objects.create(name="DS", customer=std_c, kunnr="200")
         mk = lambda seq, sh, **kw: HandlingUnit.objects.create(
-            shipment=sh, seq=seq, code=f"H{seq}", warehouse_type="92EX", **kw)
+            shipment=sh, seq=seq, code=f"H{seq}", warehouse_type="71EX", **kw)
         self.old = mk(1, self.sh_std)                       # najstarsza STANDARD
         self.rec = mk(2, self.sh_std, status="to_recheck")  # rekontrola
         self.pil = mk(3, self.sh_std, is_priority=True)     # PILNE
@@ -39,7 +39,7 @@ class MyShiftTests(TestCase):
         # klient 200 „rozgrzebany": jedna HU skontrolowana → jego planned przed obcymi.
         other = Shipment.objects.create(name="DX", kunnr="300")
         oldest_other = HandlingUnit.objects.create(
-            shipment=other, seq=9, code="H9", warehouse_type="92EX")
+            shipment=other, seq=9, code="H9", warehouse_type="71EX")
         from django.utils import timezone
         HandlingUnit.objects.filter(pk=self.rec.pk).update(
             status="ok", verified_at=timezone.now())  # constraint hu_ok_requires_verified_at

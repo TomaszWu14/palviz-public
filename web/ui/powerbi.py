@@ -210,7 +210,7 @@ def diagnose():
     # Tenant jest opcjonalny dla logowania delegowanego — nie oznaczaj braku jako błędu.
     add("POWERBI_TENANT_ID", True,
         _mask(_cfg("POWERBI_TENANT_ID")) or "brak (device flow użyje 'organizations')")
-    add("POWERBI_STOCK_TABLE", True, _cfg("POWERBI_STOCK_TABLE", "Stock_oraz_DLT"))
+    add("POWERBI_STOCK_TABLE", True, _cfg("POWERBI_STOCK_TABLE", "Stock_oraz_ZEW"))
 
     if _cfg("POWERBI_ACCESS_TOKEN"):
         auth = "wklejony token (POWERBI_ACCESS_TOKEN)"
@@ -380,7 +380,7 @@ def fetch_table(table_name=None):
     header = lowercased column names (the 'Table'[Column] prefix stripped); rows = list
     of value-lists in the same column order — matching core._read_table's output."""
     import requests  # lazy import — only the Power BI path needs it
-    table = table_name or _cfg("POWERBI_STOCK_TABLE", "Stock_oraz_DLT")
+    table = table_name or _cfg("POWERBI_STOCK_TABLE", "Stock_oraz_ZEW")
     token = get_access_token()
     url = (f"{PBI_BASE_URL}/groups/{_cfg('POWERBI_WORKSPACE_ID')}"
            f"/datasets/{_cfg('POWERBI_DATASET_ID')}/executeQueries")

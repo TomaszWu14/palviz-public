@@ -3,8 +3,8 @@
 **Cel:** spisać PEŁNY proces każdego zespołu strefowego krok po kroku — od logowania do
 odstawienia palety — łącznie z wyjątkami, pauzami, rekontrolą i przeliczaniem jednostek.
 Odpowiedzi mają być opisowe („co robicie i dlaczego"), nie tak/nie. Ten sam zestaw 40 pytań
-zadajemy **każdemu zespołowi osobno**: BUS (92T3 odb. własny, 92JU), GEIS (92GE, WCGE),
-EXPORT (92EX, WCEX), GLS (94GL, WCGL). Na końcu krótkie dodatki per strefa.
+zadajemy **każdemu zespołowi osobno**: BUS (71T3 odb. własny, 71BU), PALETY (71PL, WDPL),
+EXPORT (71EX, WDEX), PACZKI (73PA, WDPA). Na końcu krótkie dodatki per strefa.
 
 **Zasada prowadzenia:** przy każdym pytaniu dopytuj „a co jeśli…?" — chcemy scenariusze,
 nie ideał. Jeśli dwóch operatorów robi to samo inaczej (np. jeden chce kontrolować palety
@@ -122,25 +122,25 @@ masowo/seryjnie, drugi pojedynczo) — zapisz OBA warianty i kiedy który jest O
 
 ## Dodatki per strefa (po przejściu 40 pytań)
 
-### BUS (92T3, 92JU)
-- 92T3 to odbiór własny klienta — co jest inne, gdy klient odbiera sam (dokumenty,
+### BUS (71T3, 71BU)
+- 71T3 to odbiór własny klienta — co jest inne, gdy klient odbiera sam (dokumenty,
   moment kontroli, kontakt z kierowcą klienta)?
 - Presja czasowa BUS-ów: co się dzieje, gdy BUS podjeżdża, a kontrola trwa?
 
-### GEIS (92GE, WCGE + wszystko „nieznane")
-- Do GEIS wpadają palety o nieznanych kodach stref (fallback). Jak często trafiacie na
+### PALETY (71PL, WDPL + wszystko „nieznane")
+- Do PALETY wpadają palety o nieznanych kodach stref (fallback). Jak często trafiacie na
   „nie nasze" palety i co z nimi robicie?
-- Czym różni się paleta WCGE od 92GE w waszej pracy?
+- Czym różni się paleta WDPL od 71PL w waszej pracy?
 
-### EXPORT (92EX, WCEX)
+### EXPORT (71EX, WDEX)
 - Etykieta EXPORT: kiedy dokładnie ją drukujecie/naklejacie i co jeszcze jest
   eksportowo specyficzne (fumigacja, dokumenty celne, wymogi kraju)?
 - Palety na kraje spoza UE — dodatkowe kroki?
 
-### GLS (94GL, WCGL)
-- Konsolidacja GLS (kartony → paczki): opiszcie przepakowanie krok po kroku — kiedy
+### PACZKI (73PA, WDPA)
+- Konsolidacja paczek (kartony → paczki): opiszcie przepakowanie krok po kroku — kiedy
   decydujecie, ile kartonów w paczkę, i co wpisujecie do systemu (raport konsolidacji)?
-- Co się dzieje, gdy karton nie mieści się w limitach GLS?
+- Co się dzieje, gdy karton nie mieści się w limitach PACZKI?
 
 ---
 

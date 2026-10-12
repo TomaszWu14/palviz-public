@@ -1,31 +1,31 @@
 {% extends "ui/base.html" %}
 {% load palviz_extras %}
-{% block title %}Raport konsolidacji GLS — {{ app_name }}{% endblock %}
+{% block title %}Raport konsolidacji paczek — {{ app_name }}{% endblock %}
 {% block content %}
 <nav class="breadcrumb">
   <a href="{% url 'ui:hu_control_hub' %}">Kontrola HU</a>
-  <span class="breadcrumb__sep">›</span><span>Konsolidacja GLS</span>
+  <span class="breadcrumb__sep">›</span><span>Konsolidacja paczek</span>
 </nav>
 <div class="page-header">
   <div>
-    <div class="page-header__title">{{ "📦"|pv_icon:26 }} Konsolidacja GLS — kartony → paczki</div>
+    <div class="page-header__title">{{ "📦"|pv_icon:26 }} Konsolidacja paczek — kartony → paczki</div>
     <div class="page-header__sub">Kto najlepiej pakuje: współczynnik = kartony na paczkę (wyżej = lepsza konsolidacja)</div>
   </div>
 </div>
 
 <form method="get" style="display:flex;gap:8px;margin-bottom:14px;align-items:center"
-      onsubmit="return glsDatesValid(this)">
-  <label style="font-size:13px">Od <input type="date" name="od" id="gls-od" value="{{ d_from|date:'Y-m-d' }}" class="input"></label>
-  <label style="font-size:13px">Do <input type="date" name="do" id="gls-do" value="{{ d_to|date:'Y-m-d' }}" class="input"></label>
+      onsubmit="return parcelDatesValid(this)">
+  <label style="font-size:13px">Od <input type="date" name="od" id="paczki-od" value="{{ d_from|date:'Y-m-d' }}" class="input"></label>
+  <label style="font-size:13px">Do <input type="date" name="do" id="paczki-do" value="{{ d_to|date:'Y-m-d' }}" class="input"></label>
   <button type="submit" class="btn btn-ghost btn-sm">Filtruj</button>
 </form>
 <script>
   // Cichy pusty wynik przy Od>Do → jawny komunikat zamiast pustej tabeli.
   (function(){
-    var od = document.getElementById('gls-od'), dov = document.getElementById('gls-do');
+    var od = document.getElementById('paczki-od'), dov = document.getElementById('paczki-do');
     function sync(){ if (od.value) dov.min = od.value; if (dov.value) od.max = dov.value; }
     od.addEventListener('change', sync); dov.addEventListener('change', sync); sync();
-    window.glsDatesValid = function(){
+    window.parcelDatesValid = function(){
       if (od.value && dov.value && od.value > dov.value){
         alert('Data „Od" nie może być późniejsza niż „Do".');
         return false;
@@ -61,7 +61,7 @@
       <td style="text-align:right">{{ r.avg_parcel_m3|default:"—" }}</td>
       <td style="text-align:right">{{ r.volume }}</td>
     </tr>
-    {% empty %}<tr><td colspan="8" class="text-muted" style="text-align:center;padding:26px">Brak rozliczeń GLS w tym okresie.</td></tr>
+    {% empty %}<tr><td colspan="8" class="text-muted" style="text-align:center;padding:26px">Brak rozliczeń paczek w tym okresie.</td></tr>
     {% endfor %}
     </tbody>
   </table></div>

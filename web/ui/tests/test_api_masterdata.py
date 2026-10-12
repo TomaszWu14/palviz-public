@@ -13,11 +13,11 @@ class MasterDataApiTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.p = Product.objects.create(code="IDX-1", name="Produkt testowy", ean="5900000000017")
-        cls.c = Customer.objects.create(name="PHARMO Sp. z o.o.", code="PHARMO", city="Radom")
+        cls.c = Customer.objects.create(name="DOMEX Sp. z o.o.", code="DOMEX", city="Radom")
         cls.sh = Shipment.objects.create(name="Kontener", is_stock=True)
         cls.hu = HandlingUnit.objects.create(shipment=cls.sh, seq=1, code="HU-100749998",
                                              status="planned", warehouse_type="WMS",
-                                             recipient_type="PHARMO")
+                                             recipient_type="DOMEX")
 
     def test_requires_api_key(self):
         self.assertEqual(self.client.get("/api/v2/products").status_code, 401)
@@ -38,9 +38,9 @@ class MasterDataApiTests(TestCase):
         self.assertEqual(r.json(), [])
 
     def test_customers(self):
-        r = self.client.get("/api/v2/customers?q=PHARMO", **HDR)
+        r = self.client.get("/api/v2/customers?q=DOMEX", **HDR)
         self.assertEqual(r.status_code, 200)
-        self.assertEqual(r.json()[0]["name"], "PHARMO Sp. z o.o.")
+        self.assertEqual(r.json()[0]["name"], "DOMEX Sp. z o.o.")
         r = self.client.get(f"/api/v2/customers/{self.c.pk}", **HDR)
         self.assertEqual(r.json()["city"], "Radom")
 

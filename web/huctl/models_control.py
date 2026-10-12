@@ -139,26 +139,26 @@ class HUStatusEvent(models.Model):
         return f"{self.hu_id}: {self.from_status}→{self.to_status}"
 
 
-class GlsPackingEntry(models.Model):
-    """Rozliczenie konsolidacji w strefie GLS (wymóg po zaksięgowaniu palety): ile
+class ParcelPackingEntry(models.Model):
+    """Rozliczenie konsolidacji w strefie PACZKI (wymóg po zaksięgowaniu palety): ile
     kartonów kontroler miał w przygotowaniu i ile paczek z nich zrobił (np. 5→2, 7→3,
     1→1). Zasila raport wydajności lidera: współczynnik konsolidacji (kartony/paczkę,
     wyżej = lepiej) i objętości paczek. `volume_m3` = snapshot objętości palety
     (hu_metrics) w momencie zapisu — analityka „w jakich objętościach pakujemy"."""
     hu = models.OneToOneField(HandlingUnit, on_delete=models.CASCADE,
-                              related_name="gls_packing")
+                              related_name="parcel_packing")
     controller = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True,
-                                   related_name="gls_packing_entries")
+                                   related_name="parcel_packing_entries")
     cartons = models.PositiveSmallIntegerField(verbose_name="Kartony w przygotowaniu")
     parcels = models.PositiveSmallIntegerField(verbose_name="Zrobione paczki")
     volume_m3 = models.FloatField(null=True, blank=True, verbose_name="Objętość palety [m³]")
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
     class Meta:
-        db_table = "ui_glspackingentry"   # W2: tabela zostaje po ui_* (SeparateDatabaseAndState)
+        db_table = "ui_parcelpackingentry"   # W2: tabela zostaje po ui_* (SeparateDatabaseAndState)
         ordering = ["-created_at"]
-        verbose_name = "Rozliczenie pakowania GLS"
-        verbose_name_plural = "Rozliczenia pakowania GLS"
+        verbose_name = "Rozliczenie pakowania PACZKI"
+        verbose_name_plural = "Rozliczenia pakowania PACZKI"
 
     def __str__(self):
         return f"{self.hu_id}: {self.cartons}→{self.parcels}"

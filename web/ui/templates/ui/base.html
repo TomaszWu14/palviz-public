@@ -22,6 +22,7 @@
   {% block extra_head %}{% endblock %}
 </head>
 <body>
+{% include "ui/_demo_banner.html" %}
 
 <a href="#content" class="skip-link">Przejdź do treści</a>
 
@@ -258,5 +259,6 @@
   }, true);
 </script>
 {% if request.user.is_authenticated %}{% include "ui/_notif_alert.html" %}{% endif %}
+{% include "ui/_demo.html" %}
 </body>
 </html>

@@ -1,0 +1,4 @@
+{% load static %}{% if request.GET.demo == "1" %}{# Tryb pokazu z lektorem — tylko przy ?demo=1; bez parametru nic się nie ładuje. #}
+<link rel="stylesheet" href="{% static 'ui/demo/demo.css' %}">
+<script src="{% static 'ui/demo/demo.js' %}" defer></script>
+{% endif %}

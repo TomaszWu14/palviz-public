@@ -24,7 +24,7 @@ z SE16N** (tak wyglądały nasze eksporty); prosimy o potwierdzenie pola.
 | CHARG / BATCHID ? | Partia | numer partii |
 | QUAN + MEINS ? | Dostępna ilość + Podst. jedn. miary | ilość na palecie / w binie |
 | ALTME ? | Jednostka alternat. | domyślna jednostka opakowania |
-| LGTYP | Typ magazynu | strefa (92EX, 92GE, 92JU, 92T3, 94GL, WCEX, WCGE, WCGL + reszta) |
+| LGTYP | Typ magazynu | strefa (71EX, 71PL, 71BU, 71T3, 73PA, WDEX, WDPL, WDPA + reszta) |
 | LGPLA | Miejsce składowania | bin |
 | CAT ? | Rodzaj zapasów | F2/B6/Q4/R8 |
 | VFDAT | Termin ważn./min. term. ważn. | termin ważności |
@@ -79,7 +79,7 @@ proponowana granica „otwartej" palety (patrz §2).
 
 | Pole techniczne | Etykieta z /SCWM/MON | Po co |
 |---|---|---|
-| ? (staging area group) | GrStrPrzyg (np. 92GE, 92GL) | **proces logistyczny dostawy** — znany przed powstaniem palety |
+| ? (staging area group) | GrStrPrzyg (np. 71PL, 71PA) | **proces logistyczny dostawy** — znany przed powstaniem palety |
 | ? (staging area) | StrPrz | strefa przygotowania |
 | ? (door) | Brama | brama załadunku (grupowanie transportu) |
 

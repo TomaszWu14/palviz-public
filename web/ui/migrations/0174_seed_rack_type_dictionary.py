@@ -1,4 +1,4 @@
-# Seed słownika typów regałów/stref z eksportu SAP EWM (Lokalizacje_EWM, 2026-08-24).
+# Seed słownika typów regałów/stref (fikcyjny, w konwencji SAP EWM).
 # Znaczenia kodów wg istniejących mapowań w phv.py (_CAT_BY_TYPE/PICK_PROCESSES)
 # i theme.py (ZONE_CARRIER). get_or_create — NIE nadpisuje ręcznych wpisów.
 # Decyzja usera: wymiary (kind=rack) TYLKO dla 0010/0011/0050/0052/0070.
@@ -15,25 +15,25 @@ ZONES = {
     "0012": "Miejsca zapasowe — bez geometrii regału",
     "0120": "Miejsca specjalne",
     "0051": "Strefa zbiorcza (ZONE)",
-    "92T3": "Strefa wysyłki BUS (T3)",
-    "92JU": "Strefa wysyłki BUS",
-    "92GE": "Strefa wysyłki GEIS",
-    "92EX": "Strefa wysyłki eksport",
-    "92GL": "Strefa wysyłki GLS",
-    "94GL": "Strefa wysyłki GLS",
-    "WCEX": "Wydanie — eksport",
-    "WCGE": "Wydanie — GEIS",
-    "WCGL": "Wydanie — GLS",
+    "71T3": "Strefa wysyłki BUS (T3)",
+    "71BU": "Strefa wysyłki BUS",
+    "71PL": "Strefa wysyłki PALETY",
+    "71EX": "Strefa wysyłki eksport",
+    "71PA": "Strefa wysyłki PACZKI",
+    "73PA": "Strefa wysyłki PACZKI",
+    "WDEX": "Wydanie — eksport",
+    "WDPL": "Wydanie — PALETY",
+    "WDPA": "Wydanie — PACZKI",
     "9010": "Bufor przyjęć/ruchów",
     "9020": "Strefa GI (wydanie z magazynu)",
     "9040": "Strefa doków",
     "8010": "Strefa administracyjna magazynu",
-    "BROK": "Anulacje / uszkodzenia",
-    "LABO": "Laboratorium",
-    "CRET": "Zwroty (CRET)",
-    "RETV": "Zwroty — picking wirtualny",
-    "PPAP": "Strefa PPAP",
-    "ZP92": "Staging wysyłki",
+    "USZK": "Anulacje / uszkodzenia",
+    "LAB1": "Laboratorium",
+    "ZWRT": "Zwroty (ZWRT)",
+    "ZWRV": "Zwroty — picking wirtualny",
+    "KJAK": "Strefa KJAK",
+    "STG1": "Staging wysyłki",
 }
 
 

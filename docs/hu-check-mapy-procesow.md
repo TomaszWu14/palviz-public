@@ -14,7 +14,7 @@ flowchart TD
     B --> C{payload poprawny?}
     C -->|brak delivery| E1[import_error na HU\nNIE tworzymy HU stockowej]
     C -->|ok| D[upsert core: hu + hu_item + delivery\nreplace-all pozycji w 1 transakcji]
-    D --> F{lgtyp w control_zone?\n8 stref → 5 procesów:\nEXPORT=92EX+WCEX, GEIS/INNY=92GE+WCGE,\nGLS=94GL+WCGL, BUS=92JU, ODB.WŁASNE=92T3}
+    D --> F{lgtyp w control_zone?\n8 stref → 5 procesów:\nEXPORT=71EX+WDEX, PALETY/INNY=71PL+WDPL,\nPACZKI=73PA+WDPA, BUS=71BU, ODB.WŁASNE=71T3}
     F -->|tak| G[HU w kolejce kontroli v_hu_queue]
     F -->|nie| H[HU poza kontrolą\nwidoczna tylko w danych]
     I[CPI: GET /open] -->|co 30–60 min| J[aktualizuj last_seen_at]
@@ -61,7 +61,7 @@ flowchart TD
 ```mermaid
 flowchart TD
     A[Login kontrolera] --> B{rola?}
-    B -->|kontroler| C[wybór PROCESU\nEXPORT / GEIS-INNY / GLS / BUS / ODB.WŁASNE]
+    B -->|kontroler| C[wybór PROCESU\nEXPORT / PALETY-INNY / PACZKI / BUS / ODB.WŁASNE]
     B -->|lider| D[panel lidera — wszystkie procesy]
     C --> E[kolejka HU procesu\nstrefa lgtyp widoczna jako atrybut]
     E --> F[zmiana procesu = świadomy wybór\nnie automat]
@@ -73,7 +73,7 @@ flowchart TD
 flowchart TD
     A[Rodzina = wszystkie HU odbiorcy\nrozwinięcie: lokalizacja per HU] --> B{HU w moim procesie?}
     B -->|tak| C[Przypisz do mnie → kontrola P2]
-    B -->|nie, np. GLS gdy jestem w GEIS| D[przypisanie ZABLOKOWANE\nHU widoczna, przycisk nieaktywny]
+    B -->|nie, np. PACZKI gdy jestem w PALETY| D[przypisanie ZABLOKOWANE\nHU widoczna, przycisk nieaktywny]
     D --> H{fracht dostawy tej HU\n= fracht mojej grupy?}
     H -->|brak frachtu / inny| I[PILNY mail do działu TRANSPORTU:\n„przepnij dostawę X - HU Y - na fracht Z"]
     I --> J[transport przepina dostawę na fracht]

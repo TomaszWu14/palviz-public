@@ -219,7 +219,7 @@ class CmrDocumentTests(TestCase):
     def setUpTestData(cls):
         from ui.models import Customer
         cls.user = _user_all_roles()
-        p = Product.objects.create(code="CMR-PROD", name="Rękawice")
+        p = Product.objects.create(code="CMR-PROD", name="Talerze")
         PalletizationInstruction.objects.create(
             product=p, version=1, carton_l=40, carton_w=30, carton_h=25,
             unit_weight=1, pcs_per_carton=1, demand_pcs=100, is_active=True)

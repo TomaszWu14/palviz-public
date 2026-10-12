@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='customer',
             name='carrier',
-            field=models.CharField(blank=True, default='', help_text='np. „GLS”; puste = inny/dowolny', max_length=40, verbose_name='Przewoźnik'),
+            field=models.CharField(blank=True, default='', help_text='np. „PACZKI”; puste = inny/dowolny', max_length=40, verbose_name='Przewoźnik'),
         ),
         migrations.AddField(
             model_name='customer',

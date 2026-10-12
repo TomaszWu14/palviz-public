@@ -25,7 +25,7 @@ class QuoteFlowTests(TestCase):
     def setUpTestData(cls):
         cls.user = _user_all_roles()
         cls.sh = Shipment.objects.create(name="Dostawa 1", stowage_efficiency_pct=80,
-                                         recipient_name="PHARMO", destination_city="VALDEMO",
+                                         recipient_name="DOMEX", destination_city="VALDEMO",
                                          author="SOMEONE_ELSE")
         p = Product.objects.create(code="RG-50", name="RG")
         PalletizationInstruction.objects.create(
@@ -134,7 +134,7 @@ class QuoteFlowTests(TestCase):
         self.assertEqual(set(payload), {"carrier_name", "dest_city", "dest_country"})
         self.assertEqual(payload["carrier_name"], "Speed A")
         self.assertEqual(payload["dest_city"], "VALDEMO")
-        self.assertNotIn("PHARMO", str(payload))          # nazwa klienta nie wychodzi
+        self.assertNotIn("DOMEX", str(payload))          # nazwa klienta nie wychodzi
 
     def test_form_locked_after_submit(self):
         self.client.get(reverse("ui:planner_shipment_quote", args=[self.sh.pk]))

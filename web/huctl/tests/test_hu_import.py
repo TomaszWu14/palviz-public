@@ -18,16 +18,16 @@ def _user():
 
 CSV = (
     "Dostawa;pickHU;REF;Opis;LOT;Data ważności;Ilość;JM;Lokalizacja;Typ magazynu;Odbiorca\n"
-    "81782091;HU001;RG-50;Rękawice;LOT123;2027-05-31;80;OP;A-12-3;WT01;PHARMO\n"
-    "81782091;HU001;NL100;Nonvi;LOT999;2026-12-01;12;KAR;A-12-3;WT01;PHARMO\n"
-    "81782091;HU002;RG-50;Rękawice;LOT777;2028-01-15;40;OP;B-01-1;WT01;PHARMO\n"
+    "80002091;HU001;RG-50;Talerze;LOT123;2027-05-31;80;OP;A-12-3;WT01;DOMEX\n"
+    "80002091;HU001;NL100;Serwetki;LOT999;2026-12-01;12;KAR;A-12-3;WT01;DOMEX\n"
+    "80002091;HU002;RG-50;Talerze;LOT777;2028-01-15;40;OP;B-01-1;WT01;DOMEX\n"
 )
 
 
 class HUImportTests(TestCase):
     def setUp(self):
         self.client.force_login(_user())
-        Product.objects.create(code="RG-50", name="Rękawice")
+        Product.objects.create(code="RG-50", name="Talerze")
 
     def _upload(self, text=CSV):
         f = SimpleUploadedFile("hu.csv", text.encode("utf-8"), content_type="text/csv")
@@ -36,7 +36,7 @@ class HUImportTests(TestCase):
     def test_import_creates_hus_and_items_with_lot_expiry(self):
         resp = self._upload()
         self.assertEqual(resp.status_code, 302)
-        sh = Shipment.objects.get(name="81782091")
+        sh = Shipment.objects.get(name="80002091")
         self.assertEqual(sh.handling_units.count(), 2)
         hu1 = HandlingUnit.objects.get(shipment=sh, code="HU001")
         self.assertEqual(hu1.location, "A-12-3")
@@ -51,7 +51,7 @@ class HUImportTests(TestCase):
     def test_stock_status_column_imported(self):
         text = (
             "Dostawa;pickHU;REF;Ilość;JM;Lokalizacja;Typ magazynu;Status zapasu\n"
-            "81782091;HU050;RG-50;10;OP;C-01-1;0010;B6\n"
+            "80002091;HU050;RG-50;10;OP;C-01-1;0010;B6\n"
         )
         self._upload(text)
         hu = HandlingUnit.objects.get(code="HU050")
@@ -64,7 +64,7 @@ class HUImportTests(TestCase):
     def test_reimport_replaces_items(self):
         self._upload()
         self._upload()                                     # second import
-        sh = Shipment.objects.get(name="81782091")
+        sh = Shipment.objects.get(name="80002091")
         # Items replaced, not duplicated.
         self.assertEqual(HandlingUnit.objects.get(shipment=sh, code="HU001").items.count(), 2)
 
@@ -73,19 +73,19 @@ class HUImportTests(TestCase):
         # must still end up tagged so the warehouse-type filter can find it.
         text = (
             "Dostawa;pickHU;REF;Ilość;JM;Lokalizacja;Typ magazynu\n"
-            "81782091;HU009;RG-50;10;OP;;\n"
-            "81782091;HU009;RG-50;5;OP;A-99-9;WCGL\n"
+            "80002091;HU009;RG-50;10;OP;;\n"
+            "80002091;HU009;RG-50;5;OP;A-99-9;WDPA\n"
         )
         self._upload(text)
-        hu = HandlingUnit.objects.get(shipment__name="81782091", code="HU009")
-        self.assertEqual(hu.warehouse_type, "WCGL")
+        hu = HandlingUnit.objects.get(shipment__name="80002091", code="HU009")
+        self.assertEqual(hu.warehouse_type, "WDPA")
         self.assertEqual(hu.location, "A-99-9")
 
 
 POWERBI = (
-    "Stock_oraz_DLT[Produkt];Stock_oraz_DLT[Miejsce składowania];Stock_oraz_DLT[Jednostka obsługi];"
-    "Stock_oraz_DLT[Podst. jedn. miary];Stock_oraz_DLT[Termin ważności];Stock_oraz_DLT[Rodzaj zapasów];"
-    "Stock_oraz_DLT[Partia];Stock_oraz_DLT[Typ dokumentu];Stock_oraz_DLT[Typ magazynu];[SumDostępna_ilość]\n"
+    "Stock_oraz_ZEW[Produkt];Stock_oraz_ZEW[Miejsce składowania];Stock_oraz_ZEW[Jednostka obsługi];"
+    "Stock_oraz_ZEW[Podst. jedn. miary];Stock_oraz_ZEW[Termin ważności];Stock_oraz_ZEW[Rodzaj zapasów];"
+    "Stock_oraz_ZEW[Partia];Stock_oraz_ZEW[Typ dokumentu];Stock_oraz_ZEW[Typ magazynu];[SumDostępna_ilość]\n"
     "(48301)V(BP-30F);B0-28-471D;11514258;Sztuka;01.02.2030;F2;1000184982;Nieprzypisane;0050;8\n"
     "(48201)V(BP-20F);A1-09-130C;10440264;Sztuka;01.05.2030;F2;1000194333;Nieprzypisane;0070;17\n"
 )
@@ -131,7 +131,7 @@ class HUImportConversionTests(TestCase):
             unit_weight=0.5, pcs_per_carton=2, demand_pcs=100, is_active=True)  # 2 OP per KAR
 
     CONV = (
-        "Stock_oraz_DLT[Jednostka obsługi];Stock_oraz_DLT[Produkt];Stock_oraz_DLT[Podst. jedn. miary];[SumDostępna_ilość]\n"
+        "Stock_oraz_ZEW[Jednostka obsługi];Stock_oraz_ZEW[Produkt];Stock_oraz_ZEW[Podst. jedn. miary];[SumDostępna_ilość]\n"
         "HU9;(48301)V(BP-30F);Sztuka;10\n"     # 10 OP, composite REF
     )
 
@@ -163,7 +163,7 @@ class ControlHubSeparationTests(TestCase):
     def setUp(self):
         self.client.force_login(_user())
 
-    STOCK = ("Stock_oraz_DLT[Jednostka obsługi];Stock_oraz_DLT[Produkt];[SumDostępna_ilość]\n"
+    STOCK = ("Stock_oraz_ZEW[Jednostka obsługi];Stock_oraz_ZEW[Produkt];[SumDostępna_ilość]\n"
              "HU1;RG-50;8\n")
 
     def test_stock_import_flagged_and_separated(self):
@@ -186,13 +186,13 @@ class HUImportHolesTests(TestCase):
 
     def setUp(self):
         self.client.force_login(_user())
-        Product.objects.create(code="RG-50", name="Rękawice")
+        Product.objects.create(code="RG-50", name="Talerze")
 
     def test_missing_batch_and_expiry_warns(self):
         csv = (
             "Dostawa;pickHU;REF;Opis;Partia dostawcy;Data ważności;Ilość;JM\n"
-            "81782091;HU001;RG-50;Rękawice;;;80;OP\n"
-            "81782091;HU002;RG-50;Rękawice;PART1;2027-05-31;40;OP\n"
+            "80002091;HU001;RG-50;Talerze;;;80;OP\n"
+            "80002091;HU002;RG-50;Talerze;PART1;2027-05-31;40;OP\n"
         )
         f = SimpleUploadedFile("wsad.csv", csv.encode("utf-8"), content_type="text/csv")
         r = self.client.post(reverse("ui:planner_hu_import"), {"file": f}, follow=True)
@@ -204,7 +204,7 @@ class HUImportHolesTests(TestCase):
     def test_clean_feed_has_no_hole_warning(self):
         csv = (
             "Dostawa;pickHU;REF;Opis;Partia dostawcy;Data ważności;Ilość;JM\n"
-            "81782091;HU001;RG-50;Rękawice;PART1;2027-05-31;80;OP\n"
+            "80002091;HU001;RG-50;Talerze;PART1;2027-05-31;80;OP\n"
         )
         f = SimpleUploadedFile("wsad.csv", csv.encode("utf-8"), content_type="text/csv")
         r = self.client.post(reverse("ui:planner_hu_import"), {"file": f}, follow=True)
@@ -217,13 +217,13 @@ class HUImportRunLabelTests(TestCase):
 
     def setUp(self):
         self.client.force_login(_user())
-        Product.objects.create(code="RG-50", name="Rękawice")
+        Product.objects.create(code="RG-50", name="Talerze")
 
     def test_import_run_label_records_holes(self):
         from ui.models import ImportRun
         csv = (
             "Dostawa;pickHU;REF;Opis;Partia dostawcy;Data ważności;Ilość;JM\n"
-            "81782091;HU001;RG-50;Rękawice;;;80;OP\n"
+            "80002091;HU001;RG-50;Talerze;;;80;OP\n"
         )
         f = SimpleUploadedFile("wsad.csv", csv.encode("utf-8"), content_type="text/csv")
         self.client.post(reverse("ui:planner_hu_import"), {"file": f})

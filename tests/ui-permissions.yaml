@@ -24,7 +24,7 @@ role:
                 Transport: [transport], Dane: [data_center], bezposrednio: [zadania]}
     menu_uzytkownika: [Mój profil, Panel administracyjny, Użytkownicy, Macierz login × moduł, Macierz ról, "Django Admin (tylko is_staff, B-005)", Wyloguj]
     przyciski_zapisu_danych_podstawowych: true
-    kontrola_hu_lider: [Panel lidera, Raport GLS, Symulator skanera, KPI kontrolerów, Wyjechało bez kontroli]
+    kontrola_hu_lider: [Panel lidera, Raport paczek, Symulator skanera, KPI kontrolerów, Wyjechało bez kontroli]
   Administratorzy: *adm
   Master Data:
     po_zalogowaniu: hub
@@ -47,7 +47,7 @@ role:
     po_zalogowaniu: "hub kontroli — hu_control_hub"
     nawigacja: {Operacje: [kontrola_hu], Magazyn: [phv]}
     skaner_zakladki: [Skan, Status, MATinfo]
-    kontrola_hu_lider: [Panel lidera, Raport GLS, Symulator skanera, KPI kontrolerów, Wyjechało bez kontroli]
+    kontrola_hu_lider: [Panel lidera, Raport paczek, Symulator skanera, KPI kontrolerów, Wyjechało bez kontroli]
   Podgląd:
     po_zalogowaniu: "wyszukiwarka magazynowa (0 modułów — strony podglądu bez kafelka)"
     nawigacja: {}

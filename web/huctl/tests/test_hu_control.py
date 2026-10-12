@@ -22,8 +22,8 @@ class HUControlTests(TestCase):
     def setUpTestData(cls):
         cls.user = _user_all_roles()
         cls.sh = Shipment.objects.create(name="Dostawa 1", stowage_efficiency_pct=80,
-                                          recipient_name="PHARMO DEMO SRL")
-        p = Product.objects.create(code="NL100-100", name="NONVI lux")
+                                          recipient_name="DOMEX DEMO SRL")
+        p = Product.objects.create(code="NL100-100", name="SERWETKI lux")
         PalletizationInstruction.objects.create(
             product=p, version=1, carton_l=40, carton_w=30, carton_h=25,
             unit_weight=0.5, pcs_per_carton=10, demand_pcs=100, is_active=True)
@@ -398,20 +398,20 @@ class HUControlTests(TestCase):
         self.assertRedirects(resp, reverse("ui:hu_control_detail", args=[self.hu.pk]))
 
     def test_find_recipient(self):
-        resp = self.client.get(reverse("ui:hu_control_find_recipient"), {"q": "PHARMO"})
+        resp = self.client.get(reverse("ui:hu_control_find_recipient"), {"q": "DOMEX"})
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, self.hu.ref)
 
     def test_warehouse_type_filter(self):
         # Put the HU into to_recheck and tag a warehouse type, then filter by it.
-        HandlingUnit.objects.filter(pk=self.hu.pk).update(status="to_recheck", warehouse_type="WCGL")
-        rl = self.client.get(reverse("ui:hu_control_recheck_list"), {"wh": "WCGL"})
+        HandlingUnit.objects.filter(pk=self.hu.pk).update(status="to_recheck", warehouse_type="WDPA")
+        rl = self.client.get(reverse("ui:hu_control_recheck_list"), {"wh": "WDPA"})
         self.assertContains(rl, self.hu.ref)
         # a different type filters it out
         other = self.client.get(reverse("ui:hu_control_recheck_list"), {"wh": "WT99"})
         self.assertNotContains(other, self.hu.ref)
         # find-recipient can filter on warehouse type alone
-        fr = self.client.get(reverse("ui:hu_control_find_recipient"), {"wh": "WCGL"})
+        fr = self.client.get(reverse("ui:hu_control_find_recipient"), {"wh": "WDPA"})
         self.assertContains(fr, self.hu.ref)
 
     def test_recheck_list_and_resolution(self):

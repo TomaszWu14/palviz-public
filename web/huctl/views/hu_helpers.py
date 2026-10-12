@@ -291,9 +291,9 @@ def _log_status(hu, from_status, to_status, user, note="", force=False, kind="st
                                  note=note[:200])
 
 
-def _is_gls(hu):
-    """Czy paleta jest w strefie GLS (kody z GLS_ZONE_CODES, case-insensitive)."""
-    codes = {c.upper() for c in getattr(settings, "GLS_ZONE_CODES", [])}
+def _is_parcel(hu):
+    """Czy paleta jest w strefie PACZKI (kody z PARCEL_ZONE_CODES, case-insensitive)."""
+    codes = {c.upper() for c in getattr(settings, "PARCEL_ZONE_CODES", [])}
     return (hu.warehouse_type or "").upper() in codes
 
 
@@ -454,7 +454,7 @@ __all__ = [
     "_filter_controlled",
     "_first_controller",
     "_incontrol_max_hours",
-    "_is_gls",
+    "_is_parcel",
     "_live_controls",
     "_log_status",
     "_maybe_escalate_recheck",

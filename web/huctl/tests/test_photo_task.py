@@ -16,18 +16,18 @@ class PhotoTaskTests(TestCase):
         self.leader.groups.add(Group.objects.get_or_create(name=GROUP_LEADER)[0])
         self.picker = U.objects.create_user(username="pick", password="x")
         self.picker.groups.add(Group.objects.get_or_create(name=GROUP_CONTROLLER)[0])
-        Product.objects.create(code="DMOM10001", name="Rękawice")
+        Product.objects.create(code="ACME10001", name="Talerze")
         self.client.force_login(self.leader)
 
     def _post(self, **data):
         return self.client.post(reverse("ui:hu_control_photo_task"), data)
 
     def test_sends_ack_notification_with_matinfo_url(self):
-        self._post(target=str(self.picker.pk), ref_code="DMOM10001")
+        self._post(target=str(self.picker.pk), ref_code="ACME10001")
         n = Notification.objects.get(recipient=self.picker)
-        self.assertIn("DMOM10001", n.title)
+        self.assertIn("ACME10001", n.title)
         self.assertTrue(n.requires_ack)
-        self.assertEqual(n.url, "/phv/?q=DMOM10001")
+        self.assertEqual(n.url, "/phv/?q=ACME10001")
 
     def test_unknown_ref_rejected(self):
         self._post(target=str(self.picker.pk), ref_code="NIE-MA")

@@ -81,7 +81,7 @@ Liczby klików = szacunek z kodu/nawigacji (nie pomiar w aplikacji).
 - Login → (is_control_only) auto-redirect na skaner. **Świat teal (scanner/base).**
 - Skan HU → `scanner/hu_detail` → kontrola zawartości → zgłoszenie problemu (`quality_issues`).
 - **Przeskok kontekstu:** Wydruk HU = layout **GROOVE (niebieski, base.html)**, nie skaner.
-  Operator w rękawicach przechodzi z dużych teal-owych kafli do gęstego desktopowego UI.
+  Operator w talerzach przechodzi z dużych teal-owych kafli do gęstego desktopowego UI.
 - Punkty zgubienia: (1) zmiana palety/nawigacji między skanerem a Wydrukiem HU; (2) stan pusty
   w skanerze inny niż w GROOVE; (3) brak breadcrumb w obu → brak „gdzie jestem".
 - Ponowne wpisywanie danych: numer HU/projekt bywa wpisywany ponownie w Wydruku HU.

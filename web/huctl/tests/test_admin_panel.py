@@ -42,10 +42,10 @@ class AdminPanelAccessTests(TestCase):
         from django.contrib.auth.models import User
         self.client.force_login(self.admin)
         self.client.post(reverse("ui:admin_user_new"),
-                         {"username": "opgls", "password1": "Str0ngPass!x",
-                          "password2": "Str0ngPass!x", "is_active": "1", "section": "GLS"})
-        u = User.objects.get(username="opgls")
-        self.assertEqual(u.profile.section, "GLS")
+                         {"username": "oppaczki", "password1": "Str0ngPass!x",
+                          "password2": "Str0ngPass!x", "is_active": "1", "section": "PACZKI"})
+        u = User.objects.get(username="oppaczki")
+        self.assertEqual(u.profile.section, "PACZKI")
         # Zła sekcja → błąd walidacji, bez zapisu użytkownika.
         self.client.post(reverse("ui:admin_user_new"),
                          {"username": "opbad", "password1": "Str0ngPass!x",

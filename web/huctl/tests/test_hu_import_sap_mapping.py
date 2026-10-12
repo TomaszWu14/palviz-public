@@ -37,18 +37,18 @@ class HuImportSapMappingTests(TestCase):
     def test_import_creates_hu_with_delivery_type_picker(self):
         ok, info = _import_hu_rows(HEADER, [
             _row("11582503", "DM15300-F", "81828209", "11131116", "PTESTOWY",
-                 "JKOWAL", "ADRIA DEMO", "92EX")])
+                 "JKOWAL", "ADRIA DEMO", "71EX")])
         self.assertTrue(ok)
         hu = HandlingUnit.objects.get(code="11582503")
-        self.assertEqual(hu.warehouse_type, "92EX")        # gating z kol. Typ magazynu
+        self.assertEqual(hu.warehouse_type, "71EX")        # gating z kol. Typ magazynu
         self.assertEqual(hu.picker, "JKOWAL")               # Potwierdzone przez, nie Autor
         self.assertFalse(hu.shipment.is_stock)             # Dokument → realna dostawa
         self.assertEqual(hu.shipment.kunnr, "11131116")    # KUNNR z Odbiorca materiałów
 
     def test_empty_dokument_counted_as_error(self):
         ok, info = _import_hu_rows(HEADER, [
-            _row("HU1", "R1", "81828209", "11131116", "A", "JKOWAL", "N", "92EX"),
-            _row("HU2", "R2", "", "11131116", "A", "JKOWAL", "N", "92EX")])   # brak Dokumentu
+            _row("HU1", "R1", "81828209", "11131116", "A", "JKOWAL", "N", "71EX"),
+            _row("HU2", "R2", "", "11131116", "A", "JKOWAL", "N", "71EX")])   # brak Dokumentu
         self.assertTrue(ok)
         self.assertEqual(info["with_delivery"], 1)
         self.assertEqual(info["no_delivery"], 1)

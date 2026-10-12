@@ -20,7 +20,7 @@ class SyncScanGateTests(TestCase):
         sh = Shipment.objects.create(name="D1")
         self.hu = HandlingUnit.objects.create(shipment=sh, seq=1, code="H1",
                                               status="in_control", controlled_by=self.u,
-                                              warehouse_type="92EX")
+                                              warehouse_type="71EX")
         self.item = HandlingUnitItem.objects.create(hu=self.hu, ref_code="A1",
                                                     base_unit="OP", base_qty=5)
 

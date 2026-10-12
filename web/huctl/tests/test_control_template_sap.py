@@ -46,6 +46,6 @@ class ControlTemplateSapTests(TestCase):
         ok, info = _import_hu_rows(header, rows)
         self.assertTrue(ok, info)
         hu = HandlingUnit.objects.get(code="11582503")
-        self.assertEqual(hu.warehouse_type, "92EX")     # Typ magazynu (gating)
+        self.assertEqual(hu.warehouse_type, "71EX")     # Typ magazynu (gating)
         self.assertEqual(hu.picker, "JKOWAL")            # Potwierdzone przez
         self.assertFalse(hu.shipment.is_stock)          # Dokument → dostawa

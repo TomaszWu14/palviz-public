@@ -60,7 +60,7 @@ class SoftAssignTests(TestCase):
         self.assertEqual(self.hu.assigned_to, self.u2)     # rezerwacja podąża za kontrolą
 
     def test_recipient_group_panel_lists_siblings(self):
-        self.sh.recipient_name = "PHARMO"; self.sh.save()
+        self.sh.recipient_name = "DOMEX"; self.sh.save()
         sib = HandlingUnit.objects.create(shipment=self.sh, seq=2, code="H2",
                                           status="planned", warehouse_type="WT01")
         self.client.force_login(self.u1)
@@ -70,7 +70,7 @@ class SoftAssignTests(TestCase):
         self.assertContains(r, "Grupa do odb.")
 
     def test_reserve_group_reserves_in_zone_planned(self):
-        self.sh.recipient_name = "PHARMO"; self.sh.save()
+        self.sh.recipient_name = "DOMEX"; self.sh.save()
         s_in = HandlingUnit.objects.create(shipment=self.sh, seq=2, code="H2",
                                            status="planned", warehouse_type="WT01")
         s_out = HandlingUnit.objects.create(shipment=self.sh, seq=3, code="H3",
@@ -152,7 +152,7 @@ class SoftAssignTests(TestCase):
         self.assertEqual(self.hu.status, "in_control")
 
     def test_leader_assign_group_reassigns_whole_recipient(self):
-        self.sh.recipient_name = "PHARMO"; self.sh.save()
+        self.sh.recipient_name = "DOMEX"; self.sh.save()
         sib = HandlingUnit.objects.create(shipment=self.sh, seq=2, code="H2",
                                           status="planned", warehouse_type="WT01")
         self.hu.assigned_to = self.u1; self.hu.save(update_fields=["assigned_to"])

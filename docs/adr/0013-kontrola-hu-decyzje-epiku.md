@@ -13,7 +13,7 @@ pytań i audycie 06 (2026-09-05) oraz w PR-ach #634–#638 — bez jednego spisu
 
 1. Kontrola zapisuje wynik tylko w GROOVE, nic nie księguje w SAP ([ADR-0003](0003-sap-tylko-do-odczytu.md)).
 2. Strefy (typy magazynu) grupujemy w procesy — 8 stref / 5 procesów (decyzja 2026-09-02), np.
-   EXPORT = 92EX + WCEX; strefa jest atrybutem, przydział i KPI ją respektują.
+   EXPORT = 71EX + WDEX; strefa jest atrybutem, przydział i KPI ją respektują.
 3. Rezerwacja palety jest miękka: przejmowalna świadomym aktem z powiadomieniem, wygasa po 8 h.
 4. Rozbieżność ilości: potwierdzenie „jestem pewien” (`sure=1`) zamiast wymuszonego drugiego
    przeliczenia — świadomy kompromis; rekontrolę robi inna osoba, po kolejnych porażkach eskalacja.

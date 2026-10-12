@@ -37,7 +37,7 @@ class OneQueueTests(TestCase):
         sh = Shipment.objects.create(name=f"D{code}", customer=cust, kunnr=kunnr,
                                      outbound_delivery_date=delivery)
         kw.setdefault("status", "planned")
-        return HandlingUnit.objects.create(shipment=sh, code=code, warehouse_type="92EX", **kw)
+        return HandlingUnit.objects.create(shipment=sh, code=code, warehouse_type="71EX", **kw)
 
     def _mixed(self):
         """VIP, PILNE, rekontrola, rodzina w toku, 3× reszta (SLA bliski/daleki/brak)

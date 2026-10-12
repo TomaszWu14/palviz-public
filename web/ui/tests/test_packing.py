@@ -29,18 +29,18 @@ class MonoSkuPackingTests(SimpleTestCase):
     def test_dominant_sku_not_scattered(self):
         # One big SKU spanning >1 pallet + a few small SKUs.
         data = self._pack([
-            _line("DMOM10001", 60, color="#3b82f6"),
+            _line("ACME10001", 60, color="#3b82f6"),
             _line("IS-RP-BF", 4, dims=(40, 30, 25), color="#ef4444"),
             _line("612009", 3, dims=(40, 30, 25), color="#10b981"),
         ])
         self.assertIsNotNone(data)
         pallets = data["pallets"]
-        mono_dmom = [p for p in pallets if _labels(p) == {"DMOM10001"}]
-        mixed_dmom = [p for p in pallets if "DMOM10001" in _labels(p) and len(_labels(p)) > 1]
+        mono_acme = [p for p in pallets if _labels(p) == {"ACME10001"}]
+        mixed_acme = [p for p in pallets if "ACME10001" in _labels(p) and len(_labels(p)) > 1]
         # The dominant SKU forms at least one clean mono pallet…
-        self.assertGreaterEqual(len(mono_dmom), 1)
+        self.assertGreaterEqual(len(mono_acme), 1)
         # …and is mixed with other SKUs on at most one (the leftover) pallet.
-        self.assertLessEqual(len(mixed_dmom), 1)
+        self.assertLessEqual(len(mixed_acme), 1)
 
     def test_all_cartons_are_placed(self):
         data = self._pack([_line("A", 30), _line("B", 12, color="#f59e0b")])

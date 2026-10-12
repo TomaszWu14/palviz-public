@@ -18,7 +18,7 @@ NEW_HEADER = OLD_HEADER + ["numer wz", "kod klienta", "kraj", "data utworzenia d
 class OldFeedRegressionTests(TestCase):
     def test_old_format_still_imports(self):
         ok, info = _import_hu_rows(OLD_HEADER, [
-            ["D-100", "HU1", "ZR-1", "10", "OP", "B0-01-100A", "P1", "Szpital X", "jan"],
+            ["D-100", "HU1", "ZR-1", "10", "OP", "B0-01-100A", "P1", "Sklep X", "jan"],
             ["D-100", "HU1", "ZR-2", "5", "OP", "", "", "", ""],
         ])
         self.assertTrue(ok, info)
@@ -42,7 +42,7 @@ class OldFeedRegressionTests(TestCase):
 class NewFeedImportTests(TestCase):
     def _row(self, **over):
         base = {"dostawa": "D-200", "hu": "HU9", "ref": "ZR-9", "qty": "10", "unit": "OP",
-                "loc": "B0-01-100A", "wh": "P1", "odb": "Szpital X", "picker": "jan",
+                "loc": "B0-01-100A", "wh": "P1", "odb": "Sklep X", "picker": "jan",
                 "wz": "WZ/2026/123", "kunnr": "0000123", "kraj": "de",
                 "created": "2026-08-01", "ddate": "05.08.2026", "compl": "X",
                 "waga": "12,5", "dl": "120", "sz": "80", "wys": "145"}
@@ -53,7 +53,7 @@ class NewFeedImportTests(TestCase):
                 base["compl"], base["waga"], base["dl"], base["sz"], base["wys"]]
 
     def test_new_columns_land_on_models(self):
-        Customer.objects.create(name="Szpital X", kunnr="123")
+        Customer.objects.create(name="Sklep X", kunnr="123")
         ok, info = _import_hu_rows(NEW_HEADER, [self._row()])
         self.assertTrue(ok, info)
         sh = Shipment.objects.get(name="D-200")

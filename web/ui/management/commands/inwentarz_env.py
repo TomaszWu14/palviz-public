@@ -29,7 +29,7 @@ EXTRA_VARS = ("CELERY_WORKER", "CELERY_BEAT", "CELERY_CONCURRENCY", "WEB_CONCURR
 APP_PREFIXES = ("DJANGO_", "DB_", "DATABASE_", "CELERY_", "HU_", "GDPR_", "BACKUP_", "POWERBI_",
                 "TWILIO_", "EMAIL_", "OIDC_", "GROOVE_", "PALVIZ_", "SENTRY_", "N8N_",
                 "TWA_", "GOOGLE_MAPS_", "DRIVER_REMINDER_", "DEVICE_CONFIRM_",
-                "MASTER_DATA_", "PHV_", "GLS_", "TEAMS_", "CSP_", "SHIPMENT_", "PALLET_",
+                "MASTER_DATA_", "PHV_", "PARCEL_", "TEAMS_", "CSP_", "SHIPMENT_", "PALLET_",
                 "WAREHOUSE_", "COMPANY_")
 
 

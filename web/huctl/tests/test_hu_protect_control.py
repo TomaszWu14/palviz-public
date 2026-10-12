@@ -19,7 +19,7 @@ class ProtectControlledHUTests(TestCase):
         self.user = _user_all_roles()
         self.client.force_login(self.user)
         self.sh = Shipment.objects.create(name="Dostawa P", stowage_efficiency_pct=80)
-        p = Product.objects.create(code="NL100-100", name="NONVI lux")
+        p = Product.objects.create(code="NL100-100", name="SERWETKI lux")
         PalletizationInstruction.objects.create(
             product=p, version=1, carton_l=40, carton_w=30, carton_h=25,
             unit_weight=0.5, pcs_per_carton=10, demand_pcs=100, is_active=True)
@@ -63,17 +63,17 @@ HDR = ["dostawa", "pickhu", "ref", "ilość", "jm"]
 
 class ReimportProtectsControlledItemsTests(TestCase):
     def setUp(self):
-        Product.objects.create(code="RG-50", name="Rękawice")
-        ok, _ = _import_hu_rows(HDR, [["81782091", "HU001", "RG-50", "80", "OP"],
-                                      ["81782091", "HU002", "RG-50", "40", "OP"]])
+        Product.objects.create(code="RG-50", name="Talerze")
+        ok, _ = _import_hu_rows(HDR, [["80002091", "HU001", "RG-50", "80", "OP"],
+                                      ["80002091", "HU002", "RG-50", "40", "OP"]])
         self.assertTrue(ok)
 
     def test_controlled_hu_items_kept_planned_replaced(self):
         hu1 = HandlingUnit.objects.get(code="HU001")
         HandlingUnitItem.objects.filter(hu=hu1).update(counted_qty=80)
         HandlingUnit.objects.filter(pk=hu1.pk).update(status="ok", verified_at=timezone.now())
-        ok, info = _import_hu_rows(HDR, [["81782091", "HU001", "RG-50", "55", "OP"],
-                                         ["81782091", "HU002", "RG-50", "33", "OP"]])
+        ok, info = _import_hu_rows(HDR, [["80002091", "HU001", "RG-50", "55", "OP"],
+                                         ["80002091", "HU002", "RG-50", "33", "OP"]])
         self.assertTrue(ok)
         it1 = HandlingUnitItem.objects.get(hu__code="HU001")
         self.assertEqual((it1.expected_qty, it1.counted_qty), (80, 80))   # zachowane

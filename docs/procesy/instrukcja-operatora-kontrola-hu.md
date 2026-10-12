@@ -55,7 +55,7 @@ sprawę na magazynie, a licznik czasu kontroli **pauzuje**. Uwaga:
   powstają **zadania naprawcze** dla magazynu (uzupełnij brak / zdejmij nadmiar).
 - Paleta wracająca z rekontroli z błędem po raz kolejny → system **sam eskaluje
   do lidera** (nie musisz pilnować).
-- GLS: przy finalizacji podajesz liczbę kartonów i paczek (raport konsolidacji).
+- PACZKI: przy finalizacji podajesz liczbę kartonów i paczek (raport konsolidacji).
 
 ## 6. Komunikacja i zgłoszenia
 
@@ -88,7 +88,7 @@ sprawę na magazynie, a licznik czasu kontroli **pauzuje**. Uwaga:
 
 ## Pytania otwarte (uzupełnić na warsztacie)
 
-- Różnice per strefa (BUS / GEIS / EXPORT / GLS) — patrz kwestionariusz
+- Różnice per strefa (BUS / PALETY / EXPORT / PACZKI) — patrz kwestionariusz
   `pytania-procesowe-strefy-hu.md`.
 - Co robić z paletą po 2× nieudanej rekontroli PO eskalacji do lidera.
 - Fizyczne oznaczanie palety po kontroli (folia/etykieta) — poza systemem.

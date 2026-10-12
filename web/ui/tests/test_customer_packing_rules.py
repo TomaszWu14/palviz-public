@@ -20,7 +20,7 @@ class RuleEditTests(TestCase):
     def setUp(self):
         self.md = _user("md", GROUP_MASTER_DATA)
         self.customer = Customer.objects.create(name="Klient X", code="KX")
-        self.product = Product.objects.create(code="CTND-200_V1", name="Kompresy")
+        self.product = Product.objects.create(code="CTND-200_V1", name="Kubki")
         self.client.force_login(self.md)
 
     def test_add_and_delete_rule(self):
@@ -48,7 +48,7 @@ class HuBadgeTests(TestCase):
     def setUp(self):
         self.ctrl = _user("ctrl", GROUP_CONTROLLER)
         self.customer = Customer.objects.create(name="Klient X", code="KX")
-        self.product = Product.objects.create(code="CTND-200_V1", name="Kompresy")
+        self.product = Product.objects.create(code="CTND-200_V1", name="Kubki")
         ship = Shipment.objects.create(name="S1", customer=self.customer)
         self.hu = HandlingUnit.objects.create(shipment=ship, seq=1, status="in_control",
                                               controlled_by=self.ctrl)
@@ -74,9 +74,9 @@ class HuBadgeTests(TestCase):
 class RuleAlertTests(TestCase):
     """Alert mailowy: dostawa klienta z indeksem > szt/opak. → zadanie (dedup) + mail."""
     def setUp(self):
-        self.customer = Customer.objects.create(name="SZPITAL PUM", code="PUM",
+        self.customer = Customer.objects.create(name="SKLEP PUM", code="PUM",
                                                 kunnr="20001238")
-        self.product = Product.objects.create(code="CTND-200_V1", name="Kompresy")
+        self.product = Product.objects.create(code="CTND-200_V1", name="Kubki")
         CustomerPackagingRule.objects.create(
             customer=self.customer, product=self.product, units_per_pack=25,
             alert_email="planista@example.com")

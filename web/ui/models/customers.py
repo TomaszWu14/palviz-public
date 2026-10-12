@@ -28,9 +28,9 @@ class Customer(models.Model):
                   ("beta", "Beta"), ("export", "Export")]
     category = models.CharField(max_length=20, blank=True, default="", choices=CATEGORIES,
                                 verbose_name="Kategoria klienta")
-    # Przewoźnik domyślny dla wysyłek tego odbiorcy (np. „GLS"). Puste = dowolny/inny.
+    # Przewoźnik domyślny dla wysyłek tego odbiorcy (np. „PACZKI"). Puste = dowolny/inny.
     carrier = models.CharField(max_length=40, blank=True, default="",
-                               verbose_name="Przewoźnik", help_text="np. „GLS”; puste = inny/dowolny")
+                               verbose_name="Przewoźnik", help_text="np. „PACZKI”; puste = inny/dowolny")
     priority_rank = models.PositiveSmallIntegerField(
         default=0, verbose_name="Ranga priorytetu",
         help_text="Wyższa = wcześniej w kolejce kontroli (tie-break po VIP).")

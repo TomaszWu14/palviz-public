@@ -182,7 +182,7 @@ def recipient_fields(rs):
 
     Nazwa równa numerowi (porównanie po tej samej normalizacji — także dla numeru ze
     spacją) jest czyszczona. Bez żadnej kolumny nazwy wartość ze spacją z kolumny numeru
-    to w praktyce nazwa (np. „PHARMO DEMO SRL”) — wtedy trafia do nazwy."""
+    to w praktyce nazwa (np. „DOMEX DEMO SRL”) — wtedy trafia do nazwy."""
     raw_no = first(rs, "recip_no")
     recip_no = recipient_no(raw_no)
     recip_nm = (first(rs, "recip_name") or first(rs, "recipient"))[:200]

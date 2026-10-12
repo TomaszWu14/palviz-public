@@ -137,7 +137,7 @@ flowchart TD
     B4 -- tak --> REK1[Automatycznie: Do rekontroli + priorytet + zgłoszenie jakościowe]
     B4 -- nie --> B5{Otwarte wady jakościowe?}
     B5 -- tak --> STOP2[BLOKADA - zamknij zgłoszenia]
-    B5 -- nie --> B6{Strefa GLS: kartony = paczki?}
+    B5 -- nie --> B6{Strefa PACZKI: kartony = paczki?}
     B6 -- niezgodne --> STOP3[BLOKADA - uzgodnij paczki]
     B6 -- OK --> B7{Czy któraś pozycja ma BŁĄD?}
     B7 -- tak --> REK2[Status: Do rekontroli + priorytet]
@@ -195,7 +195,7 @@ Dodatkowo **ściana TV**: podgląd stanu kolejki i kontroli per strefa (kolory s
 | 4 | **Partia przeterminowana** | automatyczna rekontrola + zgłoszenie jakościowe + priorytet |
 | 5 | **Krótka data** (≤ ~6 mies.) | paleta wyżej w kolejce; przy zakończeniu świadome potwierdzenie albo zgłoszenie |
 | 6 | **Klient VIP** | zawsze kontrola (nawet strefa niekontrolowana), wyżej w kolejce |
-| 7 | **Strefa GLS** | dodatkowa bramka: liczba kartonów musi zgadzać się z paczkami |
+| 7 | **Strefa PACZKI** | dodatkowa bramka: liczba kartonów musi zgadzać się z paczkami |
 | 8 | **Paleta porzucona** (zawołana, nikt nie liczy) | po 8 h rezerwacja wygasa; rozpoczęta a nieliczona wraca do „Zaplanowany" |
 | 9 | **Paleta zniknęła z magazynu** | lider: „Wyjechało bez kontroli" (+ automatyczne zadanie wyjaśniające) |
 | 10 | **Pomyłka po zatwierdzeniu** | lider otwiera ponownie z powodem — o ile paleta jeszcze nie wyjechała |

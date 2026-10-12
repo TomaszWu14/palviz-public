@@ -67,13 +67,13 @@ class HUImportRepointTests(TestCase):
         return self.client.post(reverse("ui:planner_hu_import"), {"file": f})
 
     def test_same_pickhu_in_another_shipment_repoints_instead_of_duplicating(self):
-        self._upload(HEADER + "D-AAA;HU777;RG-50;Rękawice;L1;2027-05-31;80;OP;A-1;WT01;X\n")
+        self._upload(HEADER + "D-AAA;HU777;RG-50;Talerze;L1;2027-05-31;80;OP;A-1;WT01;X\n")
         hu = HandlingUnit.objects.get(code="HU777")
         hu.picker = "Kowalski"                  # ślad, że to ta sama, przepięta paleta
         hu.save(update_fields=["picker"])
 
         # SAP przeksięgował paletę na inną dostawę.
-        self._upload(HEADER + "D-BBB;HU777;RG-50;Rękawice;L1;2027-05-31;80;OP;A-1;WT01;X\n")
+        self._upload(HEADER + "D-BBB;HU777;RG-50;Talerze;L1;2027-05-31;80;OP;A-1;WT01;X\n")
 
         self.assertEqual(HandlingUnit.objects.filter(code="HU777").count(), 1)
         hu.refresh_from_db()
@@ -82,10 +82,10 @@ class HUImportRepointTests(TestCase):
         self.assertEqual(hu.items.count(), 1)
 
     def test_repointed_hu_keeps_control_history(self):
-        self._upload(HEADER + "D-AAA;HU778;RG-50;Rękawice;L1;2027-05-31;80;OP;A-1;WT01;X\n")
+        self._upload(HEADER + "D-AAA;HU778;RG-50;Talerze;L1;2027-05-31;80;OP;A-1;WT01;X\n")
         hu = HandlingUnit.objects.get(code="HU778")
         pk = hu.pk
-        self._upload(HEADER + "D-BBB;HU778;RG-50;Rękawice;L1;2027-05-31;80;OP;A-1;WT01;X\n")
+        self._upload(HEADER + "D-BBB;HU778;RG-50;Talerze;L1;2027-05-31;80;OP;A-1;WT01;X\n")
         # Ten sam wiersz, więc wszystko co na nim wisi (próby, zgłoszenia) przetrwało.
         self.assertEqual(HandlingUnit.objects.get(code="HU778").pk, pk)
 

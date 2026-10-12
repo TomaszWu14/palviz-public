@@ -9,7 +9,7 @@ Notuj TUTAJ (jedna kopia pliku per zespół albo sekcje niżej). Pytania:
 
 ---
 
-## Zespół: ______________ (BUS / GEIS / EXPORT / GLS) · data · prowadzący · uczestnicy
+## Zespół: ______________ (BUS / PALETY / EXPORT / PACZKI) · data · prowadzący · uczestnicy
 
 ### A. Start zmiany (1–4)
 | Nr | Odpowiedź / warianty | ⚠/💡 |

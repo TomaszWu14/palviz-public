@@ -23,8 +23,8 @@ class OfflineSyncTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = _user_all_roles()
-        cls.sh = Shipment.objects.create(name="Dostawa", recipient_name="PHARMO")
-        p = Product.objects.create(code="NL100", name="NONVI")
+        cls.sh = Shipment.objects.create(name="Dostawa", recipient_name="DOMEX")
+        p = Product.objects.create(code="NL100", name="SERWETKI")
         PalletizationInstruction.objects.create(
             product=p, version=1, carton_l=40, carton_w=30, carton_h=25,
             unit_weight=0.5, pcs_per_carton=10, demand_pcs=100, is_active=True)

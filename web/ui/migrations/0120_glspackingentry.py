@@ -25,8 +25,8 @@ class Migration(migrations.Migration):
                 ('hu', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='gls_packing', to='ui.handlingunit')),
             ],
             options={
-                'verbose_name': 'Rozliczenie pakowania GLS',
-                'verbose_name_plural': 'Rozliczenia pakowania GLS',
+                'verbose_name': 'Rozliczenie pakowania PACZKI',
+                'verbose_name_plural': 'Rozliczenia pakowania PACZKI',
                 'ordering': ['-created_at'],
             },
         ),

@@ -9,7 +9,7 @@ from django.urls import reverse
 from ui.models import Task
 from .hu_helpers import _ensure_started  # noqa: F401
 from .hu_count import _alt_conv, _annotate_picked_units, _count_tiles, _prefetch_instructions, _unit_factors  # noqa: F401
-from .hu_helpers import _call_queue, _is_gls, _log_status, _maybe_escalate_recheck, _notify_groups, _raise_corrective_tasks, _reserve, _type_controlled, _valid_photo, _zone_ok  # noqa: F401
+from .hu_helpers import _call_queue, _is_parcel, _log_status, _maybe_escalate_recheck, _notify_groups, _raise_corrective_tasks, _reserve, _type_controlled, _valid_photo, _zone_ok  # noqa: F401
 from .hu_quality import _notify_recheck  # noqa: F401
 from .hu_queue import _recipient_siblings  # noqa: F401
 from .hu_transaction_card import MD_ASPECTS  # noqa: F401

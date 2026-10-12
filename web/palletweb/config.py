@@ -29,6 +29,11 @@ class AppEnv(BaseSettings):
     DJANGO_SSL_REDIRECT: bool = False
     DJANGO_LOG_LEVEL: str = "INFO"
     APP_NAME: str = "GROOVE"
+    # Publiczna instancja demo (dane fikcyjne): przycisk „Wejdź jako demo”, baner, konto
+    # DEMO_USER tylko do odczytu (core/demo.py) i `manage.py seed_demo [--reset]`.
+    DEMO_MODE: bool = False
+    DEMO_USER: str = "demo"
+    DEMO_PASSWORD: str = ""
     # Deployment variant — one codebase, one DB, but this instance serves only a subset of
     # modules. "" = full platform; "hu" = Kontrola HU only (warehouse-floor app).
     GROOVE_VARIANT: str = ""
@@ -172,15 +177,15 @@ class AppEnv(BaseSettings):
     POWERBI_PUBLIC_CLIENT_ID: str = ""
     POWERBI_WORKSPACE_ID: str = ""
     POWERBI_DATASET_ID: str = ""
-    POWERBI_STOCK_TABLE: str = "Stock_oraz_DLT"
+    POWERBI_STOCK_TABLE: str = "Stock_oraz_ZEW"
     POWERBI_ACCESS_TOKEN: str = ""
     POWERBI_CA_BUNDLE: str = ""
     POWERBI_SSL_VERIFY: bool = True
 
-    # ── Kontrola HU: strefa GLS (konsolidacja kartony→paczki) ───────────────
-    # Kody warehouse_type traktowane jako strefa GLS: po zaksięgowaniu palety kontroler
+    # ── Kontrola HU: strefa PACZKI (konsolidacja kartony→paczki) ───────────────
+    # Kody warehouse_type traktowane jako strefa PACZKI: po zaksięgowaniu palety kontroler
     # musi podać kartony w przygotowaniu + zrobione paczki (raport konsolidacji).
-    GLS_ZONE_CODES: str = "GLS"
+    PARCEL_ZONE_CODES: str = "PACZKI"
 
     # ── Moduł „Hierarchia opakowań" (PHV) ───────────────────────────────────
     # Adres, na który idą maile o zgłoszeniach błędów master daty z PHV.

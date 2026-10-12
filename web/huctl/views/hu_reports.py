@@ -1,4 +1,4 @@
-# Raporty i KPI lidera: statusy, historia, bledy, rozliczenie GLS, KPI zmian.
+# Raporty i KPI lidera: statusy, historia, bledy, rozliczenie PACZKI, KPI zmian.
 
 from ui.views.core import (
     ControlledWarehouseType, HandlingUnit, HandlingUnitItem, HttpResponse,
@@ -14,21 +14,21 @@ from ..rules import STATUSES, progress, status_label
 
 
 @_leader
-def gls_packing_report(request):
-    """Raport konsolidacji GLS dla lidera: per kontroler — palety, Σ kartonów, Σ paczek,
+def parcel_packing_report(request):
+    """Raport konsolidacji PACZKI dla lidera: per kontroler — palety, Σ kartonów, Σ paczek,
     współczynnik konsolidacji (kartony/paczkę, wyżej = lepiej pakuje) i śr. objętość
     na paczkę. Ranking malejąco po współczynniku; filtr dat (?od/do, domyślnie 30 dni)."""
     from datetime import timedelta
     from django.db.models import Count as _Count, Sum as _Sum
-    from ui.models import GlsPackingEntry
+    from ui.models import ParcelPackingEntry
     from .hu import _parse_date_any
 
     d_to = _parse_date_any(request.GET.get("do") or "") or timezone.localdate()
     d_from = _parse_date_any(request.GET.get("od") or "") or (d_to - timedelta(days=30))
-    qs = GlsPackingEntry.objects.filter(created_at__date__gte=d_from,
+    qs = ParcelPackingEntry.objects.filter(created_at__date__gte=d_from,
                                         created_at__date__lte=d_to)
     rows = []
-    # .order_by() — bez tego GlsPackingEntry.Meta.ordering=["-created_at"] wchodzi do GROUP BY
+    # .order_by() — bez tego ParcelPackingEntry.Meta.ordering=["-created_at"] wchodzi do GROUP BY
     # (grupa per wpis, nie per kontroler) → n=1, kontroler w wielu wierszach, cały raport błędny.
     for r in (qs.order_by().values(name=F("controller__username"))
               .annotate(n=_Count("id"), cartons=_Sum("cartons"), parcels=_Sum("parcels"),
@@ -43,7 +43,7 @@ def gls_packing_report(request):
         })
     rows.sort(key=lambda x: -x["ratio"])          # najlepszy konsolidator na górze
     recent = qs.select_related("hu", "controller")[:50]
-    return render(request, "ui/control/gls_report.html", {
+    return render(request, "ui/control/parcel_report.html", {
         "rows": rows, "recent": recent, "d_from": d_from, "d_to": d_to,
         "total_cartons": sum(x["cartons"] for x in rows),
         "total_parcels": sum(x["parcels"] for x in rows),
@@ -63,7 +63,7 @@ def hu_control_recheck_list(request):
     # Wiek rekontroli (roadmapa Q4): najstarsze pierwsze, ponad limit — oznaczone.
     hus = _attach_recheck_age(hus)
     # Tylko strefy POD KONTROLĄ (jak w find_recipient) — dropdown pokazywał wszystkie
-    # typy z systemu (0010, 0070, BROK…), co nie ma sensu na liście rekontroli.
+    # typy z systemu (0010, 0070, USZK…), co nie ma sensu na liście rekontroli.
     _controlled = ControlledWarehouseType.controlled_codes()
     wh_types = sorted(t for t in HandlingUnit.objects.filter(status="to_recheck")
                       .order_by().values_list("warehouse_type", flat=True).distinct()
@@ -121,7 +121,7 @@ def hu_control_status(request):
     from ui.theme import carrier_for
     for hu in hus:
         wt = (hu.warehouse_type or "—").upper()
-        # Grupowanie per PROCES (EXPORT = 92EX+WCEX itd.) — strefy WC* i 92*/94*
+        # Grupowanie per PROCES (EXPORT = 71EX+WDEX itd.) — strefy WC* i 92*/94*
         # to jeden proces logistyczny, więc jedna karta; kody stref w podtytule.
         proc = carrier_for(wt) if wt != "—" else "—"
         m = metrics.get(hu.pk, {})
@@ -175,7 +175,7 @@ def hu_control_status(request):
             loc["hus"].sort(key=_natkey)
         zone["locations"] = locs
         zone["done"], zone["scope"], zone["pct"] = progress(zone)
-        # „92EX + WCEX" w tytule karty procesu; kolor liczony po pierwszym kodzie,
+        # „71EX + WDEX" w tytule karty procesu; kolor liczony po pierwszym kodzie,
         # żeby paleta była stabilna względem widoku sprzed grupowania.
         zone["zone_codes"] = " + ".join(sorted(zone.pop("codes")))
         zone_list.append(zone)
@@ -201,7 +201,7 @@ def hu_error_report(request):
     f_ship = request.GET.get("shipment", "").strip()
     f_client = request.GET.get("client", "").strip()
     f_picker = request.GET.get("picker", "").strip()
-    # Parsuj daty (jak w gls_packing_report) — surowy string w filtrze __date wywala 500 na złej dacie.
+    # Parsuj daty (jak w parcel_packing_report) — surowy string w filtrze __date wywala 500 na złej dacie.
     f_from = _parse_date_any(request.GET.get("from", "").strip())
     f_to = _parse_date_any(request.GET.get("to", "").strip())
 
@@ -381,7 +381,7 @@ def hu_control_kpi(request):
                    "totals": totals, "target_pph": target_pph, "by": by})
 
 __all__ = [
-    "gls_packing_report",
+    "parcel_packing_report",
     "hu_control_recheck_list",
     "hu_control_history",
     "_STATUS_LABEL",

@@ -79,7 +79,7 @@ class ProductFactory(factory.django.DjangoModelFactory):
         django_get_or_create = ("code",)
 
     code = factory.Sequence(lambda n: f"REF{100000 + n}")
-    name = factory.Sequence(lambda n: f"Rękawice nitrylowe {n} {PL}")
+    name = factory.Sequence(lambda n: f"Talerze ceramiczne {n} {PL}")
     ean = factory.Sequence(lambda n: f"590{n:010d}")
     unit_length_cm, unit_width_cm, unit_height_cm = 24.0, 12.0, 6.0
 
@@ -137,7 +137,7 @@ class CustomerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Customer
 
-    name = factory.Sequence(lambda n: f"Szpital Wojewódzki nr {n} w Łodzi")
+    name = factory.Sequence(lambda n: f"Sklep Wielobranżowy nr {n} w Łodzi")
     code = factory.Sequence(lambda n: f"K{n:05d}")
     country, city = "PL", "Łódź"
 
@@ -150,7 +150,7 @@ class PackagingRuleFactory(factory.django.DjangoModelFactory):
     customer = factory.SubFactory(CustomerFactory)
     product = factory.SubFactory(ProductFactory)
     units_per_pack = 50
-    note = "Pakować po 50 szt. — wymóg apteki szpitalnej"
+    note = "Pakować po 50 szt. — wymóg sieci sklepów"
 
 
 

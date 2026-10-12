@@ -84,8 +84,8 @@ class CancelledShipmentLeaderAndGroupTests(TestCase):
     def setUp(self):
         self.user = UserFactory(groups=[GROUP_CONTROLLER, GROUP_LEADER])
         self.client.force_login(self.user)
-        self.active_sh = ShipmentFactory(recipient_name="PHARMO")
-        self.cancelled_sh = ShipmentFactory(recipient_name="PHARMO", status="cancelled")
+        self.active_sh = ShipmentFactory(recipient_name="DOMEX")
+        self.cancelled_sh = ShipmentFactory(recipient_name="DOMEX", status="cancelled")
         self.hu = HandlingUnitFactory(shipment=self.active_sh, status="planned")
         self.sib_active = HandlingUnitFactory(shipment=self.active_sh, status="planned")
         self.sib_cancelled = HandlingUnitFactory(shipment=self.cancelled_sh, status="planned")

@@ -19,7 +19,7 @@ def _user(username, *groups):
 class ReportsAdminTests(TestCase):
     def setUp(self):
         self.kontroler1 = _user("Kontroler1", GROUP_CONTROLLER)
-        PackagingIssue.objects.create(ref_code="DMOM10001", issue_type="missing_conversion",
+        PackagingIssue.objects.create(ref_code="ACME10001", issue_type="missing_conversion",
                                       description="brak przelicznika", reporter=self.kontroler1,
                                       status="open")
         LocationIssue.objects.create(location_code="23L.04", issue_type="damaged_label",
@@ -31,7 +31,7 @@ class ReportsAdminTests(TestCase):
         r = self.client.get(reverse("ui:reports_admin"))
         self.assertEqual(r.status_code, 200)
         self.assertEqual(len(r.context["rows"]), 2)          # oba zgłoszenia Kontroler1
-        self.assertContains(r, "DMOM10001")
+        self.assertContains(r, "ACME10001")
         self.assertContains(r, "23L.04")
         self.assertContains(r, "Kontroler1")                     # zgłaszający widoczny
         self.assertEqual(r.context["open_count"], 1)
@@ -40,7 +40,7 @@ class ReportsAdminTests(TestCase):
         self.client.force_login(_user("lead2", GROUP_ADMIN, GROUP_LEADER))
         r = self.client.get(reverse("ui:reports_admin"), {"status": "open"})
         self.assertEqual(len(r.context["rows"]), 1)          # tylko otwarte
-        self.assertEqual(r.context["rows"][0]["label"], "DMOM10001")
+        self.assertEqual(r.context["rows"][0]["label"], "ACME10001")
 
     def test_non_leader_forbidden(self):
         self.client.force_login(_user("ctrl", GROUP_CONTROLLER))

@@ -26,12 +26,12 @@ class ZoneSelectFlowTests(TestCase):
         self.assertRedirects(resp, reverse("ui:hu_zone_select"))
 
     def test_single_zone_is_auto_selected(self):
-        u = _controller_user("solo", allowed="GLS")
+        u = _controller_user("solo", allowed="PACZKI")
         self.client.force_login(u)
         resp = self.client.get(reverse("ui:hu_zone_select"))
         self.assertRedirects(resp, reverse("ui:hu_control_menu"))
         u.profile.refresh_from_db()
-        self.assertEqual(u.profile.section, "GLS")
+        self.assertEqual(u.profile.section, "PACZKI")
 
     def test_no_assigned_zones_keeps_legacy_behaviour(self):
         u = _controller_user("legacy")
@@ -44,16 +44,16 @@ class ZoneSelectFlowTests(TestCase):
         self.client.post(reverse("ui:hu_zone_select"), {"section": "EXPORT"})
         u.profile.refresh_from_db()
         self.assertEqual(u.profile.section, "EXPORT")
-        self.client.post(reverse("ui:hu_zone_select"), {"section": "GLS"})
+        self.client.post(reverse("ui:hu_zone_select"), {"section": "PACZKI"})
         u.profile.refresh_from_db()
         self.assertEqual(u.profile.section, "EXPORT")   # zabroniona — bez zmiany
 
     def test_zone_select_screen_lists_allowed_tiles(self):
-        u = _controller_user("multi3", allowed="BUS,GLS", section="BUS")
+        u = _controller_user("multi3", allowed="BUS,PACZKI", section="BUS")
         self.client.force_login(u)
         body = self.client.get(reverse("ui:hu_zone_select")).content.decode()
         self.assertIn("BUS + odbiory własne", body)
-        self.assertIn("Paczka GLS", body)
+        self.assertIn("Paczki", body)
         self.assertNotIn("Eksport", body)
 
 
@@ -62,11 +62,11 @@ class ZoneFilterTests(TestCase):
     def setUpTestData(cls):
         sh = Shipment.objects.create(name="D1")
         cls.bus = HandlingUnit.objects.create(shipment=sh, seq=1, code="HBUS",
-                                              warehouse_type="92T3")
+                                              warehouse_type="71T3")
         cls.exp = HandlingUnit.objects.create(shipment=sh, seq=2, code="HEXP",
-                                              warehouse_type="92EX")
+                                              warehouse_type="71EX")
         cls.other = HandlingUnit.objects.create(shipment=sh, seq=3, code="HOTH",
-                                                warehouse_type="ZZ99")   # nieznany → GEIS
+                                                warehouse_type="ZZ99")   # nieznany → PALETY
 
     def test_status_screen_shows_only_active_zone(self):
         u = _controller_user("busman", allowed="BUS,EXPORT", section="BUS")
@@ -77,7 +77,7 @@ class ZoneFilterTests(TestCase):
         self.assertNotIn("HOTH", body)
 
     def test_geis_zone_catches_unmapped_types(self):
-        u = _controller_user("geisman", allowed="GEIS,BUS", section="GEIS")
+        u = _controller_user("paletyman", allowed="PALETY,BUS", section="PALETY")
         self.client.force_login(u)
         body = self.client.get(reverse("ui:hu_control_status")).content.decode()
         self.assertIn("HOTH", body)
@@ -108,10 +108,10 @@ class HeaderTests(TestCase):
         self.assertIn('id="msg-bell"', body)                # koperta zostaje
 
     def test_single_zone_badge_is_not_a_link(self):
-        u = _controller_user("solo2", allowed="GLS", section="GLS")
+        u = _controller_user("solo2", allowed="PACZKI", section="PACZKI")
         self.client.force_login(u)
         body = self.client.get(reverse("ui:hu_control_menu")).content.decode()
-        self.assertIn("STREFA GLS", body)
+        self.assertIn("STREFA PACZKI", body)
         self.assertNotIn(reverse("ui:hu_zone_select"), body)
 
 

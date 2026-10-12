@@ -16,7 +16,7 @@ class HuListViewTests(TestCase):
         u.groups.add(g)
         self.client.force_login(u)
         vip = Customer.objects.create(name="Demoprime", is_vip=True)
-        std = Customer.objects.create(name="Szpital X")
+        std = Customer.objects.create(name="Sklep X")
         sh_new = Shipment.objects.create(name="D-NEW", customer=vip,
                                          outbound_created_date=date(2026, 8, 4),
                                          wz_number="WZ/1")

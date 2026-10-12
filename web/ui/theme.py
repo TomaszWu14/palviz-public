@@ -1,6 +1,6 @@
 """Motywy kolorystyczne stref (przewoźników) i typów wysyłki dla ekranów skanera.
 
-Jedno źródło prawdy: szablon czyta gotowy dict, bez `{% if carrier == 'GLS' %}`
+Jedno źródło prawdy: szablon czyta gotowy dict, bez `{% if carrier == 'PACZKI' %}`
 rozsianych po markupie. Framework-free (żadnych importów Django) — czyste dict + funkcje,
 żeby dało się to testować i reużyć poza requestem.
 
@@ -10,26 +10,26 @@ przewoźnika, przyciemnione do poziomu przechodzącego kontrast na jasnym tle (W
 import colorsys as _colorsys
 
 # Kod strefy (HandlingUnit.warehouse_type, uppercase) → przewoźnik.
-# Ustalone z użytkownikiem; nieznany/pusty kod → fallback GEIS (kolor bazowy aplikacji).
+# Ustalone z użytkownikiem; nieznany/pusty kod → fallback PALETY (kolor bazowy aplikacji).
 ZONE_CARRIER = {
-    "92T3": "BUS",
-    "92JU": "BUS",
-    "92GE": "GEIS",
-    "92EX": "EXPORT",
-    "94GL": "GLS",   # (było błędnie „92GL" — realna strefa GLS to 94GL)
+    "71T3": "BUS",
+    "71BU": "BUS",
+    "71PL": "PALETY",
+    "71EX": "EXPORT",
+    "73PA": "PACZKI",   # (było błędnie „71PA" — realna strefa PACZKI to 73PA)
     # Strefy WC* (wydania całopaletowe) należą do TYCH SAMYCH procesów co 92*/94*
     # (decyzja 2026-09-02: 8 stref / 5 procesów) — bez tych wpisów spadały do
-    # fallbacku GEIS i dostawały złą pigułkę.
-    "WCEX": "EXPORT",
-    "WCGE": "GEIS",
-    "WCGL": "GLS",
+    # fallbacku PALETY i dostawały złą pigułkę.
+    "WDEX": "EXPORT",
+    "WDPL": "PALETY",
+    "WDPA": "PACZKI",
 }
 
 # Pełny motyw per przewoźnik: kolory karty strefy + motyw całej aplikacji (§5 sekcja
-# operatora). `carrier_label` to etykieta pigułki. Domyślny (fallback) = GEIS.
+# operatora). `carrier_label` to etykieta pigułki. Domyślny (fallback) = PALETY.
 WAREHOUSE_THEMES = {
-    "GLS": {
-        "carrier_label": "GLS",
+    "PACZKI": {
+        "carrier_label": "PACZKI",
         # tuning: żółto-złoty (jaśniejszy niż musztarda) vs kontrast białego tekstu (min 4.5:1)
         "header_bg": "#8a6a06",
         "border": "#d9bd5c",
@@ -62,9 +62,9 @@ WAREHOUSE_THEMES = {
         "pill_bg": "#98acec",
         "pill_text": "#141e52",
     },
-    "GEIS": {
-        # 92GE — przewoźnik nierozstrzygnięty (GEIS albo inny przewoźnik)
-        "carrier_label": "GEIS/INNY",
+    "PALETY": {
+        # 71PL — przewoźnik nierozstrzygnięty (PALETY albo inny przewoźnik)
+        "carrier_label": "PALETY/INNY",
         "header_bg": "#0f7d79",
         "border": "#a5d3cc",
         "card_bg": "#f3faf9",
@@ -113,18 +113,18 @@ SHIPMENT_TYPE_THEMES = {
                  "badge_bg": "#eaf2f0", "badge_text": "#4a706c", "badge_glyph": "", "label": "STANDARD"},
 }
 
-DEFAULT_CARRIER = "GEIS"
+DEFAULT_CARRIER = "PALETY"
 
 
 def carrier_for(warehouse_type):
-    """Kod strefy → przewoźnik. Nieznany/pusty → DEFAULT_CARRIER (GEIS)."""
+    """Kod strefy → przewoźnik. Nieznany/pusty → DEFAULT_CARRIER (PALETY)."""
     return ZONE_CARRIER.get((warehouse_type or "").upper(), DEFAULT_CARRIER)
 
 
 def carrier_zone_filter(carrier):
     """Kody warehouse_type strefy kontroli → (codes, exclude).
 
-    exclude=False: strefa = dokładnie `codes`. exclude=True (tylko DEFAULT_CARRIER/GEIS,
+    exclude=False: strefa = dokładnie `codes`. exclude=True (tylko DEFAULT_CARRIER/PALETY,
     bo nieznane kody spadają do niego): strefa = wszystko POZA `codes` innych stref.
     Użycie ORM: exclude → qs.exclude(warehouse_type__in=codes), inaczej filter(__in)."""
     carrier = (carrier or "").upper()
@@ -133,13 +133,13 @@ def carrier_zone_filter(carrier):
     return {z for z, c in ZONE_CARRIER.items() if c == carrier}, False
 
 
-# Etykieta pigułki nadpisana per STREFA (kolory zostają carrierowe) — 92T3 to odbiór
+# Etykieta pigułki nadpisana per STREFA (kolory zostają carrierowe) — 71T3 to odbiór
 # własny klienta, choć kolorystycznie należy do grupy BUS.
-ZONE_LABEL = {"92T3": "ODB. WŁASNY"}
+ZONE_LABEL = {"71T3": "ODB. WŁASNY"}
 
 
 def theme_for(warehouse_type):
-    """Gotowy dict motywu strefy dla danego warehouse_type (fallback GEIS/teal)."""
+    """Gotowy dict motywu strefy dla danego warehouse_type (fallback PALETY/teal)."""
     theme = WAREHOUSE_THEMES[carrier_for(warehouse_type)]
     label = ZONE_LABEL.get((warehouse_type or "").upper())
     return {**theme, "carrier_label": label} if label else theme
