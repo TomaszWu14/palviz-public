@@ -523,7 +523,7 @@ class TemplateSmokeTests(TestCase):
   <form method="post" action="{% url 'ui:carton_opt_redesign_new' %}"
         style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
     {% csrf_token %}
-    <input type="text" name="ref_code" required placeholder="Indeks (np. DMOM10001)"
+    <input type="text" name="ref_code" required placeholder="Indeks (np. ACME10001)"
            style="flex:1 1 200px;min-width:170px;font-family:monospace">
     <select name="scope" style="width:auto">
       <option value="oba">OP + karton</option>

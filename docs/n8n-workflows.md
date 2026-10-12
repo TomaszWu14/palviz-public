@@ -29,7 +29,7 @@ Payload z PALVIZ (`emit_event` w `_raise_task`):
 ```json
 { "kind":"stock_task",
   "payload":{ "dedup_key":"stock:nodata:123", "source_ref":"HU-…",
-              "title":"Brak danych opakowania — DMO10001", "ref_code":"DMO10001", "location":"B0-01-100A" } }
+              "title":"Brak danych opakowania — ACME10009", "ref_code":"ACME10009", "location":"B0-01-100A" } }
 ```
 
 **Węzły:**

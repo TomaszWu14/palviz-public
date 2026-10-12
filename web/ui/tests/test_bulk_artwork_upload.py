@@ -18,7 +18,7 @@ class BulkArtworkUploadTests(TestCase):
     def setUp(self):
         self.admin = User.objects.create_superuser("bulk_admin", "a@a.pl", "x")
         self.client.force_login(self.admin)
-        self.p = Product.objects.create(code="DMOM10001", name="X",
+        self.p = Product.objects.create(code="ACME10001", name="X",
                                         unit_length_cm=10, unit_width_cm=8, unit_height_cm=5)
         self.carton = Carton.objects.create(name="K", length_cm=40, width_cm=30, height_cm=25,
                                             unit_weight_kg=0.5, pieces_per_carton=10)
@@ -30,24 +30,24 @@ class BulkArtworkUploadTests(TestCase):
         self.url = reverse("ui:packaging_matrix_bulk_upload")
 
     def test_uploads_carton_and_keeps_revision(self):
-        self.client.post(self.url, {"files": [_png("DMOM10001_karton_R2.png")]})
+        self.client.post(self.url, {"files": [_png("ACME10001_karton_R2.png")]})
         art = CartonArtwork.objects.get(carton=self.carton, face="front", kind="print")
         self.assertEqual(art.name, "R2")                     # rewizja z nazwy pliku
 
     def test_no_revision_ok(self):
-        self.client.post(self.url, {"files": [_png("DMOM10001_karton.png")]})
+        self.client.post(self.url, {"files": [_png("ACME10001_karton.png")]})
         art = CartonArtwork.objects.get(carton=self.carton, kind="print")
         self.assertEqual(art.name, "")                       # brak rewizji → pusto
 
     def test_ref_alias_resolves(self):
-        ProductAlias.objects.create(product=self.p, alias_code="DMO-M-100")
-        self.client.post(self.url, {"files": [_png("DMO-M-100_karton.png")]})
+        ProductAlias.objects.create(product=self.p, alias_code="ACM-X-100")
+        self.client.post(self.url, {"files": [_png("ACM-X-100_karton.png")]})
         self.assertTrue(CartonArtwork.objects.filter(carton=self.carton).exists())
 
     def test_bad_names_and_unknown_ref_skipped(self):
         r = self.client.post(self.url, {"files": [
             _png("zlanazwa.png"),                 # brak '_'
-            _png("DMOM10001_kosmos.png"),         # nieznany poziom
+            _png("ACME10001_kosmos.png"),         # nieznany poziom
             _png("NIEMA_karton.png"),             # nieznany indeks
         ]}, follow=True)
         self.assertEqual(CartonArtwork.objects.count(), 0)

@@ -29,20 +29,20 @@ class RefSuggestSharedTests(TestCase):
     modułu phv (np. Optymalizacja kartonów) też dostaje podpowiedzi, a nie 403."""
 
     def test_optimizer_without_phv_module_gets_suggestions(self):
-        _product(code="DMOM10001")
+        _product(code="ACME10001")
         self.client.force_login(_wh("opt", GROUP_OPTIMIZER))
-        r = self.client.get(reverse("ui:phv_suggest"), {"q": "DMOM"})
+        r = self.client.get(reverse("ui:phv_suggest"), {"q": "ACME"})
         self.assertEqual(r.status_code, 200)
         codes = [row["code"] for row in r.json()["results"]]
-        self.assertIn("DMOM10001", codes)
+        self.assertIn("ACME10001", codes)
 
     def test_anonymous_still_blocked(self):
-        r = self.client.get(reverse("ui:phv_suggest"), {"q": "DMOM"})
+        r = self.client.get(reverse("ui:phv_suggest"), {"q": "ACME"})
         self.assertNotEqual(r.status_code, 200)
 
 
-def _product(code="DMOM10001", ppc=10, weight=0.458, cpp=99, layers=9, category=None):
-    """Produkt à la DMOM10001: 10 szt/KAR, 99 KAR/PAL (9 warstw) → 990 szt/PAL, 453,4 kg."""
+def _product(code="ACME10001", ppc=10, weight=0.458, cpp=99, layers=9, category=None):
+    """Produkt à la ACME10001: 10 szt/KAR, 99 KAR/PAL (9 warstw) → 990 szt/PAL, 453,4 kg."""
     p = Product.objects.create(code=code, name="Talerze ceramiczne", ean="5900000001500",
                                unit_length_cm=21, unit_width_cm=12, unit_height_cm=5.5,
                                category=category)
@@ -60,7 +60,7 @@ def _product(code="DMOM10001", ppc=10, weight=0.458, cpp=99, layers=9, category=
 class SharedServiceNumbers(TestCase):
     """Kryterium akceptacji: 10 szt/KAR · 99 KAR/PAL · 990 szt/PAL · 453,4 kg/PAL."""
 
-    def test_dmom_numbers(self):
+    def test_acme_numbers(self):
         h = build_hierarchy(_product())
         s = h["summary"]
         self.assertEqual(s["cartons_per_pallet"], 99)
@@ -243,11 +243,11 @@ class PHVView(TestCase):
         except Exception:
             self.skipTest("rapidfuzz not installed")
         # REF-owy kod (bez myslnikow — nie pasuje do wzorca lokalizacji _LOC_RE).
-        _product("DMOM10001")
-        r = self.client.get(reverse("ui:phv_home"), {"q": "DMOM10011"})
+        _product("ACME10001")
+        r = self.client.get(reverse("ui:phv_home"), {"q": "ACME10011"})
         self.assertIsNone(r.context["product"])                # nie ma dokladnego
         codes = [s["code"] for s in r.context["suggestions"]]
-        self.assertIn("DMOM10001", codes)                      # rozmyte trafienie
+        self.assertIn("ACME10001", codes)                      # rozmyte trafienie
 
     def test_carton_ean_resolves_product(self):
         # Skan EAN kartonu (numeryczny — nie pasuje do _LOC_RE) trafia na produkt.

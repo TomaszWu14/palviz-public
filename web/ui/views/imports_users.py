@@ -218,7 +218,7 @@ def excel_template_stock_hu(request):
     ws.title = "Stock HU"
     cols = [
         ("Jednostka obsługi", "pickHU / SSCC — WYMAGANE, grupuje pozycje w paletę", 20, "111835082"),
-        ("Produkt",           "REF / kod materiału — WYMAGANE",                     18, "DMOM10001"),
+        ("Produkt",           "REF / kod materiału — WYMAGANE",                     18, "ACME10001"),
         ("Dostawa",           "Nr dostawy (puste = stock magazynowy)",              14, ""),
         ("Opis",              "Nazwa materiału",                                    28, "Talerze ceramiczne M"),
         ("Partia",            "Nr partii / serii",                                  14, "693623613N"),
@@ -232,9 +232,9 @@ def excel_template_stock_hu(request):
     ]
     _style_xlsx_header(ws, cols, "10B981")
     rows = [
-        ["111835082", "DMOM10001", "", "Talerze ceramiczne M", "693623613N", "2030-12-30",
+        ["111835082", "ACME10001", "", "Talerze ceramiczne M", "693623613N", "2030-12-30",
          50, "KAR", "23L.04", "71BU", "", 453.4],
-        ["111835083", "DMOM10003", "", "Talerze ceramiczne L", "693623159N", "2030-12-23",
+        ["111835083", "ACME10003", "", "Talerze ceramiczne L", "693623159N", "2030-12-23",
          30, "KAR", "23L.03", "71BU", "", 280.0],
     ]
     _add_example_rows(ws, cols, rows)
@@ -297,7 +297,7 @@ def excel_template_fix(request):
     ws.title = "Fixy"
     cols = [
         ("Miejsce składowania", "Kod lokalizacji fixowej — WYMAGANE",   18, "B0-38-471A"),
-        ("Produkt",             "REF / kod materiału — WYMAGANE",       18, "DMOM10001"),
+        ("Produkt",             "REF / kod materiału — WYMAGANE",       18, "ACME10001"),
         ("Typ magazynu",        "Typ magazynu (np. 0050)",              13, "0050"),
         ("Ilość minimalna",     "Próg uzupełnienia (min) — WYMAGANE",   14, 60),
         ("Maksymalna ilość",    "Pojemność fixa (maks)",                14, 260),
@@ -306,8 +306,8 @@ def excel_template_fix(request):
     ]
     _style_xlsx_header(ws, cols, "0F7D79")
     rows = [
-        ["B0-38-471A", "DMOM10001", "0050", 60, 260, "OP", "2026-08-01"],
-        ["B0-12-100A", "DMOM10003", "0050", 40, 180, "OP", "2026-08-01"],
+        ["B0-38-471A", "ACME10001", "0050", 60, 260, "OP", "2026-08-01"],
+        ["B0-12-100A", "ACME10003", "0050", 40, 180, "OP", "2026-08-01"],
     ]
     _add_example_rows(ws, cols, rows)
     return _finalize_xlsx(wb, ws, response)
@@ -320,7 +320,7 @@ def excel_template_marm(request):
     wb, ws, response = _make_xlsx_response("GROOVE_sap_marm_wzor.xlsx")
     ws.title = "SAP MARM"
     cols = [
-        ("material", "Numer materiału (MATNR) — WYMAGANE",                18, "DMOM10001"),
+        ("material", "Numer materiału (MATNR) — WYMAGANE",                18, "ACME10001"),
         ("unit",     "Jednostka miary (MEINH): JP/OP/KAR/PAL — WYMAGANE", 10, "KAR"),
         ("umrez",    "Licznik przelicznika (ile JP w tej JM)",            12, 10),
         ("umren",    "Mianownik przelicznika",                            12, 1),
@@ -336,9 +336,9 @@ def excel_template_marm(request):
     ]
     _style_xlsx_header(ws, cols, "64748B")
     rows = [
-        ["DMOM10001", "OP",  1,  1, 21,  12,  5.5, "CM", 0.00139, "M3", 0.458, "KG", "5900000001500"],
-        ["DMOM10001", "KAR", 10, 1, 29,  25,  22,  "CM", 0.01595, "M3", 4.58,  "KG", ""],
-        ["DMOM10001", "PAL", 990, 1, 120, 80, 213, "CM", 2.0448,  "M3", 453.4, "KG", ""],
+        ["ACME10001", "OP",  1,  1, 21,  12,  5.5, "CM", 0.00139, "M3", 0.458, "KG", "5900000001500"],
+        ["ACME10001", "KAR", 10, 1, 29,  25,  22,  "CM", 0.01595, "M3", 4.58,  "KG", ""],
+        ["ACME10001", "PAL", 990, 1, 120, 80, 213, "CM", 2.0448,  "M3", 453.4, "KG", ""],
     ]
     _add_example_rows(ws, cols, rows)
     return _finalize_xlsx(wb, ws, response)

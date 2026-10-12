@@ -5,7 +5,7 @@ from ui.hierarchy import build_hierarchy
 from ui.models import Product, PalletizationInstruction, Carton
 
 
-def _product(code="DMOM10001", pcs_per_carton=10, cpp=48):
+def _product(code="ACME10001", pcs_per_carton=10, cpp=48):
     p = Product.objects.create(code=code, name="X",
                                unit_length_cm=21, unit_width_cm=12, unit_height_cm=5.5)
     c = Carton.objects.create(name="K", length_cm=29, width_cm=25, height_cm=22,

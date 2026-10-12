@@ -25,13 +25,13 @@ class TasksWriteApiTest(TestCase):
 
     def test_creates_task(self):
         r = _post(self.client, {"title": "Uzupełnij master data", "priority": "high",
-                                "related_product_code": "DMO-1"})
+                                "related_product_code": "ACM-1"})
         self.assertEqual(r.status_code, 200)
         self.assertTrue(r.json()["created"])
         t = Task.objects.get(pk=r.json()["id"])
         self.assertEqual(t.title, "Uzupełnij master data")
         self.assertEqual(t.priority, "high")
-        self.assertEqual(t.related_product_code, "DMO-1")
+        self.assertEqual(t.related_product_code, "ACM-1")
         self.assertEqual(t.category, "manual")
 
     def test_dedup_key_does_not_duplicate(self):

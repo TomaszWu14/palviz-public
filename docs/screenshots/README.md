@@ -1,6 +1,6 @@
 # Zrzuty ekranu i GIF
 
-Materiały wizualne do [README](../../README.md). Film: [`../video/logviz-demo.mp4`](../video/logviz-demo.mp4) (2:08, bez lektora).
+Materiały wizualne do [README](../../README.md). Film: [`../video/logviz-demo.mp4`](../video/logviz-demo.mp4) (2:13, bez lektora).
 
 | Plik | Co pokazuje | Status |
 |---|---|---|

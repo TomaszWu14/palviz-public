@@ -2,16 +2,16 @@
 
 Ten sam produkt bywa zapisywany na wiele sposobów:
   • warianty mechaniczne — wielkość liter, separatory, sufiksy wersji/partii
-    („mdom10001_v1", „mdom10001_b1" → „MDOM10001"), prefiksy dostawcy
-    („nieat-dmo", „acme-dmo" → „DMO"). Te ROZWIĄZUJE reguła `normalize_code`.
-  • realne zmiany nazwy — „DMO-M-100" → „DMOM10001" (różne cyfry). Tych nie da
+    („acmx10001_v1", „acmx10001_b1" → „ACMX10001"), prefiksy dostawcy
+    („nieat-acm", „acme-acm" → „ACM"). Te ROZWIĄZUJE reguła `normalize_code`.
+  • realne zmiany nazwy — „ACM-X-100" → „ACME10001" (różne cyfry). Tych nie da
     się wyliczyć; trzymamy je w tabeli `ProductAlias`.
 
 `resolve_product_code(raw)` łączy oba: dokładny kod → alias → znormalizowany kod
 → znormalizowany alias. Zwraca `Product` albo `None`.
 
 ponytail: porównujemy znormalizowane WEJŚCIE z kodem produktu „jak jest" (zakładamy,
-że kanoniczny kod produktu to już czysta forma, np. MDOM10001). Jeśli same kody
+że kanoniczny kod produktu to już czysta forma, np. ACMX10001). Jeśli same kody
 produktów w bazie bywają brudne (z separatorami/prefiksem), dołożyć znormalizowaną
 kolumnę na Product i po niej szukać — na razie niepotrzebne.
 """
@@ -29,7 +29,7 @@ _SEP_RE = re.compile(r"[-_/.\s]+")
 
 def normalize_code(raw):
     """Kanoniczna forma kodu: wielkość liter, prefiks dostawcy, sufiks wersji/partii,
-    separatory. „nieat-DMO" → „DMO"; „mdom10001_v1" → „MDOM10001"; „DMO-M" → „DMOM"."""
+    separatory. „nieat-ACM" → „ACM"; „acme10001_v1" → „ACME10001"; „ACM-E" → „ACME"."""
     s = (raw or "").strip().upper()
     if not s:
         return ""
