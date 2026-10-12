@@ -124,10 +124,15 @@ class ReadOnlyMiddlewareTests(TestCase):
 
     @override_settings(**DEMO)
     def test_account_screens_closed_even_for_reading(self):
-        for path in ("/haslo/zmien/", "/wiadomosc/", "/admin/", "/admin-panel/users/"):
+        for path in ("/haslo/zmien/", "/admin/", "/admin-panel/users/"):
             with self.subTest(path=path):
                 with self.assertRaises(PermissionDenied):
                     self.mw(self._req("get", path, self.demo))
+
+    @override_settings(**DEMO)
+    def test_messages_readable_but_not_sendable(self):
+        self.assertEqual(self.mw(self._req("get", "/wiadomosc/", self.demo)).content, b"ok")
+        self.assertEqual(self.mw(self._req("post", "/wiadomosc/", self.demo)).status_code, 302)
 
     @override_settings(**DEMO)
     def test_other_users_unaffected(self):

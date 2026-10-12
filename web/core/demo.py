@@ -3,7 +3,7 @@
 Konto DEMO_USER widzi moduły jak planista/lider, ale nie może niczego trwale zepsuć:
 - zapis (POST/PUT/PATCH/DELETE) jest zablokowany poza SAFE_WRITES — przeliczenia i przepływ
   skanera, które `manage.py seed_demo --reset` i tak cofa co noc,
-- ekrany konta i administracji (zmiana hasła, wiadomości do ludzi, admin) są zamknięte,
+- ekrany konta i administracji (zmiana hasła, admin) są zamknięte, a wiadomości tylko do odczytu,
   żeby jeden odwiedzający nie zablokował wspólnego konta innym.
 Bez DEMO_MODE moduł nic nie robi — zwykła instancja działa bez zmian."""
 from django.conf import settings
@@ -29,7 +29,8 @@ SAFE_WRITES = frozenset({
     "hu_control_confirm_reqs", "hu_control_ack_short_dated", "hu_control_assign",
 })
 # Ścieżki zamknięte dla konta demo także do odczytu.
-BLOCKED_PREFIXES = ("/haslo/", "/wiadomosc/", "/admin", "/password-reset/")
+BLOCKED_PREFIXES = ("/haslo/", "/admin", "/password-reset/")
+# Wiadomości: czytanie zostaje (ikona w menu nie prowadzi w 403), wysyłkę blokuje reguła zapisów.
 
 
 def is_demo_user(user):

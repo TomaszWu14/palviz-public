@@ -29,7 +29,7 @@ powiadomienia żyją w aplikacji, a paleta z błędem trafia do rekontroli, któ
 
 ## Ekrany
 
-| Hub modułów (zależny od roli) | Paletyzacja 3D |
+| Hub konta demo: 4 kroki „od czego zacząć” | Paletyzacja 3D |
 |---|---|
 | ![Hub modułów](docs/screenshots/hub.png) | ![Kalkulator paletyzacji 3D](docs/screenshots/paletyzacja-3d.png) |
 | **Data Center — centrum importów** | **Panel lidera — rekontrole** |
@@ -123,7 +123,7 @@ wysyłki, produkty i klientów.
 
 Konto demo ma role Master Data, Transport, Kontrola HU i Lider kontroli, ale bez Administratorów.
 Middleware (`web/core/demo.py`) blokuje mu każdy zapis poza przeliczeniem palety i przepływem
-skanera. Zmiana hasła, wiadomości i panel administracyjny zwracają 403.
+skanera. Wiadomości są tylko do odczytu, a zmiana hasła i panel administracyjny zwracają 403.
 
 ### Docker (konfiguracja produkcyjna)
 
