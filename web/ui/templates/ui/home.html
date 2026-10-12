@@ -69,6 +69,7 @@
     <h1>{{ app_name }}</h1>
     <p>Wybierz moduł, z którego chcesz korzystać.</p>
   </div>
+  {% if is_demo_user %}{% include "ui/_demo_welcome.html" %}{% endif %}
   <div class="hub__grid">
     {% for m in modules %}
     <a href="{{ m.url }}" class="mtile" style="--mc:{{ m.color }};--mc-soft:{{ m.color }}40;--mc-strong:{{ m.color }}66">

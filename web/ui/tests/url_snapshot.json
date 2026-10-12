@@ -485,5 +485,6 @@
   "ui:picker_activity_upload": "data-center/import/pickerzy/",
   "ui:warehouse_snapshot_upload": "data-center/import/snapshot/",
   "ui:picker_activity_template": "data-center/import/pickerzy/wzor.xlsx",
-  "ui:warehouse_snapshot_template": "data-center/import/snapshot/wzor.xlsx"
+  "ui:warehouse_snapshot_template": "data-center/import/snapshot/wzor.xlsx",
+  "ui:demo_login": "demo/wejdz/"
 }

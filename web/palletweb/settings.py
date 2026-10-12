@@ -32,6 +32,9 @@ CSRF_FAILURE_VIEW = "ui.views.misc.csrf_failure"
 # Product / brand name shown across the UI (title bar, nav brand, login, e-mails).
 # Env-driven so the whole app can be rebranded without touching templates.
 APP_NAME = env.APP_NAME
+DEMO_MODE = env.DEMO_MODE
+DEMO_USER = env.DEMO_USER
+DEMO_PASSWORD = env.DEMO_PASSWORD
 # Deployment variant: "" = full platform; "hu" = a Kontrola HU-only instance
 # (same code + DB, deployed separately under its own name/host). See platform_modules.
 GROOVE_VARIANT = (env.GROOVE_VARIANT or "").strip().lower()
@@ -105,6 +108,8 @@ MIDDLEWARE = [
     # Po Authentication (potrzebuje request.user) — konto z hasłem nadanym hurtem
     # musi je zmienić, zanim wejdzie gdziekolwiek indziej.
     "core.middleware.PasswordChangeRequiredMiddleware",
+    # DEMO_MODE: konto demo nie zapisuje poza bezpiecznymi akcjami (no-op bez DEMO_MODE).
+    "core.demo.DemoReadOnlyMiddleware",
 ]
 
 ROOT_URLCONF = "palletweb.urls"
