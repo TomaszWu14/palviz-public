@@ -25,6 +25,15 @@ fi
 echo "Running migrations..."
 $RUN python manage.py migrate --noinput
 
+# Instancja demo (DEMO_MODE=true): grupy ról + dane fikcyjne. Oba kroki są idempotentne,
+# więc restart nie dubluje danych; nocny powrót do stanu wyjściowego = cron
+# `python manage.py seed_demo --reset` (README, „Wersja demo”).
+if [ "${DEMO_MODE:-false}" = "true" ]; then
+    echo "DEMO_MODE: seeding demo data..."
+    $RUN python manage.py create_roles
+    $RUN python manage.py seed_demo
+fi
+
 # Celery w tym samym kontenerze — Coolify buduje PalViz z Dockerfile (jeden kontener),
 # więc worker/beat startują tu, w tle, gdy CELERY_WORKER=true (wymaga CELERY_BROKER_URL →
 # Redis). Pętla podnosi padniętego workera; `|| true` — kod wyjścia 3/4 nie może zatrzymać

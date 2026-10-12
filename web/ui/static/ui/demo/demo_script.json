@@ -1,0 +1,117 @@
+{
+  "_info": "Scenariusz pokazu ?demo=1. Pole text = napisy i lektor. Słownik lexicon zmienia tylko wymowę (lektor + fallback speechSynthesis), napisy zostają bez zmian. Po zmianie tekstu: python tools/generate_voiceover.py",
+  "lexicon": {
+    "LogViz": "Log-wiz",
+    "Data Center": "Dejta Senter",
+    "SAP": "es-a-pe",
+    "HU": "ha-u",
+    "VIP": "wip",
+    "EU": "e-u",
+    "GitHubie": "Githabie"
+  },
+  "steps": [
+    {
+      "id": "krok01",
+      "action": "navigate",
+      "url": "/",
+      "selector": ".hub__grid",
+      "text": "To jest LogViz. Jedna aplikacja dla magazynu, transportu i obsługi klienta. Po zalogowaniu każdy widzi tylko moduły swojej roli."
+    },
+    {
+      "id": "krok02",
+      "action": "navigate",
+      "url": "/data-center/",
+      "selector": ".dc-ring",
+      "closest": ".card",
+      "text": "Data Center zbiera dane podstawowe: produkty, kartony, klientów i stany magazynowe. Wskaźnik kompletności pokazuje, ilu produktom brakuje danych do obliczeń."
+    },
+    {
+      "id": "krok03",
+      "action": "highlight",
+      "selector": ".card-header__title",
+      "contains": "Centrum importu",
+      "closest": ".card",
+      "text": "Dane trafiają tu z plików SAP i z Excela. Aplikacja tylko je czyta. Niczego nie zapisuje z powrotem do SAP."
+    },
+    {
+      "id": "krok04",
+      "action": "navigate",
+      "url": "/planner/calc/",
+      "selector": "button[type=submit].btn-primary",
+      "contains": "Przelicz",
+      "closest": "form",
+      "text": "Kalkulator paletyzacji liczy, jak ułożyć kartony na palecie EU sto dwadzieścia na osiemdziesiąt. Planista podaje wymiary kartonu, wagę i wysokość ładunku."
+    },
+    {
+      "id": "krok05",
+      "action": "click",
+      "selector": "button[type=submit].btn-primary",
+      "contains": "Przelicz",
+      "focus": "#result-area",
+      "text": "Silnik porównuje kilkanaście wariantów ułożenia. Najlepszy pokazuje w trzech wymiarach, razem z wagą i środkiem ciężkości."
+    },
+    {
+      "id": "krok06",
+      "action": "navigate",
+      "url": "/planner/shipments/",
+      "selector": ".card--accent",
+      "text": "Lista wysyłek pokazuje objętość, liczbę palet i status realizacji każdej przesyłki."
+    },
+    {
+      "id": "krok07",
+      "action": "navigate",
+      "follow": ".card--accent tbody tr a",
+      "selector": "div",
+      "contains": "Status realizacji",
+      "closest": ".card",
+      "text": "Karta wysyłki prowadzi ją od oferty do odbioru. Jeden z kroków to kontrola palet na magazynie. Planista widzi tu, ile palet sprawdzono, a ile czeka na rekontrolę."
+    },
+    {
+      "id": "krok08",
+      "action": "highlight",
+      "selector": "span",
+      "contains": "Scenariusze paletyzacji",
+      "closest": ".card",
+      "text": "Dla każdej wysokości palety system rysuje osobny scenariusz w trzech wymiarach. Na tej podstawie transport zamawia przewóz."
+    },
+    {
+      "id": "krok09",
+      "action": "navigate",
+      "url": "/control/",
+      "selector": "#hu-scan-form",
+      "text": "Teraz magazyn. Kontroler pracuje na skanerze, w zwykłej przeglądarce. Skanuje etykietę palety, czyli HU, i liczy jej pozycje."
+    },
+    {
+      "id": "krok10",
+      "action": "navigate",
+      "url": "/control/my/",
+      "selector": "[data-testid=take-next]",
+      "text": "Kolejkę palet ustala system. Najpierw własne rezerwacje, potem klienci VIP i palety pilne. Kontroler bierze następną jednym przyciskiem."
+    },
+    {
+      "id": "krok11",
+      "action": "highlight",
+      "text": "Gdy policzona ilość różni się od danych z SAP, system prosi o ponowne przeliczenie. Potwierdzona niezgodność blokuje paletę i kieruje ją do rekontroli."
+    },
+    {
+      "id": "krok12",
+      "action": "navigate",
+      "url": "/control/leader/",
+      "selector": ".card-header__title",
+      "contains": "Rekontrole",
+      "closest": ".card",
+      "text": "Lider widzi zmianę na żywo i listę rekontroli, najstarsze na górze. Rekontrolę przydziela innemu kontrolerowi niż autor pierwszej kontroli."
+    },
+    {
+      "id": "krok13",
+      "action": "highlight",
+      "text": "Najważniejsza decyzja projektu: SAP pozostaje tylko do odczytu. Błąd w aplikacji nie uszkodzi danych firmy. Rozbieżność zamyka proces magazynu, a nie automatyczna korekta."
+    },
+    {
+      "id": "krok14",
+      "action": "navigate",
+      "url": "/",
+      "text": "To wszystko w skrócie. Dokumentacja analityczna i kod są w repozytorium na GitHubie. Dziękuję za uwagę."
+    }
+  ]
+}

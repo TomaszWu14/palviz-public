@@ -16,8 +16,14 @@ def branding(request):
            # Link „nie pamiętasz hasła?" ma sens tylko, gdy serwer umie wysłać e-mail.
            "password_reset_enabled": bool(getattr(settings, "EMAIL_HOST", "")),
            # Preferencje UI (motyw/język) — zasilają skrypt no-flash i przełączniki.
-           "ui_theme": "", "ui_lang": ""}
+           "ui_theme": "", "ui_lang": "",
+           # Tryb demo (core/demo.py): baner, przycisk „Wejdź jako demo”, karta powitalna.
+           "demo_mode": getattr(settings, "DEMO_MODE", False),
+           "demo_user": getattr(settings, "DEMO_USER", ""),
+           "demo_password": getattr(settings, "DEMO_PASSWORD", "")}
     user = getattr(request, "user", None)
+    from .demo import is_demo_user
+    ctx["is_demo_user"] = is_demo_user(user)
     ctx["nav_modules"] = []
     if user is not None and user.is_authenticated:
         prof = getattr(user, "profile", None)

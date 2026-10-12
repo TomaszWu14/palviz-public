@@ -29,6 +29,11 @@ class AppEnv(BaseSettings):
     DJANGO_SSL_REDIRECT: bool = False
     DJANGO_LOG_LEVEL: str = "INFO"
     APP_NAME: str = "GROOVE"
+    # Publiczna instancja demo (dane fikcyjne): przycisk „Wejdź jako demo”, baner, konto
+    # DEMO_USER tylko do odczytu (core/demo.py) i `manage.py seed_demo [--reset]`.
+    DEMO_MODE: bool = False
+    DEMO_USER: str = "demo"
+    DEMO_PASSWORD: str = ""
     # Deployment variant — one codebase, one DB, but this instance serves only a subset of
     # modules. "" = full platform; "hu" = Kontrola HU only (warehouse-floor app).
     GROOVE_VARIANT: str = ""
