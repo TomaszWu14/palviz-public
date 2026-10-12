@@ -5,12 +5,11 @@ i SAP planowanie palet i wysyłek, kontrolę HU (palet z etykietą) i obraz maga
 
 [![ci](https://github.com/TomaszWu14/palviz-public/actions/workflows/ci.yml/badge.svg)](https://github.com/TomaszWu14/palviz-public/actions/workflows/ci.yml)
 
-<!-- ![demo](docs/screenshots/demo.gif) -->
-`<DO UZUPEŁNIENIA: nagram GIF docs/screenshots/demo.gif>`
+![Skaner Kontroli HU: kolejka → liczenie pozycji → niezgodność → status „do rekontroli”](docs/screenshots/demo.gif)
 
 ![Załadunek luzem — kartony ułożone w kontenerze 40' HC w widoku 3D](docs/img/zaladunek-3d.png)
 
-📹 [Prezentacja działania — 2 min](<DO UZUPEŁNIENIA: link YouTube>)
+📹 [Prezentacja działania — 2 min, bez lektora, z napisami](docs/video/logviz-demo.mp4)
 
 Demo online: `<DO UZUPEŁNIENIA: https://logviz.twapp.pl — w przygotowaniu>`
 

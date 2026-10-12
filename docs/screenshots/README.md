@@ -1,11 +1,10 @@
 # Zrzuty ekranu i GIF
 
-Materiały wizualne do [README](../../README.md). Pliki jeszcze nie istnieją — lista poniżej
-to plan nagrań.
+Materiały wizualne do [README](../../README.md). Film: [`../video/logviz-demo.mp4`](../video/logviz-demo.mp4) (2:08, bez lektora).
 
 | Plik | Co pokazuje | Status |
 |---|---|---|
-| `demo.gif` | Fragment filmu (ok. 18 s): symulator skanera — kolejka palet → skan HU → liczenie pozycji → rozbieżność → status „do rekontroli” | `<DO UZUPEŁNIENIA: nagram>` |
+| `demo.gif` | Fragment filmu (18 s): skaner — weź następną → liczenie pozycji → niezgodność → status „do rekontroli” | gotowe |
 | `hub.png` | Hub modułów po zalogowaniu (kafelki zależne od roli) | `<DO UZUPEŁNIENIA: nagram>` |
 | `data-center-importy.png` | Data Center — centrum importów | `<DO UZUPEŁNIENIA: nagram>` |
 | `panel-lidera.png` | Panel lidera kontroli HU | `<DO UZUPEŁNIENIA: nagram>` |
