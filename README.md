@@ -25,6 +25,14 @@ widokiem 3D, wycena przesyłek z ofertami przewoźników oraz kontrola zawartoś
 przed załadunkiem. SAP pozostaje źródłem danych tylko do odczytu — wynik kontroli, zadania i
 powiadomienia żyją w aplikacji, a paleta z błędem trafia do rekontroli, którą wykonuje inna osoba.
 
+## Ekrany
+
+| Hub modułów (zależny od roli) | Paletyzacja 3D |
+|---|---|
+| ![Hub modułów](docs/screenshots/hub.png) | ![Kalkulator paletyzacji 3D](docs/screenshots/paletyzacja-3d.png) |
+| **Data Center — centrum importów** | **Panel lidera — rekontrole** |
+| ![Data Center](docs/screenshots/data-center-importy.png) | ![Panel lidera](docs/screenshots/panel-lidera.png) |
+
 ## Dokumentacja analityczna
 
 | Dokument | Zawartość |

@@ -5,10 +5,12 @@ Materiały wizualne do [README](../../README.md). Film: [`../video/logviz-demo.m
 | Plik | Co pokazuje | Status |
 |---|---|---|
 | `demo.gif` | Fragment filmu (18 s): skaner — weź następną → liczenie pozycji → niezgodność → status „do rekontroli” | gotowe |
-| `hub.png` | Hub modułów po zalogowaniu (kafelki zależne od roli) | `<DO UZUPEŁNIENIA: nagram>` |
-| `data-center-importy.png` | Data Center — centrum importów | `<DO UZUPEŁNIENIA: nagram>` |
-| `panel-lidera.png` | Panel lidera kontroli HU | `<DO UZUPEŁNIENIA: nagram>` |
-| `zaladunek-3d.png` | Widok 3D załadunku wysyłki | `<DO UZUPEŁNIENIA: nagram>` (tymczasowo: [`../img/zaladunek-3d.png`](../img/zaladunek-3d.png)) |
+| `hub.png` | Hub modułów po zalogowaniu (kafelki zależne od roli) | gotowe |
+| `data-center-importy.png` | Data Center — centrum importów (szablony + wgranie pliku) | gotowe |
+| `panel-lidera.png` | Panel lidera: zmiana na żywo, rekontrola przydzielona innemu kontrolerowi | gotowe |
+| `paletyzacja-3d.png` | Kalkulator paletyzacji — najlepszy wariant w 3D, waga, środek ciężkości | gotowe |
 
-Zasady: tylko dane fikcyjne (ACME, DOMEX, PACZKI/PALETY/BUS/EXPORT, ZEW), nazwa aplikacji LogViz
+Widok 3D załadunku kontenera (kartony luzem): [`../img/zaladunek-3d.png`](../img/zaladunek-3d.png).
+
+Zrzuty 1440×900 z danymi demo. Zasady: tylko dane fikcyjne (ACME, DOMEX, PACZKI/PALETY/BUS/EXPORT, ZEW), nazwa aplikacji LogViz
 (`APP_NAME=LogViz`).
