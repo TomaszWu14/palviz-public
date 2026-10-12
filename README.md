@@ -115,7 +115,9 @@ wysyłki, produkty i klientów.
 
 1. Zmienne środowiskowe: `DEMO_MODE=true`, `DEMO_USER=demo` (domyślnie) i opcjonalnie `DEMO_PASSWORD`.
    Bez hasła konto wchodzi tylko przyciskiem; z hasłem login i hasło widać na ekranie logowania.
-   Do tego zwykłe zmienne produkcyjne (`DJANGO_SECRET_KEY`, `DJANGO_ALLOWED_HOSTS`, `APP_NAME=LogViz`).
+   Do tego `DJANGO_ALLOWED_HOSTS`, `APP_NAME=LogViz` i `DB_PATH=/app/data/db.sqlite3` (wolumen na `/app/data`).
+   `DJANGO_SECRET_KEY` jest opcjonalny: bez niego instancja demo sama tworzy losowy klucz w
+   `/app/data/.django_secret_key` (prawa 0600, przeżywa deploy). Redis nie jest potrzebny: `CELERY_BROKER_URL=memory://`.
 2. Pierwszy start: `docker-entrypoint.sh` przy `DEMO_MODE=true` sam uruchamia `create_roles` i `seed_demo`
    (oba są idempotentne).
 3. Reset co noc: **Scheduled Tasks → Add**, kontener aplikacji, komenda

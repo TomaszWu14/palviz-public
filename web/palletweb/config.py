@@ -12,6 +12,10 @@ them (it already has the ``_csv_env`` helper semantics).
 """
 from __future__ import annotations
 
+import os
+import secrets
+from pathlib import Path
+
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -216,6 +220,10 @@ class AppEnv(BaseSettings):
     @model_validator(mode="after")
     def _cross_field_checks(self) -> "AppEnv":
         errs: list[str] = []
+        # Instancja demo bez klucza w env: losowy klucz w pliku obok bazy (trwały wolumen),
+        # wspólny dla gunicorna i crona — nikt nie wkleja sekretu w panel.
+        if self.DEMO_MODE and self.DJANGO_SECRET_KEY in ("", "dev-only-change-me") and self.DB_PATH:
+            self.DJANGO_SECRET_KEY = _demo_secret_key(Path(self.DB_PATH).parent)
         # Never boot production with the throwaway dev key.
         if not self.DJANGO_DEBUG and self.DJANGO_SECRET_KEY == "dev-only-change-me":
             errs.append("DJANGO_SECRET_KEY must be set when DJANGO_DEBUG is false.")
@@ -239,3 +247,15 @@ def load_env() -> AppEnv:
     except Exception as exc:  # pydantic ValidationError or our ValueError
         from django.core.exceptions import ImproperlyConfigured
         raise ImproperlyConfigured(f"Environment configuration error:\n{exc}") from exc
+
+
+def _demo_secret_key(directory: Path) -> str:
+    """Klucz instancji demo: tworzony raz (O_EXCL — wyścig workerów bezpieczny), prawa 0600."""
+    path = directory / ".django_secret_key"
+    try:
+        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    except FileExistsError:
+        return path.read_text(encoding="utf-8").strip()
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        f.write(secrets.token_urlsafe(50))
+    return path.read_text(encoding="utf-8").strip()
