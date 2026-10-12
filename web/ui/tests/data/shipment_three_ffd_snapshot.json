@@ -811,9 +811,12 @@
    }
   ],
   "rendered_pallets": 1,
-  "sha256": "465924ed7a482164038c2a49a24493dc0386d9d2b93f1135542c27e6acfe5da1",
+  "sha256": "a4e3a181a758b49bc6e513dcd0b45c26995ee8e1028bfe66b305497472561591",
   "truncated": false,
-  "type": "shipment"
+  "type": "shipment",
+  "warnings": [
+   "Dociśnięcie do wyceny (1 palet): 1 palet przekracza limit wysokości 120 cm (maks. 244 cm)"
+  ]
  },
  "target_mono_and_pool_repack": {
   "max_h_cm": 120,
@@ -843,9 +846,12 @@
    }
   ],
   "rendered_pallets": 2,
-  "sha256": "aa88403266cff4214f1c043c6e5484233903f45e2cd23aeb8b6087c48929523e",
+  "sha256": "3afb10e34792e3e9f01d18e43a022b6a7f2c46397779c5d8d5931ccc183b7f90",
   "truncated": false,
-  "type": "shipment"
+  "type": "shipment",
+  "warnings": [
+   "Dociśnięcie do wyceny (2 palet): 1 palet przekracza limit wysokości 120 cm (maks. 169 cm)"
+  ]
  },
  "target_mono_plus_repack": {
   "max_h_cm": 150,

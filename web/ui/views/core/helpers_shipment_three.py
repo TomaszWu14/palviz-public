@@ -186,6 +186,7 @@ def _build_shipment_three_data_ffd(calc, max_h=_DEFAULT_PALLET_HEIGHT, max_w=_MA
     warnings = _ffd_limit_warnings(calc["lines"], max_h, mw)
     if repacked:
         warnings += _ffd_repack_weight_warning(bins, mw)
+        warnings += _ffd_repack_height_warning(out, max_h)
     if warnings:
         data["warnings"] = warnings
     return data
@@ -294,6 +295,16 @@ def _ffd_repack_weight_warning(bins, mw):
         return []
     return [f"Dociśnięcie do wyceny ({len(bins)} palet): {len(over)} palet przekracza limit "
             f"wagi {_ffd_num(mw)} kg (maks. {_ffd_num(max(over))} kg)"]
+
+
+def _ffd_repack_height_warning(pallets, max_h):
+    """Jak wyżej, ale dla wysokości: przepakowanie jest zamierzenie bez limitu, więc scena
+    mówi, że nagłówek „N palet przy X m” wymaga palet wyższych niż X (P19)."""
+    over = [p["height_cm"] for p in pallets if p["boxes"] and p["height_cm"] > max_h + 0.1]
+    if not over:
+        return []
+    return [f"Dociśnięcie do wyceny ({len(pallets)} palet): {len(over)} palet przekracza limit "
+            f"wysokości {_ffd_num(max_h)} cm (maks. {_ffd_num(max(over))} cm)"]
 
 
 def _ffd_new_bin():

@@ -43,7 +43,7 @@ powiadomienia żyją w aplikacji, a paleta z błędem trafia do rekontroli, któ
 | [04 Model danych](docs/04-model-danych.md) | Diagramy ER, reguły integralności wymuszane przez bazę i niespójności. |
 | [05 Wymagania](docs/05-wymagania.md) | 64 wymagania z kryteriami akceptacji „Zakładając / Gdy / Wtedy” i miejscem w kodzie/testach. |
 | [06 Decyzje](docs/06-decyzje.md) | Dziennik decyzji: kontekst, opcje, uzasadnienie, skutki. |
-| [07 Ograniczenia](docs/07-ograniczenia.md) | Czego świadomie nie ma i znane problemy (P1–P18). |
+| [07 Ograniczenia](docs/07-ograniczenia.md) | Czego świadomie nie ma i znane problemy (P1–P19). |
 | [ADR](docs/adr/README.md) | 18 zapisów decyzji architektonicznych (pełna treść). |
 
 ## Jak uruchomić
@@ -101,7 +101,7 @@ trzeba ustawić przed startem (pusty klucz nie jest dziś odrzucany — zob. [07
 # Biblioteka pakowania (40 testów)
 python -m unittest discover -s palletizer/tests -p "test_*.py"
 
-# Django (z web/; 1942 testy)
+# Django (z web/; 1943 testy)
 pip install -r requirements-test.txt
 cd web
 DJANGO_SECRET_KEY=ci-test-secret DJANGO_DEBUG=true DJANGO_ALLOWED_HOSTS='*' \
@@ -138,7 +138,7 @@ każdym PR do `main`.
 ## Zakres i ograniczenia
 
 Bez zapisu do SAP i integracji w czasie rzeczywistym, CSP tylko raportuje naruszenia, MFA dla
-administratorów odłożone. Analiza kodu wykazała 18 znanych problemów (m.in. eskalacja po nieudanej
+administratorów odłożone. Analiza kodu wykazała 19 znanych problemów (m.in. eskalacja po nieudanej
 rekontroli nie odpala, pusty `DJANGO_SECRET_KEY` przechodzi walidację) — pełna lista:
 [07 Ograniczenia](docs/07-ograniczenia.md).
 

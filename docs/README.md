@@ -10,7 +10,7 @@ Opis systemu z perspektywy analityka, odtworzony z kodu (bez planów i funkcji, 
 | [04 Model danych](04-model-danych.md) | Diagramy ER, encje, reguły integralności wymuszane przez bazę i niespójności. |
 | [05 Wymagania](05-wymagania.md) | 64 wymagania z kryteriami akceptacji „Zakładając / Gdy / Wtedy” i miejscem realizacji. |
 | [06 Decyzje](06-decyzje.md) | Skrót 18 decyzji architektonicznych z [rejestru ADR](adr/README.md). |
-| [07 Ograniczenia](07-ograniczenia.md) | Czego świadomie nie ma i lista znanych problemów (P1–P18). |
+| [07 Ograniczenia](07-ograniczenia.md) | Czego świadomie nie ma i lista znanych problemów (P1–P19). |
 | [Zrzuty ekranu](screenshots/README.md) | Plan materiałów wizualnych (GIF, zrzuty). |
 
 # Mapa dokumentacji — typ dokumentu → katalog
