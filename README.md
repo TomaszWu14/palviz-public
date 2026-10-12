@@ -84,6 +84,18 @@ i `run.bat` (serwer na porcie 8080) skracają te kroki; `create_roles` i `fetch_
 | `python manage.py seed_test_users` | 10 kont: po jednym na każdą z 9 ról + superuser | login = hasło, np. `test_kontrola` / `test_kontrola`, `test_lider`, `test_transport`, `test_md`, `test_super` |
 | `python manage.py seed_testdata` | Persony testowe i dane domenowe: produkty, palety HU, wysyłki w różnych statusach; wymaga `pip install -r requirements-test.txt` | `p_<rola>` (np. `p_kontrola_hu`, `p_lider`, `p_transport`), hasło `Test-haslo-123` |
 
+### Pokaz z lektorem (`?demo=1`)
+
+Dopisz `?demo=1` do adresu dowolnej strony po zalogowaniu (np. jako planista z uprawnieniami
+administratora), a potem kliknij **Rozpocznij prezentację**. Pokaz przechodzi sam przez 14 kroków:
+hub, Data Center, paletyzację 3D, wysyłkę, skaner i panel lidera. Bez parametru nic się nie ładuje.
+
+- Teksty i słownik wymowy: `web/ui/static/ui/demo/demo_script.json`, ustawienia głosu: `config/voice.json`.
+- Nagrania: `ELEVENLABS_API_KEY=… ELEVENLABS_VOICE_ID=… python tools/generate_voiceover.py`.
+  Generuje tylko zmienione kroki; `--dry-run` pokazuje plan, `--step krok03` przegenerowuje jeden krok,
+  a `--all` wszystkie (np. po zmianie głosu).
+- Bez nagrań pokaz czyta tekst syntezą mowy przeglądarki (pl-PL).
+
 ### Docker (konfiguracja produkcyjna)
 
 ```bash
