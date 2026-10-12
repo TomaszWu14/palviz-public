@@ -11,7 +11,7 @@ i SAP planowanie palet i wysyłek, kontrolę HU (palet z etykietą) i obraz maga
 
 📹 [Prezentacja działania — 2 min, bez lektora, z napisami](docs/video/logviz-demo.mp4)
 
-**Demo online:** `<DO UZUPEŁNIENIA: https://logviz.twapp.pl>`. Kliknij **Wejdź jako demo**, nie trzeba
+**Demo online:** <https://logviz.twapp.pl>. Kliknij **Wejdź jako demo**, nie trzeba
 zakładać konta. Dane są fikcyjne, zapis jest wyłączony, a co noc wszystko wraca do stanu wyjściowego.
 Po zalogowaniu hub pokazuje 4 kroki „od czego zacząć” i przycisk pokazu z lektorem (2 min).
 
