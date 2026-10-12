@@ -26,6 +26,11 @@ services:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: "false"
       DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
+      APP_NAME: ${APP_NAME:-LogViz}
+      # Instancja demo (README, „Wersja demo”): DEMO_MODE=true sieje dane fikcyjne przy starcie.
+      DEMO_MODE: ${DEMO_MODE:-false}
+      DEMO_USER: ${DEMO_USER:-demo}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:-}
       # Managed PostgreSQL: set DATABASE_URL=postgresql://user:pass@host:5432/palviz?sslmode=require
       # When empty the app falls back to the SQLite volume below.
       # Dev z lokalnym Postgresem z tego pliku (profil `pg`, patrz niżej):
