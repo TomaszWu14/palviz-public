@@ -1,0 +1,42 @@
+{# Karta powitalna konta demo (DEMO_MODE) na hubie: 4 kroki „co warto zobaczyć” + pokaz z lektorem. #}
+<style>
+  .demo-welcome { margin: 0 0 22px; padding: 20px 22px; border-radius: 16px;
+    background: rgba(250, 204, 21, .08); border: 1px solid rgba(250, 204, 21, .45); color: #e2e8f0; }
+  .demo-welcome__top { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+  .demo-welcome h2 { margin: 0; font-size: 19px; color: #fff; flex: 1; min-width: 220px; }
+  .demo-welcome p { margin: 6px 0 0; color: #cbd5e1; font-size: 14px; }
+  .demo-welcome ol { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); counter-reset: dw; }
+  .demo-welcome li { counter-increment: dw; }
+  .demo-welcome li a { display: block; height: 100%; padding: 12px 14px 12px 44px; position: relative;
+    border-radius: 12px; background: rgba(15, 23, 42, .55); border: 1px solid rgba(148, 163, 184, .25);
+    color: #e2e8f0; text-decoration: none; font-size: 13px; line-height: 1.45; }
+  .demo-welcome li a::before { content: counter(dw); position: absolute; left: 12px; top: 12px;
+    width: 22px; height: 22px; border-radius: 50%; background: #facc15; color: #1c1917;
+    font-weight: 800; font-size: 12px; display: grid; place-items: center; }
+  .demo-welcome li a:hover, .demo-welcome li a:focus-visible { border-color: #facc15; outline: none; }
+  .demo-welcome strong { display: block; color: #fff; font-size: 14px; margin-bottom: 2px; }
+  .demo-welcome__tour { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px;
+    border-radius: 10px; background: #facc15; color: #1c1917; font-weight: 700; font-size: 14px;
+    text-decoration: none; }
+  .demo-welcome__close { background: none; border: 0; color: #94a3b8; font-size: 20px; cursor: pointer;
+    line-height: 1; padding: 4px 6px; }
+</style>
+<section class="demo-welcome" id="demo-welcome" aria-labelledby="demo-welcome-title">
+  <div class="demo-welcome__top">
+    <div style="flex:1;min-width:220px">
+      <h2 id="demo-welcome-title">Witaj w wersji demo — od czego zacząć?</h2>
+      <p>Cztery ekrany pokazują, co robi {{ app_name }}. Dane są fikcyjne; możesz liczyć i kontrolować palety bez obaw.</p>
+    </div>
+    <a class="demo-welcome__tour" href="/?demo=1">▶ Pokaz z lektorem (2 min)</a>
+    <button type="button" class="demo-welcome__close" aria-label="Ukryj wskazówki"
+            onclick="try{localStorage.setItem('lvWelcomeHidden','1')}catch(e){};this.closest('section').hidden=true">×</button>
+  </div>
+  <ol>
+    <li><a href="{% url 'ui:data_center' %}"><strong>Data Center</strong>Dane podstawowe: produkty, kartony, klienci i wskaźnik kompletności.</a></li>
+    <li><a href="{% url 'ui:planner_calc_index' %}"><strong>Paletyzacja 3D</strong>Kliknij „Przelicz” i obróć paletę myszą — najlepszy wariant ułożenia.</a></li>
+    <li><a href="{% url 'ui:planner_shipments' %}"><strong>Wysyłki</strong>Otwórz „DOMEX — dostawa tygodniowa”: status realizacji i scenariusze palet w 3D.</a></li>
+    <li><a href="{% url 'ui:hu_my_shift' %}"><strong>Skaner kontroli palet</strong>„Weź następną”, policz kartony; niezgodność wysyła paletę do rekontroli.</a></li>
+  </ol>
+</section>
+<script>try{if(localStorage.getItem('lvWelcomeHidden'))document.getElementById('demo-welcome').hidden=true}catch(e){}</script>
