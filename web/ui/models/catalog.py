@@ -193,7 +193,7 @@ class ProductAlias(models.Model):
     """Stary / alternatywny kod produktu → kanoniczny Product.
 
     Dla REALNYCH zmian nazwy, których nie da się wyliczyć normalizacją (np.
-    „DMO-M-100" → „DMOM10001" — różnią się nawet cyframi). Warianty mechaniczne
+    „ACM-X-100" → „ACME10001" — różnią się nawet cyframi). Warianty mechaniczne
     (wielkość liter, separatory, sufiksy _v1/_b1, prefiksy dostawcy jak „nieat-")
     obsługuje `product_codes.normalize_code`, więc NIE trzymamy ich tutaj —
     tabela jest tylko na mapowania, których reguła nie odgadnie."""

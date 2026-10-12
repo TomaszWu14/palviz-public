@@ -101,7 +101,7 @@ class ShipmentsImportCharacterizationTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        for code in ("P1", "P2", "P3", "DMOM10001"):
+        for code in ("P1", "P2", "P3", "ACME10001"):
             Product.objects.create(code=code, name=f"Produkt {code}")
 
     def setUp(self):

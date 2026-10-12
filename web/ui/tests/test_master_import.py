@@ -190,15 +190,15 @@ class MarmImportTests(TestCase):
         self.assertEqual(instr.demand_pcs, 15000)           # sztuk na palecie
 
     def test_marm_ju_factor_splits_piece_into_usable_units(self):
-        # DMOM10001-style: JU row encodes 100 JU per base unit (Mian=100, Licznik=1).
+        # ACME10001-style: JU row encodes 100 JU per base unit (Mian=100, Licznik=1).
         resp = self._import(
-            _marm("DMOM10001", "JU", "100", "1"),                       # 100 JU = 1 jedn. bazowa
-            _marm("DMOM10001", "OP", "1", "1.991", "21", "12", "5,5", "0,458", "5900000001609"),
-            _marm("DMOM10001", "KAR", "1", "10", "29", "25", "22,2", "4,583", "5900000001500"),
-            _marm("DMOM10001", "PAZ", "1", "1080", "120", "80", "215", "509,964"),
+            _marm("ACME10001", "JU", "100", "1"),                       # 100 JU = 1 jedn. bazowa
+            _marm("ACME10001", "OP", "1", "1.991", "21", "12", "5,5", "0,458", "5900000001609"),
+            _marm("ACME10001", "KAR", "1", "10", "29", "25", "22,2", "4,583", "5900000001500"),
+            _marm("ACME10001", "PAZ", "1", "1080", "120", "80", "215", "509,964"),
         )
         self.assertEqual(resp.status_code, 302)
-        instr = Product.objects.get(code="DMOM10001").instructions.get(name="Import migracji")
+        instr = Product.objects.get(code="ACME10001").instructions.get(name="Import migracji")
         self.assertEqual(instr.units_per_piece, 100)
         self.assertEqual(instr.pcs_per_carton, 10)                      # nadal w jedn. bazowych
 

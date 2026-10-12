@@ -85,7 +85,7 @@ H9 komunikaty błędów · H10 pomoc.
 - `leader.html:53-57,126-152,218-231,296-302` — żadna forma POST bez disabled/spinnera (double-submit = 2× wiadomość/potwierdzenie) → wspólny snippet onsubmit [szablon/JS]
 - `leader.html` — brak auto-odświeżania panelu „na żywo" (tv.html ma meta refresh) [szablon]
 - `leader.html:220-227` — „zdejmij przydział" bez confirm (Grupa ma) [JS]
-- `leader.html:149` — REF z pamięci (`placeholder="np. DMOM10001"`), bez datalisty [szablon+backend]
+- `leader.html:149` — REF z pamięci (`placeholder="np. ACME10001"`), bez datalisty [szablon+backend]
 - `leader.html:299-301` — „🗑 Usuń pozycję" bez undo → rozważyć soft-delete [backend]
 - `hu_leader.py:157,241` — nienumeryczny odbiorca → surowy 404 zamiast messages [backend]
 - `hub.html:75,330` — import odpala się natychmiast po wyborze pliku, bez confirm/spinnera; dwa identyczne formularze importu na stronie [szablon/JS]

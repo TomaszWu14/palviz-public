@@ -154,7 +154,7 @@
         <option value="{{ c.id }}">{{ c.username }}{% if c.full_name %} ({{ c.full_name }}){% endif %}{% if c.online %} • online{% endif %}</option>
         {% endfor %}
       </select>
-      <input type="text" name="ref_code" maxlength="50" required aria-label="REF / indeks produktu do zdjęcia" placeholder="REF / indeks (np. DMOM10001)"
+      <input type="text" name="ref_code" maxlength="50" required aria-label="REF / indeks produktu do zdjęcia" placeholder="REF / indeks (np. ACME10001)"
              data-ref-ac data-ref-url="{% url 'ui:phv_suggest' %}"
              style="flex:1 1 200px;min-width:170px;font-family:monospace">
       <button type="submit" class="btn btn-secondary">{% icon "camera" %} Zrób zdjęcie produktu</button>

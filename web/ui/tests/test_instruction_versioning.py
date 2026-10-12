@@ -19,7 +19,7 @@ class InstructionVersioningTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = _user_all_roles()
-        cls.product = Product.objects.create(code="DMOM10001", name="Talerze M")
+        cls.product = Product.objects.create(code="ACME10001", name="Talerze M")
         cls.instr = PalletizationInstruction.objects.create(
             product=cls.product, version=1, name="Import migracji",
             carton_l=29, carton_w=25, carton_h=22, unit_weight=0.5,

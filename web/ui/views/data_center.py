@@ -321,7 +321,7 @@ def _bulk_owner(level, product, instr):
 @_md_role
 def packaging_matrix_bulk_upload(request):
     """Masowy upload grafik: wiele plików naraz. Nazwa pliku = REF_poziom[_rewizja]
-    (np. DMOM10001_karton_R2 albo DMOM10001_karton). Poziom ∈ {karton, opz, sztuka}.
+    (np. ACME10001_karton_R2 albo ACME10001_karton). Poziom ∈ {karton, opz, sztuka}.
     REF rozwiązywany przez resolver kodów (aliasy + normalizacja), więc warianty zapisu
     też trafiają. Rewizja (jeśli jest) ląduje w nazwie grafiki. Raport per plik."""
     from .. import product_codes
