@@ -19,6 +19,9 @@ if not exist ".venv" (
 :: 2. Aktywuj venv
 call .venv\Scripts\activate.bat
 
+:: Tryb deweloperski — bez tego config fail-fast żąda DJANGO_SECRET_KEY jak na prodzie
+if not defined DJANGO_DEBUG set DJANGO_DEBUG=true
+
 :: 3. Zainstaluj zależności
 echo.
 echo [2/5] Instalowanie pakietów (Django, plotly, pandas, openpyxl)...

@@ -1,147 +1,155 @@
-# GROOVE / PalViz
+# LogViz
 
-[![ci](https://github.com/TomaszWu14/palviz-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/TomaszWu14/palviz-portfolio/actions/workflows/ci.yml)
+Wspólne narzędzie dla magazynu, transportu i obsługi klienta, które zastępuje rozproszone w Excelu
+i SAP planowanie palet i wysyłek, kontrolę HU (palet z etykietą) i obraz magazynu.
+
+[![ci](https://github.com/TomaszWu14/palviz-public/actions/workflows/ci.yml/badge.svg)](https://github.com/TomaszWu14/palviz-public/actions/workflows/ci.yml)
+
+<!-- ![demo](docs/screenshots/demo.gif) -->
+`<DO UZUPEŁNIENIA: nagram GIF docs/screenshots/demo.gif>`
 
 ![Załadunek luzem — kartony ułożone w kontenerze 40' HC w widoku 3D](docs/img/zaladunek-3d.png)
 
-**Platforma magazynowa dla zespołów magazynu, transportu i obsługi klienta: planuje palety i załadunek w 3D, wycenia przesyłki, analizuje zajętość magazynu i prowadzi kontrolę HU na skanerach.**
+📹 [Prezentacja działania — 2 min](<DO UZUPEŁNIENIA: link YouTube>)
 
-> **Projekt portfolio.** Nazwy firm są zamienione na fikcyjne, a dane demo i testowe są syntetyczne.
+Demo online: `<DO UZUPEŁNIENIA: https://logviz.twapp.pl — w przygotowaniu>`
 
-Aplikacja magazynowo-paletyzacyjna dla **ACME**. Platforma
-GROOVE (modularny monolit Django) obejmuje master data, paletyzację, wycenę przesyłek,
-dane magazynowe (zajętość, slotting), kontrolę HU (skaner), zadania/powiadomienia i bazę klientów.
-Rdzeń pakowania to samodzielny, bezframeworkowy pakiet `palletizer/` (używany też przez
-web). Szczegóły architektury: [`ARCHITECTURE.md`](ARCHITECTURE.md); wskazówki dla
-asystentów AI i pełny opis modułów: [`CLAUDE.md`](CLAUDE.md).
+> **Projekt portfolio.** Nazwy firm są zamienione na fikcyjne (ACME, DOMEX, przewoźnicy PACZKI /
+> PALETY / BUS / EXPORT, magazyn zewnętrzny ZEW), a dane demo i testowe są syntetyczne.
 
-> Kod udostępniony do wglądu (portfolio), wszelkie prawa zastrzeżone — patrz [`LICENSE`](LICENSE).
+## Problem → rozwiązanie
 
-## W skrócie
+Planowanie palet i wysyłek, kontrola HU i obraz magazynu były rozproszone w Excelu i SAP — nie było
+wspólnego narzędzia dla magazynu, transportu i obsługi klienta. LogViz to jedna aplikacja webowa z
+hubem modułów zależnych od roli: dane podstawowe (Data Center), paletyzacja na palecie EU 120×80 z
+widokiem 3D, wycena przesyłek z ofertami przewoźników oraz kontrola zawartości palet na skanerach
+przed załadunkiem. SAP pozostaje źródłem danych tylko do odczytu — wynik kontroli, zadania i
+powiadomienia żyją w aplikacji, a paleta z błędem trafia do rekontroli, którą wykonuje inna osoba.
 
-| | |
+## Dokumentacja analityczna
+
+| Dokument | Zawartość |
 |---|---|
-| **Problem** | Planowanie palet i wysyłek, kontrola HU i obraz magazynu rozproszone w Excelu i SAP — brak wspólnego narzędzia dla magazynu, transportu i obsługi klienta. |
-| **Rozwiązanie** | Modularny monolit: master data i optymalizacja kartonów, paletyzacja (heurystyki + OR-Tools/py3dbp), wycena przesyłek, kontrola HU na skanerach (PWA), zajętość magazynu i slotting, zadania i powiadomienia. |
-| **Stack** | Python 3.11, Django 5.2 LTS, PostgreSQL 16, Celery, django-ninja (API), three.js / ECharts, Playwright, Docker, Coolify. |
-| **Jakość** | Testy jednostkowe paletyzatora + testy Django z pokryciem (próg 80%), CI na GitHub Actions z PostgreSQL, CodeQL i skany bezpieczeństwa. |
-| **Dane** | Wszystkie dane są fikcyjne — m.in. układ hali B0 pochodzi z generatora `web/ui/data/generate_synthetic_b0.py`. |
+| [01 Problem i zakres](docs/01-problem-i-zakres.md) | Problem, interesariusze i 9 ról, moduły w zakresie i poza nim. |
+| [02 Proces](docs/02-proces.md) | Proces Kontroli HU: aktorzy, stany palety, punkty decyzyjne (diagramy Mermaid). |
+| [03 User flow](docs/03-user-flow.md) | Mapa ekranów: logowanie i hub, skaner kontroli HU, planista, wycena. |
+| [04 Model danych](docs/04-model-danych.md) | Diagramy ER, reguły integralności wymuszane przez bazę i niespójności. |
+| [05 Wymagania](docs/05-wymagania.md) | 64 wymagania z kryteriami akceptacji „Zakładając / Gdy / Wtedy” i miejscem w kodzie/testach. |
+| [06 Decyzje](docs/06-decyzje.md) | Dziennik decyzji: kontekst, opcje, uzasadnienie, skutki. |
+| [07 Ograniczenia](docs/07-ograniczenia.md) | Czego świadomie nie ma i znane problemy (P1–P18). |
+| [ADR](docs/adr/README.md) | 18 zapisów decyzji architektonicznych (pełna treść). |
 
-## Mój wkład
+## Jak uruchomić
 
-- **Projekt i implementacja całości** — jestem jedynym autorem: od analizy procesów magazynowych, przez model danych i architekturę, po UI, testy, CI/CD i wdrożenie.
-- **Rdzeń pakowania** `palletizer/` — heurystyki warstw (MaxRects, wzory cegiełkowe, pasy mieszane) + OR-Tools/py3dbp, bez zależności od Django.
-- **Skala:** ok. 2700 testów (biblioteka pakowania + Django na PostgreSQL w CI), ok. 420 tras URL w modułach `ui`, `huctl`, `transport`, `core`.
-- **Proces i jakość:** 18 zapisanych decyzji architektonicznych ([`docs/adr/`](docs/adr/)), rejestr błędów wykrytych przez testy regresji ([`BUGS-FOUND.md`](BUGS-FOUND.md)), auto-merge przez PR i deploy na Coolify.
-
-## Dlaczego ten stack
-
-Django jako modularny monolit z hubem modułów daje jeden deploy, wspólne uprawnienia i panel admina dla wielu małych modułów ([ADR-0001](docs/adr/0001-modularny-monolit-hub-modulow.md)). Algorytmy pakowania żyją w czystym Pythonie bez frameworka, więc testuje się je szybko i używa też z CLI ([ADR-0002](docs/adr/0002-palletizer-bez-django.md)). SAP jest tylko źródłem do odczytu, żeby aplikacja nie mogła zepsuć systemu księgowego ([ADR-0003](docs/adr/0003-sap-tylko-do-odczytu.md)). Synchroniczny WSGI z Celery do zadań w tle jest prostszy w utrzymaniu niż async ([ADR-0004](docs/adr/0004-synchroniczny-wsgi-celery.md)), a biblioteki front-endu są vendorowane bez CDN ([ADR-0005](docs/adr/0005-vendorowane-biblioteki-bez-cdn.md)). Nazwy grup ról to zamrożony kontrakt z SSO ([ADR-0006](docs/adr/0006-nazwy-grup-rol-zamrozony-kontrakt.md)); SQLite lokalnie, PostgreSQL w CI i na produkcji ([ADR-0007](docs/adr/0007-sqlite-domyslnie-postgres-przygotowany.md)).
-
-## Ograniczenia i co dalej
-
-- **SAP tylko do odczytu, bez czasu rzeczywistego** — integracja SAP real-time jest zawieszona ([`ROADMAP_HU_ZARIA.md`](ROADMAP_HU_ZARIA.md)).
-- **CSP w trybie report-only** — polityka jest raportowana, a nie wymuszana ([ADR-0008](docs/adr/0008-csp-report-only.md)).
-- **Zatwierdzanie błędów kontroli HU przez lidera** odroczone — workflow do zaprojektowania.
-- **Monolit** — rozbicie na usługi jest tylko rozważane ([`ARCHITECTURE-MICROSERVICES.md`](ARCHITECTURE-MICROSERVICES.md)); dziś wszystko wdraża się razem.
-
-## Gdzie zacząć czytać kod
-
-- [`palletizer/services/pallet_calculator.py`](palletizer/services/pallet_calculator.py) — generowanie i wybór wariantów ułożenia kartonów na palecie.
-- [`web/huctl/queue_rank.py`](web/huctl/queue_rank.py) — kolejkowanie kontroli HU na skanerach.
-- [`web/palletweb/config.py`](web/palletweb/config.py) — typowana konfiguracja z walidacją przy starcie (fail-fast).
-
-Historia commitów została zgnieciona przy przygotowaniu wersji portfolio (anonimizacja).
-
-## Wideo
-
-Wkrótce (YouTube).
-
-## Układ repo
-
-```
-main.py         CLI samodzielnego paletyzatora
-palletizer/     bezframeworkowa biblioteka pakowania (geometria, domena, IO, wizualizacja)
-web/            projekt Django `palletweb` + jedna aplikacja `ui`
-```
-
-## Aplikacja webowa (lokalnie)
+**Wymagania:** Python 3.11+ (testowane na 3.13), Git. Na Windows sklonuj repo do krótkiej ścieżki
+(np. `C:\dev\logviz`) — limit 260 znaków ścieżki potrafi wyłożyć instalację pakietów.
 
 ```bash
-python -m venv .venv && source .venv/bin/activate   # Windows: setup.bat
+git clone https://github.com/TomaszWu14/palviz-public.git logviz && cd logviz
+python -m venv .venv
+source .venv/bin/activate              # Windows cmd: .venv\Scripts\activate
 pip install -r requirements.txt
+sh web/scripts/fetch_vendor.sh         # raz: biblioteki front-end (three.js, ECharts…), na Windows z Git Bash
 cd web
-DJANGO_DEBUG=true python manage.py migrate
-DJANGO_DEBUG=true python manage.py createsuperuser
-DJANGO_DEBUG=true python manage.py create_roles      # grupy ról (Polish)
-DJANGO_DEBUG=true python manage.py runserver 8080   # lub: run.bat
+export DJANGO_DEBUG=true               # Windows cmd: set DJANGO_DEBUG=true
+python manage.py migrate
+python manage.py create_roles          # 9 grup ról
+DJANGO_SUPERUSER_PASSWORD=<hasło> python manage.py createsuperuser --noinput --username admin --email admin@example.com
+python manage.py runserver 8080        # zajęty port? podaj inny, np. 8081
 ```
 
-Aplikacja: `http://localhost:8080` · admin: `/admin` · logowanie: `/login/`.
-W trybie `DJANGO_DEBUG=true` Celery działa **eager** (bez workera/Redis); front-endowe
-biblioteki 3D są vendorowane — jeśli `web/ui/static/ui/vendor/` jest puste, uruchom raz
-`sh web/scripts/fetch_vendor.sh`.
+Windows cmd — tworzenie administratora (zmienna ustawiana osobno):
 
-## Docker (produkcyjnie)
-
-```bash
-docker compose up --build       # gunicorn :8000 + Redis
+```bat
+set DJANGO_SUPERUSER_PASSWORD=<hasło>
+python manage.py createsuperuser --noinput --username admin --email admin@example.com
 ```
 
-`docker-entrypoint.sh` migruje, ustawia właściciela wolumenów i startuje gunicorna jako
-**użytkownik nieuprzywilejowany** (gosu). Obraz jest multi-stage (chudy runtime).
+Otwórz <http://127.0.0.1:8080/login/>. `PYTHONPATH` nie jest potrzebny — `manage.py` sam dodaje
+korzeń repo do ścieżki. Przy `DJANGO_DEBUG=true` zadania Celery wykonują się od razu (bez Redisa),
+a baza to plik SQLite. Na Windows `setup.bat` (venv, pakiety, migracje, administrator interaktywnie)
+i `run.bat` (serwer na porcie 8080) skracają te kroki; `create_roles` i `fetch_vendor.sh` uruchom osobno.
 
-## Konfiguracja (zmienne środowiskowe)
+**Dane demo (opcjonalnie, tylko przy `DJANGO_DEBUG=true` — przy `false` obie komendy odmawiają):**
 
-Typowana i **walidowana przy starcie** przez pydantic-settings
-([`web/palletweb/config.py`](web/palletweb/config.py)) — brak/niepoprawna zmienna
-przerywa boot z czytelnym komunikatem. Szablon: [`.env.example`](.env.example). Najważniejsze:
+| Komenda | Co tworzy | Logowanie |
+|---|---|---|
+| `python manage.py seed_test_users` | 10 kont: po jednym na każdą z 9 ról + superuser | login = hasło, np. `test_kontrola` / `test_kontrola`, `test_lider`, `test_transport`, `test_md`, `test_super` |
+| `python manage.py seed_testdata` | Persony testowe i dane domenowe: produkty, palety HU, wysyłki w różnych statusach; wymaga `pip install -r requirements-test.txt` | `p_<rola>` (np. `p_kontrola_hu`, `p_lider`, `p_transport`), hasło `Test-haslo-123` |
 
-| Zmienna | Opis |
-|---|---|
-| `DJANGO_SECRET_KEY` | wymagana gdy `DJANGO_DEBUG=false` (boot odrzuca klucz dev) |
-| `DJANGO_DEBUG`, `DJANGO_ALLOWED_HOSTS`, `DJANGO_CSRF_TRUSTED_ORIGINS` | podstawy Django |
-| `DATABASE_URL` | Postgres (`postgresql://…?sslmode=require`); brak → SQLite |
-| `CELERY_BROKER_URL` | Redis (zadania w tle + beat) |
-| `SENTRY_DSN`, `OTEL_ENABLED` | opcjonalny monitoring/tracing |
-| `EMAIL_*`, `WAREHOUSE_EMAIL` | SMTP (wyceny/gotowość) |
-| `POWERBI_*` | pobieranie stocku z Power BI / SAP BW |
-| `PALVIZ_API_TOKEN`, `PALVIZ_API_TOKENS` | `X-API-Key` dla API `/api/v2` (skaner HU, n8n); nazwani klienci z zakresami — [`docs/n8n-integration.md`](docs/n8n-integration.md#klienci-api-i-zakresy-apiv2-audyt-sec-017) |
-
-Pełna lista i domyślne wartości: `config.py` + `CLAUDE.md`.
-
-## Testy
+### Docker (konfiguracja produkcyjna)
 
 ```bash
-# Zależności testów (hypothesis, tblib, factory_boy, time-machine, PyYAML…)
-pip install -r requirements-test.txt
+export DJANGO_SECRET_KEY=<długi-losowy-klucz>     # Windows cmd: set DJANGO_SECRET_KEY=...
+export DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+docker compose up --build                         # gunicorn + Redis
+```
 
-# Biblioteka pakowania (bezframeworkowa)
+Aplikacja: <http://localhost:8000>. Kontener działa z `DJANGO_DEBUG=false`, więc obie zmienne
+trzeba ustawić przed startem (pusty klucz nie jest dziś odrzucany — zob. [07, P16](docs/07-ograniczenia.md)).
+
+### Testy
+
+```bash
+# Biblioteka pakowania (40 testów)
 python -m unittest discover -s palletizer/tests -p "test_*.py"
 
-# Django (z web/, z env)
+# Django (z web/; 1942 testy)
+pip install -r requirements-test.txt
 cd web
 DJANGO_SECRET_KEY=ci-test-secret DJANGO_DEBUG=true DJANGO_ALLOWED_HOSTS='*' \
   PYTHONPATH=.. python manage.py test ui.tests huctl.tests transport.tests -v 1
 ```
 
-CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml))
-bramkuje merge na obu pakietach; ruff/mypy/pip-audit/bandit lecą jako non-blocking.
-Gałęzie `claude/**` auto-mergują do `main` po zielonych testach i wyzwalają deploy Coolify.
+CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) uruchamia oba zestawy na PostgreSQL przy
+każdym PR do `main`.
 
-## Git hooks
+## Stack i dlaczego taki
 
-`pre-commit install` — lintery, formatowanie i skan sekretów z
-[`.pre-commit-config.yaml`](.pre-commit-config.yaml) przed każdym commitem.
+- **Django 5.2 LTS jako modularny monolit z hubem modułów** — jeden deploy, jedna baza, wspólne
+  uprawnienia i panel admina dla wielu małych modułów; bez kosztu SSO i API między serwisami
+  ([ADR-0001](docs/adr/0001-modularny-monolit-hub-modulow.md)).
+- **Silnik pakowania `palletizer/` w czystym Pythonie, bez frameworka** — testuje się szybko i
+  działa też z CLI; OR-Tools (CP-SAT) jako opcjonalna ścieżka optymalnej warstwy
+  ([ADR-0002](docs/adr/0002-palletizer-bez-django.md)).
+- **SAP tylko do odczytu (pliki, Power BI)** — aplikacja nie może uszkodzić danych SAP; rozjazdy
+  domyka proces (zadania), a nie automatyczna korekta ([ADR-0003](docs/adr/0003-sap-tylko-do-odczytu.md)).
+- **Synchroniczny WSGI + Celery** do zadań w tle — prostszy model wykonania niż async
+  ([ADR-0004](docs/adr/0004-synchroniczny-wsgi-celery.md)).
+- **three.js / ECharts serwowane z własnej statyki, bez CDN** — UI działa przy awarii CDN i za
+  restrykcyjną CSP ([ADR-0005](docs/adr/0005-vendorowane-biblioteki-bez-cdn.md)).
+- **SQLite domyślnie, PostgreSQL w CI i gotowy do włączenia** — rozwój bez Postgresa, kod testowany
+  na obu silnikach; przejście produkcji na Postgresa to decyzja właściciela ([ADR-0007](docs/adr/0007-sqlite-domyslnie-postgres-przygotowany.md)).
+- **Konfiguracja typowana pydantic-settings z walidacją przy starcie** — brak lub błędna zmienna
+  zatrzymuje start z jednym zbiorczym komunikatem zamiast błędu w środku żądania
+  ([`web/palletweb/config.py`](web/palletweb/config.py)).
+- **Nazwy 9 grup ról jako zamrożony kontrakt** — są wierszami w bazie i słownikiem mapowania SSO;
+  pilnuje ich test ([ADR-0006](docs/adr/0006-nazwy-grup-rol-zamrozony-kontrakt.md)).
+- **Docker + Coolify, CI na GitHub Actions** z szybką bramką testów i auto-merge przez PR
+  ([ADR-0009](docs/adr/0009-szybka-bramka-ci.md), [ADR-0010](docs/adr/0010-auto-merge-claude-przez-pr.md)).
 
-## Samodzielny paletyzator (CLI)
+## Zakres i ograniczenia
 
-```bash
-python main.py --mode csv --input data/produkty.csv --pallet EU --max-height 180 --export-viz 1
+Bez zapisu do SAP i integracji w czasie rzeczywistym, CSP tylko raportuje naruszenia, MFA dla
+administratorów odłożone. Analiza kodu wykazała 18 znanych problemów (m.in. eskalacja po nieudanej
+rekontroli nie odpala, pusty `DJANGO_SECRET_KEY` przechodzi walidację) — pełna lista:
+[07 Ograniczenia](docs/07-ograniczenia.md).
+
+## Kontekst projektu
+
+`<DO UZUPEŁNIENIA przeze mnie>`
+
+## Układ repo
+
+```
+main.py         CLI samodzielnego paletyzatora
+palletizer/     biblioteka pakowania bez frameworka (geometria, domena, IO, wizualizacja)
+web/            projekt Django `palletweb`: ui (rdzeń), huctl (Kontrola HU), transport, core
+docs/           dokumentacja analityczna 01–07, ADR, procesy, runbooki
+tests/          macierz uprawnień (tests/permissions.yaml — 326 tras)
 ```
 
-Wynik w `output/` (`wynik.csv`, `warianty.csv`, wizualizacje PNG/HTML). Flagi:
-`--mode {csv|cli}`, `--input`, `--pallet {EU|Z129}`, `--max-height`, `--length`, `--width`,
-`--export-viz {0|1}`, `--render-layers N`. Wejście CSV: kolumny
-`SKU,WARIANT,L,W,H,WAGA_SZT,SZT_W_KARTONIE,ILOSC_SZT` (+ opcjonalnie `KARTON_TARE`);
-wymiary w cm, wagi w kg, ilości w sztukach.
+Architektura: [`ARCHITECTURE.md`](ARCHITECTURE.md). Nazwy techniczne w kodzie (`palletweb`,
+`palletizer`, GROOVE) zostały; nazwę wyświetlaną ustawia zmienna `APP_NAME`.
+
+Kod do wglądu, wszelkie prawa zastrzeżone — [`LICENSE`](LICENSE).

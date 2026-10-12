@@ -1,3 +1,18 @@
+# Dokumentacja analityczna
+
+Opis systemu z perspektywy analityka, odtworzony z kodu (bez planów i funkcji, których nie ma).
+
+| Dokument | Zawartość |
+|---|---|
+| [01 Problem i zakres](01-problem-i-zakres.md) | Problem, interesariusze i 9 ról, moduły w zakresie i poza nim. |
+| [02 Proces](02-proces.md) | Proces Kontroli HU (aktorzy, stany palety, punkty decyzyjne) oraz skróty paletyzacji i wyceny. |
+| [03 User flow](03-user-flow.md) | Mapa ekranów: logowanie i hub, skaner kontroli HU, planista, wycena, ścieżki alternatywne. |
+| [04 Model danych](04-model-danych.md) | Diagramy ER, encje, reguły integralności wymuszane przez bazę i niespójności. |
+| [05 Wymagania](05-wymagania.md) | 64 wymagania z kryteriami akceptacji „Zakładając / Gdy / Wtedy” i miejscem realizacji. |
+| [06 Decyzje](06-decyzje.md) | Skrót 18 decyzji architektonicznych z [rejestru ADR](adr/README.md). |
+| [07 Ograniczenia](07-ograniczenia.md) | Czego świadomie nie ma i lista znanych problemów (P1–P18). |
+| [Zrzuty ekranu](screenshots/README.md) | Plan materiałów wizualnych (GIF, zrzuty). |
+
 # Mapa dokumentacji — typ dokumentu → katalog
 
 Cel: gdy nie wiesz gdzie coś napisać (albo gdzie czegoś szukać), ta tabela mówi
