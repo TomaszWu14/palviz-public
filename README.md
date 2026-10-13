@@ -9,11 +9,11 @@ i SAP planowanie palet i wysyłek, kontrolę HU (palet z etykietą) i obraz maga
 
 ![Załadunek luzem — kartony ułożone w kontenerze 40' HC w widoku 3D](docs/img/zaladunek-3d.png)
 
-📹 [Prezentacja działania — 2 min, bez lektora, z napisami](docs/video/logviz-demo.mp4)
+📹 [Prezentacja działania — 2:20, 1080p, napisy w obrazie, bez lektora](docs/video/logviz-demo.mp4) · [opis na YouTube](docs/video/youtube.md)
 
-**Demo online:** <https://logviz.twapp.pl>. Kliknij **Wejdź jako demo**, nie trzeba
-zakładać konta. Dane są fikcyjne, zapis jest wyłączony, a co noc wszystko wraca do stanu wyjściowego.
-Po zalogowaniu hub pokazuje 4 kroki „od czego zacząć” i przycisk pokazu z lektorem (2 min).
+**Demo online:** <https://logviz.twapp.pl/demo/> wpuszcza od razu, bez logowania i zakładania konta
+(<https://logviz.twapp.pl/demo/?pokaz=1> od razu uruchamia pokaz aplikacji). Dane są fikcyjne, zapis jest wyłączony, a co noc wszystko wraca do stanu wyjściowego.
+Po zalogowaniu hub pokazuje 4 kroki „od czego zacząć” i przycisk pokazu aplikacji (2 min).
 
 > **Projekt portfolio.** Nazwy firm są zamienione na fikcyjne (ACME, DOMEX, przewoźnicy PACZKI /
 > PALETY / BUS / EXPORT, magazyn zewnętrzny ZEW), a dane demo i testowe są syntetyczne.
@@ -86,17 +86,32 @@ i `run.bat` (serwer na porcie 8080) skracają te kroki; `create_roles` i `fetch_
 | `python manage.py seed_test_users` | 10 kont: po jednym na każdą z 9 ról + superuser | login = hasło, np. `test_kontrola` / `test_kontrola`, `test_lider`, `test_transport`, `test_md`, `test_super` |
 | `python manage.py seed_testdata` | Persony testowe i dane domenowe: produkty, palety HU, wysyłki w różnych statusach; wymaga `pip install -r requirements-test.txt` | `p_<rola>` (np. `p_kontrola_hu`, `p_lider`, `p_transport`), hasło `Test-haslo-123` |
 
-### Pokaz z lektorem (`?demo=1`)
+### Pokaz aplikacji (`?demo=1`)
 
 Dopisz `?demo=1` do adresu dowolnej strony po zalogowaniu (np. jako planista z uprawnieniami
 administratora), a potem kliknij **Rozpocznij prezentację**. Pokaz przechodzi sam przez 14 kroków:
 hub, Data Center, paletyzację 3D, wysyłkę, skaner i panel lidera. Bez parametru nic się nie ładuje.
 
-- Teksty i słownik wymowy: `web/ui/static/ui/demo/demo_script.json`, ustawienia głosu: `config/voice.json`.
-- Nagrania: `ELEVENLABS_API_KEY=… ELEVENLABS_VOICE_ID=… python tools/generate_voiceover.py`.
-  Generuje tylko zmienione kroki; `--dry-run` pokazuje plan, `--step krok03` przegenerowuje jeden krok,
-  a `--all` wszystkie (np. po zmianie głosu).
-- Bez nagrań pokaz czyta tekst syntezą mowy przeglądarki (pl-PL).
+- Bez lektora: każdy krok ma napis, a czas kroku zależy od długości napisu (`READ_MS` w `demo.js`).
+- Teksty kroków i rozdziały filmu: `web/ui/static/ui/demo/demo_script.json`.
+
+### Film na YouTube (`make video`)
+
+`tools/record_demo.py` nagrywa ten sam pokaz w przeglądarce (Playwright, 1920×1080) i składa gotowy
+film: plansza tytułowa → pokaz z napisami w obrazie → plansza końcowa z linkiem `/demo/` i kodem QR.
+Ścieżka dźwiękowa jest cicha; z `--music` pod obraz idzie podkład (głośność wyrównana do −14 LUFS).
+
+```bash
+pip install playwright segno                 # + ffmpeg w PATH (requirements-dev.txt)
+# terminal 1: instancja demo (sekcja „Wersja demo lokalnie”) na :8080
+python tools/record_demo.py                  # → output/video/
+python tools/record_demo.py --music podklad.mp3   # podkład — tylko z prawem do użycia
+python tools/record_demo.py --srt-captions        # napisy tylko w .srt (CC na YouTube), nie w obrazie
+```
+
+W `output/video/` powstają: film MP4, napisy `.pl.srt`, `youtube.md` (tytuł, opis z rozdziałami z pola
+`chapter` w `demo_script.json`) i `miniatura.png` (1280×720). Szablon plansz: `tools/video/card.html`.
+Aktualna wersja leży w `docs/video/`. Po zmianie tekstów kroków wystarczy `make video`.
 
 ### Wersja demo lokalnie
 
@@ -105,7 +120,7 @@ cd web
 export DJANGO_DEBUG=true DEMO_MODE=true      # Windows cmd: set DJANGO_DEBUG=true & set DEMO_MODE=true
 python manage.py migrate && python manage.py create_roles
 python manage.py seed_demo                   # fikcyjna firma ACME, klienci, wysyłki, 10 palet HU
-python manage.py runserver 8080              # /login/ → „Wejdź jako demo”
+python manage.py runserver 8080              # /demo/ (bez logowania) albo /login/ → „Wejdź jako demo”
 ```
 
 `seed_demo --reset` przywraca stan wyjściowy. Bez `DEMO_MODE=true` komenda odmawia, bo reset kasuje wszystkie

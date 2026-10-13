@@ -1,4 +1,4 @@
-{# Karta powitalna konta demo (DEMO_MODE) na hubie: 4 kroki „co warto zobaczyć” + pokaz z lektorem. #}
+{# Karta powitalna konta demo (DEMO_MODE) na hubie: 4 kroki „co warto zobaczyć” + pokaz z napisami. #}
 <style>
   .demo-welcome { margin: 0 0 22px; padding: 20px 22px; border-radius: 16px;
     background: rgba(250, 204, 21, .08); border: 1px solid rgba(250, 204, 21, .45); color: #e2e8f0; }
@@ -28,7 +28,7 @@
       <h2 id="demo-welcome-title">Witaj w wersji demo — od czego zacząć?</h2>
       <p>Cztery ekrany pokazują, co robi {{ app_name }}. Dane są fikcyjne; możesz liczyć i kontrolować palety bez obaw.</p>
     </div>
-    <a class="demo-welcome__tour" href="/?demo=1">▶ Pokaz z lektorem (2 min)</a>
+    <a class="demo-welcome__tour" href="/?demo=1">▶ Pokaz aplikacji (2 min)</a>
     <button type="button" class="demo-welcome__close" aria-label="Ukryj wskazówki"
             onclick="try{localStorage.setItem('lvWelcomeHidden','1')}catch(e){};this.closest('section').hidden=true">×</button>
   </div>
