@@ -11,8 +11,8 @@ i SAP planowanie palet i wysyłek, kontrolę HU (palet z etykietą) i obraz maga
 
 📹 [Prezentacja działania — 2 min, bez lektora, z napisami](docs/video/logviz-demo.mp4)
 
-**Demo online:** <https://logviz.twapp.pl>. Kliknij **Wejdź jako demo**, nie trzeba
-zakładać konta. Dane są fikcyjne, zapis jest wyłączony, a co noc wszystko wraca do stanu wyjściowego.
+**Demo online:** <https://logviz.twapp.pl/demo/> wpuszcza od razu, bez logowania i zakładania konta
+(<https://logviz.twapp.pl/demo/?pokaz=1> od razu uruchamia pokaz z lektorem). Dane są fikcyjne, zapis jest wyłączony, a co noc wszystko wraca do stanu wyjściowego.
 Po zalogowaniu hub pokazuje 4 kroki „od czego zacząć” i przycisk pokazu z lektorem (2 min).
 
 > **Projekt portfolio.** Nazwy firm są zamienione na fikcyjne (ACME, DOMEX, przewoźnicy PACZKI /
@@ -105,7 +105,7 @@ cd web
 export DJANGO_DEBUG=true DEMO_MODE=true      # Windows cmd: set DJANGO_DEBUG=true & set DEMO_MODE=true
 python manage.py migrate && python manage.py create_roles
 python manage.py seed_demo                   # fikcyjna firma ACME, klienci, wysyłki, 10 palet HU
-python manage.py runserver 8080              # /login/ → „Wejdź jako demo”
+python manage.py runserver 8080              # /demo/ (bez logowania) albo /login/ → „Wejdź jako demo”
 ```
 
 `seed_demo --reset` przywraca stan wyjściowy. Bez `DEMO_MODE=true` komenda odmawia, bo reset kasuje wszystkie

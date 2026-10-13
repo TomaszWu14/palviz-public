@@ -158,3 +158,54 @@ class ReadOnlyMiddlewareTests(TestCase):
         r = self.client.post(f"/planner/products/{p.pk}/delete/", follow=True)
         self.assertTrue(Product.objects.filter(pk=p.pk).exists())
         self.assertContains(r, "Wersja demonstracyjna: ta akcja jest wyłączona")
+
+
+class DemoEntryLinkTests(TestCase):
+    """`/demo/` — wejście jednym linkiem (film na YouTube, slajd, QR) bez strony logowania."""
+
+    def setUp(self):
+        from django.core.cache import cache
+        cache.clear()
+
+    def test_404_without_demo_mode(self):
+        self.assertEqual(self.client.get("/demo/").status_code, 404)
+
+    @override_settings(**DEMO)
+    def test_get_logs_in_and_lands_on_hub(self):
+        _seed()
+        r = self.client.get("/demo/")
+        self.assertRedirects(r, "/", fetch_redirect_response=False)
+        self.assertIn("Witaj w wersji demo", self.client.get("/").content.decode())
+
+    @override_settings(**DEMO)
+    def test_pokaz_opens_voiceover_tour(self):
+        _seed()
+        r = self.client.get("/demo/?pokaz=1")
+        self.assertRedirects(r, "/?demo=1", fetch_redirect_response=False)
+        self.assertIn("ui/demo/demo.js", self.client.get("/?demo=1").content.decode())
+
+    @override_settings(**DEMO)
+    def test_does_not_switch_other_logged_in_user(self):
+        _seed()
+        szef = User.objects.create_superuser("szef", "s@example.com", "x")
+        self.client.force_login(szef)
+        self.client.get("/demo/")
+        self.assertEqual(int(self.client.session["_auth_user_id"]), szef.pk)
+
+    @override_settings(**DEMO)
+    def test_post_not_allowed(self):
+        self.assertEqual(self.client.post("/demo/").status_code, 405)
+
+    @override_settings(**DEMO)
+    def test_missing_account_goes_to_login(self):
+        r = self.client.get("/demo/")
+        self.assertRedirects(r, "/login/", fetch_redirect_response=False)
+
+    @override_settings(**DEMO)
+    def test_rate_limited_per_ip(self):
+        _seed()
+        for _ in range(30):
+            self.client.logout()
+            self.assertEqual(self.client.get("/demo/").status_code, 302)
+        self.client.logout()
+        self.assertEqual(self.client.get("/demo/").status_code, 429)

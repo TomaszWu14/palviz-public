@@ -14,7 +14,9 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.urls import Resolver404, resolve
 from django.utils.http import url_has_allowed_host_and_scheme
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
+
+from .ratelimit import TOO_MANY, hit, request_ip
 
 MSG = ("Wersja demonstracyjna: ta akcja jest wyłączona. "
        "Dane demo wracają do stanu wyjściowego co noc.")
@@ -67,15 +69,43 @@ def _deny(request):
     return redirect(ref)
 
 
+def _login_demo(request):
+    """Loguje konto demo. Zwraca None albo przekierowanie z komunikatem, gdy konta brak."""
+    user = get_user_model().objects.filter(username=settings.DEMO_USER, is_active=True).first()
+    if user is None:
+        messages.error(request, "Konto demo nie istnieje — uruchom `manage.py seed_demo`.")
+        return redirect("ui:login")
+    login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+    return None
+
+
 @require_POST
 def demo_login(request):
     """„Wejdź jako demo” — logowanie bez hasła, więc blokada Axes (5 prób) nie zamknie
     wspólnego konta. Działa tylko przy DEMO_MODE."""
     if not getattr(settings, "DEMO_MODE", False):
         raise Http404
-    user = get_user_model().objects.filter(username=settings.DEMO_USER, is_active=True).first()
-    if user is None:
-        messages.error(request, "Konto demo nie istnieje — uruchom `manage.py seed_demo`.")
-        return redirect("ui:login")
-    login(request, user, backend="django.contrib.auth.backends.ModelBackend")
-    return redirect("/")
+    return _login_demo(request) or redirect("/")
+
+
+@require_GET
+def demo_entry(request):
+    """Link do wklejenia pod filmem / na slajdzie: `/demo/` od razu wpuszcza na hub konta demo,
+    `/demo/?pokaz=1` od razu otwiera pokaz z lektorem. Bez DEMO_MODE — 404.
+
+    GET zamiast POST świadomie: konto demo jest wspólne i tylko do odczytu, więc wymuszone
+    zalogowanie (login CSRF) nic nie daje atakującemu. Zalogowanego innym kontem nie przelogowuje.
+    Limit 30 wejść / 10 min per IP chroni tabelę sesji przed zalewaniem."""
+    if not getattr(settings, "DEMO_MODE", False):
+        raise Http404
+    target = "/?demo=1" if request.GET.get("pokaz") == "1" else "/"
+    user = request.user
+    if user.is_authenticated and not is_demo_user(user):
+        return redirect(target)
+    if not user.is_authenticated:
+        if not hit(f"demo_entry:{request_ip(request)}", 30, 600):
+            return HttpResponse(TOO_MANY, status=429, content_type="text/plain; charset=utf-8")
+        denied = _login_demo(request)
+        if denied:
+            return denied
+    return redirect(target)
