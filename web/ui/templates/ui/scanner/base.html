@@ -303,9 +303,10 @@
   </style>
 </head>
 <body>
-{% include "ui/_demo_banner.html" %}
   {# Motyw sekcji operatora (§5): kolor przewoźnika na całej aplikacji; brak sekcji = bazowy teal. #}
   <div class="scr"{% if section_theme %} style="background:{{ section_theme.app_bg }}"{% endif %}>
+    {# Baner demo w kolumnie skanera: body to flex-wiersz, więc poza .scr stawał się drugą kolumną. #}
+    {% include "ui/_demo_banner.html" %}
     <div class="scr__bar"{% if section_theme %} style="background:{{ section_theme.app_bar_bg }};color:{{ section_theme.app_bar_text }}"{% endif %}>
       {% block back %}{% endblock %}
       {# flex+min-width:0 — tytuł i pigułka operatora w JEDNYM wierszu; pigułka ścieśnia się z „…". #}

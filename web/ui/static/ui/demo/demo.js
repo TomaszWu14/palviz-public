@@ -40,7 +40,9 @@
     for (var k = 0; k < old.length; k++) old[k].classList.remove('lv-demo-hl');
     if (!el) return;
     el.classList.add('lv-demo-hl');
-    el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    // Element wyższy niż ekran (np. #result-area z widokiem 3D): „center” ucinał jego górę.
+    var tall = el.getBoundingClientRect().height > window.innerHeight * 0.8;
+    el.scrollIntoView({ block: tall ? 'start' : 'center', behavior: 'smooth' });
   }
 
   // ── Dźwięk ───────────────────────────────────────────────────────────────────────
