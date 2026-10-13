@@ -21,6 +21,7 @@ PUBLIC_ROUTES = {
     "health": "healthcheck dla Coolify/smoke — bez sesji",
     "login": "ekran logowania",
     "demo_login": "„Wejdź jako demo” — tylko przy DEMO_MODE (core/demo.py), inaczej 404",
+    "demo_entry": "/demo/ — wejście jednym linkiem na konto demo, tylko przy DEMO_MODE (core/demo.py), inaczej 404",
     "logout": "wylogowanie",
     "password_reset": "reset hasła dla niezalogowanych (GuardedPasswordResetView)",
     "password_reset_done": "reset hasła — potwierdzenie wysyłki",
