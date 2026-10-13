@@ -1,6 +1,6 @@
 # Tytuł
 
-LogViz — paletyzacja 3D, wysyłki i kontrola HU w jednej aplikacji (demo z lektorem)
+LogViz — paletyzacja 3D, wysyłki i kontrola HU w jednej aplikacji (demo 2 min)
 
 # Opis
 
@@ -12,20 +12,21 @@ LogViz — jedna aplikacja webowa dla magazynu, transportu i obsługi klienta: d
 
 Rozdziały:
 0:00 Hub modułów
-0:14 Data Center
-0:36 Paletyzacja 3D
-1:01 Wysyłki i załadunek 3D
-1:28 Kontrola HU na skanerze
-2:03 Panel lidera
-2:14 Architektura: SAP tylko do odczytu
-2:27 Podsumowanie
+0:12 Data Center
+0:31 Paletyzacja 3D
+0:52 Wysyłki i załadunek 3D
+1:17 Kontrola HU na skanerze
+1:44 Panel lidera
+2:04 Podsumowanie
 
 Dane w filmie i w wersji demo są fikcyjne (ACME, DOMEX, PACZKI / PALETY / BUS / EXPORT).
-Długość: 2:44. Lektor: synteza mowy ElevenLabs. Napisy PL w pliku .srt.
+Długość: 2:20. Bez lektora — opis każdego kroku w napisach.
 
 #logistyka #magazyn #paletyzacja #WMS #Django #portfolio
 ```
 
 # Napisy
 
-logviz-demo-lektor.pl.srt — język: polski. Miniatura: miniatura.png (1280×720).
+Napisy są w obrazie. logviz-demo.pl.srt nie wgrywaj jako CC (dublowałyby się).
+
+Miniatura: miniatura.png (1280×720).

@@ -2,11 +2,13 @@
 Czyste funkcje — bez przeglądarki, ffmpeg i sieci."""
 import json
 import re
+from pathlib import Path
 
 from django.test import SimpleTestCase
 
 from tools import demo_video as dv
-from tools import generate_voiceover as gv
+
+SCRIPT = Path(__file__).resolve().parents[1] / "static/ui/demo/demo_script.json"
 
 STEPS = [{"id": "k1", "text": "Pierwsze zdanie. Drugie zdanie.", "chapter": "Start"},
          {"id": "k2", "text": "Bez rozdziału."},
@@ -47,19 +49,23 @@ class FrameListTests(SimpleTestCase):
 
 
 class AudioFilterTests(SimpleTestCase):
-    def test_voice_delays_and_loudness(self):
-        f = dv.audio_filter([3.5, 12.25], 60.0)
-        self.assertIn("adelay=3500|3500", f)
-        self.assertIn("adelay=12250|12250", f)
-        self.assertIn("amix=inputs=2:normalize=0", f)
+    def test_silence_without_music(self):
+        f = dv.audio_filter(60.0)
+        self.assertEqual(f, "[1:a]atrim=0:60.000,asetpts=PTS-STARTPTS[aout]")
+
+    def test_music_loops_fades_and_is_normalised(self):
+        f = dv.audio_filter(30.0, music_input=1)
+        self.assertIn("[1:a]", f)
+        self.assertIn("aloop=-1", f)
+        self.assertIn("afade=t=out:st=27.000:d=3", f)
         self.assertIn("loudnorm=I=-14", f)
         self.assertTrue(f.endswith("[aout]"))
-        self.assertNotIn("sidechain", f)
 
-    def test_music_is_ducked_under_voice(self):
-        f = dv.audio_filter([1.0], 30.0, music_input=2)
-        self.assertIn("[2:a]", f)
-        self.assertIn("sidechaincompress", f)
+    def test_read_seconds_matches_player(self):
+        self.assertEqual(dv.read_seconds("krótko"), 4.5)
+        self.assertAlmostEqual(dv.read_seconds("x" * 200), 13.0)
+        js = (SCRIPT.parent / "demo.js").read_text(encoding="utf-8")
+        self.assertIn(f"READ_MS = {dv.READ_MS}, MIN_MS = {dv.MIN_MS}", js)
 
 
 class SrtTests(SimpleTestCase):
@@ -94,7 +100,7 @@ class ChapterTests(SimpleTestCase):
 
 class ScriptChaptersTests(SimpleTestCase):
     def test_real_script_yields_valid_chapters(self):
-        script = json.loads(gv.SCRIPT.read_text(encoding="utf-8"))
+        script = json.loads(SCRIPT.read_text(encoding="utf-8"))
         items, t = [], 0.0
         for s in script["steps"]:                  # ~10 s na krok jak w nagraniu
             items.append({"start": t, "chapter": s.get("chapter")})

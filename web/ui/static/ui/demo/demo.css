@@ -15,7 +15,6 @@
 .lv-demo__btn--primary { background: #2563eb; border-color: #2563eb; color: #fff; }
 .lv-demo__btn--primary:hover { background: #1d4ed8; }
 .lv-demo__btn--close { margin-left: auto; }
-.lv-demo__vol { width: 110px; accent-color: #facc15; }
 .lv-demo__count { font-size: 13px; color: #94a3b8; min-width: 52px; text-align: center; }
 .lv-demo__track { position: absolute; left: 12px; right: 12px; bottom: 6px; height: 3px;
   background: #334155; border-radius: 3px; overflow: hidden; }
@@ -24,4 +23,3 @@
   box-shadow: 0 0 0 9999px rgba(15, 23, 42, .28) !important; border-radius: 10px;
   position: relative; z-index: 5; transition: outline-color .3s; scroll-margin-top: 72px; }
 @media (prefers-reduced-motion: reduce) { .lv-demo__bar, .lv-demo-hl { transition: none; } }
-@media (max-width: 560px) { .lv-demo__cap { font-size: 16px; } .lv-demo__vol { width: 80px; } }

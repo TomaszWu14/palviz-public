@@ -1,14 +1,5 @@
 {
-  "_info": "Scenariusz pokazu ?demo=1. Pole text = napisy i lektor. Słownik lexicon zmienia tylko wymowę (lektor + fallback speechSynthesis), napisy zostają bez zmian. Po zmianie tekstu: python tools/generate_voiceover.py",
-  "lexicon": {
-    "LogViz": "Log-wiz",
-    "Data Center": "Dejta Senter",
-    "SAP": "es-a-pe",
-    "HU": "ha-u",
-    "VIP": "wip",
-    "EU": "e-u",
-    "GitHubie": "Githabie"
-  },
+  "_info": "Scenariusz pokazu ?demo=1 (bez lektora). Pole text = napis; czas kroku liczy demo.js z długości napisu. Pole chapter = rozdział w opisie filmu na YouTube (tools/record_demo.py).",
   "steps": [
     {
       "id": "krok01",

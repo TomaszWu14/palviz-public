@@ -91,7 +91,7 @@ def demo_login(request):
 @require_GET
 def demo_entry(request):
     """Link do wklejenia pod filmem / na slajdzie: `/demo/` od razu wpuszcza na hub konta demo,
-    `/demo/?pokaz=1` od razu otwiera pokaz z lektorem. Bez DEMO_MODE — 404.
+    `/demo/?pokaz=1` od razu otwiera pokaz aplikacji. Bez DEMO_MODE — 404.
 
     GET zamiast POST świadomie: konto demo jest wspólne i tylko do odczytu, więc wymuszone
     zalogowanie (login CSRF) nic nie daje atakującemu. Zalogowanego innym kontem nie przelogowuje.

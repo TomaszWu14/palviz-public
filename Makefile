@@ -37,5 +37,5 @@ test-visual-update:  ## nowe wzorce po świadomej zmianie wyglądu (obejrzyj dif
 test-flow:        ## przepływy E2E (@flow: DOM/tekst, bez zrzutów — dowolny OS; nocny CI e2e-nightly.yml)
 	cd tests/e2e && npm ci --no-audit --no-fund && npx playwright test --grep @flow
 
-video:           ## film z lektorem na YouTube → output/video/ (wymaga serwera demo na :8080, playwright, segno, ffmpeg)
+video:           ## film na YouTube (napisy, bez lektora) → output/video/ (wymaga serwera demo na :8080, playwright, segno, ffmpeg)
 	python tools/record_demo.py

@@ -1,9 +1,9 @@
-"""Montaż filmu z pokazu ?demo=1: czyste funkcje bez przeglądarki i bez sieci (testowalne).
+"""Montaż filmu z pokazu ?demo=1 (bez lektora): czyste funkcje bez przeglądarki i sieci (testowalne).
 
-record_demo.py nagrywa klatki i oś czasu, a ten moduł zamienia je na:
+record_demo.py nagrywa klatki i oś czasu kroków, a ten moduł zamienia je na:
 - listę klatek dla ffmpeg (concat demuxer z czasami trwania),
-- filtr audio: nagrania lektora w miejscach, gdzie zagrały w przeglądarce, + opcjonalna muzyka
-  ściszana pod lektorem, głośność wyrównana do -14 LUFS (norma YouTube),
+- ścieżkę dźwiękową: cisza albo opcjonalny podkład muzyczny (pętla, wyciszenie na końcu,
+  głośność wyrównana do -14 LUFS — norma YouTube),
 - napisy .srt i opis na YouTube z rozdziałami (rozdziały = pole `chapter` w demo_script.json).
 
 Czasy: sekundy od początku gotowego filmu (plansza tytułowa + nagranie + plansza końcowa)."""
@@ -13,20 +13,26 @@ import math
 import re
 import textwrap
 
-LEAD_IN = 0.8      # s nagrania przed pierwszym słowem lektora
-TAIL = 1.5         # s po ostatnim słowie, zanim wejdzie plansza końcowa
+LEAD_IN = 0.8      # s nagrania przed pierwszym krokiem
+TAIL = 1.5         # s po ostatnim kroku, zanim wejdzie plansza końcowa
 INTRO = 3.5        # s planszy tytułowej
 OUTRO = 7.0        # s planszy końcowej (link do demo + QR)
 SRT_CHARS = 84     # maks. znaków w jednym napisie (2 linie po ~42)
+READ_MS, MIN_MS = 65, 4500   # jak w demo.js: czas kroku = długość napisu × READ_MS, min. MIN_MS
+
+
+def read_seconds(text):
+    """Szacowany czas kroku pokazu (s) — tylko do etykiety długości na planszy."""
+    return max(MIN_MS, len(text) * READ_MS) / 1000
 
 
 # ── Oś czasu ─────────────────────────────────────────────────────────────────────────
 def timeline(steps, plays, durations):
-    """Łączy kroki scenariusza z momentami startu nagrań (epoch s) i długościami MP3.
+    """Łączy kroki scenariusza z momentami ich startu (epoch s) i czasem trwania (s).
 
-    plays: [(step_id, epoch)] w kolejności odtwarzania — przy powtórce kroku liczy się ostatni
-    start przed następnym krokiem. Zwraca listę dictów {id, text, chapter, start, end} z czasem
-    względem pierwszego słowa (start pierwszego kroku = 0)."""
+    plays: [(step_id, epoch)] ze zdarzeń `lv-demo-step` odtwarzacza — przy powtórce kroku liczy
+    się ostatni start. Zwraca listę dictów {id, text, chapter, start, end} z czasem względem
+    startu pierwszego kroku (= 0)."""
     first = {}
     for sid, t in plays:
         first[sid] = t                                    # ostatni start wygrywa (powtórka)
@@ -72,28 +78,18 @@ def _esc(path):
 
 
 # ── Audio ────────────────────────────────────────────────────────────────────────────
-def audio_filter(starts, total, music_input=None):
-    """Filtr ffmpeg dla wejść audio 1..N (lektor) i opcjonalnie music_input (indeks wejścia).
+def audio_filter(total, music_input=None):
+    """Filtr ffmpeg ścieżki dźwiękowej o długości `total` s, wyjście [aout].
 
-    starts: czasy startu nagrań w gotowym filmie (s). Wynik ma wyjście [aout]."""
-    parts, labels = [], []
-    for k, t in enumerate(starts, start=1):
-        ms = int(round(t * 1000))
-        parts.append(f"[{k}:a]aresample=48000,aformat=channel_layouts=stereo,adelay={ms}|{ms}[v{k}]")
-        labels.append(f"[v{k}]")
-    parts.append(f"{''.join(labels)}amix=inputs={len(labels)}:normalize=0,apad,"
-                 f"atrim=0:{total:.3f}[voice]")
+    Bez muzyki: cisza (wejście 1 = anullsrc) — YouTube i odtwarzacze lepiej znoszą film z cichą
+    ścieżką niż bez niej. Z muzyką (wejście music_input): pętla, łagodne wejście i wyciszenie
+    na końcu, głośność wyrównana do -14 LUFS."""
     if music_input is None:
-        parts.append("[voice]loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000[aout]")
-    else:
-        # Muzyka w pętli, ściszona i dodatkowo przygaszana, gdy mówi lektor (sidechain).
-        parts.append(f"[{music_input}:a]aresample=48000,aformat=channel_layouts=stereo,aloop=-1:2e9,"
-                     f"atrim=0:{total:.3f},volume=0.18,afade=t=out:st={max(total - 3, 0):.3f}:d=3[bg]")
-        parts.append("[voice]asplit[vmix][vkey]")
-        parts.append("[bg][vkey]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[bgd]")
-        parts.append("[vmix][bgd]amix=inputs=2:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11,"
-                     "aresample=48000[aout]")
-    return ";".join(parts)
+        return f"[1:a]atrim=0:{total:.3f},asetpts=PTS-STARTPTS[aout]"
+    return (f"[{music_input}:a]aresample=48000,aformat=channel_layouts=stereo,aloop=-1:2e9,"
+            f"atrim=0:{total:.3f},asetpts=PTS-STARTPTS,afade=t=in:st=0:d=1.5,"
+            f"afade=t=out:st={max(total - 3, 0):.3f}:d=3,loudnorm=I=-14:TP=-1.5:LRA=11,"
+            f"aresample=48000[aout]")
 
 
 # ── Napisy ───────────────────────────────────────────────────────────────────────────
@@ -163,7 +159,7 @@ def youtube_description(chap, demo_url, repo_url, duration):
         *chap,
         "",
         "Dane w filmie i w wersji demo są fikcyjne (ACME, DOMEX, PACZKI / PALETY / BUS / EXPORT).",
-        f"Długość: {_mmss(duration)}. Lektor: synteza mowy ElevenLabs. Napisy PL w pliku .srt.",
+        f"Długość: {_mmss(duration)}. Bez lektora — opis każdego kroku w napisach.",
         "",
         "#logistyka #magazyn #paletyzacja #WMS #Django #portfolio",
     ]

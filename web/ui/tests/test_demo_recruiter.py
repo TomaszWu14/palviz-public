@@ -178,7 +178,7 @@ class DemoEntryLinkTests(TestCase):
         self.assertIn("Witaj w wersji demo", self.client.get("/").content.decode())
 
     @override_settings(**DEMO)
-    def test_pokaz_opens_voiceover_tour(self):
+    def test_pokaz_opens_tour(self):
         _seed()
         r = self.client.get("/demo/?pokaz=1")
         self.assertRedirects(r, "/?demo=1", fetch_redirect_response=False)
