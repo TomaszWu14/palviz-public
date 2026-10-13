@@ -9,7 +9,7 @@ i SAP planowanie palet i wysyłek, kontrolę HU (palet z etykietą) i obraz maga
 
 ![Załadunek luzem — kartony ułożone w kontenerze 40' HC w widoku 3D](docs/img/zaladunek-3d.png)
 
-📹 [Prezentacja działania — 2 min, bez lektora, z napisami](docs/video/logviz-demo.mp4)
+📹 [Prezentacja z lektorem — 2:45, 1080p](docs/video/logviz-demo-lektor.mp4) · [napisy PL](docs/video/logviz-demo-lektor.pl.srt) · [opis na YouTube](docs/video/youtube.md)
 
 **Demo online:** <https://logviz.twapp.pl/demo/> wpuszcza od razu, bez logowania i zakładania konta
 (<https://logviz.twapp.pl/demo/?pokaz=1> od razu uruchamia pokaz z lektorem). Dane są fikcyjne, zapis jest wyłączony, a co noc wszystko wraca do stanu wyjściowego.
@@ -97,6 +97,23 @@ hub, Data Center, paletyzację 3D, wysyłkę, skaner i panel lidera. Bez paramet
   Generuje tylko zmienione kroki; `--dry-run` pokazuje plan, `--step krok03` przegenerowuje jeden krok,
   a `--all` wszystkie (np. po zmianie głosu).
 - Bez nagrań pokaz czyta tekst syntezą mowy przeglądarki (pl-PL).
+
+### Film na YouTube (`make video`)
+
+`tools/record_demo.py` nagrywa ten sam pokaz w przeglądarce (Playwright, 1920×1080) i składa gotowy
+film: plansza tytułowa → pokaz → plansza końcowa z linkiem `/demo/` i kodem QR. Pod obraz kładzie
+nagrania lektora dokładnie w chwilach, w których zagrały, a głośność wyrównuje do −14 LUFS (norma YouTube).
+
+```bash
+pip install playwright segno                 # + ffmpeg w PATH (requirements-dev.txt)
+# terminal 1: instancja demo (sekcja „Wersja demo lokalnie”) na :8080
+python tools/record_demo.py                  # → output/video/
+python tools/record_demo.py --music podklad.mp3 --burn-captions   # podkład / napisy w obrazie
+```
+
+W `output/video/` powstają: film MP4, napisy `.pl.srt`, `youtube.md` (tytuł, opis z rozdziałami z pola
+`chapter` w `demo_script.json`) i `miniatura.png` (1280×720). Szablon plansz: `tools/video/card.html`.
+Aktualna wersja leży w `docs/video/`. Po zmianie tekstów najpierw `generate_voiceover.py`, potem `make video`.
 
 ### Wersja demo lokalnie
 

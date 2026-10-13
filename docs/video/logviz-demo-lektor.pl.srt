@@ -1,0 +1,165 @@
+1
+00:00:04,300 --> 00:00:05,376
+To jest LogViz.
+
+2
+00:00:05,426 --> 00:00:09,804
+Jedna aplikacja dla magazynu,
+transportu i obsługi klienta.
+
+3
+00:00:09,854 --> 00:00:13,706
+Po zalogowaniu każdy widzi tylko
+moduły swojej roli.
+
+4
+00:00:14,573 --> 00:00:20,319
+Data Center zbiera dane podstawowe: produkty,
+kartony, klientów i stany magazynowe.
+
+5
+00:00:20,369 --> 00:00:25,416
+Wskaźnik kompletności pokazuje, ilu
+produktom brakuje danych do obliczeń.
+
+6
+00:00:26,097 --> 00:00:29,158
+Dane trafiają tu z plików SAP i z Excela.
+
+7
+00:00:29,208 --> 00:00:31,055
+Aplikacja tylko je czyta.
+
+8
+00:00:31,105 --> 00:00:34,014
+Niczego nie zapisuje z powrotem do SAP.
+
+9
+00:00:36,107 --> 00:00:42,043
+Kalkulator paletyzacji liczy, jak ułożyć
+kartony na palecie EU sto dwadzieścia na
+
+10
+00:00:42,093 --> 00:00:43,078
+osiemdziesiąt.
+
+11
+00:00:43,128 --> 00:00:47,290
+Planista podaje wymiary kartonu,
+wagę i wysokość ładunku.
+
+12
+00:00:49,928 --> 00:00:53,536
+Silnik porównuje kilkanaście
+wariantów ułożenia.
+
+13
+00:00:53,586 --> 00:00:59,099
+Najlepszy pokazuje w trzech wymiarach,
+razem z wagą i środkiem ciężkości.
+
+14
+00:01:01,027 --> 00:01:06,776
+Lista wysyłek pokazuje objętość, liczbę palet i
+status realizacji każdej przesyłki.
+
+15
+00:01:08,555 --> 00:01:11,559
+Karta wysyłki prowadzi ją od
+oferty do odbioru.
+
+16
+00:01:11,609 --> 00:01:14,548
+Jeden z kroków to kontrola
+palet na magazynie.
+
+17
+00:01:14,598 --> 00:01:18,902
+Planista widzi tu, ile palet sprawdzono,
+a ile czeka na rekontrolę.
+
+18
+00:01:19,485 --> 00:01:24,594
+Dla każdej wysokości palety system rysuje
+osobny scenariusz w trzech wymiarach.
+
+19
+00:01:24,644 --> 00:01:27,402
+Na tej podstawie transport
+zamawia przewóz.
+
+20
+00:01:28,176 --> 00:01:29,351
+Teraz magazyn.
+
+21
+00:01:29,401 --> 00:01:34,076
+Kontroler pracuje na skanerze, w
+zwykłej przeglądarce.
+
+22
+00:01:34,126 --> 00:01:38,888
+Skanuje etykietę palety, czyli HU,
+i liczy jej pozycje.
+
+23
+00:01:39,617 --> 00:01:41,925
+Kolejkę palet ustala system.
+
+24
+00:01:41,975 --> 00:01:47,062
+Najpierw własne rezerwacje, potem
+klienci VIP i palety pilne.
+
+25
+00:01:47,112 --> 00:01:50,852
+Kontroler bierze następną
+jednym przyciskiem.
+
+26
+00:01:51,425 --> 00:01:57,518
+Gdy policzona ilość różni się od danych z SAP,
+system prosi o ponowne przeliczenie.
+
+27
+00:01:57,568 --> 00:02:02,477
+Potwierdzona niezgodność blokuje paletę
+i kieruje ją do rekontroli.
+
+28
+00:02:03,239 --> 00:02:08,186
+Lider widzi zmianę na żywo i listę
+rekontroli, najstarsze na górze.
+
+29
+00:02:08,236 --> 00:02:13,481
+Rekontrolę przydziela innemu kontrolerowi
+niż autor pierwszej kontroli.
+
+30
+00:02:14,070 --> 00:02:18,655
+Najważniejsza decyzja projektu: SAP
+pozostaje tylko do odczytu.
+
+31
+00:02:18,705 --> 00:02:21,819
+Błąd w aplikacji nie
+uszkodzi danych firmy.
+
+32
+00:02:21,869 --> 00:02:26,454
+Rozbieżność zamyka proces magazynu, a
+nie automatyczna korekta.
+
+33
+00:02:27,288 --> 00:02:28,774
+To wszystko w skrócie.
+
+34
+00:02:28,824 --> 00:02:33,034
+Dokumentacja analityczna i kod są w
+repozytorium na GitHubie.
+
+35
+00:02:33,084 --> 00:02:34,291
+Dziękuję za uwagę.

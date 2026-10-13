@@ -4,7 +4,7 @@ TEST := sh web/scripts/test.sh
 COMPOSE_TEST := docker compose -f docker-compose.test.yml
 PG_URL := postgresql://palviz:palviz@127.0.0.1:55433/palviz_test
 
-.PHONY: test test-full test-role test-pg test-db-up test-db-down seed test-visual test-visual-update test-flow
+.PHONY: test test-full test-role test-pg test-db-up test-db-down seed test-visual test-visual-update test-flow video
 
 test:            ## szybkie: palletizer + check + Django (SQLite, --parallel, --failfast)
 	$(TEST) fast
@@ -36,3 +36,6 @@ test-visual-update:  ## nowe wzorce po świadomej zmianie wyglądu (obejrzyj dif
 
 test-flow:        ## przepływy E2E (@flow: DOM/tekst, bez zrzutów — dowolny OS; nocny CI e2e-nightly.yml)
 	cd tests/e2e && npm ci --no-audit --no-fund && npx playwright test --grep @flow
+
+video:           ## film z lektorem na YouTube → output/video/ (wymaga serwera demo na :8080, playwright, segno, ffmpeg)
+	python tools/record_demo.py

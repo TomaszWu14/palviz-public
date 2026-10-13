@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- Plansze filmu (record_demo.py): intro / outro / thumb. Pola {{…}} wypełnia skrypt.
+     Kolory jak w panelu pokazu (demo.css): granat #0f172a + żółty akcent #facc15. -->
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Inter"; src: url("{{FONT}}") format("woff2"); font-weight: 100 900; }
+  :root { --bg: #0b1220; --bg2: #13203a; --ink: #f8fafc; --muted: #94a3b8; --soft: #cbd5e1;
+          --accent: #facc15; --blue: #3b82f6; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: {{W}}px; height: {{H}}px; overflow: hidden; }
+  body { font-family: Inter, system-ui, sans-serif; color: var(--ink);
+         background:
+           radial-gradient(1200px 700px at 85% 10%, rgba(59,130,246,.22), transparent 60%),
+           radial-gradient(900px 600px at 0% 100%, rgba(250,204,21,.10), transparent 60%),
+           linear-gradient(160deg, var(--bg2), var(--bg)); }
+  /* delikatna siatka palet w tle */
+  body::before { content: ""; position: absolute; inset: 0; opacity: .07;
+    background-image: linear-gradient(var(--soft) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--soft) 1px, transparent 1px);
+    background-size: 60px 60px; mask-image: linear-gradient(90deg, #000 0%, transparent 70%); }
+  .card { position: absolute; inset: 0; display: none; }
+  body[data-card="intro"] .intro, body[data-card="outro"] .outro, body[data-card="thumb"] .thumb { display: grid; }
+
+  .tag { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: .14em;
+         text-transform: uppercase; color: var(--accent); font-size: 22px; }
+  .tag::before { content: ""; width: 44px; height: 6px; border-radius: 3px; background: var(--accent); }
+  .brand { font-weight: 800; letter-spacing: -.045em; line-height: .9; }
+  .brand b { color: var(--accent); font-weight: 800; }
+  .shot { border-radius: 22px; overflow: hidden; box-shadow: 0 40px 90px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.08);
+          background: #fff; }
+  .shot img { display: block; width: 100%; }
+  .foot { position: absolute; left: 120px; bottom: 64px; color: var(--muted); font-size: 22px; }
+
+  /* intro 1920×1080 */
+  .intro { grid-template-columns: 1fr 820px; align-items: center; padding: 0 120px; gap: 80px; }
+  .intro .brand { font-size: 190px; margin: 28px 0 34px; }
+  .intro p { font-size: 46px; line-height: 1.25; color: var(--soft); font-weight: 500; max-width: 820px; }
+  .intro .shot { transform: perspective(1800px) rotateY(-14deg) rotateX(4deg); }
+
+  /* outro 1920×1080 */
+  .outro { grid-template-columns: 1fr 460px; align-items: center; padding: 0 120px; gap: 100px; }
+  .outro h2 { font-size: 104px; font-weight: 800; letter-spacing: -.035em; line-height: 1.02; margin: 26px 0 40px; }
+  .outro .url { display: inline-block; font-size: 58px; font-weight: 700; color: var(--bg);
+                background: var(--accent); padding: 16px 30px; border-radius: 18px; letter-spacing: -.01em; }
+  .outro .repo { margin-top: 34px; font-size: 34px; color: var(--soft); }
+  .outro .repo span { color: var(--muted); }
+  .qr { background: #fff; border-radius: 28px; padding: 34px; box-shadow: 0 30px 70px rgba(0,0,0,.45); }
+  .qr svg { display: block; width: 100%; height: auto; }
+  .qr figcaption { margin-top: 18px; text-align: center; color: #0f172a; font-size: 26px; font-weight: 700; }
+
+  /* miniatura 1280×720 */
+  .thumb { grid-template-columns: 560px 1fr; align-items: center; padding: 0 0 0 72px; gap: 36px; }
+  .thumb .brand { font-size: 138px; margin: 18px 0 22px; }
+  .thumb ul { list-style: none; padding: 0; display: grid; gap: 12px; }
+  .thumb li { font-size: 40px; font-weight: 700; line-height: 1.1; }
+  .thumb li::before { content: "■ "; color: var(--accent); }
+  .thumb .shot { border-radius: 22px 0 0 22px; transform: translateX(8px); }
+  .thumb .tag { font-size: 24px; }
+</style>
+</head>
+<body data-card="{{CARD}}">
+  <section class="card intro">
+    <div>
+      <span class="tag">Prezentacja · {{DURATION}}</span>
+      <h1 class="brand">Log<b>Viz</b></h1>
+      <p>Paletyzacja 3D, wysyłki i&nbsp;kontrola palet na skanerze w&nbsp;jednej aplikacji.</p>
+    </div>
+    <figure class="shot"><img src="{{SHOT_INTRO}}" alt=""></figure>
+    <div class="foot">Projekt portfolio · dane fikcyjne</div>
+  </section>
+
+  <section class="card outro">
+    <div>
+      <span class="tag">Wypróbuj sam</span>
+      <h2>Bez logowania,<br>bez zakładania konta.</h2>
+      <div class="url">{{DEMO_URL_SHORT}}</div>
+      <div class="repo"><span>Kod i dokumentacja:</span> {{REPO_URL_SHORT}}</div>
+    </div>
+    <figure class="qr">{{QR_SVG}}<figcaption>Zeskanuj i wejdź</figcaption></figure>
+    <div class="foot">Dane w wersji demo są fikcyjne i co noc wracają do stanu wyjściowego.</div>
+  </section>
+
+  <section class="card thumb">
+    <div>
+      <span class="tag">Demo · {{DURATION}}</span>
+      <h1 class="brand">Log<b>Viz</b></h1>
+      <ul><li>Palety w 3D</li><li>Skaner HU</li><li>Wysyłki</li></ul>
+    </div>
+    <figure class="shot"><img src="{{SHOT_THUMB}}" alt=""></figure>
+  </section>
+</body>
+</html>

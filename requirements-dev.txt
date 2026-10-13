@@ -8,3 +8,5 @@ django-extensions==4.1   # shell_plus, runserver_plus, model graphs
 django-debug-toolbar==8.0.0 # query/profiling panel (dev only, env-gated)
 bandit==1.9.4              # security static analysis
 pip-audit==2.10.1           # dependency vulnerability scan
+playwright==1.63.0          # tools/record_demo.py — nagranie pokazu z lektorem (make video)
+segno==1.6.6                # tools/record_demo.py — kod QR na planszy końcowej filmu

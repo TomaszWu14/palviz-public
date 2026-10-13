@@ -15,7 +15,8 @@
       "action": "navigate",
       "url": "/",
       "selector": ".hub__grid",
-      "text": "To jest LogViz. Jedna aplikacja dla magazynu, transportu i obsługi klienta. Po zalogowaniu każdy widzi tylko moduły swojej roli."
+      "text": "To jest LogViz. Jedna aplikacja dla magazynu, transportu i obsługi klienta. Po zalogowaniu każdy widzi tylko moduły swojej roli.",
+      "chapter": "Hub modułów"
     },
     {
       "id": "krok02",
@@ -23,7 +24,8 @@
       "url": "/data-center/",
       "selector": ".dc-ring",
       "closest": ".card",
-      "text": "Data Center zbiera dane podstawowe: produkty, kartony, klientów i stany magazynowe. Wskaźnik kompletności pokazuje, ilu produktom brakuje danych do obliczeń."
+      "text": "Data Center zbiera dane podstawowe: produkty, kartony, klientów i stany magazynowe. Wskaźnik kompletności pokazuje, ilu produktom brakuje danych do obliczeń.",
+      "chapter": "Data Center"
     },
     {
       "id": "krok03",
@@ -40,14 +42,15 @@
       "selector": "button[type=submit].btn-primary",
       "contains": "Przelicz",
       "closest": "form",
-      "text": "Kalkulator paletyzacji liczy, jak ułożyć kartony na palecie EU sto dwadzieścia na osiemdziesiąt. Planista podaje wymiary kartonu, wagę i wysokość ładunku."
+      "text": "Kalkulator paletyzacji liczy, jak ułożyć kartony na palecie EU sto dwadzieścia na osiemdziesiąt. Planista podaje wymiary kartonu, wagę i wysokość ładunku.",
+      "chapter": "Paletyzacja 3D"
     },
     {
       "id": "krok05",
       "action": "click",
       "selector": "button[type=submit].btn-primary",
       "contains": "Przelicz",
-      "focus": "#result-area",
+      "focus": ".g-pallet",
       "text": "Silnik porównuje kilkanaście wariantów ułożenia. Najlepszy pokazuje w trzech wymiarach, razem z wagą i środkiem ciężkości."
     },
     {
@@ -55,7 +58,8 @@
       "action": "navigate",
       "url": "/planner/shipments/",
       "selector": ".card--accent",
-      "text": "Lista wysyłek pokazuje objętość, liczbę palet i status realizacji każdej przesyłki."
+      "text": "Lista wysyłek pokazuje objętość, liczbę palet i status realizacji każdej przesyłki.",
+      "chapter": "Wysyłki i załadunek 3D"
     },
     {
       "id": "krok07",
@@ -79,7 +83,8 @@
       "action": "navigate",
       "url": "/control/",
       "selector": "#hu-scan-form",
-      "text": "Teraz magazyn. Kontroler pracuje na skanerze, w zwykłej przeglądarce. Skanuje etykietę palety, czyli HU, i liczy jej pozycje."
+      "text": "Teraz magazyn. Kontroler pracuje na skanerze, w zwykłej przeglądarce. Skanuje etykietę palety, czyli HU, i liczy jej pozycje.",
+      "chapter": "Kontrola HU na skanerze"
     },
     {
       "id": "krok10",
@@ -100,18 +105,21 @@
       "selector": ".card-header__title",
       "contains": "Rekontrole",
       "closest": ".card",
-      "text": "Lider widzi zmianę na żywo i listę rekontroli, najstarsze na górze. Rekontrolę przydziela innemu kontrolerowi niż autor pierwszej kontroli."
+      "text": "Lider widzi zmianę na żywo i listę rekontroli, najstarsze na górze. Rekontrolę przydziela innemu kontrolerowi niż autor pierwszej kontroli.",
+      "chapter": "Panel lidera"
     },
     {
       "id": "krok13",
       "action": "highlight",
-      "text": "Najważniejsza decyzja projektu: SAP pozostaje tylko do odczytu. Błąd w aplikacji nie uszkodzi danych firmy. Rozbieżność zamyka proces magazynu, a nie automatyczna korekta."
+      "text": "Najważniejsza decyzja projektu: SAP pozostaje tylko do odczytu. Błąd w aplikacji nie uszkodzi danych firmy. Rozbieżność zamyka proces magazynu, a nie automatyczna korekta.",
+      "chapter": "Architektura: SAP tylko do odczytu"
     },
     {
       "id": "krok14",
       "action": "navigate",
       "url": "/",
-      "text": "To wszystko w skrócie. Dokumentacja analityczna i kod są w repozytorium na GitHubie. Dziękuję za uwagę."
+      "text": "To wszystko w skrócie. Dokumentacja analityczna i kod są w repozytorium na GitHubie. Dziękuję za uwagę.",
+      "chapter": "Podsumowanie"
     }
   ]
 }
