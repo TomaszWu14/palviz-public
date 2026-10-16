@@ -11,9 +11,9 @@ name: CodeQL
 
 on:
   schedule:
-    # Monthly full scan (1st of the month, 05:17 UTC) catches newly published CodeQL rules
-    # even when nothing changed.
-    - cron: "17 5 1 * *"
+    # Co tydzień (poniedziałek 05:17 UTC; ADR-0019 — wcześniej co miesiąc): nowe reguły CodeQL
+    # łapane bez czekania na zmianę w kodzie.
+    - cron: "17 5 * * 1"
   workflow_dispatch:
 
 # A newer run on the same ref supersedes an in-flight one.

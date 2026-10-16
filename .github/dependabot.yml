@@ -1,0 +1,36 @@
+# Dependabot (ADR-0019, audyt S-01/S-09): cotygodniowe PR-y z aktualizacjami zależności.
+# Wersje runtime są przypięte (requirements.txt) — Dependabot podbija piny; po merge CI testuje.
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Warsaw
+    open-pull-requests-limit: 5
+    groups:
+      python-minor-patch:
+        update-types: ["minor", "patch"]
+    commit-message:
+      prefix: "chore(deps)"
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Warsaw
+    commit-message:
+      prefix: "chore(ci)"
+  - package-ecosystem: npm
+    directory: "/web"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Warsaw
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(deps)"

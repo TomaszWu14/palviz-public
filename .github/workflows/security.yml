@@ -1,21 +1,25 @@
 name: Security
 
-# Security scanners that complement CodeQL (SAST) and Dependabot (dependency PRs):
-#   • gitleaks     — secret detection (gated: a leaked secret fails the run)
-#   • Trivy        — filesystem scan: dependency CVEs, IaC/Dockerfile misconfig, secrets
-#   • pip-audit    — Python dependency CVEs (PyPI advisory DB)
-#   • Bandit       — Python static security analysis
-#   • npm audit    — front-end dependency CVEs (web/package-lock.json)
-#
-# All are informational (non-blocking) EXCEPT gitleaks — a committed secret is worth
-# failing on. SARIF is uploaded to the Security ▸ Code scanning tab when GitHub Advanced
-# Security is enabled (this repo is private, so GHAS is required for the tab); the
-# uploads are continue-on-error so the run stays green without GHAS, and every scanner
-# also prints human-readable output to the job log regardless.
+# Skanery bezpieczeństwa (ADR-0019 — Proponowana; audyt 2026-10-15 S-01/S-09):
+#   • gitleaks   — sekrety w historii i diffie: BLOKUJE (PR, push, tygodniowo)
+#   • Bandit     — SAST Python: BLOKUJE przy HIGH severity + HIGH confidence (ten sam próg co
+#                  pre-commit); pełny raport informacyjnie w podsumowaniu joba
+#   • pip-audit  — CVE zależności Pythona: informacyjnie (podsumowanie joba)
+#   • Trivy fs   — CVE + misconfig (Dockerfile/compose) + sekrety: informacyjnie na PR
+#   • npm audit  — CVE bibliotek front-end (web/package-lock.json): informacyjnie
+#   • Trivy image — tygodniowo/ręcznie: build obrazu z Dockerfile i skan; CRITICAL/HIGH z poprawką
+#                  czerwieni przebieg
+# Wymaganym checkiem na main pozostaje `test` (ci.yml, ADR-0009). Czy `Security` ma być drugim
+# wymaganym checkiem — decyzja PO (ADR-0019). SARIF trafia do zakładki Security ▸ Code scanning
+# (continue-on-error, gdyby code scanning był wyłączony). Uruchomienie lokalne: CONTRIBUTING.md §6.
 
 on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
   schedule:
-    - cron: "0 5 * * 1"    # co tydzień, poniedziałek 05:00 UTC (audyt CICD-006)
+    - cron: "0 5 * * 1"    # co tydzień, poniedziałek 05:00 UTC
   workflow_dispatch:
 
 concurrency:
@@ -26,30 +30,65 @@ permissions:
   contents: read
 
 jobs:
-  # ── Secret detection — the one gating scan ──────────────────────────────────
+  # ── Sekrety — blokuje ────────────────────────────────────────────────────────
   gitleaks:
-    name: gitleaks (secrets)
+    name: gitleaks (sekrety, blokuje)
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read     # gitleaks-action lists PR commits on pull_request events
+      pull-requests: read     # gitleaks-action listuje commity PR
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          fetch-depth: 0        # scan full history, not just the tip commit
+          fetch-depth: 0        # pełna historia, nie tylko czubek
       - name: Run gitleaks
         uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # gitleaks-action is free for personal-account repos; GITLEAKS_LICENSE is
-          # only needed for GitHub Organizations.
+          # gitleaks-action jest darmowy dla repo na koncie osobistym; GITLEAKS_LICENSE
+          # potrzebny tylko dla organizacji.
 
-  # ── Trivy filesystem scan: CVEs + misconfig + secrets ───────────────────────
-  # Runs on the weekly schedule + manual dispatch (no PR/push trigger).
-  # PRs are not scanned here — the CI gate (ci.yml) does not run these scanners.
+  # ── SAST Python — HIGH/HIGH blokuje, reszta informacyjnie ──────────────────
+  bandit-gate:
+    name: Bandit (HIGH/HIGH blokuje)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Install Bandit
+        run: pip install "bandit[toml,sarif]==1.9.4"
+      - name: Bandit — bramka (HIGH severity + HIGH confidence)
+        # Ten sam próg co hook pre-commit (.pre-commit-config.yaml). Konfiguracja: pyproject [tool.bandit]
+        # (bez tests/migrations/vendor, B101 pominięte). Fałszywy alarm = `# nosec Bxxx` z uzasadnieniem.
+        run: bandit -c pyproject.toml -r web palletizer --severity-level high --confidence-level high -q
+      - name: Bandit — pełny raport (informacyjnie)
+        continue-on-error: true
+        run: |
+          bandit -c pyproject.toml -r web palletizer -q -f txt -o bandit.txt || true
+          {
+            echo "### Bandit — pełny raport (informacyjnie; bramka = HIGH/HIGH wyżej)"
+            echo '```'
+            tail -n 40 bandit.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Bandit — SARIF
+        continue-on-error: true
+        run: bandit -c pyproject.toml -r web palletizer -f sarif -o bandit.sarif || true
+      - name: Upload Bandit SARIF
+        uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4
+        continue-on-error: true
+        with:
+          sarif_file: bandit.sarif
+          category: bandit
+
+  # ── Trivy fs: CVE + misconfig + sekrety — informacyjnie ─────────────────────
   trivy:
-    name: Trivy (fs)
-    if: github.event_name != 'pull_request'
+    name: Trivy (fs, informacyjnie)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -57,17 +96,17 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Trivy — human-readable (table, non-blocking)
+      - name: Trivy — tabela (nie blokuje)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: fs
           scanners: vuln,misconfig,secret
           format: table
-          exit-code: "0"          # informational — surface, don't fail
+          exit-code: "0"          # informacyjnie — pokazuje, nie blokuje
           ignore-unfixed: true
           skip-dirs: web/ui/static/ui/vendor
 
-      - name: Trivy — SARIF (for code scanning)
+      - name: Trivy — SARIF (code scanning)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: fs
@@ -79,21 +118,17 @@ jobs:
 
       - name: Upload Trivy SARIF
         uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4
-        continue-on-error: true   # needs GHAS on private repos
+        continue-on-error: true
         with:
           sarif_file: trivy-results.sarif
           category: trivy-fs
 
-  # ── Python: dependency CVEs + static security ───────────────────────────────
-  # NOT part of the PR gate (ci.yml runs no pip-audit/Bandit, decyzja 2026-08-18) —
-  # they run only on the weekly schedule + manual dispatch.
+  # ── Python: CVE zależności — informacyjnie ──────────────────────────────────
   python-audit:
-    name: pip-audit + Bandit
-    if: github.event_name != 'pull_request'
+    name: pip-audit (informacyjnie)
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      security-events: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -101,34 +136,30 @@ jobs:
           python-version: "3.11"
           cache: pip
 
-      - name: Install scanners
-        run: pip install pip-audit "bandit[sarif]"
+      - name: Install pip-audit
+        run: pip install pip-audit
 
-      - name: pip-audit (dependency CVEs)
-        continue-on-error: true   # informational
-        run: pip-audit -r requirements.txt --desc
+      - name: pip-audit (CVE zależności runtime)
+        continue-on-error: true   # informacyjnie (ADR-0019 wariant A); blokada = wariant B
+        run: |
+          set -o pipefail
+          pip-audit -r requirements.txt --desc 2>&1 | tee pip-audit.txt
+      - name: Podsumowanie
+        if: always()
+        run: |
+          {
+            echo "### pip-audit — requirements.txt (informacyjnie)"
+            echo '```'
+            tail -n 40 pip-audit.txt 2>/dev/null || echo "brak wyniku"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Bandit (static security, readable)
-        continue-on-error: true   # informational — config in pyproject [tool.bandit]
-        run: bandit -c pyproject.toml -r web/ui palletizer -q
-
-      - name: Bandit — SARIF
-        continue-on-error: true
-        run: bandit -c pyproject.toml -r web/ui palletizer -f sarif -o bandit.sarif || true
-
-      - name: Upload Bandit SARIF
-        uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4
-        continue-on-error: true   # needs GHAS on private repos
-        with:
-          sarif_file: bandit.sarif
-          category: bandit
-
-  # ── Front-end dependency CVEs ───────────────────────────────────────────────
-  # Runs on the weekly schedule + manual dispatch.
+  # ── Front-end: CVE zależności — informacyjnie ───────────────────────────────
   npm-audit:
-    name: npm audit (frontend)
-    if: github.event_name != 'pull_request'
+    name: npm audit (frontend, informacyjnie)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     defaults:
       run:
         working-directory: web
@@ -144,5 +175,55 @@ jobs:
         run: npm ci --ignore-scripts
 
       - name: npm audit
-        continue-on-error: true   # informational
-        run: npm audit --audit-level=high
+        continue-on-error: true   # informacyjnie
+        run: |
+          set -o pipefail
+          npm audit --audit-level=high 2>&1 | tee npm-audit.txt
+      - name: Podsumowanie
+        if: always()
+        run: |
+          {
+            echo "### npm audit — web/package-lock.json (informacyjnie)"
+            echo '```'
+            tail -n 30 npm-audit.txt 2>/dev/null || echo "brak wyniku"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ── Obraz Dockera: build + skan — tygodniowo / ręcznie ──────────────────────
+  # Nie na PR (build ~5 min i pobieranie bibliotek JS z CDN) — ADR-0009/0019.
+  image-scan:
+    name: Trivy (obraz Dockera, tygodniowo)
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Build image (Dockerfile jak w Coolify, bez cache)
+        run: docker build --build-arg SOURCE_COMMIT="${GITHUB_SHA}" -t palviz:ci .
+      - name: Trivy — obraz (CRITICAL/HIGH z poprawką blokuje)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: image
+          image-ref: palviz:ci
+          format: table
+          exit-code: "1"
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+      - name: Trivy — obraz SARIF
+        if: always()
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: image
+          image-ref: palviz:ci
+          format: sarif
+          output: trivy-image.sarif
+          ignore-unfixed: true
+      - name: Upload Trivy image SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4
+        continue-on-error: true
+        with:
+          sarif_file: trivy-image.sarif
+          category: trivy-image

@@ -67,3 +67,4 @@ Co zyskujemy, co tracimy, co trzeba pilnować (test / strażnik CI).
 | [0016](0016-nawigacja-launcher-ctrl-k.md) | Nawigacja — launcher Ctrl+K zamiast grupowania paska | Przyjęta | 2026-08-08 |
 | [0017](0017-migracje-expand-contract.md) | Migracje expand → contract | Przyjęta | 2026-09-28 |
 | [0018](0018-decyzje-procesowe-2026-09-28.md) | Decyzje procesowe 2026-09-28 | Przyjęta | 2026-09-28 |
+| [0019](0019-skanery-bezpieczenstwa-na-pr.md) | Skanery bezpieczeństwa na każdym PR obok szybkiej bramki testów | Proponowana | 2026-10-16 |
