@@ -35,6 +35,15 @@ Wdrożenie w trzech fazach:
    w osobnym PR. Następnie polityka `Report-Only` dla zalogowanych dostaje nonce zamiast
    `'unsafe-inline'`, żeby raporty na `/csp-report/` pokazywały realne naruszenia.
    `'unsafe-eval'` zostaje tylko na ekranach z Plotly, dopóki nie zmienimy sposobu renderowania.
+   Postęp i strażnik: `ui.tests.test_csp_phase2_templates` (lista `CONVERTED` rośnie z każdym
+   modułem). Krok 1 — wspólny szkielet (`base.html`, `scanner/base.html`, dzwonek, powiadomienia,
+   powitanie demo, hub) — zrobiony. Ustalenia z inwentaryzacji (74 szablony):
+   - **Fragmenty doładowywane** (np. `_panel.html` z kalkulatora, zwracany z widoku jako HTML):
+     ich skrypty dostają nonce innego żądania niż strona. Rozwiązanie w kroku danego modułu:
+     przenieść JS fragmentu do pliku statycznego albo ustawić `htmx.config.inlineScriptNonce`
+     na nonce strony.
+   - **Alpine.js** (vendorowany) w zwykłym buildzie wymaga `'unsafe-eval'` — tak jak Plotly.
+     Przed fazą 3 trzeba go zastąpić buildem CSP albo zostawić `'unsafe-eval'` na tych ekranach.
 3. **Wymuszenie globalne.** Po 2 tygodniach bez naruszeń w raportach PO ustawia
    `CSP_REPORT_ONLY=false`. ADR-0008 dostaje wtedy status „Zastąpiona przez ADR-0020”.
 

@@ -22,6 +22,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   Strażnik: `ui.tests.test_naming_us011`.
 
 ### Security
+- US-008 (#19), faza 2 krok 1 (ADR-0020): wspólny szkielet stron (`base.html`, `scanner/base.html`,
+  dzwonek, powiadomienia, powitanie demo, hub) z nonce na skryptach inline i bez handlerów `on*=`.
+  Strażnik `ui.tests.test_csp_phase2_templates`. Zachowanie ekranów bez zmian (polityka nadal report-only).
 - US-008 (#19), faza 1 (ADR-0020): wymuszona ścisła CSP z nonce na stronach dostępnych bez logowania
   (logowanie, oferta spedytora, gotowość magazynu, formularz i potwierdzenie kierowcy) — wstrzyknięty
   skrypt jest blokowany. `core/csp.py` (nonce na żądanie, `{{ csp_nonce }}`, dekorator `strict_csp`);

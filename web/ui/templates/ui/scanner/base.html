@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Kontrola HU">
-  <script>
+  <script nonce="{{ csp_nonce }}">
     // Capture the install prompt so a "Zainstaluj aplikację" button can trigger it.
     window._pwaPrompt = null;
     // Odpalona jako zainstalowana apka (standalone) → nigdy nie pokazuj „Zainstaluj”.
@@ -328,7 +328,7 @@
       {% if leader_msg_url %}
       <span class="lead-msg" style="position:relative;margin-left:8px">
         <button type="button" aria-label="Napisz do lidera"
-                onclick="var l=this.nextElementSibling;l.hidden=!l.hidden;"
+                data-toggle-next
                 style="background:transparent;border:0;color:#fff;cursor:pointer;padding:8px;min-height:40px;display:inline-flex;align-items:center">{% icon "mail" 20 %}</button>
         <a href="{{ leader_msg_url }}" hidden
            style="position:absolute;top:100%;right:0;margin-top:4px;background:#fff;color:#0c5c58;font-size:13px;font-weight:800;white-space:nowrap;padding:8px 12px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.18);text-decoration:none;z-index:30">Napisz do lidera</a>
@@ -375,14 +375,14 @@
       <div id="qr-hit" style="min-height:22px;color:#e5e7eb;font-size:15px;font-weight:700;
            text-align:center;margin-bottom:10px;word-break:break-all">Szukam kodu…</div>
       <div style="display:flex;gap:10px">
-        <button type="button" onclick="palvizStopScan()"
+        <button type="button" id="qr-stop"
                 style="flex:1;padding:18px;border:0;border-radius:12px;background:#374151;color:#fff;font-size:17px;font-weight:700">Zamknij</button>
-        <button type="button" id="qr-accept" onclick="palvizScanAccept()" disabled
+        <button type="button" id="qr-accept" disabled
                 style="flex:2;padding:18px;border:0;border-radius:12px;background:#4b5563;color:#9ca3af;font-size:19px;font-weight:800">{% icon "check" 20 %} Skanuj</button>
       </div>
     </div>
   </div>
-  <script>
+  <script nonce="{{ csp_nonce }}">
     var _scanStream = null, _scanRun = false, _scanInput = null,
         _scanValue = '', _scanSeen = 0, _scanLastAt = 0;
     function _scanSetHit(value){
@@ -631,6 +631,14 @@
         f.style.opacity = '.6';
         if (f.requestSubmit) f.requestSubmit(); else f.submit();
       };
+      // US-008 faza 2: handlery przez addEventListener — ścisła CSP blokuje atrybuty on*=.
+      var qrStop = document.getElementById('qr-stop');
+      if (qrStop) qrStop.addEventListener('click', function(){ window.palvizStopScan(); });
+      var qrAccept = document.getElementById('qr-accept');
+      if (qrAccept) qrAccept.addEventListener('click', function(){ window.palvizScanAccept(); });
+      document.querySelectorAll('[data-toggle-next]').forEach(function(b){
+        b.addEventListener('click', function(){ var l = b.nextElementSibling; l.hidden = !l.hidden; });
+      });
     })();
   </script>
   {% if request.user.is_authenticated %}{% include "ui/_notif_alert.html" %}{% endif %}

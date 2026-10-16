@@ -30,7 +30,7 @@
     </div>
     <a class="demo-welcome__tour" href="/?demo=1">▶ Pokaz z lektorem (2 min)</a>
     <button type="button" class="demo-welcome__close" aria-label="Ukryj wskazówki"
-            onclick="try{localStorage.setItem('lvWelcomeHidden','1')}catch(e){};this.closest('section').hidden=true">×</button>
+            id="demo-welcome-close">×</button>
   </div>
   <ol>
     <li><a href="{% url 'ui:data_center' %}"><strong>Data Center</strong>Dane podstawowe: produkty, kartony, klienci i wskaźnik kompletności.</a></li>
@@ -39,4 +39,10 @@
     <li><a href="{% url 'ui:hu_my_shift' %}"><strong>Skaner kontroli palet</strong>„Weź następną”, policz kartony; niezgodność wysyła paletę do rekontroli.</a></li>
   </ol>
 </section>
-<script>try{if(localStorage.getItem('lvWelcomeHidden'))document.getElementById('demo-welcome').hidden=true}catch(e){}</script>
+<script nonce="{{ csp_nonce }}">
+  try { if (localStorage.getItem('lvWelcomeHidden')) document.getElementById('demo-welcome').hidden = true; } catch (e) {}
+  document.getElementById('demo-welcome-close').addEventListener('click', function () {
+    try { localStorage.setItem('lvWelcomeHidden', '1'); } catch (e) {}
+    this.closest('section').hidden = true;
+  });
+</script>

@@ -2,7 +2,7 @@
 {% block title %}Wybór modułu — {{ app_name }}{% endblock %}
 {% block extra_head %}
 {% if scanner_app %}
-<script>
+<script nonce="{{ csp_nonce }}">
   // Zainstalowana apka skanera (to okno, nie cała przeglądarka) → bez huba, wprost do skanera.
   // Zwykła karta przeglądarki zostaje na hubie z kafelkami modułów.
   if (window.pvInstalledApp && window.pvInstalledApp()) location.replace("{% url 'ui:scanner_launcher' %}");
