@@ -321,6 +321,10 @@ def planner_shipment_send_quote(request, pk, recipient_id):
     return redirect("ui:planner_shipment_quote", pk=pk)
 
 
+# US-015 / P14: waluty przyjmowane w ofercie przewoźnika (ISO 4217).
+QUOTE_CURRENCIES = frozenset({"PLN", "EUR", "USD", "GBP", "CZK"})
+
+
 @post_rate_limit("quote_response", 20, 3600, by="token")   # SEC-014
 def quote_response(request, token):
     """Public, tokenised form for a forwarder to enter the price + dates."""
@@ -338,11 +342,17 @@ def quote_response(request, token):
                 return _dt.strptime((s or "").strip(), "%Y-%m-%d").date()
             except ValueError:
                 return None
+        # US-015 / P13: pusta kwota nie może stać się 0 zł („najtańsza” oferta w historii).
+        raw_amount = (request.POST.get("amount") or "").replace(",", ".").replace(" ", "")
         try:
-            offer.amount = Decimal((request.POST.get("amount") or "0").replace(",", ".").replace(" ", ""))
+            offer.amount = Decimal(raw_amount) if raw_amount else None
         except (InvalidOperation, ValueError):
             offer.amount = None
-        offer.currency = (request.POST.get("currency") or "PLN")[:3].upper()
+        if offer.amount is not None and not offer.amount.is_finite():
+            offer.amount = None
+        # US-015 / P14: tylko waluty z listy — nieznany kod psuł porównanie wszystkich ofert.
+        currency = (request.POST.get("currency") or "PLN").strip().upper()
+        offer.currency = currency if currency in QUOTE_CURRENCIES else offer.currency or "PLN"
         offer.truck_date = _date(request.POST.get("truck_date"))
         offer.delivery_date = _date(request.POST.get("delivery_date"))
         offer.notes = (request.POST.get("notes") or "")[:300]
@@ -366,6 +376,13 @@ def quote_response(request, token):
             return render(request, "ui/quote_response.html", _quote_response_context(
                 request, offer, sh,
                 error="Podaj poprawną kwotę oferty (bez separatora tysięcy, np. 1234,56)."))
+        if offer.amount <= 0:
+            return render(request, "ui/quote_response.html", _quote_response_context(
+                request, offer, sh, error="Kwota oferty musi być większa od zera."))
+        if currency not in QUOTE_CURRENCIES:
+            return render(request, "ui/quote_response.html", _quote_response_context(
+                request, offer, sh,
+                error="Nieobsługiwana waluta. Dozwolone: " + ", ".join(sorted(QUOTE_CURRENCIES)) + "."))
         # Delivery date can't be earlier than the truck-spotting date.
         if offer.truck_date and offer.delivery_date and offer.delivery_date < offer.truck_date:
             return render(request, "ui/quote_response.html", _quote_response_context(
