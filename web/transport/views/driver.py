@@ -6,6 +6,7 @@ from ui.views.core import (
     get_object_or_404, messages, redirect, render, require_POST, transaction,
 )
 from core.csp import strict_csp
+from transport.links import link_ttl_expired
 from core.ratelimit import post_rate_limit
 from django.urls import reverse
 from django.utils import timezone
@@ -151,11 +152,8 @@ _CLOSED_SHIPMENT = ("sent", "cancelled")
 
 
 def _link_expired(request, da):
-    from datetime import timedelta
-    from django.conf import settings as _st
-    ttl = int(getattr(_st, "DRIVER_LINK_TTL_DAYS", 30) or 0)
-    expired = da.shipment.status in _CLOSED_SHIPMENT or (
-        ttl and da.created_at and da.created_at < timezone.now() - timedelta(days=ttl))
+    expired = (da.shipment.status in _CLOSED_SHIPMENT
+               or link_ttl_expired(da.created_at, "DRIVER_LINK_TTL_DAYS"))
     return render(request, "ui/link_expired.html", status=410) if expired else None
 
 

@@ -8,6 +8,8 @@ from ui.views.core import (
 from transport.pallet_count import shipment_pallet_calc
 from django.conf import settings
 from core.csp import strict_csp
+from core.uploads import check_upload
+from transport.links import link_ttl_expired
 from core.ratelimit import post_rate_limit
 from django.urls import reverse
 from django.utils import timezone
@@ -326,12 +328,8 @@ def planner_shipment_send_quote(request, pk, recipient_id):
 QUOTE_CURRENCIES = frozenset({"PLN", "EUR", "USD", "GBP", "CZK"})
 
 
-def link_ttl_expired(issued_at):
-    """US-006 / S-07: czy link wystawiony `issued_at` przekroczył QUOTE_LINK_TTL_DAYS (0 = bez limitu)."""
-    from datetime import timedelta
-    from django.conf import settings as _st
-    ttl = int(getattr(_st, "QUOTE_LINK_TTL_DAYS", 30) or 0)
-    return bool(ttl and issued_at and issued_at < timezone.now() - timedelta(days=ttl))
+# US-005: limit załącznika oferty (rozmiar sprawdza check_upload razem z typem pliku).
+QUOTE_ATTACHMENT_MAX_BYTES = 30 * 1024 * 1024
 
 
 @strict_csp   # US-008 / ADR-0020: publiczna strona z tokenem
@@ -373,18 +371,14 @@ def quote_response(request, token):
             import os as _os
             _ok_types = {"application/pdf", "image/jpeg", "image/png"}
             _ok_exts = {".pdf", ".jpg", ".jpeg", ".png"}
-            if att.size > 30 * 1024 * 1024:
-                return render(request, "ui/quote_response.html", _quote_response_context(
-                    request, offer, sh, error="Załącznik zbyt duży (max 30 MB)."))
             # PUBLIC (token-only) upload — restrict to PDF/JPG/PNG so a forwarder can't
             # stash active content (.html/.svg) that would be served from our origin.
             if (att.content_type not in _ok_types
                     or _os.path.splitext(att.name)[1].lower() not in _ok_exts):
                 return render(request, "ui/quote_response.html", _quote_response_context(
                     request, offer, sh, error="Dozwolone tylko PDF / JPG / PNG."))
-            # US-005 / S-07: publiczny upload — typ sprawdzany też po zawartości pliku.
-            from core.uploads import check_upload
-            err = check_upload(att, max_bytes=30 * 1024 * 1024, kinds={"pdf", "jpeg", "png"})
+            # US-005 / S-07: rozmiar i typ po zawartości pliku (publiczny upload).
+            err = check_upload(att, max_bytes=QUOTE_ATTACHMENT_MAX_BYTES, kinds={"pdf", "jpeg", "png"})
             if err:
                 return render(request, "ui/quote_response.html", _quote_response_context(
                     request, offer, sh, error=err))

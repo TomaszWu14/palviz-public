@@ -16,7 +16,7 @@ from core.logmask import TokenMaskFilter, mask_tokens
 from palletweb.config import AppEnv
 from ui.models import QuoteRecipient, Shipment, ShipmentQuoteOffer, WarehouseReadiness
 
-FAKE = "abcdabcdabcdabcd"   # niska entropia — nie myli gitleaks
+FAKE = "abcd" * 8   # 32 znaki hex jak uuid4().hex, niska entropia — nie myli gitleaks
 
 
 class QuoteLinkTtlTests(TestCase):
@@ -79,6 +79,11 @@ class TokenMaskTests(SimpleTestCase):
         masked = mask_tokens(f"/password-reset/MQ/{FAKE}/")
         self.assertNotIn(FAKE, masked)
         self.assertIn("/password-reset/MQ/abcd****/", masked)
+
+    def test_masks_token_on_any_route(self):
+        # Maska nie zależy od listy tras — nowy publiczny link z tokenem jest chroniony od razu.
+        self.assertEqual(mask_tokens(f"/nowa-trasa/{FAKE}?x=1"), "/nowa-trasa/abcd****?x=1")
+        self.assertEqual(mask_tokens(f"/x/{FAKE}"), "/x/abcd****")
 
     def test_leaves_other_paths_alone(self):
         self.assertEqual(mask_tokens("/planner/shipments/12/"), "/planner/shipments/12/")

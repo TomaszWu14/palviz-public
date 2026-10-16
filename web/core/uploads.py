@@ -40,7 +40,7 @@ def check_upload(f, *, max_bytes: int, kinds) -> str | None:
     f.seek(0)
     head = f.read(16)
     f.seek(pos)
-    if sniff(head) not in set(kinds):
+    if sniff(head) not in kinds:
         allowed = ", ".join(sorted(k.upper() for k in kinds))
         return f"Nieprawidłowa zawartość pliku — dozwolone: {allowed}."
     return None
