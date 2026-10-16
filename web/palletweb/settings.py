@@ -323,6 +323,8 @@ CELERY_BEAT_SCHEDULE = {
     "gdpr-retention": {"task": "ui.gdpr_retention", "schedule": 86400.0},  # daily; no-op przy 0 dni
     # Snapshot KPI transportu: dashboard renderuje z cache zamiast liczyć O(N) per request.
     "transport-kpi-refresh": {"task": "ui.refresh_transport_kpi", "schedule": 3600.0},  # hourly
+    # US-017: alerty Kontroli HU (zniknęła / utknęła) niezależnie od wejścia na hub.
+    "hu-alert-tasks": {"task": "ui.raise_hu_alert_tasks", "schedule": 900.0},  # every 15 min
 }
 
 # Optional scheduled Power BI / SAP BW stock refresh. Off by default (manual pull from the
