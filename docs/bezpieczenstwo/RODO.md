@@ -14,7 +14,7 @@
 
 ## 2. Rejestr czynności przetwarzania (szkic)
 
-| Czynność | Kategorie osób | Dane | Cel | Proponowana podstawa (do potwierdzenia) | Retencja dziś → proponowana |
+| Czynność | Kategorie osób | Dane | Cel | Proponowana podstawa (do potwierdzenia z IOD) | Retencja dziś → ustalona (PO 2026-10-16) |
 |---|---|---|---|---|---|
 | Konta i uprawnienia użytkowników | pracownicy, współpracownicy | login, e-mail, hash hasła, role, `last_seen_at`, urządzenie | dostęp do systemu, rozliczalność | art. 6 ust. 1 lit. b/f RODO (umowa o pracę / uzasadniony interes) | bezterminowo → dezaktywacja po odejściu, usunięcie po 12 mies. |
 | Ochrona przed włamaniem (django-axes) | wszyscy logujący się | login, IP, user-agent, czas | bezpieczeństwo | art. 6 ust. 1 lit. f | bezterminowo → 90 dni (`GDPR_ACCESSLOG_RETAIN_DAYS=90`) |
@@ -41,7 +41,8 @@
 | `ui.purge_old_hu_control_photos` (beat, codziennie) | `web/ui/tasks.py`, `HU_PHOTO_RETAIN_DAYS=30` | działa |
 | Dezaktywacja i usuwanie kont | Django admin | ręcznie; brak procedury |
 
-Włączenie retencji to zmiana env produkcji → po decyzji PO/IOD (US-002, A-04/A-05).
+Decyzja PO 2026-10-16: okresy jak w §2. Włączenie = ustawienie `GDPR_DRIVER_RETAIN_DAYS=180`
+i `GDPR_ACCESSLOG_RETAIN_DAYS=90` w env produkcji (PO) oraz test zadania (US-002, #13).
 
 ## 5. Prawa osób (procedura — do zatwierdzenia)
 

@@ -62,8 +62,9 @@ zgłaszanie podatności — [`SECURITY.md`](SECURITY.md); zmiany — [`CHANGELOG
 | Klasyfikacja danych, threat model, rejestr ryzyk, RODO, ASVS | [`docs/bezpieczenstwo/`](docs/bezpieczenstwo/THREAT_MODEL.md) |
 | Strategia testów, runbooki | [`docs/testy/`](docs/testy/STRATEGIA_TESTOW.md), [`docs/operacje/`](docs/operacje/RUNBOOK.md) |
 
-Status procesu: krok 3 (szkielet dokumentów i CI) — założenia czekają na potwierdzenie PO
-([`docs/analiza/ZALOZENIA.md`](docs/analiza/ZALOZENIA.md)).
+Status procesu: krok 3 (szkielet dokumentów i CI) zakończony; założenia potwierdzone przez PO
+2026-10-16 ([`docs/analiza/ZALOZENIA.md`](docs/analiza/ZALOZENIA.md)); backlog w Issues #12–#32;
+następna historyjka: US-004 (#15).
 
 ## Jak uruchomić
 

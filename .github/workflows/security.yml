@@ -1,6 +1,6 @@
 name: Security
 
-# Skanery bezpieczeństwa (ADR-0019 — Proponowana; audyt 2026-10-15 S-01/S-09):
+# Skanery bezpieczeństwa (ADR-0019 — Przyjęta 2026-10-16, wariant A; audyt 2026-10-15 S-01/S-09):
 #   • gitleaks   — sekrety w historii i diffie: BLOKUJE (PR, push, tygodniowo)
 #   • Bandit     — SAST Python: BLOKUJE przy HIGH severity + HIGH confidence (ten sam próg co
 #                  pre-commit); pełny raport informacyjnie w podsumowaniu joba
@@ -9,8 +9,8 @@ name: Security
 #   • npm audit  — CVE bibliotek front-end (web/package-lock.json): informacyjnie
 #   • Trivy image — tygodniowo/ręcznie: build obrazu z Dockerfile i skan; CRITICAL/HIGH z poprawką
 #                  czerwieni przebieg
-# Wymaganym checkiem na main pozostaje `test` (ci.yml, ADR-0009). Czy `Security` ma być drugim
-# wymaganym checkiem — decyzja PO (ADR-0019). SARIF trafia do zakładki Security ▸ Code scanning
+# Wymaganym checkiem na main pozostaje `test` (ci.yml, ADR-0009); `Security` nie jest wymagany
+# (ADR-0019 wariant A — zmiana = nowy ADR). SARIF trafia do zakładki Security ▸ Code scanning
 # (continue-on-error, gdyby code scanning był wyłączony). Uruchomienie lokalne: CONTRIBUTING.md §6.
 
 on:
@@ -140,7 +140,7 @@ jobs:
         run: pip install pip-audit
 
       - name: pip-audit (CVE zależności runtime)
-        continue-on-error: true   # informacyjnie (ADR-0019 wariant A); blokada = wariant B
+        continue-on-error: true   # informacyjnie (ADR-0019 wariant A, przyjęty); blokada = wariant B (nowy ADR)
         run: |
           set -o pipefail
           pip-audit -r requirements.txt --desc 2>&1 | tee pip-audit.txt

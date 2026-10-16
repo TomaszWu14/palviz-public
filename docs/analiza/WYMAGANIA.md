@@ -22,7 +22,7 @@ Nowe wymagania funkcjonalne (z historyjek) dostaną kolejne numery w `docs/05` p
 ## 2. Wymagania niefunkcjonalne
 
 Status: ✅ spełnione · ⚠️ częściowo · ❌ niespełnione · ❓ brak pomiaru. Wartości liczbowe bez
-źródła w kodzie są **założeniami** (A-10) do potwierdzenia.
+źródła w kodzie są **założeniami roboczymi** (A-10, potwierdzone 2026-10-16; kalibracja w US-020).
 
 | ID | Kategoria | Wymaganie i kryterium | MoSCoW | Status | Dowód / historyjka |
 |---|---|---|---|---|---|

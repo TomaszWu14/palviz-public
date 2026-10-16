@@ -17,10 +17,13 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 - Dokumentacja bezpieczeństwa: `docs/bezpieczenstwo/` (klasyfikacja danych, threat model STRIDE
   0.1, rejestr ryzyk, RODO 0.1, checklista ASVS).
 - `docs/testy/STRATEGIA_TESTOW.md`, `docs/operacje/RUNBOOK.md` (wskaźnik i luki).
-- ADR-0019 (Proponowana): skanery bezpieczeństwa na każdym PR obok szybkiej bramki testów.
+- ADR-0019 (Przyjęta 2026-10-16, wariant A): skanery bezpieczeństwa na każdym PR obok szybkiej bramki testów.
 - `.github/dependabot.yml` (pip, GitHub Actions, npm — co tydzień).
 
 ### Changed
+- Decyzje PO 2026-10-16 („Zgadzam się”): założenia A-01…A-15 potwierdzone, retencja RODO ustalona (R-02),
+  zgoda na backup z kopią off-site i próbą odtworzenia (R-03), MFA nadal odłożone (R-04 do 2026-11-15);
+  backlog US-001…US-021 odwzorowany w GitHub Issues #12–#32.
 - `security.yml`: uruchamiany także na `pull_request` i `push` do `main`; gitleaks i Bandit
   (HIGH/HIGH) blokują, pip-audit/Trivy/npm audit informacyjnie z podsumowaniem; tygodniowo
   dodatkowo build obrazu i skan Trivy.

@@ -1,6 +1,6 @@
 # ADR-0019: Skanery bezpieczeństwa na każdym PR obok szybkiej bramki testów
 
-- **Status:** Proponowana
+- **Status:** Przyjęta
 - **Data:** 2026-10-16
 
 ## Kontekst
@@ -15,7 +15,8 @@ wysokiej wagi. Konflikt: [DEV] chce szybkiego merge (ADR-0009), [SEC] chce bramk
 
 ## Decyzja
 
-Propozycja do decyzji PO — wariant A (wdrożony w tym PR jako konfiguracja, bez zmiany ochrony gałęzi):
+**Decyzja PO 2026-10-16: wariant A** (wdrożony w PR #11 jako konfiguracja, bez zmiany ochrony gałęzi).
+Przejście do wariantu B (`Security` jako wymagany check) wymaga nowego ADR.
 
 1. `security.yml` uruchamia się także na `pull_request` i `push` do `main`. **Blokują** tylko
    ustalenia o niskim odsetku fałszywych alarmów: gitleaks (sekrety) i Bandit o wadze HIGH
@@ -33,8 +34,8 @@ Rozważane warianty:
   także gdy nie ma jeszcze poprawki — wymaga procedury wyjątków w `docs/bezpieczenstwo/RYZYKA.md`.
 - **C** — status quo (tygodniowo): najniższy koszt, ryzyko R-01 pozostaje.
 
-Do decyzji PO: przyjąć A (status → Przyjęta), czy od razu B (`Security` jako wymagany check
-w ochronie gałęzi).
+Wariant A przyjęty 2026-10-16; B i C odrzucone na teraz (B — procedura wyjątków dla CVE bez poprawki
+blokowałaby PR-y; C — ryzyko R-01 zostawałoby otwarte).
 
 ## Skutki
 

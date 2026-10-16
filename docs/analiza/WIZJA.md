@@ -28,7 +28,7 @@ koszt błędów, czas kontroli przed wdrożeniem) nie jest spisana — `docs/01`
 
 Pełna lista ról i aktorów: [INTERESARIUSZE.md](INTERESARIUSZE.md).
 
-## 3. Cel i mierniki sukcesu (propozycja do potwierdzenia, A-11)
+## 3. Cel i mierniki sukcesu (założenie robocze potwierdzone przez PO 2026-10-16, A-11; kalibracja w US-020)
 
 | # | Miernik | Dziś | Cel | Skąd dane |
 |---|---|---|---|---|
