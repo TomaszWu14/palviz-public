@@ -4,6 +4,7 @@ from ui.views.core import (
     _transport_mgr, get_object_or_404, messages, redirect, render, require_POST,
 )
 from core.csp import strict_csp
+from transport.links import link_ttl_expired
 from core.ratelimit import post_rate_limit
 from django.urls import reverse
 from django.utils import timezone
@@ -104,7 +105,6 @@ def wh_readiness_response(request, token):
     """Public token page: the warehouse sees the quoted pallet load and either confirms it,
     proposes a different pallet count, or declines — always giving the fastest ready time."""
     wr = get_object_or_404(WarehouseReadiness.objects.select_related("shipment"), token=token)
-    from .quotes import link_ttl_expired   # US-006: ten sam TTL co link oferty
     if link_ttl_expired(wr.requested_at):
         return render(request, "ui/link_expired.html", status=410)
     shipment = wr.shipment

@@ -11,19 +11,25 @@ i zero atrybutów `on*=` (handlery przez addEventListener).
 import functools
 import secrets
 
-STRICT_CSP = (
-    "default-src 'self'; "
-    "script-src 'self' 'nonce-{nonce}'; "
-    "style-src 'self' 'unsafe-inline'; "
-    "font-src 'self'; "
-    "img-src 'self' data: blob:; "
-    "connect-src 'self'; "
-    "object-src 'none'; "
-    "frame-ancestors 'self'; "
-    "base-uri 'self'; "
-    "form-action 'self'; "
-    "report-uri /csp-report/"
+# Dyrektywy wspólne dla polityki report-only (ADR-0008, core/middleware.py) i ścisłej (ADR-0020).
+BASE_DIRECTIVES = (
+    "default-src 'self'",
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
+    "img-src 'self' data: blob:",
+    "connect-src 'self'",
+    "frame-ancestors 'self'",
+    "base-uri 'self'",
+    "report-uri /csp-report/",   # SEC-001: zbieranie naruszeń (core/csp_report.py)
 )
+
+
+def build_policy(*extra):
+    """Polityka CSP: wspólne dyrektywy + własne (np. script-src)."""
+    return "; ".join((*extra, *BASE_DIRECTIVES))
+
+
+STRICT_CSP = build_policy("script-src 'self' 'nonce-{nonce}'", "object-src 'none'", "form-action 'self'")
 
 
 def get_nonce(request):

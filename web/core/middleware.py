@@ -5,6 +5,8 @@ import uuid
 
 from django.conf import settings
 
+from core.csp import build_policy, strict_policy
+
 # Request-ID dla logów stdlib (logging.getLogger) — structlog ma własne contextvars.
 # "-" poza żądaniem (Celery, komendy manage.py).
 request_id_var = contextvars.ContextVar("request_id", default="-")
@@ -22,17 +24,7 @@ class RequestIDLogFilter(logging.Filter):
 # future enforcing policy would need. 'unsafe-inline'/'unsafe-eval' are present because
 # the templates still carry inline scripts/styles and plotly evaluates code; tighten
 # with nonces once those are refactored. Flip CSP_REPORT_ONLY=false to enforce.
-_CSP = (
-    "default-src 'self'; "
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval'; "
-    "style-src 'self' 'unsafe-inline'; "
-    "font-src 'self'; "
-    "img-src 'self' data: blob:; "
-    "connect-src 'self'; "
-    "frame-ancestors 'self'; "
-    "base-uri 'self'; "
-    "report-uri /csp-report/"   # SEC-001: zbieranie naruszeń przed wymuszeniem (core/csp_report.py)
-)
+_CSP = build_policy("script-src 'self' 'unsafe-inline' 'unsafe-eval'")
 _PERMISSIONS_POLICY = "geolocation=(), microphone=(), payment=()"
 
 
@@ -151,7 +143,6 @@ class SecurityHeadersMiddleware:
         response = self.get_response(request)
         response.setdefault("Permissions-Policy", _PERMISSIONS_POLICY)
         if getattr(response, "csp_strict", False):   # US-008 / ADR-0020: strony publiczne
-            from core.csp import strict_policy
             response["Content-Security-Policy"] = strict_policy(request)
             return response
         header = ("Content-Security-Policy-Report-Only"

@@ -12,6 +12,7 @@ from .core import (
     PalletCalculator, _eval_layouts, PALLET_BASE_HEIGHT_CM, _ART_MAX_BYTES
 )
 import json
+from core.uploads import check_upload
 from django.template.loader import render_to_string
 from django.urls import reverse
 from ..models import (Product, PackagingRedesign)
@@ -327,14 +328,10 @@ def carton_opt_redesign_save(request, pk):
     up = request.FILES.get("a_render")
     if up is not None:
         name = (up.name or "").lower()
-        if up.size > _ART_MAX_BYTES:
-            messages.error(request, "Render za duży (max 8 MB).")
-            return redirect("ui:carton_opt_redesign_detail", pk=pk)
         if not name.endswith((".glb", ".png", ".jpg", ".jpeg")):
             messages.error(request, "Render: dozwolone .glb / PNG / JPG.")
             return redirect("ui:carton_opt_redesign_detail", pk=pk)
-        from core.uploads import check_upload   # US-005: typ po zawartości, nie po nazwie
-        err = check_upload(up, max_bytes=_ART_MAX_BYTES, kinds={"glb", "png", "jpeg"})
+        err = check_upload(up, max_bytes=_ART_MAX_BYTES, kinds={"glb", "png", "jpeg"})   # US-005
         if err:
             messages.error(request, "Render: " + err)
             return redirect("ui:carton_opt_redesign_detail", pk=pk)

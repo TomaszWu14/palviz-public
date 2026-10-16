@@ -41,7 +41,8 @@ class HuAlertsBeatTests(TestCase):
 
     def test_repeated_runs_and_hub_do_not_duplicate(self):
         raise_hu_alert_tasks()
-        raise_hu_alert_tasks()
+        # Drugi przebieg pomija HU z zadaniem w tym miesiącu (bez get_or_create co 15 min).
+        self.assertEqual(raise_hu_alert_tasks(), {"stale": 0, "stuck": 0})
         leader = get_user_model().objects.create_user(username="lead", password="x")
         for g in (GROUP_ADMIN, GROUP_LEADER):
             leader.groups.add(Group.objects.get_or_create(name=g)[0])

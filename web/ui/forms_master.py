@@ -1,4 +1,7 @@
 from django import forms
+from django.core.files.uploadedfile import UploadedFile
+
+from core.uploads import check_upload
 from .models import (
     Product, ProductCategory, Carton, InnerPack, PalletizationInstruction,
     ErrorReport, WarehouseLocationType, MaterialReference,
@@ -22,20 +25,18 @@ class ProductCategoryForm(forms.ModelForm):
         }
 
 
+# US-005 / S-08: modele 3D i zdjęcia w formularzach produktu i kartonu (wcześniej bez limitu).
+FORM_UPLOAD_MAX_BYTES = 20 * 1024 * 1024
+
+
 def _clean_upload(form, field, kinds):
     """US-005: nowo przesłany plik — limit rozmiaru i typ po zawartości (core.uploads)."""
-    from django.core.files.uploadedfile import UploadedFile
-    from core.uploads import check_upload
     f = form.cleaned_data.get(field)
     if isinstance(f, UploadedFile):
         err = check_upload(f, max_bytes=FORM_UPLOAD_MAX_BYTES, kinds=kinds)
         if err:
             raise forms.ValidationError(err)
     return f
-
-
-# US-005 / S-08: modele 3D i zdjęcia w formularzach produktu i kartonu (wcześniej bez limitu).
-FORM_UPLOAD_MAX_BYTES = 20 * 1024 * 1024
 
 
 class ProductForm(forms.ModelForm):

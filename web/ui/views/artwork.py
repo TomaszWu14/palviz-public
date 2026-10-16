@@ -7,6 +7,7 @@ from .core import (
     make_artwork_derivatives, json, _md_role, get_object_or_404, require_POST
 )
 from django.db.models import Max
+from core.uploads import check_upload
 
 from ..models import Product, InnerPack, ProductArtwork, InnerPackArtwork, Carton
 
@@ -139,12 +140,9 @@ def _glb_upload(request, owner):
     f = request.FILES.get("glb")
     if not f:
         return JsonResponse({"ok": False, "error": "Brak pliku."}, status=400)
-    if f.size > _ART_MAX_BYTES:
-        return JsonResponse({"ok": False, "error": "Plik za duży (max 8 MB)."}, status=400)
     if not (f.name or "").lower().endswith(".glb"):
         return JsonResponse({"ok": False, "error": "Dozwolony tylko plik .glb."}, status=400)
-    from core.uploads import check_upload   # US-005: typ po zawartości, nie po nazwie
-    err = check_upload(f, max_bytes=_ART_MAX_BYTES, kinds={"glb"})
+    err = check_upload(f, max_bytes=_ART_MAX_BYTES, kinds={"glb"})   # US-005: rozmiar + zawartość
     if err:
         return JsonResponse({"ok": False, "error": err}, status=400)
     owner.glb_model = f

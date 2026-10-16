@@ -10,20 +10,20 @@ Moduł jest czysty (bez Django i gunicorna), żeby dało się go użyć w obu mi
 import logging
 import re
 
-# Ścieżki z tokenem (transport/urls.py) + reset hasła Django (uidb64/token).
-_TOKEN_PATH = re.compile(
-    r"(/(?:quote-response|wh-readiness|driver-form|driver-confirm|password-reset/[^/\s?]+)/)"
-    r"([^/\s?\"]+)"
-)
-_KEEP = 4
+# Tokeny linków publicznych to uuid4().hex (transport.models_quoting._quote_token), więc maskujemy
+# każdy 32-znakowy segment hex w ścieżce — bez listy tras do ręcznej synchronizacji z urls.py.
+_HEX_TOKEN = re.compile(r"(/[0-9a-f]{4})[0-9a-f]{28}(?=[/?\s\"]|$)")
+# Reset hasła Django ma inny format tokenu: /password-reset/<uidb64>/<token>/.
+_RESET_TOKEN = re.compile(r"(/password-reset/[^/\s?]+/[^/\s?\"]{4})[^/\s?\"]+")
 _MASK = "****"
 
 
 def mask_tokens(text):
-    """Zwraca tekst z zamaskowanymi tokenami w ścieżkach linków publicznych."""
+    """Zwraca tekst z zamaskowanymi tokenami w ścieżkach linków publicznych (4 znaki + ****)."""
     if not text or not isinstance(text, str):
         return text
-    return _TOKEN_PATH.sub(lambda m: m.group(1) + m.group(2)[:_KEEP] + _MASK, text)
+    text = _HEX_TOKEN.sub(lambda m: m.group(1) + _MASK, text)
+    return _RESET_TOKEN.sub(lambda m: m.group(1) + _MASK, text)
 
 
 class TokenMaskFilter(logging.Filter):
