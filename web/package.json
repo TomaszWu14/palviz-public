@@ -5,7 +5,7 @@
     "echarts": "6.1.0",
     "htmx.org": "1.9.12",
     "plotly.js-dist-min": "3.5.0",
-    "three": "0.163.0",
+    "three": "0.186.1",
     "three-r128": "npm:three@0.128.0"
   }
 }
