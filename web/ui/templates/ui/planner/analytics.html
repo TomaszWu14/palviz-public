@@ -90,7 +90,7 @@
 
 </div>
 
-<script>
+<script nonce="{{ csp_nonce }}">
 /* Canvas / ECharts / Plotly nie rozwiązują var(--…) — kolor z tokenu czytamy w chwili rysowania
    (B-014; idzie też za motywem jasny/ciemny). */
 function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }

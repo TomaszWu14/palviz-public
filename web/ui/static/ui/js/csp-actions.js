@@ -8,25 +8,40 @@
  *   data-click="el-id"      klik → klik w element #el-id (np. ukryty input[type=file])
  *   data-hide="el-id"       klik → ukrywa #el-id
  *   data-autosubmit         change → form.submit() (jak dawne onchange="this.form.submit()")
- *   data-upload             change → pvUpload(this) (skaner: wysyłka zdjęcia z informacją)
- *   data-action="fn"        wywołuje window.fn(el[, data-arg]); zwrot false = preventDefault.
- *                           Zdarzenie: data-on="click" (domyślnie) | "change" | "dblclick".
+ *   data-upload             change → gvUpload(this) (planer) / pvUpload(this) (skaner)
+ *   data-action="fn"        wywołuje window.fn(el, ...argumenty); zwrot false = preventDefault
+ *   data-call="fn"          wywołuje window.fn(...argumenty) — bez elementu (np. showTab('csv'))
+ *                           Argumenty: data-arg="1" (jeden) albo data-args='["a", 2]' (JSON).
+ *                           Zdarzenie: data-on="click" (domyślnie) | "change" | "input" | "dblclick".
  */
 (function () {
   'use strict';
 
-  function arg(el) {
+  function args(el) {
+    if (el.dataset.args !== undefined) {
+      try { return JSON.parse(el.dataset.args); } catch (e) { return []; }
+    }
     var a = el.dataset.arg;
-    if (a === undefined) return undefined;
-    return a !== '' && !isNaN(+a) ? +a : a;
+    if (a === undefined) return [];
+    return [a !== '' && !isNaN(+a) ? +a : a];
   }
 
-  function runAction(el, ev) {
-    var fn = window[el.dataset.action];
+  // data-action → fn(el, ...args); data-call → fn(...args).
+  function run(el, ev) {
+    var withEl = el.dataset.action !== undefined;
+    var fn = window[withEl ? el.dataset.action : el.dataset.call];
     if (typeof fn !== 'function') return;
-    var a = arg(el);
-    var result = a === undefined ? fn(el) : fn(el, a);
+    var result = fn.apply(window, withEl ? [el].concat(args(el)) : args(el));
     if (result === false) ev.preventDefault();
+  }
+
+  var ACTION = '[data-action],[data-call]';
+  function onEvent(name) {
+    return function (ev) {
+      if (!(ev.target instanceof Element)) return;
+      var el = ev.target.closest(ACTION);
+      if (el && (el.dataset.on || 'click') === name) run(el, ev);
+    };
   }
 
   function byId(id) { return id ? document.getElementById(id) : null; }
@@ -49,8 +64,8 @@
       ev.stopImmediatePropagation();
       return;
     }
-    var act = ev.target.closest('[data-action]');
-    if (act && (act.dataset.on || 'click') === 'click') runAction(act, ev);
+    var act = ev.target.closest(ACTION);
+    if (act && (act.dataset.on || 'click') === 'click') run(act, ev);
 
     var scan = ev.target.closest('[data-scan]');
     if (scan) {
@@ -70,13 +85,12 @@
     var el = ev.target;
     if (!(el instanceof Element)) return;
     if (el.matches('[data-autosubmit]') && el.form) el.form.submit();
-    if (el.matches('[data-upload]') && typeof window.pvUpload === 'function') window.pvUpload(el);
-    if (el.matches('[data-action][data-on="change"]')) runAction(el, ev);
+    if (el.matches('[data-upload]')) {
+      var up = window.gvUpload || window.pvUpload;
+      if (typeof up === 'function') up(el);
+    }
   });
-
-  document.addEventListener('dblclick', function (ev) {
-    if (!(ev.target instanceof Element)) return;
-    var el = ev.target.closest('[data-action][data-on="dblclick"]');
-    if (el) runAction(el, ev);
-  });
+  document.addEventListener('change', onEvent('change'));
+  document.addEventListener('input', onEvent('input'));
+  document.addEventListener('dblclick', onEvent('dblclick'));
 })();

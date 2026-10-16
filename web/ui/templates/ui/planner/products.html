@@ -42,7 +42,7 @@
         <form method="post" action="{% url 'ui:planner_product_import' %}" enctype="multipart/form-data">
           {% csrf_token %}
           <label class="menu__item menu__upload">{% icon "file-up" %}Importuj CSV (pełny)
-            <input type="file" name="file" accept=".csv" onchange="gvUpload(this)"></label>
+            <input type="file" name="file" accept=".csv" data-upload></label>
         </form>
         <div class="menu__sep"></div>
         <form method="post" action="{% url 'ui:planner_master_data_import' %}" enctype="multipart/form-data"
@@ -51,7 +51,7 @@
           <label class="menu__item" title="Najpierw usuwa wszystkie dane z poprzednich importów, potem wczytuje nowe">
             <input type="checkbox" name="overwrite" value="1"> Nadpisz starą bazę przy imporcie</label>
           <label class="menu__item menu__upload">{% icon "database" %}Import master daty (migracja)…
-            <input type="file" name="file" accept=".csv,.xlsx,.xls" onchange="gvUpload(this)"></label>
+            <input type="file" name="file" accept=".csv,.xlsx,.xls" data-upload></label>
         </form>
         <div class="menu__sep"></div>
         <form method="post" action="{% url 'ui:planner_master_data_purge' %}">

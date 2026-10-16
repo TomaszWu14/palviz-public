@@ -253,7 +253,7 @@
       <div id="plot-location"></div>
     </div>
 
-    <script>
+    <script nonce="{{ csp_nonce }}">
     (function() {
       var fig = {{ fig_json|safe }};
       Plotly.react('plot-location', fig.data, fig.layout, {responsive: true, displayModeBar: false});

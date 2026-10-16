@@ -145,7 +145,7 @@
     </div>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-    <button onclick="window.print()" class="btn btn-secondary btn-sm no-print">
+    <button data-call="print" class="btn btn-secondary btn-sm no-print">
       <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
       Drukuj / PDF
     </button>
@@ -160,7 +160,7 @@
     </a>
     {% if instr.custom_layers %}
     <form method="post" action="{% url 'ui:pallet_custom_reset' instr.pk %}" style="margin:0"
-          onsubmit="return confirm('Porzucić ręczny układ i wrócić do układu wyliczonego przez silnik?')">
+          data-confirm="Porzucić ręczny układ i wrócić do układu wyliczonego przez silnik?">
       {% csrf_token %}
       <button class="btn btn-secondary btn-sm">Przywróć układ silnika</button>
     </form>
@@ -230,15 +230,15 @@
         <span>Widok 3D — {{ instr.pallet_code }} {{ meta.length_cm }}×{{ meta.width_cm }} cm</span>
         <!-- Camera presets -->
         <div class="cam-btns" id="camBtns">
-          <button class="cam-btn active" onclick="setCamera('iso')"  id="cam-iso">Izo</button>
-          <button class="cam-btn"        onclick="setCamera('front')" id="cam-front">Przód</button>
-          <button class="cam-btn"        onclick="setCamera('side')"  id="cam-side">Bok</button>
-          <button class="cam-btn"        onclick="setCamera('top')"   id="cam-top">Góra</button>
+          <button class="cam-btn active" data-call="setCamera" data-args='["iso"]'  id="cam-iso">Izo</button>
+          <button class="cam-btn"        data-call="setCamera" data-args='["front"]' id="cam-front">Przód</button>
+          <button class="cam-btn"        data-call="setCamera" data-args='["side"]'  id="cam-side">Bok</button>
+          <button class="cam-btn"        data-call="setCamera" data-args='["top"]'   id="cam-top">Góra</button>
         </div>
         <!-- Display toggles -->
         <div class="disp-btns">
-          <button class="disp-btn on"  id="tog-dims"   onclick="toggleDims(this)">Wymiary</button>
-          <button class="disp-btn on"  id="tog-grid"   onclick="toggleGrid(this)">Siatka</button>
+          <button class="disp-btn on"  id="tog-dims"   data-action="toggleDims">Wymiary</button>
+          <button class="disp-btn on"  id="tog-grid"   data-action="toggleGrid">Siatka</button>
         </div>
       </div>
       <div></div>
@@ -254,9 +254,9 @@
       <div class="viz-card__title">
         Widok warstwy (góra)
         <div style="display:flex;gap:4px;align-items:center">
-          <button onclick="prevLayer()" class="btn btn-ghost btn-sm btn-icon">◀</button>
+          <button data-call="prevLayer" class="btn btn-ghost btn-sm btn-icon">◀</button>
           <span id="layer-lbl" style="font-size:12px;font-weight:700;color:var(--blue-mid);min-width:72px;text-align:center">Warstwa 1</span>
-          <button onclick="nextLayer()" class="btn btn-ghost btn-sm btn-icon">▶</button>
+          <button data-call="nextLayer" class="btn btn-ghost btn-sm btn-icon">▶</button>
         </div>
       </div>
       <div id="fig2d" style="height:260px"></div>
@@ -373,7 +373,7 @@
 
 {% block extra_scripts %}
 {% if fig_pallet_json %}
-<script>
+<script nonce="{{ csp_nonce }}">
 const figPallet  = {{ fig_pallet_json|safe }};
 const figLayer   = {{ fig_layer_json|safe }};
 const figCarton  = {{ fig_carton_json|safe }};

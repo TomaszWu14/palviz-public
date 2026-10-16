@@ -22,6 +22,13 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   Strażnik: `ui.tests.test_naming_us011`.
 
 ### Security
+- US-008 (#19), faza 2 krok 3: planer (`ui/planner`, 16 szablonów) bez handlerów `on*=`, nonce na skryptach
+  inline (także `importmap` i `type="module"`). `csp-actions.js`: `data-call`, `data-args`, zdarzenie `input`.
+
+### Fixed
+- Usuwanie lokalizacji (`planner/locations.html`) pytało o potwierdzenie z błędnym JS — cudzysłów w nazwie
+  urywał atrybut `onsubmit`, więc lokalizacja usuwała się bez pytania. Teraz `data-confirm` (strażnik w
+  `ui.tests.test_csp_phase2_templates`).
 - US-008 (#19), faza 2 krok 2: skaner Kontroli HU bez handlerów `on*=` — akcje deklaratywne `data-*`
   obsługiwane przez `ui/js/csp-actions.js` (ładowany w obu szkieletach). Komunikaty potwierdzeń w
   atrybutach HTML zamiast w stringach JS (`escapejs` niepotrzebne). Naprawiony strażnik składni JS
