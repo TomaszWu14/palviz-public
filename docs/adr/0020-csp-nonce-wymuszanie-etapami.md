@@ -45,6 +45,12 @@ Wdrożenie w trzech fazach:
    Krok 4 — planer wysyłek (`transport`, 10 szablonów) — zrobiony; nowy `data-remove-closest`.
    Krok 5 — pozostałe ekrany (31 szablonów) — zrobiony; strażnik skanuje teraz wszystkie szablony,
    wyjątki są tylko na liście `PENDING` (fragmenty doładowywane, krok 6).
+   Krok 6 — fragmenty htmx (`_panel.html`, `_optimal_layer.html`) — zrobiony: `base.html` ma
+   `<meta name="htmx-config" content='{"inlineScriptNonce": "…"}'>`, więc htmx 1.9.12 nadaje
+   skryptom ze wstawianych fragmentów nonce strony. `PENDING` jest pusty. Kompromis: każdy skrypt
+   we fragmencie z htmx dostaje nonce — wstrzyknięcie do fragmentu wykona się tak jak dziś;
+   ochroną zostaje autoescape szablonów. Zostało: polityka report-only z nonce zamiast
+   `'unsafe-inline'` (krok 7), potem faza 3.
    Ustalenia z inwentaryzacji (74 szablony):
    - **Fragmenty doładowywane** (np. `_panel.html` z kalkulatora, zwracany z widoku jako HTML):
      ich skrypty dostają nonce innego żądania niż strona. Rozwiązanie w kroku danego modułu:

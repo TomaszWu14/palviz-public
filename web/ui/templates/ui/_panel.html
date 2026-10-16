@@ -208,9 +208,9 @@
   <div class="card g-layer">
     <div class="section-lbl">Poziom 4 — Warstwa na palecie</div>
     <div class="layer-nav">
-      <button onclick="prevLayer()">◀</button>
+      <button data-call="prevLayer">◀</button>
       <span>Warstwa <b id="layer-num">{{ layer_idx }}</b> / <b>{{ layout.layers_used }}</b></span>
-      <button onclick="nextLayer()">▶</button>
+      <button data-call="nextLayer">▶</button>
     </div>
     <div id="plot-layer"></div>
     {% if pid %}
@@ -248,7 +248,7 @@
 
 </div>
 
-<script>
+<script nonce="{{ csp_nonce }}">
 (function() {
   var figPallet = {{ fig_pallet_json|safe }};
   var figCarton = {{ fig_carton_json|safe }};
