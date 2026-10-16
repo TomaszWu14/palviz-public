@@ -8,6 +8,11 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 ## [Unreleased]
 
 ### Fixed
+- US-015 (#26): formularz oferty przewoźnika odrzuca pustą, zerową, ujemną i nieliczbową kwotę
+  (wcześniej pusta zapisywała się jako 0 zł i stawała się „najtańsza”, P13) oraz walutę spoza listy
+  PLN/EUR/USD/GBP/CZK (P14). Formularz nie jest blokowany — spedytor poprawia dane.
+
+### Fixed
 - US-010 (#21): dokumentacja sterująca bez odwołań do plików, których nie ma w publicznej kopii
   (`deploy.yml`, `graphify-out/`, `.planning/`, `.scratch/`, `e2e-nightly.yml`, self-hosted runner,
   auto-merge); runbook odtworzenia zgodny z `Dockerfile` (`pg_dump` jest w obrazie); liczba migracji

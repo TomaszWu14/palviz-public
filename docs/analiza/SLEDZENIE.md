@@ -16,8 +16,8 @@ prowadzonych nowym procesem; aktualizowane przy odbiorze [BA] każdej historyjki
 | NFR-008 | US-007 (#18) | test: admin bez TOTP → przekierowanie; logowanie bez kodu → odmowa | — | do decyzji PO |
 | S-05 / NFR-… (CSP) | US-008 (#19) | e2e flow z `CSP_REPORT_ONLY=false`; brak raportów CSP przez 2 tyg. | — | nowa |
 | S-08 | US-005 (#16) | test wspólnego walidatora dla każdego `FileField` | — | nowa |
-| D-01 | US-010 (#21) | `ui.tests.test_docs_links_us010` (linki względne w dokumentach sterujących i procesu, ci.yml, runbook) | PR US-010 | w toku |
+| D-01 | US-010 (#21) | `ui.tests.test_docs_links_us010` (linki względne w dokumentach sterujących i procesu, ci.yml, runbook) | #41 | odebrana |
 | BR-08 / P1 | US-013 (#24) | `huctl.tests.test_escalation` rozszerzony o nieudaną rekontrolę | — | do decyzji PO |
 | BR-01 / P2 | US-014 (#25) | `huctl.tests.test_queue_one_ranking` | — | do decyzji PO |
-| P13, P14 | US-015 (#26) | `transport.tests.test_quote` (kwota ≤ 0, waluta spoza listy) | — | nowa |
+| P13, P14 | US-015 (#26) | `transport.tests.test_quote_validation_us015` (8 testów: pusta/zero/ujemna/NaN, waluta) | PR US-015 | w toku |
 | S-10 / R-10 | US-009 (#20) | `ui.tests.test_config_validation_us004.PowerBiTlsTests` | #40 | odebrana |
