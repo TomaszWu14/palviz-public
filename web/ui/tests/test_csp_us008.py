@@ -87,6 +87,24 @@ class PublicPagesStrictCspTests(TestCase):
         self.assertNotIn("Content-Security-Policy", resp)          # ADR-0008: bez wymuszania
         self.assertIn("Content-Security-Policy-Report-Only", resp)
 
+    def test_internal_report_only_policy_uses_page_nonce(self):
+        # Faza 2 krok 7: raporty mają pokazywać realne naruszenia — nonce zamiast 'unsafe-inline',
+        # a każdy inline <script> strony ma nonce z nagłówka.
+        user = get_user_model().objects.create_superuser("csp2", "csp2@example.com", "x")
+        client = Client()
+        client.force_login(user)
+        for url in (reverse("ui:planner_shipment_detail", args=[self.sh.pk]),
+                    reverse("ui:planner_calc_index"), reverse("ui:hu_my_shift")):
+            resp = client.get(url)
+            self.assertEqual(resp.status_code, 200, url)
+            script_src = _script_src(resp["Content-Security-Policy-Report-Only"])
+            self.assertNotIn("unsafe-inline", script_src, url)
+            nonce = re.search(r"'nonce-([^']+)'", script_src).group(1)
+            for attrs in SCRIPT_RE.findall(resp.content.decode()):
+                if "src=" in attrs or "application/json" in attrs:
+                    continue
+                self.assertIn(f'nonce="{nonce}"', attrs, f"{url}: <script{attrs}>")
+
 
 class StrictCspUnitTests(SimpleTestCase):
     def test_decorator_marks_response(self):
