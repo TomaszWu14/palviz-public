@@ -213,7 +213,8 @@ def _matrix_token():
     import hashlib
     rows = list(UserModuleAccess.objects.order_by("user_id", "module_key")
                 .values_list("user_id", "module_key", "allowed"))
-    return hashlib.md5(repr(rows).encode()).hexdigest()[:16]
+    # Odcisk zmian uprawnień (nie kryptografia) — usedforsecurity=False wycisza Bandit B324.
+    return hashlib.md5(repr(rows).encode(), usedforsecurity=False).hexdigest()[:16]
 
 
 @_admin_only

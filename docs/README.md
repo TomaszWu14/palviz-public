@@ -9,9 +9,10 @@ Opis systemu z perspektywy analityka, odtworzony z kodu (bez planów i funkcji, 
 | [03 User flow](03-user-flow.md) | Mapa ekranów: logowanie i hub, skaner kontroli HU, planista, wycena, ścieżki alternatywne. |
 | [04 Model danych](04-model-danych.md) | Diagramy ER, encje, reguły integralności wymuszane przez bazę i niespójności. |
 | [05 Wymagania](05-wymagania.md) | 64 wymagania z kryteriami akceptacji „Zakładając / Gdy / Wtedy” i miejscem realizacji. |
-| [06 Decyzje](06-decyzje.md) | Skrót 18 decyzji architektonicznych z [rejestru ADR](adr/README.md). |
+| [06 Decyzje](06-decyzje.md) | Skrót 19 decyzji architektonicznych z [rejestru ADR](adr/README.md). |
 | [07 Ograniczenia](07-ograniczenia.md) | Czego świadomie nie ma i lista znanych problemów (P1–P19). |
 | [Zrzuty ekranu](screenshots/README.md) | Plan materiałów wizualnych (GIF, zrzuty). |
+| [Audyt BA / DEV / SEC](AUDYT.md) | Audyt otwierający proces zespołowy (2026-10-15): stan z trzech perspektyw, TOP 10 ryzyk, decyzje dla PO. |
 
 # Mapa dokumentacji — typ dokumentu → katalog
 
@@ -29,6 +30,12 @@ od razu — bez zgadywania.
 | Runbooki operacyjne i przekazanie | [`runbook-operatora.md`](runbook-operatora.md), [`runbook-odtworzenie.md`](runbook-odtworzenie.md) | Utrzymanie bez głównego developera (w tym rollback), odtworzenie po awarii |
 | Mapa procesu biznesowego | `docs/procesy/` | Dla pracowników magazynu, nie deweloperów |
 | Audyt UI/UX | `docs/ui-audit/` | Migawka stanu w czasie, nie żywa specyfikacja |
+| Analiza biznesowa [BA]: wizja, interesariusze, procesy AS-IS/TO-BE, wymagania FR/NFR, backlog (MoSCoW), słownik, założenia, macierz śledzenia | [`docs/analiza/`](analiza/WIZJA.md) | Proces zespołowy (`CONTRIBUTING.md`); FR „as-built” pozostają w `05-wymagania.md` |
+| Architektura [DEV]: diagramy C4, model danych (wskaźnik do 04), opis API | [`docs/architektura/`](architektura/ARCHITEKTURA.md) | Kanon architektury nadal w root `ARCHITECTURE.md`; ADR nadal w `docs/adr/` |
+| Bezpieczeństwo [SEC]: klasyfikacja danych, threat model (STRIDE), rejestr ryzyk, RODO, checklista ASVS | [`docs/bezpieczenstwo/`](bezpieczenstwo/THREAT_MODEL.md) | Rejestr ryzyk = miejsce akceptacji ryzyk przez PO |
+| Strategia testów | [`docs/testy/STRATEGIA_TESTOW.md`](testy/STRATEGIA_TESTOW.md) | Zasady P-1…P-6 w ADR-0014, infrastruktura w `tests/README-TESTS.md` |
+| Operacje (wskaźnik do runbooków + luki) | [`docs/operacje/RUNBOOK.md`](operacje/RUNBOOK.md) | Runbooki właściwe zostają w `docs/runbook-*.md` |
+| Audyt otwierający proces (BA/DEV/SEC) | [`docs/AUDYT.md`](AUDYT.md) | Migawka z datą, nie żywa specyfikacja |
 | Archiwum wdrożonych planów/speców | `docs/archive/` | Historyczne plany/specy już zrealizowanych featurów (patrz `docs/archive/README.md` — dowód wdrożenia per plik) |
 | Higiena repo / cykl życia artefaktów | [`docs/repo-hygiene.md`](repo-hygiene.md) | Reguła commit/ignore/delete + cykl życia `.planning/` |
 | Ustalenia projektu GSD | `.planning/**` (PROJECT.md, ROADMAP.md, REQUIREMENTS.md, STATE.md, phases/, intel/, onboarding/) | Commitowane by design |

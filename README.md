@@ -46,7 +46,25 @@ powiadomienia żyją w aplikacji, a paleta z błędem trafia do rekontroli, któ
 | [05 Wymagania](docs/05-wymagania.md) | 64 wymagania z kryteriami akceptacji „Zakładając / Gdy / Wtedy” i miejscem w kodzie/testach. |
 | [06 Decyzje](docs/06-decyzje.md) | Dziennik decyzji: kontekst, opcje, uzasadnienie, skutki. |
 | [07 Ograniczenia](docs/07-ograniczenia.md) | Czego świadomie nie ma i znane problemy (P1–P19). |
-| [ADR](docs/adr/README.md) | 18 zapisów decyzji architektonicznych (pełna treść). |
+| [ADR](docs/adr/README.md) | 19 zapisów decyzji architektonicznych (pełna treść). |
+
+## Proces pracy i dokumentacja zespołowa
+
+Repozytorium jest prowadzone jak przez zespół **[BA] + [DEV] + [SEC]** z Product Ownerem —
+proces, Definition of Ready/Done i narzędzia opisuje [`CONTRIBUTING.md`](CONTRIBUTING.md);
+zgłaszanie podatności — [`SECURITY.md`](SECURITY.md); zmiany — [`CHANGELOG.md`](CHANGELOG.md).
+
+| Obszar | Gdzie |
+|---|---|
+| Audyt otwierający (BA / DEV / SEC, 2026-10-15) | [`docs/AUDYT.md`](docs/AUDYT.md) |
+| Wizja, interesariusze, procesy, wymagania (FR/NFR), backlog, słownik, założenia, śledzenie | [`docs/analiza/`](docs/analiza/WIZJA.md) |
+| Architektura (C4), model danych, API | [`docs/architektura/`](docs/architektura/ARCHITEKTURA.md) |
+| Klasyfikacja danych, threat model, rejestr ryzyk, RODO, ASVS | [`docs/bezpieczenstwo/`](docs/bezpieczenstwo/THREAT_MODEL.md) |
+| Strategia testów, runbooki | [`docs/testy/`](docs/testy/STRATEGIA_TESTOW.md), [`docs/operacje/`](docs/operacje/RUNBOOK.md) |
+
+Status procesu: krok 3 (szkielet dokumentów i CI) zakończony; założenia potwierdzone przez PO
+2026-10-16 ([`docs/analiza/ZALOZENIA.md`](docs/analiza/ZALOZENIA.md)); backlog w Issues #12–#32;
+następna historyjka: US-004 (#15).
 
 ## Jak uruchomić
 
