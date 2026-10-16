@@ -96,15 +96,15 @@
   {% if not locked %}
   <button type="submit" name="action" value="save" class="btn btn-secondary">Zapisz szkic</button>
   <button type="submit" name="action" value="accept" class="btn btn-primary"
-          onclick="return confirm('Zaakceptować projekt? Wersja B zostanie zablokowana.')">Akceptuj</button>
+          data-confirm="Zaakceptować projekt? Wersja B zostanie zablokowana.">Akceptuj</button>
   <button type="submit" name="action" value="reject" class="btn btn-secondary">Odrzuć</button>
   {% endif %}
 </div>
 </form>
 
 {{ metrics|json_script:"rd-initial" }}
-<script type="importmap">{ "imports": { "three": "/static/ui/vendor/three.module.js" } }</script>
-<script type="module">
+<script type="importmap" nonce="{{ csp_nonce }}">{ "imports": { "three": "/static/ui/vendor/three.module.js" } }</script>
+<script type="module" nonce="{{ csp_nonce }}">
 import { renderPalVizLevel } from "/static/ui/js/palviz-three.js";
 // Palety A/B — pełna paletyzacja liczona silnikiem po stronie serwera → render z data-three.
 let viewerB = null;

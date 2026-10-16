@@ -61,7 +61,7 @@
       <form method="post" action="{% url 'ui:hu_investigation_confirm' inv.pk %}" style="margin:0">{% csrf_token %}
         <button class="btn btn-secondary" style="padding:4px 12px">Potwierdzam błąd</button></form>
       <form method="post" action="{% url 'ui:hu_investigation_reject' inv.pk %}" style="margin:0"
-            onsubmit="return confirm('Odrzucić wyjaśnianie {{ inv.hu.ref }}? Czas wróci do licznika kontroli.')">{% csrf_token %}
+            data-confirm="Odrzucić wyjaśnianie {{ inv.hu.ref }}? Czas wróci do licznika kontroli.">{% csrf_token %}
         <button class="btn btn-secondary" style="padding:4px 12px;color:var(--red)">Odrzuć</button></form>
     </span>
   </div>
@@ -233,11 +233,11 @@
                 {% endfor %}
               </select>
               <button type="submit" class="btn btn-secondary btn-sm"
-                      onclick="return (!this.form.assignee.value && {{ hu.assigned_to_id|yesno:'true,false' }}) ? confirm('Zdjąć przydział z tego HU? Wróci do wspólnej kolejki.') : true">OK</button>
+                      data-action="pvConfirmUnassign" data-args='[{{ hu.assigned_to_id|yesno:"true,false" }}]'>OK</button>
               <button type="submit" class="btn btn-secondary btn-sm"
                       formaction="{% url 'ui:hu_control_assign_group' hu.pk %}"
                       title="Przepnij wszystkie HU tego odbiorcy na wybranego kontrolera"
-                      onclick="return this.form.assignee.value ? confirm('Przepiąć CAŁĄ grupę odbiorcy na wybranego kontrolera?') : (alert('Wybierz kontrolera'), false)">Grupa</button>
+                      data-action="pvConfirmGroupAssign">Grupa</button>
             </form>
           </td>
         </tr>
@@ -308,7 +308,7 @@
             {% csrf_token %}<button type="submit" class="btn btn-secondary btn-sm">{% icon "check" %} Zamknij</button>
           </form>
           <form method="post" action="{% url 'ui:hu_item_md_exception_delete' it.pk %}" style="display:inline"
-                onsubmit="return confirm('Usunąć pozycję {{ it.ref_code }} z HU {{ it.hu.ref }}?')">
+                data-confirm="Usunąć pozycję {{ it.ref_code }} z HU {{ it.hu.ref }}?">
             {% csrf_token %}<button type="submit" class="btn btn-sm" style="color:var(--red)">{% icon "trash-2" %} Usuń pozycję</button>
           </form>
         </td>
@@ -331,7 +331,16 @@
   }
   #live-badge.paused span:first-child { background:var(--gray-400); animation:none; }
 </style>
-<script>
+<script nonce="{{ csp_nonce }}">
+// US-008: potwierdzenia przydziału wołane przez csp-actions.js (data-action) zamiast onclick.
+window.pvConfirmUnassign = function (btn, wasAssigned) {
+  return (!btn.form.assignee.value && wasAssigned)
+    ? confirm('Zdjąć przydział z tego HU? Wróci do wspólnej kolejki.') : true;
+};
+window.pvConfirmGroupAssign = function (btn) {
+  if (!btn.form.assignee.value) { alert('Wybierz kontrolera'); return false; }
+  return confirm('Przepiąć CAŁĄ grupę odbiorcy na wybranego kontrolera?');
+};
 (function () {
   // Auto-odświeżanie panelu „na żywo" — ale NIE gdy lider coś wpisuje/wybiera
   // (odświeżenie zresetowałoby formularz wiadomości / foto-taska).

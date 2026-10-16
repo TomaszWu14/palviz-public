@@ -137,10 +137,12 @@
           </div>
         </div>
 
+        {# US-008: podświetlenie przez CSS :hover zamiast onmouseover/onmouseout (ścisła CSP). #}
+        <style>.role-option:hover { border-color: var(--blue) !important; }</style>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
           {% for g in groups %}
           <label style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--gray-200);border-radius:8px;{% if sso_managed_roles %}opacity:.6;cursor:not-allowed{% else %}cursor:pointer{% endif %};transition:border-color .15s"
-                 {% if not sso_managed_roles %}onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-200)'"{% endif %}>
+                 {% if not sso_managed_roles %}class="role-option"{% endif %}>
             <input type="checkbox" name="groups" value="{{ g.pk }}"
                    {% if g.pk in user_group_ids %}checked{% endif %}
                    {% if sso_managed_roles %}disabled{% endif %}

@@ -146,7 +146,7 @@
   <div class="table-wrap">
     <table class="table">
       <thead><tr>
-        <th style="width:24px"><input type="checkbox" onclick="document.querySelectorAll('input[name=hu_ids]').forEach(c=>c.checked=this.checked)" title="Zaznacz wszystkie"></th>
+        <th style="width:24px"><input type="checkbox" data-check-all="input[name=hu_ids]" title="Zaznacz wszystkie"></th>
         <th><a href="?view=hu&sort=priority{% if qs_no_sort %}&{{ qs_no_sort }}{% endif %}" style="color:inherit" title="Pilne najpierw (wywołane + ranga klienta)">pickHU {% if sort == 'priority' %}{% icon "flame" %}{% endif %}</a></th>
         <th><a href="?view=hu&sort={% if sort == '-created' %}created{% else %}-created{% endif %}{% if qs_no_sort %}&{{ qs_no_sort }}{% endif %}" style="color:inherit">Data utworzenia {% if sort == 'created' %}↑{% else %}↓{% endif %}</a></th>
         <th><a href="?view=hu&sort=vip{% if qs_no_sort %}&{{ qs_no_sort }}{% endif %}" style="color:inherit">Klient {% if sort == 'vip' %}{% icon "star" %}{% endif %}</a></th>

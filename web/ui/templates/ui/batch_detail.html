@@ -21,7 +21,7 @@
   </div>
   <div class="page-header__actions">
     <form method="post" action="{% url 'ui:delete_batch' batch.id %}"
-          onsubmit="return confirm('Usunąć cały batch #{{ batch.id }} wraz z wszystkimi SKU?');"
+          data-confirm="Usunąć cały batch #{{ batch.id }} wraz z wszystkimi SKU?"
           style="margin:0">
       {% csrf_token %}
       <button type="submit" class="btn btn-danger">{% icon "trash-2" %} Usuń batch</button>

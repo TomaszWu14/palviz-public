@@ -44,7 +44,7 @@
           <td style="display:flex;gap:6px;align-items:center;justify-content:flex-end">
             <a href="{% url 'ui:batch_detail' b.id %}" class="btn btn-ghost btn-sm">Otwórz</a>
             <form method="post" action="{% url 'ui:delete_batch' b.id %}"
-                  onsubmit="return confirm('Usunąć batch #{{ b.id }}?');" style="margin:0">
+                  data-confirm="Usunąć batch #{{ b.id }}?" style="margin:0">
               {% csrf_token %}
               <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
             </form>

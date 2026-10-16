@@ -38,18 +38,18 @@
 
     {# Szybkie szablony — jeden tap zamiast pisania (kluczowe na skanerze). #}
     <div style="display:flex;flex-wrap:wrap;gap:6px">
-      <button type="button" class="btn btn-sm" onclick="mqSet('Błąd ilości.')">Błąd ilości</button>
-      <button type="button" class="btn btn-sm" onclick="mqSet('Zła seria / partia.')">Zła seria</button>
-      <button type="button" class="btn btn-sm" onclick="mqSet('Uszkodzony towar.')">Uszkodzenie</button>
-      <button type="button" class="btn btn-sm" onclick="mqSet('Potrzebuję decyzji lidera.')">Decyzja lidera</button>
-      <button type="button" class="btn btn-sm" onclick="mqSet('HU zablokowana — proszę o pomoc.')">HU zablokowana</button>
+      <button type="button" class="btn btn-sm" data-call="mqSet" data-args='["B\u0142\u0105d ilo\u015bci."]'>Błąd ilości</button>
+      <button type="button" class="btn btn-sm" data-call="mqSet" data-args='["Z\u0142a seria / partia."]'>Zła seria</button>
+      <button type="button" class="btn btn-sm" data-call="mqSet" data-args='["Uszkodzony towar."]'>Uszkodzenie</button>
+      <button type="button" class="btn btn-sm" data-call="mqSet" data-args='["Potrzebuj\u0119 decyzji lidera."]'>Decyzja lidera</button>
+      <button type="button" class="btn btn-sm" data-call="mqSet" data-args='["HU zablokowana \u2014 prosz\u0119 o pomoc."]'>HU zablokowana</button>
     </div>
 
     <button type="submit" class="btn btn-primary" style="padding:12px;font-size:16px;font-weight:800">Wyślij</button>
   </form>
 </div>
 
-<script>
+<script nonce="{{ csp_nonce }}">
   // Wstaw szablon do treści (dołącza, nie kasuje). Vanilla — działa na starym Chrome.
   function mqSet(txt){
     var ta = document.querySelector('textarea[name="body"]');

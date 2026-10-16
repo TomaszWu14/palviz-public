@@ -154,7 +154,7 @@
   </div>
 </form>
 
-<script>
+<script nonce="{{ csp_nonce }}">
 (function(){
   var form = document.getElementById('mxForm');
   var segs = Array.prototype.slice.call(form.querySelectorAll('.seg'));

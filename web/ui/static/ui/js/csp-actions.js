@@ -8,7 +8,10 @@
  *   data-click="el-id"      klik → klik w element #el-id (np. ukryty input[type=file])
  *   data-hide="el-id"       klik → ukrywa #el-id
  *   data-remove-closest="tr"  klik → usuwa najbliższego przodka pasującego do selektora (np. wiersz)
- *   data-autosubmit         change → form.submit() (jak dawne onchange="this.form.submit()")
+ *   data-autosubmit         change → form.submit(); data-autosubmit="request" → form.requestSubmit()
+ *   data-enable-submit      change → odblokowuje przycisk formularza
+ *   data-check-all="sel"    klik w checkbox → zaznacza/odznacza wszystkie pasujące do selektora
+ *   data-no-submit          formularz nie wysyła się (np. filtry działające tylko w JS)
  *   data-upload             change → gvUpload(this) (planer) / pvUpload(this) (skaner)
  *   data-action="fn"        wywołuje window.fn(el, ...argumenty); zwrot false = preventDefault
  *   data-call="fn"          wywołuje window.fn(...argumenty) — bez elementu (np. showTab('csv'))
@@ -51,6 +54,7 @@
   // zatrzymało też inne nasłuchy submit (np. blokadę podwójnego wysłania).
   document.addEventListener('submit', function (ev) {
     var f = ev.target;
+    if (f.dataset && f.dataset.noSubmit !== undefined) { ev.preventDefault(); return; }
     if (f.dataset && f.dataset.confirm && !window.confirm(f.dataset.confirm)) {
       ev.preventDefault();
       ev.stopImmediatePropagation();
@@ -80,6 +84,10 @@
     if (clk) { var t = byId(clk.dataset.click); if (t) t.click(); }
     var hide = ev.target.closest('[data-hide]');
     if (hide) { var h = byId(hide.dataset.hide); if (h) h.style.display = 'none'; }
+    var all = ev.target.closest('[data-check-all]');
+    if (all) {
+      document.querySelectorAll(all.dataset.checkAll).forEach(function (c) { c.checked = all.checked; });
+    }
     var rm = ev.target.closest('[data-remove-closest]');
     if (rm) { var row = rm.closest(rm.dataset.removeClosest); if (row) row.remove(); }
   });
@@ -87,7 +95,14 @@
   document.addEventListener('change', function (ev) {
     var el = ev.target;
     if (!(el instanceof Element)) return;
-    if (el.matches('[data-autosubmit]') && el.form) el.form.submit();
+    if (el.matches('[data-autosubmit]') && el.form) {
+      if (el.dataset.autosubmit === 'request' && el.form.requestSubmit) el.form.requestSubmit();
+      else el.form.submit();
+    }
+    if (el.matches('[data-enable-submit]') && el.form) {
+      var btn = el.form.querySelector('button');
+      if (btn) btn.disabled = false;
+    }
     if (el.matches('[data-upload]')) {
       var up = window.gvUpload || window.pvUpload;
       if (typeof up === 'function') up(el);

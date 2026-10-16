@@ -43,6 +43,8 @@ Wdrożenie w trzech fazach:
    moduły używają tych samych atrybutów. Krok 3 — planer (`ui/planner`, 16 szablonów) — zrobiony;
    dyspozytor dostał `data-call` (funkcja bez elementu), `data-args` (JSON) i zdarzenie `input`.
    Krok 4 — planer wysyłek (`transport`, 10 szablonów) — zrobiony; nowy `data-remove-closest`.
+   Krok 5 — pozostałe ekrany (31 szablonów) — zrobiony; strażnik skanuje teraz wszystkie szablony,
+   wyjątki są tylko na liście `PENDING` (fragmenty doładowywane, krok 6).
    Ustalenia z inwentaryzacji (74 szablony):
    - **Fragmenty doładowywane** (np. `_panel.html` z kalkulatora, zwracany z widoku jako HTML):
      ich skrypty dostają nonce innego żądania niż strona. Rozwiązanie w kroku danego modułu:

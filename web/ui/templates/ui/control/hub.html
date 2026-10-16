@@ -72,7 +72,7 @@
     <label class="btn btn-secondary" style="cursor:pointer;margin:0">
       <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
       Importuj plik
-      <input type="file" name="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="gvUpload(this)">
+      <input type="file" name="file" accept=".csv,.xlsx,.xls" style="display:none" data-upload>
     </label>
   </form>
 </div>
@@ -174,7 +174,7 @@
         <td>{% if is_leader %}
           {# BIZ-011: HU w kontroli (liczenie trwa) — mocniejsze confirm() + jawna flaga dla serwera #}
           <form method="post" action="{% url 'ui:hu_control_disposition' hu.pk %}" style="margin:0"
-                onsubmit="return confirm('{% if hu.status == "in_control" %}UWAGA: HU {{ hu.ref|escapejs }} jest W KONTROLI — liczy ją {{ hu.controlled_by|default:"kontroler"|escapejs }}. Przerwać liczenie i oznaczyć jako wyjechało bez kontroli?{% else %}Oznaczyć HU {{ hu.ref }} jako wyjechało bez kontroli?{% endif %}')">
+                data-confirm="{% if hu.status == "in_control" %}UWAGA: HU {{ hu.ref }} jest W KONTROLI — liczy ją {{ hu.controlled_by|default:"kontroler" }}. Przerwać liczenie i oznaczyć jako wyjechało bez kontroli?{% else %}Oznaczyć HU {{ hu.ref }} jako wyjechało bez kontroli?{% endif %}">
             {% csrf_token %}<input type="hidden" name="next" value="{% url 'ui:hu_control_hub' %}">
             {% if hu.status == "in_control" %}<input type="hidden" name="confirm_in_progress" value="1">{% endif %}
             <button type="submit" class="btn btn-secondary btn-sm">Wyjechało bez kontroli</button>
@@ -282,7 +282,7 @@
     {% endif %}
   </div>
   <form method="post" action="{% url 'ui:hu_control_types' %}"
-        onsubmit="return confirm('Zapisać wybór typów magazynu do kontroli? Zmienia kolejkę wszystkich kontrolerów.')">
+        data-confirm="Zapisać wybór typów magazynu do kontroli? Zmienia kolejkę wszystkich kontrolerów.">
     {% csrf_token %}
     <div class="table-wrap">
       <table class="table">
@@ -335,7 +335,7 @@
         <label class="btn btn-primary" style="cursor:pointer">
           <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
           Wybierz plik i importuj
-          <input type="file" name="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="gvUpload(this)">
+          <input type="file" name="file" accept=".csv,.xlsx,.xls" style="display:none" data-upload>
         </label>
       </form>
     </div>

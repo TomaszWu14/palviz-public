@@ -22,6 +22,10 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   Strażnik: `ui.tests.test_naming_us011`.
 
 ### Security
+- US-008 (#19), faza 2 krok 5: pozostałe ekrany (31 szablonów: kontrola, admin, magazyn, PHV, sloty, Data
+  Center…) bez handlerów `on*=`. Strażnik `test_csp_phase2_templates` skanuje wszystkie szablony; wyjątki
+  tylko w `PENDING` (2 fragmenty doładowywane). `csp-actions.js`: `data-autosubmit="request"`,
+  `data-enable-submit`, `data-check-all`, `data-no-submit`.
 - US-008 (#19), faza 2 krok 4: planer wysyłek (`transport`, 10 szablonów) bez handlerów `on*=`, nonce na
   skryptach inline; `csp-actions.js`: `data-remove-closest` (usuwanie wiersza pozycji wysyłki).
 - US-008 (#19), faza 2 krok 3: planer (`ui/planner`, 16 szablonów) bez handlerów `on*=`, nonce na skryptach

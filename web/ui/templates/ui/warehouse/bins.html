@@ -20,7 +20,7 @@
 <form method="get" class="card" style="display:flex;gap:16px;flex-wrap:wrap;align-items:end">
   <div class="form-group" style="margin:0">
     <label>Typ magazynu</label>
-    <select aria-label="Typ magazynu" name="t" onchange="this.form.submit()">
+    <select aria-label="Typ magazynu" name="t" data-autosubmit>
       <option value="all" {% if f_type == "all" %}selected{% endif %}>Wszystkie ({{ counts.t_all }})</option>
       <option value="0052" {% if f_type == "0052" %}selected{% endif %}>0052 — picking ({{ counts.t_0052 }})</option>
       <option value="0010" {% if f_type == "0010" %}selected{% endif %}>0010+0011 — zapas ({{ counts.t_0010 }})</option>
@@ -29,7 +29,7 @@
   </div>
   <div class="form-group" style="margin:0">
     <label>Rozmiar miejsca</label>
-    <select aria-label="Rozmiar miejsca" name="s" onchange="this.form.submit()">
+    <select aria-label="Rozmiar miejsca" name="s" data-autosubmit>
       <option value="all" {% if f_size == "all" %}selected{% endif %}>Wszystkie ({{ counts.s_all }})</option>
       <option value="full" {% if f_size == "full" %}selected{% endif %}>Pełne ({{ counts.s_full }})</option>
       <option value="half" {% if f_size == "half" %}selected{% endif %}>Połówka ({{ counts.s_half }})</option>
@@ -37,7 +37,7 @@
   </div>
   <div class="form-group" style="margin:0">
     <label>Status</label>
-    <select aria-label="Status" name="st" onchange="this.form.submit()">
+    <select aria-label="Status" name="st" data-autosubmit>
       <option value="both" {% if f_status == "both" %}selected{% endif %}>Puste + zablokowane ({{ counts.st_both }})</option>
       <option value="empty" {% if f_status == "empty" %}selected{% endif %}>Tylko puste ({{ counts.st_empty }})</option>
       <option value="blocked" {% if f_status == "blocked" %}selected{% endif %}>Tylko zablokowane ({{ counts.st_blocked }})</option>
