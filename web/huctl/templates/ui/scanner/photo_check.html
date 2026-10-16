@@ -13,16 +13,16 @@
       <input type="file" name="photo" id="photo" accept="image/*" capture="environment"
              style="display:none">
       <button type="button" class="btn btn--xl btn--accent" style="width:100%"
-              onclick="document.getElementById('photo').click()">{% icon "camera" %} Zrób zdjęcie</button>
+              data-click="photo">{% icon "camera" %} Zrób zdjęcie</button>
       <img id="preview" alt="" style="display:none;max-width:100%;border-radius:10px;margin-top:12px">
       <button type="submit" id="send" class="btn btn--xl btn--accent" style="width:100%;margin-top:12px;display:none">
         Prześlij i licz
       </button>
       <button type="button" id="retake" class="btn btn--ghost" style="margin-top:8px;display:none"
-              onclick="document.getElementById('photo').click()">Zrób ponownie</button>
+              data-click="photo">Zrób ponownie</button>
     </form>
   </div>
-  <script>
+  <script nonce="{{ csp_nonce }}">
     // Kompresja po stronie skanera: kanwa → JPEG ~1280 px, żeby nie ładować 12 MB na łącze
     // magazynowe. Ten ekran leci tylko na telefonie/tablecie (nowoczesny Chrome → DataTransfer OK);
     // gdyby API zawiodło, wysyłamy oryginał (serwer i tak przyjmuje ≤12 MB).

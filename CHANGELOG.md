@@ -22,6 +22,10 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   Strażnik: `ui.tests.test_naming_us011`.
 
 ### Security
+- US-008 (#19), faza 2 krok 2: skaner Kontroli HU bez handlerów `on*=` — akcje deklaratywne `data-*`
+  obsługiwane przez `ui/js/csp-actions.js` (ładowany w obu szkieletach). Komunikaty potwierdzeń w
+  atrybutach HTML zamiast w stringach JS (`escapejs` niepotrzebne). Naprawiony strażnik składni JS
+  (`test_submit_guard`) — po dodaniu nonce nie znajdował bloków `<script>` w `scanner/base.html`.
 - US-008 (#19), faza 2 krok 1 (ADR-0020): wspólny szkielet stron (`base.html`, `scanner/base.html`,
   dzwonek, powiadomienia, powitanie demo, hub) z nonce na skryptach inline i bez handlerów `on*=`.
   Strażnik `ui.tests.test_csp_phase2_templates`. Zachowanie ekranów bez zmian (polityka nadal report-only).
