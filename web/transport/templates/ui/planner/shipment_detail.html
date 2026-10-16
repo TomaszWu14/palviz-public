@@ -36,13 +36,13 @@
     </a>
     {% if quote_offers %}
     <form method="post" action="{% url 'ui:planner_shipment_requote' shipment.pk %}" style="margin:0"
-          onsubmit="return confirm('Otworzyć ponowną wycenę? Odblokuje formularze spedycji i wyczyści wybór/kierowcę.');">
+          data-confirm="Otworzyć ponowną wycenę? Odblokuje formularze spedycji i wyczyści wybór/kierowcę.">
       {% csrf_token %}
       <button type="submit" class="btn btn-secondary" title="Ponowna wycena gdy coś się zmieniło">{% icon "refresh-cw" %} Ponowna wycena</button>
     </form>
     {% endif %}
     <form method="post" action="{% url 'ui:planner_shipment_cancel' shipment.pk %}" style="margin:0"
-          onsubmit="return confirm('Anulować przesyłkę? Powiadomimy wybraną spedycję.');">
+          data-confirm="Anulować przesyłkę? Powiadomimy wybraną spedycję.">
       {% csrf_token %}
       <button type="submit" class="btn btn-secondary" style="color:var(--red)">{% icon "x" %} Anuluj</button>
     </form>
@@ -51,7 +51,7 @@
     {% if cancel_mailto %}<a href="{{ cancel_mailto }}" class="btn btn-secondary">{% icon "mail" %} Powiadom spedycję</a>{% endif %}
     {# Status nie jest już edytowalny w formularzu (BIZ-003) — powrót do roboczej = ponowna wycena. #}
     <form method="post" action="{% url 'ui:planner_shipment_requote' shipment.pk %}" style="margin:0"
-          onsubmit="return confirm('Przywrócić przesyłkę jako roboczą? Otworzy ponowną wycenę i wyczyści wybór/kierowcę.');">
+          data-confirm="Przywrócić przesyłkę jako roboczą? Otworzy ponowną wycenę i wyczyści wybór/kierowcę.">
       {% csrf_token %}
       <button type="submit" class="btn btn-secondary" title="Przywróć jako roboczą (ponowna wycena)">{% icon "refresh-cw" %} Przywróć</button>
     </form>
@@ -224,10 +224,10 @@
       <button type="button" class="hstp" disabled style="opacity:.35;cursor:not-allowed" title="Liczba palet jest uzgodniona — efektywność jej nie zmienia">+</button>
       <span style="font-size:11px;color:var(--gray-400);max-width:170px;line-height:1.2">Liczba palet uzgodniona — suwak nieaktywny</span>
       {% else %}
-      <button type="button" class="hstp" onclick="bumpEff(-5)">−</button>
+      <button type="button" class="hstp" data-call="bumpEff" data-args='[-5]'>−</button>
       <span id="eff-val" data-eff="{{ calc.stow_eff_pct }}"
             style="min-width:58px;text-align:center;font-size:18px;font-weight:800;color:var(--gray-900)">{{ calc.stow_eff_pct }}%</span>
-      <button type="button" class="hstp" onclick="bumpEff(5)">+</button>
+      <button type="button" class="hstp" data-call="bumpEff" data-args='[5]'>+</button>
       {% endif %}
     </div>
   </div>
@@ -264,7 +264,7 @@
              style="font-size:22px;font-weight:800;color:var(--blue-mid);line-height:1">{{ v.scenario.label }}</div>
         <input type="number" min="100" max="280" step="1" value="{{ v.scenario.max_h_cm }}"
                {% if chosen_height and v.scenario.max_h_cm != chosen_height %}disabled{% endif %}
-               onchange="setHeight({{ forloop.counter0 }}, this.value)"
+               data-action="setHeightFromInput" data-on="change" data-args='[{{ forloop.counter0 }}]'
                style="width:70px;font-size:11px;text-align:center;margin-top:3px;border:1px solid var(--gray-300);border-radius:4px"
                title="Wpisz dokładną wysokość w cm">
         <div style="font-size:11px;color:var(--gray-400)">wys. palety [cm]</div>
@@ -351,7 +351,7 @@
   LDM = loading meters przy szerokości naczepy 2,4 m · Paleta Euro 120×80 cm
 </div>
 
-<script>
+<script nonce="{{ csp_nonce }}">
   // Auto-open Outlook after an action that has no server SMTP: ?driver_mail=1 for the
   // forwarder confirmation, ?wh_mail=<id> for a warehouse-readiness request. The flag is
   // stripped afterwards so a refresh doesn't reopen the mail client.
@@ -397,6 +397,8 @@
     s.hs[idx] = Math.min(2.8, Math.max(1.0, Math.round(m * 100) / 100));
     _go(s.hs, s.eff);
   }
+  // US-008: pole wysokości woła to przez csp-actions.js (data-action) zamiast onchange.
+  function setHeightFromInput(input, idx){ setHeight(idx, input.value); }
   function bumpEff(d){
     var s = _vizState();
     _go(s.hs, Math.min(100, Math.max(30, s.eff + d)));
@@ -622,7 +624,7 @@
   {% if google_maps_key %}
   {# Full JS map — scroll/gesture zoom, drawn route, distance + time. #}
   <div id="route-map" style="height:520px;min-height:420px"></div>
-  <script>
+  <script nonce="{{ csp_nonce }}">
     function initRouteMap(){
       var map = new google.maps.Map(document.getElementById('route-map'),
         {zoom:6, center:{lat:48.5,lng:14}, gestureHandling:'greedy', streetViewControl:false});
@@ -708,7 +710,7 @@
   <div style="padding:12px 16px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
     <span style="font-weight:600;font-size:14px">HU — palety i weryfikacja zawartości</span>
     <form method="post" action="{% url 'ui:planner_shipment_generate_hus' shipment.pk %}" style="margin:0"
-          onsubmit="return confirm('Wygenerować HU z aktualnej paletyzacji? Nadpisze istniejące.')">
+          data-confirm="Wygenerować HU z aktualnej paletyzacji? Nadpisze istniejące.">
       {% csrf_token %}
       <button type="submit" class="btn btn-secondary btn-sm">{% icon "refresh-cw" %} Generuj HU z paletyzacji</button>
     </form>
@@ -747,8 +749,8 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script type="importmap">{"imports":{"three":"/static/ui/vendor/three.module.js","three/addons/":"/static/ui/vendor/addons/"}}</script>
-<script type="module">
+<script type="importmap" nonce="{{ csp_nonce }}">{"imports":{"three":"/static/ui/vendor/three.module.js","three/addons/":"/static/ui/vendor/addons/"}}</script>
+<script type="module" nonce="{{ csp_nonce }}">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 

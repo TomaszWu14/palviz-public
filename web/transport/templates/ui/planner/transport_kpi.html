@@ -56,7 +56,7 @@
   <div class="chart-card"><h3>Wysyłki wg statusu</h3><div id="ch-status" class="chart-box"></div></div>
 </div>
 
-<script>
+<script nonce="{{ csp_nonce }}">
   const D = {{ charts_json|safe }};
   function chart(id, opt){ const el=document.getElementById(id); if(!el) return;
     const c=echarts.init(el); c.setOption(opt); addEventListener('resize',()=>c.resize()); }

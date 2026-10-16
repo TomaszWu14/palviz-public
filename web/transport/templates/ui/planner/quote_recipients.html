@@ -53,7 +53,7 @@
         <td class="text-sm text-muted">{{ r.notes|default:"—" }}</td>
         <td>{% if r.is_active %}<span class="badge badge-green">Aktywny</span>{% else %}<span class="badge badge-gray">Nieaktywny</span>{% endif %}</td>
         <td>
-          <form method="post" onsubmit="return confirm('Usunąć {{ r.name }}?')">
+          <form method="post" data-confirm="Usunąć {{ r.name }}?">
             {% csrf_token %}
             <input type="hidden" name="action" value="del">
             <input type="hidden" name="rid" value="{{ r.pk }}">

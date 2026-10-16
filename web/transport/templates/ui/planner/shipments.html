@@ -56,7 +56,7 @@
         <option value="loose">Bez palet (luzem)</option>
       </select>
       <label class="btn btn-primary menu__upload" style="cursor:pointer">{% icon "file-up" %}Wybierz pliki dostaw (1+)…
-        <input type="file" name="file" accept=".csv,.xlsx,.xls" multiple onchange="gvUpload(this)"></label>
+        <input type="file" name="file" accept=".csv,.xlsx,.xls" multiple data-upload></label>
     </form>
       </div>
     </details>
@@ -194,7 +194,7 @@
   {% endif %}
 </div>
 
-<script>
+<script nonce="{{ csp_nonce }}">
 /* Transport-type picker: a real collapsed dropdown of checkboxes (keeps multi-select;
    the checkboxes still POST as name="modes", so the import backend is unchanged). */
 (function () {

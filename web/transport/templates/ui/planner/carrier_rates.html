@@ -29,7 +29,7 @@
       <strong style="font-size:15px">{{ zone.name }}</strong>
       {% if zone.countries %}<span class="text-sm text-muted" style="margin-left:8px">{{ zone.countries }}</span>{% endif %}
     </div>
-    <form method="post" onsubmit="return confirm('Usunąć strefę „{{ zone.name }}"?')">
+    <form method="post" data-confirm="Usunąć strefę „{{ zone.name }}”?">
       {% csrf_token %}
       <input type="hidden" name="action" value="del_zone">
       <input type="hidden" name="zone_id" value="{{ zone.pk }}">

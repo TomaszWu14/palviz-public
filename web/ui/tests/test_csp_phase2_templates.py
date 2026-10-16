@@ -30,6 +30,10 @@ CONVERTED = (
         "instruction_detail", "instruction_form", "location_fit_all", "location_simulate",
         "locations", "optimizer", "product_form", "product_hierarchy", "products",
         "ref_materials")),
+    # Faza 2, krok 4: planer wysyłek (transport).
+    *(f"transport/templates/ui/planner/{n}.html" for n in (
+        "carrier_rates", "carriers", "container_load", "customer_form", "customers",
+        "quote_recipients", "shipment_detail", "shipment_form", "shipments", "transport_kpi")),
 )
 
 SCRIPT_RE = re.compile(r"<script\b([^>]*)>", re.I)
@@ -60,11 +64,16 @@ class ConvertedTemplatesTests(SimpleTestCase):
         for rel in ("ui/templates/ui/base.html", "ui/templates/ui/scanner/base.html"):
             self.assertIn("ui/js/csp-actions.js", (WEB / rel).read_text(encoding="utf-8"), rel)
 
-    def test_location_delete_asks_for_confirmation(self):
+    def test_delete_actions_ask_for_confirmation(self):
         # Regresja: cudzysłów w onsubmit urywał atrybut — JS był błędny i lokalizacja
         # usuwała się bez pytania. Teraz potwierdzenie w atrybucie HTML (data-confirm).
-        text = (WEB / "ui/templates/ui/planner/locations.html").read_text(encoding="utf-8")
-        self.assertIn('data-confirm="Usunąć lokalizację „{{ loc.name }}”?"', text)
+        cases = {
+            "ui/templates/ui/planner/locations.html": "Usunąć lokalizację „{{ loc.name }}”?",
+            "transport/templates/ui/planner/carriers.html": "Usunąć przewoźnika „{{ c.name }}”?",
+            "transport/templates/ui/planner/carrier_rates.html": "Usunąć strefę „{{ zone.name }}”?",
+        }
+        for rel, msg in cases.items():
+            self.assertIn(f'data-confirm="{msg}"', (WEB / rel).read_text(encoding="utf-8"), rel)
 
     def test_checker_catches_violations(self):
         self.assertTrue(violations("<script>alert(1)</script>"))
