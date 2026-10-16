@@ -12,7 +12,7 @@ Produkt nazywa się **LogViz** (A-01, US-011). GROOVE to nazwa techniczna w kodz
 | [03 User flow](03-user-flow.md) | Mapa ekranów: logowanie i hub, skaner kontroli HU, planista, wycena, ścieżki alternatywne. |
 | [04 Model danych](04-model-danych.md) | Diagramy ER, encje, reguły integralności wymuszane przez bazę i niespójności. |
 | [05 Wymagania](05-wymagania.md) | 64 wymagania z kryteriami akceptacji „Zakładając / Gdy / Wtedy” i miejscem realizacji. |
-| [06 Decyzje](06-decyzje.md) | Skrót 19 decyzji architektonicznych z [rejestru ADR](adr/README.md). |
+| [06 Decyzje](06-decyzje.md) | Skrót 20 decyzji architektonicznych z [rejestru ADR](adr/README.md). |
 | [07 Ograniczenia](07-ograniczenia.md) | Czego świadomie nie ma i lista znanych problemów (P1–P19). |
 | [Zrzuty ekranu](screenshots/README.md) | Plan materiałów wizualnych (GIF, zrzuty). |
 | [Audyt BA / DEV / SEC](AUDYT.md) | Audyt otwierający proces zespołowy (2026-10-15): stan z trzech perspektyw, TOP 10 ryzyk, decyzje dla PO. |

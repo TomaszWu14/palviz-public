@@ -7,6 +7,7 @@ from ui.views.core import (
 )
 from transport.pallet_count import shipment_pallet_calc
 from django.conf import settings
+from core.csp import strict_csp
 from core.ratelimit import post_rate_limit
 from django.urls import reverse
 from django.utils import timezone
@@ -333,6 +334,7 @@ def link_ttl_expired(issued_at):
     return bool(ttl and issued_at and issued_at < timezone.now() - timedelta(days=ttl))
 
 
+@strict_csp   # US-008 / ADR-0020: publiczna strona z tokenem
 @post_rate_limit("quote_response", 20, 3600, by="token")   # SEC-014
 def quote_response(request, token):
     """Public, tokenised form for a forwarder to enter the price + dates."""

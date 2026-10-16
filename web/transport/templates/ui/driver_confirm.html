@@ -46,10 +46,14 @@
         {% csrf_token %}
         <div class="btns">
           <button class="yes" name="answer" value="confirmed" type="submit">✓ Potwierdzam</button>
-          <button class="no" name="answer" value="declined" type="submit"
-                  onclick="return confirm('Na pewno NIE odbierzesz przesyłki? Planista dostanie powiadomienie.')">✕ Nie odbiorę</button>
+          <button class="no" name="answer" value="declined" type="submit" id="btn-decline">✕ Nie odbiorę</button>
         </div>
       </form>
+      <script nonce="{{ csp_nonce }}">
+        document.getElementById('btn-decline').addEventListener('click', function (e) {
+          if (!confirm('Na pewno NIE odbierzesz przesyłki? Planista dostanie powiadomienie.')) e.preventDefault();
+        });
+      </script>
       {% endif %}
     </div>
   </div>

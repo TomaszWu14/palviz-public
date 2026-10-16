@@ -46,7 +46,7 @@ powiadomienia żyją w aplikacji, a paleta z błędem trafia do rekontroli, któ
 | [05 Wymagania](docs/05-wymagania.md) | 64 wymagania z kryteriami akceptacji „Zakładając / Gdy / Wtedy” i miejscem w kodzie/testach. |
 | [06 Decyzje](docs/06-decyzje.md) | Dziennik decyzji: kontekst, opcje, uzasadnienie, skutki. |
 | [07 Ograniczenia](docs/07-ograniczenia.md) | Czego świadomie nie ma i znane problemy (P1–P19). |
-| [ADR](docs/adr/README.md) | 19 zapisów decyzji architektonicznych (pełna treść). |
+| [ADR](docs/adr/README.md) | 20 zapisów decyzji architektonicznych (pełna treść). |
 
 ## Proces pracy i dokumentacja zespołowa
 

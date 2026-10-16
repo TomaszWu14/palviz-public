@@ -130,6 +130,7 @@ TEMPLATES = [
                 "core.context_processors.user_roles",
                 "core.context_processors.branding",
                 "core.context_processors.section_theme",
+                "core.csp.csp_nonce",   # US-008: {{ csp_nonce }} dla <script nonce=…>
             ],
         },
     },

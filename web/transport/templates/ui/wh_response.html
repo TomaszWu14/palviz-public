@@ -92,11 +92,18 @@
         <textarea name="note" rows="2" placeholder="Uwagi (opcjonalnie)">{{ wr.note }}</textarea>
         <div class="btns">
           <button class="yes" name="answer" value="yes" type="submit">✓ Tak, przygotujemy {{ wr.asked_pallets|default:"" }}</button>
-          <button class="sug" type="button" onclick="document.getElementById('sugWrap').style.display='block';this.nextElementSibling.style.display='block';this.style.display='none'">↻ Inna ilość</button>
+          <button class="sug" type="button" id="btn-suggest">↻ Inna ilość</button>
           <button class="sug" name="answer" value="suggest" type="submit" style="display:none">↻ Wyślij propozycję</button>
           <button class="no" name="answer" value="no" type="submit">✕ Nie</button>
         </div>
       </form>
+      <script nonce="{{ csp_nonce }}">
+        document.getElementById('btn-suggest').addEventListener('click', function () {
+          document.getElementById('sugWrap').style.display = 'block';
+          this.nextElementSibling.style.display = 'block';
+          this.style.display = 'none';
+        });
+      </script>
       {% endif %}
     </div>
   </div>

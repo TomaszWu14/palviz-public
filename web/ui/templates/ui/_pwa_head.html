@@ -3,7 +3,7 @@
 <link rel="manifest" href="{% url 'ui:pwa_manifest' %}">
 <meta name="theme-color" content="#0f7d79">
 <link rel="apple-touch-icon" href="{% static 'ui/icons/icon-192.png' %}">
-<script>
+<script nonce="{{ csp_nonce }}">
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function(){ navigator.serviceWorker.register('/sw.js').catch(function(){}); });
   }

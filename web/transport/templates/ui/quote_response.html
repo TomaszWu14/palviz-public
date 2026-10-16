@@ -90,8 +90,11 @@
           <div class="ok">{% if saved %}Dziękujemy! Wycena zapisana.{% else %}Ten formularz został już wypełniony.{% endif %}
             <div style="font-weight:500;margin-top:6px">{{ offer.amount }} {{ offer.currency }} · załadunek {{ offer.truck_date|date:"d.m.Y"|default:"—" }} · dostawa {{ offer.delivery_date|date:"d.m.Y"|default:"—" }}</div>
           </div>
-          <button class="btn" type="button" onclick="window.close()">Zamknij</button>
-          {% if saved %}<script>setTimeout(function(){try{window.close()}catch(e){}},1500)</script>{% endif %}
+          <button class="btn" type="button" id="btn-close">Zamknij</button>
+          <script nonce="{{ csp_nonce }}">
+            document.getElementById('btn-close').addEventListener('click',function(){window.close()});
+            {% if saved %}setTimeout(function(){try{window.close()}catch(e){}},1500);{% endif %}
+          </script>
         {% else %}
         {% if error %}<div class="err">{{ error }}</div>{% endif %}
         <form method="post" enctype="multipart/form-data">
@@ -121,7 +124,7 @@
             <input aria-label="Załącznik (oferta/dokument, max 30 MB)" type="file" name="attachment"></div>
           <button class="btn" type="submit">Wyślij wycenę</button>
         </form>
-        <script>
+        <script nonce="{{ csp_nonce }}">
           var pallets={{ n_pallets|default:0 }}, vol={{ volume_m3|default:0 }}, kg={{ weight_kg|default:0 }};
           var amount=document.getElementById('amount'), rates=document.getElementById('rates');
           function cur(){var c=document.querySelector('input[name=currency]:checked');return c?c.value:'PLN'}

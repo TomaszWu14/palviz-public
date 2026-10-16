@@ -1,0 +1,56 @@
+# ADR-0020: Wymuszana CSP z nonce, wdrażana etapami od stron publicznych
+
+- **Status:** Proponowana
+- **Data:** 2026-10-16
+
+## Kontekst
+
+[ADR-0008](0008-csp-report-only.md) wysyła politykę CSP tylko jako `Report-Only`, a polityka ta
+dopuszcza `'unsafe-inline'` i `'unsafe-eval'`. Wstrzyknięty skrypt nie jest więc blokowany ani
+nawet raportowany (S-05, D-07 w `docs/AUDYT.md`). US-008 (#19) wymaga polityki, która blokuje.
+
+Skala zmiany w szablonach (stan 2026-10-16): 48 szablonów z 73 blokami inline `<script>` i 136
+atrybutami `on*=`. Ponadto Plotly potrzebuje `'unsafe-eval'`. Przełączenie całej aplikacji
+naraz zepsułoby ekrany, a kryterium US-008 mówi o 2 tygodniach czystych raportów przed
+wymuszeniem globalnym. Tego okresu nie da się skrócić w repozytorium.
+
+Najwyższe ryzyko XSS mają strony dostępne bez logowania: logowanie oraz strony z tokenem dla
+spedytora, magazynu i kierowcy (F3, F4 w `docs/bezpieczenstwo/THREAT_MODEL.md`). Są małe:
+łącznie 4 bloki skryptów i 5 handlerów.
+
+## Decyzja
+
+Polityka docelowa opiera się na nonce: `script-src 'self' 'nonce-…'` bez `'unsafe-inline'`.
+Nonce generuje `core/csp.py`, jeden na żądanie, a szablony dostają go jako `{{ csp_nonce }}`.
+Inline handlery `on*=` zastępujemy `addEventListener` w skrypcie z nonce.
+
+Wdrożenie w trzech fazach:
+
+1. **Strony publiczne (zrobione w US-008, faza 1).** Dekorator `strict_csp` oznacza odpowiedź, a
+   `SecurityHeadersMiddleware` wysyła dla niej wymuszony `Content-Security-Policy` ze ścisłą
+   polityką. Dotyczy: `login`, `quote_response`, `wh_readiness_response`, `driver_form`,
+   `driver_confirm`. Strażnik `ui.tests.test_csp_us008` sprawdza, że każdy inline `<script>` ma
+   nonce, a na stronie nie ma atrybutów `on*=`.
+2. **Ekrany wewnętrzne, moduł po module.** Każdy moduł przechodzi na nonce i `addEventListener`
+   w osobnym PR. Następnie polityka `Report-Only` dla zalogowanych dostaje nonce zamiast
+   `'unsafe-inline'`, żeby raporty na `/csp-report/` pokazywały realne naruszenia.
+   `'unsafe-eval'` zostaje tylko na ekranach z Plotly, dopóki nie zmienimy sposobu renderowania.
+3. **Wymuszenie globalne.** Po 2 tygodniach bez naruszeń w raportach PO ustawia
+   `CSP_REPORT_ONLY=false`. ADR-0008 dostaje wtedy status „Zastąpiona przez ADR-0020”.
+
+## Skutki
+
+- Wstrzyknięty skrypt jest blokowany od razu na stronach dostępnych bez logowania.
+- Nowy kod na stronach publicznych musi używać `nonce="{{ csp_nonce }}"` i `addEventListener`.
+  Inaczej przeglądarka zablokuje skrypt, a test strażnika nie przejdzie.
+- Style inline zostają dozwolone (`style-src 'unsafe-inline'`). Ich ryzyko jest znacznie
+  mniejsze, a przepisanie ich nie wchodzi w zakres US-008.
+- Do czasu fazy 3 ekrany wewnętrzne pozostają na polityce z ADR-0008.
+- Do decyzji PO: przyjęcie tego planu oraz moment fazy 3. Wymaga on obserwacji raportów
+  z produkcji.
+
+## Źródła
+
+- `web/core/csp.py`, `web/core/middleware.py`, `web/core/csp_report.py`
+- `web/ui/tests/test_csp_us008.py`
+- `docs/AUDYT.md` (S-05, D-07), `docs/analiza/HISTORYJKI.md` (US-008)

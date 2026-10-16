@@ -182,7 +182,7 @@
       {% endif %}
 
       <div class="qr-sep"><span>albo</span></div>
-      <button type="button" class="btn-qr" id="btn-qr" onclick="palvizBadgeScan()">
+      <button type="button" class="btn-qr" id="btn-qr">
         <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
         Zaloguj kodem (badge QR)
       </button>
@@ -197,9 +197,9 @@
     <video id="qr-vid" playsinline muted style="flex:1;min-height:0;width:100%;object-fit:cover"></video>
     <div style="position:absolute;left:8%;right:8%;top:36%;height:26%;border:3px solid #1a56db;border-radius:14px;pointer-events:none"></div>
     <div style="position:absolute;top:0;left:0;right:0;padding:16px;color:#fff;font-weight:700;text-align:center;text-shadow:0 1px 4px #000">Zeskanuj swój badge (kod QR)</div>
-    <button type="button" onclick="palvizBadgeStop()" style="padding:18px;border:0;background:#334155;color:#fff;font-size:17px;font-weight:700">Zamknij</button>
+    <button type="button" id="btn-qr-stop" style="padding:18px;border:0;background:#334155;color:#fff;font-size:17px;font-weight:700">Zamknij</button>
   </div>
-  <script>
+  <script nonce="{{ csp_nonce }}">
     (function(){
       var stream = null, run = false;
       if (!('BarcodeDetector' in window)){ var b = document.getElementById('btn-qr'); if (b) b.style.display = 'none'; }
@@ -236,6 +236,10 @@
         var v=document.getElementById('qr-vid'); if (v) v.srcObject=null;
         document.getElementById('qr-ov').style.display='none';
       };
+      // US-008: handlery przez addEventListener — ścisła CSP blokuje atrybuty on*=.
+      var qrBtn = document.getElementById('btn-qr');
+      if (qrBtn) qrBtn.addEventListener('click', function(){ window.palvizBadgeScan(); });
+      document.getElementById('btn-qr-stop').addEventListener('click', function(){ window.palvizBadgeStop(); });
     })();
   </script>
 </body>

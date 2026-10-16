@@ -14,7 +14,7 @@ prowadzonych nowym procesem; aktualizowane przy odbiorze [BA] każdej historyjki
 | NFR-012 (sekrety w błędach), P15–P17 | US-004 (#15) | `ui.tests.test_config_validation_us004` (11 testów: siła klucza, maskowanie wartości, 8 ustawień P15) | #40 | odebrana |
 | NFR-012 (tokeny w logach) | US-006 (#17) | `transport.tests.test_link_ttl_us006` (link po TTL → 410, maska w logu gunicorna i Django) | `core/logmask.py`, `palletweb/gunicorn_logger.py` | odebrana (PR US-006) |
 | NFR-008 | US-007 (#18) | test: admin bez TOTP → przekierowanie; logowanie bez kodu → odmowa | — | do decyzji PO |
-| S-05 / NFR-… (CSP) | US-008 (#19) | e2e flow z `CSP_REPORT_ONLY=false`; brak raportów CSP przez 2 tyg. | — | nowa |
+| S-05 / NFR-… (CSP) | US-008 (#19) | faza 1: `ui.tests.test_csp_us008` (strony publiczne: nonce, brak `on*=`, wymuszona CSP); fazy 2–3: e2e z `CSP_REPORT_ONLY=false`, 2 tyg. czystych raportów | `core/csp.py`, ADR-0020 | w toku (faza 1 z 3) |
 | S-08 | US-005 (#16) | `ui.tests.test_uploads_us005` (sygnatury, limit formularza, treść HTML udająca JPG/PDF, 413 middleware) | PR US-005 | w toku |
 | D-01 | US-010 (#21) | `ui.tests.test_docs_links_us010` (linki względne w dokumentach sterujących i procesu, ci.yml, runbook) | #41 | odebrana |
 | BR-08 / P1 | US-013 (#24) | `huctl.tests.test_escalation` rozszerzony o nieudaną rekontrolę | — | do decyzji PO |

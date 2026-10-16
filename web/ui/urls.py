@@ -1,5 +1,6 @@
 from django.urls import include, path
 from django.contrib.auth import views as auth_views
+from core.csp import strict_csp
 from core.demo import demo_login
 
 from . import views
@@ -8,10 +9,10 @@ app_name = "ui"
 
 urlpatterns = [
     # ── Authentication (branded login page) ─────────────────────────────────────
-    path("login/", views.GrooveLoginView.as_view(
+    path("login/", strict_csp(views.GrooveLoginView.as_view(   # US-008: wymuszona ścisła CSP
         template_name="registration/login.html",
         redirect_authenticated_user=True,
-    ), name="login"),
+    )), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("demo/wejdz/", demo_login, name="demo_login"),
 
