@@ -102,6 +102,9 @@ def wh_readiness_response(request, token):
     """Public token page: the warehouse sees the quoted pallet load and either confirms it,
     proposes a different pallet count, or declines — always giving the fastest ready time."""
     wr = get_object_or_404(WarehouseReadiness.objects.select_related("shipment"), token=token)
+    from .quotes import link_ttl_expired   # US-006: ten sam TTL co link oferty
+    if link_ttl_expired(wr.requested_at):
+        return render(request, "ui/link_expired.html", status=410)
     shipment = wr.shipment
     if request.method == "POST":
         # Idempotencja (jak quote_response): po pierwszej odpowiedzi token jest wielorazowy,

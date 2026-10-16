@@ -98,6 +98,8 @@ class AppEnv(BaseSettings):
     # US-004 / P15: limit SMS z publicznego formularza kierowcy i ważność linku (0 = bez limitu).
     DRIVER_FORM_SMS_MAX: int = 3
     DRIVER_LINK_TTL_DAYS: int = 30
+    # US-006 / S-07: ważność linku oferty spedytora i potwierdzenia gotowości magazynu (0 = bez limitu).
+    QUOTE_LINK_TTL_DAYS: int = 30
     # Codzienny raport kontroli HU e-mailem do liderów (beat, 06:00 czasu lokalnego).
     HU_DAILY_REPORT: bool = False
     # ── Kontrola HU: wymuszenie fizycznego skanu (Warstwa A/B) + rezerwacje ──

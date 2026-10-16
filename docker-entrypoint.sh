@@ -68,4 +68,5 @@ exec $RUN gunicorn palletweb.wsgi:application \
     --timeout 120 \
     --graceful-timeout 30 \
     --access-logfile - \
+    --logger-class palletweb.gunicorn_logger.MaskingLogger \
     --error-logfile -

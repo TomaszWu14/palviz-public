@@ -376,6 +376,7 @@ DRIVER_REMINDER_INTERVAL_MIN = env.DRIVER_REMINDER_INTERVAL_MIN
 DRIVER_REMINDER_MAX = env.DRIVER_REMINDER_MAX
 DRIVER_FORM_SMS_MAX = env.DRIVER_FORM_SMS_MAX
 DRIVER_LINK_TTL_DAYS = env.DRIVER_LINK_TTL_DAYS
+QUOTE_LINK_TTL_DAYS = env.QUOTE_LINK_TTL_DAYS
 
 # Periodic schedules editable in the admin (django-celery-beat) when a beat process runs
 # with the DatabaseScheduler. Falls back to the static CELERY_BEAT_SCHEDULE otherwise.
@@ -448,10 +449,12 @@ LOGGING = {
                     "style": "{"},
     },
     # request_id z RequestIDMiddleware (X-Request-ID) w każdej linii logu stdlib.
-    "filters": {"request_id": {"()": "core.middleware.RequestIDLogFilter"}},
+    "filters": {"request_id": {"()": "core.middleware.RequestIDLogFilter"},
+                # US-006: tokeny linków publicznych maskowane w każdej linii logu.
+                "mask_tokens": {"()": "core.logmask.TokenMaskFilter"}},
     "handlers": {
         "console": {"class": "logging.StreamHandler", "formatter": "verbose",
-                    "filters": ["request_id"]},
+                    "filters": ["request_id", "mask_tokens"]},
     },
     "root": {"handlers": ["console"], "level": env.DJANGO_LOG_LEVEL},
     "loggers": {
