@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{{ app_name }}{% endblock %}</title>
+  {# US-008 (ADR-0020): skrypty we fragmentach wstawianych przez htmx dostają nonce TEJ strony. #}
+  <meta name="htmx-config" content='{"inlineScriptNonce": "{{ csp_nonce }}"}'>
   {% include "ui/_pwa_head.html" %}
   {# Inter vendorowany lokalnie (@font-face w fonts.css, latin + latin-ext, pliki w static/ui/fonts/) — zero CDN, offline PWA. #}
   {# Motyw pre-paint: profil serwera → localStorage → prefers-color-scheme. Inline, bo CSP+offline PWA. #}

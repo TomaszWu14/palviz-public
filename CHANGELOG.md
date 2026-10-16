@@ -22,6 +22,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   Strażnik: `ui.tests.test_naming_us011`.
 
 ### Security
+- US-008 (#19), faza 2 krok 6: fragmenty wstawiane przez htmx (`_panel.html`, `_optimal_layer.html`) —
+  `base.html` ustawia `htmx-config.inlineScriptNonce` na nonce strony, więc skrypty fragmentów działają pod
+  ścisłą CSP (sprawdzone w Chromium). Wszystkie szablony bez handlerów `on*=`; lista wyjątków pusta.
 - US-008 (#19), faza 2 krok 5: pozostałe ekrany (31 szablonów: kontrola, admin, magazyn, PHV, sloty, Data
   Center…) bez handlerów `on*=`. Strażnik `test_csp_phase2_templates` skanuje wszystkie szablony; wyjątki
   tylko w `PENDING` (2 fragmenty doładowywane). `csp-actions.js`: `data-autosubmit="request"`,

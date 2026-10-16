@@ -18,7 +18,7 @@
     </div>
     <div id="plot-optimal" style="height:340px"></div>
     <script type="application/json" id="opt-fig">{{ fig_json|safe }}</script>
-    <script>
+    <script nonce="{{ csp_nonce }}">
     (function () {
       try {
         var fig = JSON.parse(document.getElementById('opt-fig').textContent);

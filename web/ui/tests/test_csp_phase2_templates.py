@@ -14,10 +14,7 @@ WEB = Path(__file__).resolve().parents[2]
 # Faza 2 (kroki 1–5): wszystkie szablony mają nonce na skryptach inline i zero atrybutów on*=.
 # Strażnik skanuje KAŻDY szablon — nowy onclick zatrzyma CI. PENDING to fragmenty doładowywane
 # z serwera (krok 6: ich skrypty dostają nonce innego żądania niż strona — ADR-0020).
-PENDING = {
-    "ui/templates/ui/_panel.html",
-    "ui/templates/ui/_optimal_layer.html",
-}
+PENDING = set()   # krok 6: fragmenty htmx przepisane (nonce strony przez htmx inlineScriptNonce)
 
 
 def all_templates():
@@ -49,6 +46,12 @@ class ConvertedTemplatesTests(SimpleTestCase):
         problems = {rel: v for rel in all_templates()
                     if rel not in PENDING and (v := violations((WEB / rel).read_text(encoding="utf-8")))}
         self.assertEqual(problems, {})
+
+    def test_htmx_fragments_get_page_nonce(self):
+        # Fragmenty (_panel, _optimal_layer) wstawia htmx — jego skrypty muszą dostać nonce strony,
+        # nie żądania fragmentu. htmx 1.9 czyta to z <meta name="htmx-config"> przy starcie.
+        base = (WEB / "ui/templates/ui/base.html").read_text(encoding="utf-8")
+        self.assertIn('<meta name="htmx-config" content=\'{"inlineScriptNonce": "{{ csp_nonce }}"}\'>', base)
 
     def test_pending_list_is_current(self):
         # Gdy fragment z PENDING zostanie przepisany, usuń go z listy — lista ma tylko maleć.
