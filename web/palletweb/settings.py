@@ -352,6 +352,13 @@ HU_RESERVED_MAX_HOURS = env.HU_RESERVED_MAX_HOURS
 HU_INCONTROL_RELEASE_HOURS = env.HU_INCONTROL_RELEASE_HOURS
 HU_SLA_CUTOFF_HOUR = env.HU_SLA_CUTOFF_HOUR
 HU_SLA_SOON_MIN = env.HU_SLA_SOON_MIN
+# US-004 / P15: progi Kontroli HU ustawialne z env (wcześniej tylko getattr z domyślną).
+HU_RECHECK_MAX_AGE_HOURS = env.HU_RECHECK_MAX_AGE_HOURS
+HU_RECHECK_ESCALATE_AFTER = env.HU_RECHECK_ESCALATE_AFTER
+HU_STALE_HOURS = env.HU_STALE_HOURS
+HU_INCONTROL_MAX_HOURS = env.HU_INCONTROL_MAX_HOURS
+HU_MAX_QTY = env.HU_MAX_QTY
+HU_SYNC_MAX_BATCH = env.HU_SYNC_MAX_BATCH
 DEVICE_CONFIRM_ENABLED = env.DEVICE_CONFIRM_ENABLED
 
 # Nocny backup DB + media (02:30) — włączany BACKUP_ENABLED=true.
@@ -364,6 +371,8 @@ if BACKUP_ENABLED:
         "task": "ui.run_backup", "schedule": crontab(hour=2, minute=30)}
 DRIVER_REMINDER_INTERVAL_MIN = env.DRIVER_REMINDER_INTERVAL_MIN
 DRIVER_REMINDER_MAX = env.DRIVER_REMINDER_MAX
+DRIVER_FORM_SMS_MAX = env.DRIVER_FORM_SMS_MAX
+DRIVER_LINK_TTL_DAYS = env.DRIVER_LINK_TTL_DAYS
 
 # Periodic schedules editable in the admin (django-celery-beat) when a beat process runs
 # with the DatabaseScheduler. Falls back to the static CELERY_BEAT_SCHEDULE otherwise.

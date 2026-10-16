@@ -7,6 +7,18 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 
 ## [Unreleased]
 
+### Security
+- US-004 (#15): przy `DJANGO_DEBUG=false` start odrzuca `DJANGO_SECRET_KEY` krótszy niż 50 znaków,
+  z mniej niż 5 różnymi znakami albo z prefiksem `django-insecure-` (P16). Komunikat błędu
+  konfiguracji podaje nazwę zmiennej i przyczynę, nigdy wartość (P17).
+- US-009 (#20): `POWERBI_SSL_VERIFY=false` zatrzymuje start przy `DJANGO_DEBUG=false` (R-10).
+
+### Changed
+- US-004 (#15): 8 progów (`HU_RECHECK_MAX_AGE_HOURS`, `HU_RECHECK_ESCALATE_AFTER`, `HU_STALE_HOURS`,
+  `HU_INCONTROL_MAX_HOURS`, `HU_MAX_QTY`, `HU_SYNC_MAX_BATCH`, `DRIVER_FORM_SMS_MAX`,
+  `DRIVER_LINK_TTL_DAYS`) zadeklarowanych w `AppEnv` i ustawialnych z env; domyślne bez zmian (P15).
+- `Dockerfile`: klucz na czas `collectstatic` spełnia nową regułę siły klucza.
+
 ### Added
 - Proces zespołowy BA / DEV / SEC: `CONTRIBUTING.md` (role, proces, Definition of Ready/Done,
   narzędzia), `SECURITY.md`, szablony issue (historyjka, błąd, bezpieczeństwo) i PR z checklistami.

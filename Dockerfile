@@ -71,7 +71,8 @@ COPY --from=vendor /vendor/web/ui/static/ui/vendor/ ./web/ui/static/ui/vendor/
 WORKDIR /app/web
 
 # Collect static files at build time (vendored libs included)
-RUN DJANGO_SECRET_KEY=build-only DJANGO_DEBUG=false \
+# Klucz tylko na czas collectstatic (nie runtime): musi przejść walidację siły klucza (US-004).
+RUN DJANGO_SECRET_KEY=buildonlybuildonlybuildonlybuildonlybuildonlybuildonly DJANGO_DEBUG=false \
     DJANGO_ALLOWED_HOSTS=* \
     python manage.py collectstatic --noinput
 

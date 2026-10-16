@@ -48,9 +48,9 @@ Obserwacje z analizy kodu. Wymagania, których dotyczą, są oznaczone ⚠ w [05
 
 | # | Problem | Skutek | Kod |
 |---|---|---|---|
-| P15 | Osiem ustawień jest czytanych z wartością domyślną, ale nie jest zadeklarowanych w typowanej konfiguracji: `HU_RECHECK_MAX_AGE_HOURS`, `HU_RECHECK_ESCALATE_AFTER`, `HU_STALE_HOURS`, `HU_INCONTROL_MAX_HOURS`, `HU_MAX_QTY`, `HU_SYNC_MAX_BATCH`, `DRIVER_FORM_SMS_MAX`, `DRIVER_LINK_TTL_DAYS`. | Nie da się ich ustawić zmienną środowiskową, wbrew zasadzie „każda zmienna zadeklarowana” z `web/palletweb/config.py:3-7`. | `web/huctl/views/hu_helpers.py:156-157, 198, 262, 329, 342`, `web/ui/notifications.py:459`, `web/transport/views/driver.py:155, 187` |
-| P16 | Pusta wartość `DJANGO_SECRET_KEY` przechodzi walidację przy `DJANGO_DEBUG=false` — sprawdzane jest tylko, czy klucz różni się od klucza deweloperskiego. | Produkcja może wystartować z pustym kluczem. | `web/palletweb/config.py:215-216` |
-| P17 | Komunikat błędu konfiguracji zawiera pełny tekst błędu walidacji, w tym wartości zmiennych środowiskowych. | Wartości (także sekretne) mogą trafić do logów startu. | `web/palletweb/config.py:234-236` |
+| P15 | ✅ **Naprawione w US-004 (#15).** Osiem ustawień jest czytanych z wartością domyślną, ale nie jest zadeklarowanych w typowanej konfiguracji: `HU_RECHECK_MAX_AGE_HOURS`, `HU_RECHECK_ESCALATE_AFTER`, `HU_STALE_HOURS`, `HU_INCONTROL_MAX_HOURS`, `HU_MAX_QTY`, `HU_SYNC_MAX_BATCH`, `DRIVER_FORM_SMS_MAX`, `DRIVER_LINK_TTL_DAYS`. | Nie da się ich ustawić zmienną środowiskową, wbrew zasadzie „każda zmienna zadeklarowana” z `web/palletweb/config.py:3-7`. | `web/huctl/views/hu_helpers.py:156-157, 198, 262, 329, 342`, `web/ui/notifications.py:459`, `web/transport/views/driver.py:155, 187` |
+| P16 | ✅ **Naprawione w US-004 (#15).** Pusta wartość `DJANGO_SECRET_KEY` przechodzi walidację przy `DJANGO_DEBUG=false` — sprawdzane jest tylko, czy klucz różni się od klucza deweloperskiego. | Produkcja może wystartować z pustym kluczem. | `web/palletweb/config.py:215-216` |
+| P17 | ✅ **Naprawione w US-004 (#15).** Komunikat błędu konfiguracji zawiera pełny tekst błędu walidacji, w tym wartości zmiennych środowiskowych. | Wartości (także sekretne) mogą trafić do logów startu. | `web/palletweb/config.py:234-236` |
 | P18 | Niespójności modelu danych (klucze tekstowe zamiast kluczy obcych, obcinanie kodu produktu, brak unikalności numeru klienta). | Zob. [04 Model danych §6](04-model-danych.md#6-niespójności-obserwacje). | — |
 
 ## 3. Co dalej
