@@ -1,9 +1,9 @@
 """US-008 faza 2 (ADR-0020): szablony przeniesione na nonce — strażnik statyczny.
 
-Każdy szablon z CONVERTED: wykonywalny inline <script> ma `nonce="{{ csp_nonce }}"`,
+Każdy szablon (poza PENDING): wykonywalny inline <script> ma `nonce="{{ csp_nonce }}"`,
 a w znacznikach nie ma atrybutów `on*=` (ścisła CSP je blokuje). Bloki danych
-(`type="application/json"`) nie są wykonywane — CSP ich nie dotyczy. Kolejne moduły
-dopisują swoje szablony do CONVERTED w swoich PR-ach; faza 3 wymaga pełnej listy."""
+(`type="application/json"`) nie są wykonywane — CSP ich nie dotyczy. Faza 3 wymaga pustego
+PENDING."""
 import re
 from pathlib import Path
 
@@ -11,30 +11,19 @@ from django.test import SimpleTestCase
 
 WEB = Path(__file__).resolve().parents[2]
 
-# Faza 2, krok 1: wspólny szkielet (każda strona go ładuje).
-CONVERTED = (
-    "ui/templates/ui/base.html",
-    "ui/templates/ui/_pwa_head.html",
-    "ui/templates/ui/_notif_alert.html",
-    "ui/templates/ui/_messages_bell.html",
-    "ui/templates/ui/_demo_welcome.html",
-    "ui/templates/ui/home.html",
-    "ui/templates/ui/scanner/base.html",
-    # Faza 2, krok 2: skaner Kontroli HU (akcje przez ui/js/csp-actions.js, data-*).
-    *(f"huctl/templates/ui/scanner/{n}.html" for n in (
-        "_utile", "find_recipient", "hu_detail", "investigation_detail", "menu", "my_shift",
-        "photo_check", "quality_issues", "recheck_list")),
-    # Faza 2, krok 3: planer (ui/planner) — data-call/data-args dla funkcji bez elementu.
-    *(f"ui/templates/ui/planner/{n}.html" for n in (
-        "_artwork_designer", "analytics", "calc_index", "carton_form", "carton_unify", "cartons",
-        "instruction_detail", "instruction_form", "location_fit_all", "location_simulate",
-        "locations", "optimizer", "product_form", "product_hierarchy", "products",
-        "ref_materials")),
-    # Faza 2, krok 4: planer wysyłek (transport).
-    *(f"transport/templates/ui/planner/{n}.html" for n in (
-        "carrier_rates", "carriers", "container_load", "customer_form", "customers",
-        "quote_recipients", "shipment_detail", "shipment_form", "shipments", "transport_kpi")),
-)
+# Faza 2 (kroki 1–5): wszystkie szablony mają nonce na skryptach inline i zero atrybutów on*=.
+# Strażnik skanuje KAŻDY szablon — nowy onclick zatrzyma CI. PENDING to fragmenty doładowywane
+# z serwera (krok 6: ich skrypty dostają nonce innego żądania niż strona — ADR-0020).
+PENDING = {
+    "ui/templates/ui/_panel.html",
+    "ui/templates/ui/_optimal_layer.html",
+}
+
+
+def all_templates():
+    return sorted(str(p.relative_to(WEB)) for p in WEB.rglob("templates/**/*.html")
+                  if "vendor" not in p.parts)
+
 
 SCRIPT_RE = re.compile(r"<script\b([^>]*)>", re.I)
 BLOCK_RE = re.compile(r"<(script|style)\b[^>]*>.*?</\1>", re.I | re.S)
@@ -56,9 +45,17 @@ def violations(text):
 
 
 class ConvertedTemplatesTests(SimpleTestCase):
-    def test_converted_templates_are_csp_ready(self):
-        problems = {rel: v for rel in CONVERTED if (v := violations((WEB / rel).read_text(encoding="utf-8")))}
+    def test_all_templates_are_csp_ready(self):
+        problems = {rel: v for rel in all_templates()
+                    if rel not in PENDING and (v := violations((WEB / rel).read_text(encoding="utf-8")))}
         self.assertEqual(problems, {})
+
+    def test_pending_list_is_current(self):
+        # Gdy fragment z PENDING zostanie przepisany, usuń go z listy — lista ma tylko maleć.
+        templates = set(all_templates())
+        for rel in PENDING:
+            self.assertIn(rel, templates, f"{rel}: nie ma takiego szablonu")
+            self.assertTrue(violations((WEB / rel).read_text(encoding="utf-8")), f"{rel}: już czysty — usuń z PENDING")
 
     def test_bases_load_action_dispatcher(self):
         for rel in ("ui/templates/ui/base.html", "ui/templates/ui/scanner/base.html"):

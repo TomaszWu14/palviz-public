@@ -80,7 +80,7 @@
       </select>
       <select aria-label="Priorytet" name="priority"><option value="">Priorytet</option>{% for v, l in priority_choices %}<option value="{{ v }}" {% if f_priority == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select>
       <select aria-label="Kategoria" name="category"><option value="">Kategoria</option>{% for v, l in category_choices %}<option value="{{ v }}" {% if f_category == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select>
-      <label class="form-check" style="font-size:13px"><input type="checkbox" name="mine" value="1" {% if f_mine %}checked{% endif %} onchange="this.form.submit()"> Moje ({{ my_open_count }})</label>
+      <label class="form-check" style="font-size:13px"><input type="checkbox" name="mine" value="1" {% if f_mine %}checked{% endif %} data-autosubmit> Moje ({{ my_open_count }})</label>
       <button class="btn btn-secondary btn-sm" type="submit">Filtruj</button>
     </form>
 

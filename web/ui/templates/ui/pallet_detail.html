@@ -6,8 +6,8 @@
 {% block extra_head %}
 <script src="{% static 'ui/vendor/htmx.min.js' %}"></script>
 <script src="{% static 'ui/js/plotly.min.js' %}"></script>
-<script type="importmap">{ "imports": { "three": "/static/ui/vendor/three.module.js" } }</script>
-<script type="module">
+<script type="importmap" nonce="{{ csp_nonce }}">{ "imports": { "three": "/static/ui/vendor/three.module.js" } }</script>
+<script type="module" nonce="{{ csp_nonce }}">
   // Expose the realistic pallet renderer so the HTMX-injected panel can call it.
   import { renderPalVizLevel } from "{% static 'ui/js/palviz-three.js' %}";
   window.PalViz3D = renderPalVizLevel;
@@ -76,7 +76,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
+<script nonce="{{ csp_nonce }}">
   function renderPlots() {
     ['fig-pallet','fig-layer','fig-carton'].forEach(function(id) {
       var el = document.getElementById(id);

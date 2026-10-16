@@ -14,12 +14,12 @@
 </div>
 
 <form method="get" style="display:flex;gap:8px;margin-bottom:14px;align-items:center"
-      onsubmit="return parcelDatesValid(this)">
+      data-action="parcelDatesValid" data-on="submit">
   <label style="font-size:13px">Od <input type="date" name="od" id="paczki-od" value="{{ d_from|date:'Y-m-d' }}" class="input"></label>
   <label style="font-size:13px">Do <input type="date" name="do" id="paczki-do" value="{{ d_to|date:'Y-m-d' }}" class="input"></label>
   <button type="submit" class="btn btn-ghost btn-sm">Filtruj</button>
 </form>
-<script>
+<script nonce="{{ csp_nonce }}">
   // Cichy pusty wynik przy Od>Do → jawny komunikat zamiast pustej tabeli.
   (function(){
     var od = document.getElementById('paczki-od'), dov = document.getElementById('paczki-do');

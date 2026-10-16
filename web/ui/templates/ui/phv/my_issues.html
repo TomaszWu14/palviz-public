@@ -18,7 +18,7 @@
 {% endif %}
 
 <form method="get" style="margin-bottom:10px">
-  <select aria-label="Status zgłoszeń" name="status" onchange="this.form.submit()"
+  <select aria-label="Status zgłoszeń" name="status" data-autosubmit
           style="width:100%;padding:13px;font-size:16px;border:2px solid var(--line-strong);border-radius:10px;background:var(--paper);color:var(--ink)">
     <option value="">— wszystkie statusy —</option>
     {% for val, lbl in statuses %}<option value="{{ val }}" {% if f_status == val %}selected{% endif %}>{{ lbl }}</option>{% endfor %}

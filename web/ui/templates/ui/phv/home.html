@@ -9,7 +9,7 @@
   <input type="search" name="q" id="phv-q" value="{{ q }}" autofocus autocomplete="off"
          placeholder="REF / EAN — wpisz lub zeskanuj"
          style="flex:1;min-width:0;padding:13px;font-size:17px;font-family:monospace;border:2px solid var(--line-strong);border-radius:10px;background:var(--paper);color:var(--ink)">
-  <button type="button" onclick="palvizScan('phv-q')" aria-label="Skanuj aparatem"
+  <button type="button" data-call="palvizScan" data-args='["phv-q"]' aria-label="Skanuj aparatem"
           style="flex:0 0 auto;width:52px;border:2px solid var(--line-strong);border-radius:10px;background:var(--wash);color:var(--teal-deep);font-size:20px">
     <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2M20 8V6a2 2 0 00-2-2h-2M20 16v2a2 2 0 01-2 2h-2"/><path d="M4 12h16"/></svg>
   </button>
@@ -21,7 +21,7 @@
               box-shadow:0 8px 24px rgba(13,60,58,.18);overflow:hidden"></div>
 </form>
 
-<script>
+<script nonce="{{ csp_nonce }}">
 (function () {
   var input = document.getElementById('phv-q');
   var box = document.getElementById('phv-ac');
@@ -235,7 +235,7 @@
 {% if hierarchy.alerts %}
 <div class="msg msg--error">
   {% for a in hierarchy.alerts %}<div>{{ a }}</div>{% endfor %}
-  {% if prefill_missing %}<a href="#phv-report" onclick="phvReport('{{ product.code|default:q|escapejs }}','','missing_conversion')"
+  {% if prefill_missing %}<a href="#phv-report" data-call="phvReport" data-args='["{{ product.code|default:q|escapejs }}", "", "missing_conversion"]'
      style="display:inline-block;margin-top:8px;font-weight:800;color:#fff;background:var(--brick);border-radius:8px;padding:8px 14px;text-decoration:none">{% icon "flag" %} Zgłoś brak do Master Data</a>{% endif %}
 </div>
 {% endif %}
@@ -291,10 +291,10 @@
   {# Filtry typów magazynu + „strefa wydawcza” po prawej stronie tej samej linii (zamiast nagłówka). #}
   <div class="phv-cat-bar" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:9px 14px;border-top:1px solid var(--tint)">
     {% if strategy.stock_categories|length > 1 %}
-    <button type="button" class="phv-cat-chip" data-cat="all" data-active="1" onclick="phvFilterCat(this,'all')"
+    <button type="button" class="phv-cat-chip" data-cat="all" data-active="1" data-action="phvFilterCat" data-args='["all"]'
             style="border:1px solid var(--line);background:var(--teal);color:#fff;font:800 11px system-ui;padding:5px 11px;border-radius:999px;cursor:pointer">Wszystko</button>
     {% for c in strategy.stock_categories %}
-    <button type="button" class="phv-cat-chip" data-cat="{{ c.key }}" data-active="0" onclick="phvFilterCat(this,'{{ c.key }}')"
+    <button type="button" class="phv-cat-chip" data-cat="{{ c.key }}" data-active="0" data-action="phvFilterCat" data-args='["{{ c.key }}"]'
             style="border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);font:800 11px system-ui;padding:5px 11px;border-radius:999px;cursor:pointer">{{ c.label }}</button>
     {% endfor %}
     {% endif %}
@@ -336,11 +336,11 @@
 
   {% if strategy.stock_groups %}
   <div style="padding:10px 14px;border-top:1px solid var(--tint)">
-    <button type="button" onclick="phvExpandAll(this)" style="width:100%;border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);font:800 13px system-ui;padding:10px;border-radius:12px;cursor:pointer">Rozwiń szczegóły</button>
+    <button type="button" data-action="phvExpandAll" style="width:100%;border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);font:800 13px system-ui;padding:10px;border-radius:12px;cursor:pointer">Rozwiń szczegóły</button>
   </div>
   {% endif %}
 </details>
-<script>
+<script nonce="{{ csp_nonce }}">
 /* Σ dynamiczna: przelicza sumę palet + szt dla WIDOCZNYCH grup (aktywny filtr). */
 function phvSumUpdate(panel){
   var sum=panel.querySelector("#phv-sum"); if(!sum) return;
@@ -437,10 +437,10 @@ function phvExpandAll(btn){
 </div>
 {% endfor %}
 
-<script type="importmap">
+<script type="importmap" nonce="{{ csp_nonce }}">
 { "imports": { "three": "/static/ui/vendor/three.module.js" } }
 </script>
-<script type="module">
+<script type="module" nonce="{{ csp_nonce }}">
 import { renderPalVizLevel } from "/static/ui/js/palviz-three.js";
 
 /* Kafle poziomów budujemy dopiero, gdy karta wjeżdża w kadr — na terminalu skanera
@@ -558,7 +558,7 @@ document.querySelectorAll(".phv-level").forEach(function(card){
     {% csrf_token %}
     <input type="hidden" name="ref_code" value="{{ product.code|default:q }}">
     <div class="field"><label>Typ problemu *</label>
-      <select aria-label="Typ problemu" name="issue_type" id="pf-type" required onchange="phvApplyType(this.value)" style="width:100%;padding:13px;font-size:16px;border:2px solid var(--line-strong);border-radius:10px;background:var(--paper);color:var(--ink)">
+      <select aria-label="Typ problemu" name="issue_type" id="pf-type" required data-action="phvApplyTypeFrom" data-on="change" style="width:100%;padding:13px;font-size:16px;border:2px solid var(--line-strong);border-radius:10px;background:var(--paper);color:var(--ink)">
         {% for val, lbl in issue_types %}<option value="{{ val }}" {% if prefill_missing and val == 'missing_conversion' %}selected{% endif %}>{{ lbl }}</option>{% endfor %}
       </select></div>
     {# Para wartości (aktualna/poprawna) — pokazywana i etykietowana wg typu (JS). Ukryte pola disabled → nie submitują się. #}
@@ -603,7 +603,7 @@ document.querySelectorAll(".phv-level").forEach(function(card){
 </details>
 {% endif %}
 
-<script>
+<script nonce="{{ csp_nonce }}">
 /* Formularz zgłoszenia zależny od typu: każdy typ pokazuje tylko właściwe pola. */
 var PHV_FIELDS = {
   missing_conversion: { unit:true, correct:{label:"Wartość poprawna", ph:"np. 30 szt/karton"}, desc:true },
@@ -620,6 +620,7 @@ var PHV_FIELDS = {
   other:              { desc:true, descReq:true }
 };
 function _pf(id){ return document.getElementById(id); }
+function phvApplyTypeFrom(sel){ phvApplyType(sel.value); }   // US-008: data-action zamiast onchange
 function phvApplyType(type){
   var cfg = PHV_FIELDS[type] || {};
   // Wyłącz + ukryj wszystko (disabled = nie submituje się; brak kolizji name=correct_value).
@@ -661,7 +662,7 @@ function phvReport(ref, cur, type){
 {% comment %}B1: historia per USER z serwera (ProductViewHistory) — localStorage
 zastąpione (współdzielone terminale mieszały operatorów, czyszczenie kasowało).{% endcomment %}
 {% if recent %}
-<script>
+<script nonce="{{ csp_nonce }}">
 (function(){
   var host=document.createElement("div");
   host.className="card";

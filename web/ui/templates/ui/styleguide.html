@@ -88,7 +88,7 @@
       <a class="btn btn-primary" href="#">{% icon "plus" %}Nowy produkt</a>
     </div>
   </div>
-  <form class="filterbar" method="get" role="search" onsubmit="return false">
+  <form class="filterbar" method="get" role="search" data-no-submit>
     <label class="filterbar__search"><span class="sr-only">Szukaj</span>{% icon "search" %}<input type="search" name="sgq" placeholder="Szukaj kodu, nazwy lub EAN…"></label>
     <label class="sr-only" for="sg-cat">Kategoria</label>
     <select id="sg-cat"><option>Wszystkie kategorie</option><option>Kartony</option></select>
@@ -149,8 +149,8 @@
   <h2>Toast · potwierdzenie · modal</h2>
   <p><code>gvToast(tekst, {type})</code> — krótka informacja po akcji. <code>data-confirm="…"</code> na przycisku, linku lub formularzu — modal zamiast <code>confirm()</code>.</p>
   <div class="sg-row">
-    <button type="button" class="btn btn-secondary" onclick="gvToast('Zapisano zmiany.', {type:'ok'})">Toast OK</button>
-    <button type="button" class="btn btn-secondary" onclick="gvToast('Błąd połączenia z serwerem.', {type:'danger', timeout:0})">Toast błąd (trwały)</button>
+    <button type="button" class="btn btn-secondary" data-call="gvToast" data-args='["Zapisano zmiany.", {"type": "ok"}]'>Toast OK</button>
+    <button type="button" class="btn btn-secondary" data-call="gvToast" data-args='["Błąd połączenia z serwerem.", {"type": "danger", "timeout": 0}]'>Toast błąd (trwały)</button>
     <button type="button" class="btn btn-danger" data-confirm="Usunąć karton „Karton A”? Tej operacji nie można cofnąć." data-testid="sg-confirm">{% icon "trash-2" %}Usuń karton</button>
     <button type="button" class="btn btn-secondary" data-gv-open="#sg-modal">Otwórz modal</button>
   </div>

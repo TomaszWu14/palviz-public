@@ -48,7 +48,7 @@
       <button id="pbi-connect-btn" type="button" class="btn btn-primary">{% icon "link" %} Połącz z Power BI</button>
       <div id="pbi-connect-box" style="display:none;margin-top:10px;padding:10px 12px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;font-size:13px"></div>
       <p class="text-sm text-muted" style="margin-top:8px">Logowanie użytkownika (device-code): kliknij, wpisz krótki kod na stronie Microsoft i gotowe — bez konsoli serwera.</p>
-      <script>
+      <script nonce="{{ csp_nonce }}">
       (function () {
         var btn = document.getElementById('pbi-connect-btn');
         var box = document.getElementById('pbi-connect-box');
@@ -103,7 +103,7 @@
         <p class="text-sm text-muted" style="margin-bottom:10px">Plik CSV/XLSX (pickHU, REF, LOT, data ważności, ilość, lokalizacja, typ magazynu, picker). Wiersze bez kolumny dostawy trafiają do kontenera „Stock magazynowy".</p>
         <label class="btn btn-secondary" style="cursor:pointer">
           {% icon "upload" %} Wybierz plik i importuj
-          <input type="file" name="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="gvUpload(this)">
+          <input type="file" name="file" accept=".csv,.xlsx,.xls" style="display:none" data-upload>
         </label>
       </form>
     </div>

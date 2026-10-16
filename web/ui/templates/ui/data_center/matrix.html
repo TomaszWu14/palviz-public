@@ -126,7 +126,7 @@
 </div>
 
 <input aria-label="Grafika dla komórki" type="file" id="mxFile" accept="image/png,image/jpeg,.glb" style="display:none">
-<script>
+<script nonce="{{ csp_nonce }}">
 (function () {
   const CSRF = "{{ csrf_token }}";
   const picker = document.getElementById("mxFile");

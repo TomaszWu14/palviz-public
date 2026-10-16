@@ -246,9 +246,9 @@
     <div class="plotly-container__title">
       Widok warstwy
       <div style="display:flex;gap:6px;align-items:center">
-        <button onclick="prevLayer()" class="btn btn-sm btn-secondary btn-icon">◀</button>
+        <button data-call="prevLayer" class="btn btn-sm btn-secondary btn-icon">◀</button>
         <span id="layer-label" style="font-size:12px;font-weight:600;min-width:60px;text-align:center">Warstwa 1</span>
-        <button onclick="nextLayer()" class="btn btn-sm btn-secondary btn-icon">▶</button>
+        <button data-call="nextLayer" class="btn btn-sm btn-secondary btn-icon">▶</button>
       </div>
     </div>
     <div class="plotly-container__body">
@@ -291,7 +291,7 @@
 
 {% block extra_scripts %}
 {% if fig_pallet_json and fig_layer_json %}
-<script>
+<script nonce="{{ csp_nonce }}">
 const figPallet = {{ fig_pallet_json|safe }};
 const figLayer  = {{ fig_layer_json|safe }};
 const placements = {{ placements_json|safe }};

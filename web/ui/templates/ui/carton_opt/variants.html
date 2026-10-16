@@ -192,14 +192,14 @@
         <td style="white-space:nowrap">
           {% if r.fits %}
           <form method="post" action="{% url 'ui:carton_opt_variant_promote' r.alt.pk %}" style="margin:0 0 4px;display:inline"
-                onsubmit="return confirm('Utworzy NOWĄ wersję instrukcji paletyzacji z wymiarami „{{ r.alt.label|escapejs }}”. Kontynuować?')">
+                data-confirm="Utworzy NOWĄ wersję instrukcji paletyzacji z wymiarami „{{ r.alt.label }}”. Kontynuować?">
             {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
             {% if issue %}<input type="hidden" name="issue" value="{{ issue.pk }}">{% endif %}
             <button class="btn btn-primary btn-sm" type="submit">Przenieś do instrukcji{% if issue %} + rozwiąż zgł.{% endif %}</button>
           </form>
           {% endif %}
           <form method="post" action="{% url 'ui:carton_opt_variant_delete' r.alt.pk %}" style="margin:0;display:inline"
-                onsubmit="return confirm('Usunąć wariant „{{ r.alt.label|escapejs }}”?')">
+                data-confirm="Usunąć wariant „{{ r.alt.label }}”?">
             {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
             <button class="btn btn-ghost btn-sm" type="submit">Usuń</button>
           </form>
@@ -255,7 +255,7 @@
 {% endif %}
 {% endif %}
 {% if pallet_three or hier_a %}
-<script type="module">
+<script type="module" nonce="{{ csp_nonce }}">
   import { renderPalVizLevel } from "/static/ui/js/palviz-three.js";
   // Układ kolumnowy — wszystkie canvasy widoczne, renderuj od razu.
   document.querySelectorAll("canvas[data-three]").forEach(c => {

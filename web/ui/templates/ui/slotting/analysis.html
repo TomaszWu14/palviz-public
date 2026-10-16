@@ -77,7 +77,7 @@
 </div>
 
 {{ pareto|json_script:"pareto-data" }}
-<script>
+<script nonce="{{ csp_nonce }}">
 (function () {
   var d = JSON.parse(document.getElementById('pareto-data').textContent);
   if (!d.codes.length) return;

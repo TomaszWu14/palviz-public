@@ -121,7 +121,7 @@
               {% csrf_token %}
               <input type="hidden" name="next" value="{% url 'ui:data_center' %}">
               <input type="file" name="file" accept=".csv,.xlsx,.xls" required aria-label="Plik do importu: {{ r.label }}"
-                     onchange="this.form.querySelector('button').disabled=false">
+                     data-enable-submit>
               <button class="btn btn-primary btn-sm" type="submit" disabled>Importuj</button>
             </form>
           </td>
