@@ -49,8 +49,10 @@ Wdrożenie w trzech fazach:
    `<meta name="htmx-config" content='{"inlineScriptNonce": "…"}'>`, więc htmx 1.9.12 nadaje
    skryptom ze wstawianych fragmentów nonce strony. `PENDING` jest pusty. Kompromis: każdy skrypt
    we fragmencie z htmx dostaje nonce — wstrzyknięcie do fragmentu wykona się tak jak dziś;
-   ochroną zostaje autoescape szablonów. Zostało: polityka report-only z nonce zamiast
-   `'unsafe-inline'` (krok 7), potem faza 3.
+   ochroną zostaje autoescape szablonów.
+   Krok 7 — polityka ekranów wewnętrznych `script-src 'self' 'nonce-…' 'unsafe-eval'` (bez
+   `'unsafe-inline'`), nadal report-only — zrobiony. **Faza 2 zakończona.** Raporty na `/csp-report/`
+   pokazują od teraz realne naruszenia; strażnik łapie też warunkowe `{% if %}onclick=`.
    Ustalenia z inwentaryzacji (74 szablony):
    - **Fragmenty doładowywane** (np. `_panel.html` z kalkulatora, zwracany z widoku jako HTML):
      ich skrypty dostają nonce innego żądania niż strona. Rozwiązanie w kroku danego modułu:

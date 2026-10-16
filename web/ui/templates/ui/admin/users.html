@@ -114,7 +114,7 @@
           {% if u != request.user %}
           <a href="{% url 'ui:admin_user_edit' u.pk %}" class="btn btn-ghost btn-sm">Edytuj</a>
           <form method="post" action="{% url 'ui:admin_user_toggle' u.pk %}" style="display:inline"
-                {% if u.is_active %}onsubmit="return confirm('Dezaktywować użytkownika {{ u.username }}? Straci dostęp do aplikacji.')"{% endif %}>
+                {% if u.is_active %}data-confirm="Dezaktywować użytkownika {{ u.username }}? Straci dostęp do aplikacji."{% endif %}>
             {% csrf_token %}
             <button type="submit" class="btn btn-ghost btn-sm" style="color:{% if u.is_active %}var(--yellow-dark){% else %}var(--green){% endif %}">{% if u.is_active %}Dezaktywuj{% else %}Aktywuj{% endif %}</button>
           </form>

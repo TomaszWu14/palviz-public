@@ -5,7 +5,7 @@ import uuid
 
 from django.conf import settings
 
-from core.csp import build_policy, strict_policy
+from core.csp import app_policy, strict_policy
 
 # Request-ID dla logów stdlib (logging.getLogger) — structlog ma własne contextvars.
 # "-" poza żądaniem (Celery, komendy manage.py).
@@ -19,12 +19,9 @@ class RequestIDLogFilter(logging.Filter):
         record.request_id = request_id_var.get()
         return True
 
-# A conservative Content-Security-Policy. Shipped REPORT-ONLY by default (browsers
-# report violations but don't block), so it can't break the UI while we learn what a
-# future enforcing policy would need. 'unsafe-inline'/'unsafe-eval' are present because
-# the templates still carry inline scripts/styles and plotly evaluates code; tighten
-# with nonces once those are refactored. Flip CSP_REPORT_ONLY=false to enforce.
-_CSP = build_policy("script-src 'self' 'unsafe-inline' 'unsafe-eval'")
+# Content-Security-Policy dla ekranów wewnętrznych (core.csp.app_policy): nonce + 'unsafe-eval'.
+# Domyślnie REPORT-ONLY (CSP_REPORT_ONLY=true) — przeglądarka zgłasza naruszenia na /csp-report/,
+# ale nic nie blokuje. CSP_REPORT_ONLY=false to faza 3 z ADR-0020 (decyzja PO po 2 tyg. raportów).
 _PERMISSIONS_POLICY = "geolocation=(), microphone=(), payment=()"
 
 
@@ -148,7 +145,7 @@ class SecurityHeadersMiddleware:
         header = ("Content-Security-Policy-Report-Only"
                   if getattr(settings, "CSP_REPORT_ONLY", True)
                   else "Content-Security-Policy")
-        response.setdefault(header, _CSP)
+        response.setdefault(header, app_policy(request))
         return response
 
 

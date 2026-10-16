@@ -45,6 +45,15 @@ def strict_policy(request):
     return STRICT_CSP.format(nonce=get_nonce(request))
 
 
+# US-008 faza 2 krok 7 (ADR-0020): ekrany wewnętrzne — nonce zamiast 'unsafe-inline' (wszystkie
+# szablony są już na nonce, test_csp_phase2_templates). 'unsafe-eval' zostaje dla Plotly i Alpine.
+APP_CSP = build_policy("script-src 'self' 'nonce-{nonce}' 'unsafe-eval'")
+
+
+def app_policy(request):
+    return APP_CSP.format(nonce=get_nonce(request))
+
+
 def strict_csp(view):
     """Oznacza odpowiedź widoku do wymuszenia ścisłej polityki (SecurityHeadersMiddleware)."""
     @functools.wraps(view)

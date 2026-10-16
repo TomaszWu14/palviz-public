@@ -24,7 +24,8 @@ def all_templates():
 
 SCRIPT_RE = re.compile(r"<script\b([^>]*)>", re.I)
 BLOCK_RE = re.compile(r"<(script|style)\b[^>]*>.*?</\1>", re.I | re.S)
-HANDLER_RE = re.compile(r"<[^>]+\son[a-z]+\s*=", re.I)
+# Przed on*= może stać spacja, ale też koniec tagu Django (`{% if x %}onclick=`) albo cudzysłów.
+HANDLER_RE = re.compile(r"<[^>]+[\s\"'}]on[a-z]+\s*=", re.I)
 NONCE = 'nonce="{{ csp_nonce }}"'
 
 
@@ -78,5 +79,6 @@ class ConvertedTemplatesTests(SimpleTestCase):
     def test_checker_catches_violations(self):
         self.assertTrue(violations("<script>alert(1)</script>"))
         self.assertTrue(violations('<button onclick="x()">'))
+        self.assertTrue(violations('<form {% if a %}onsubmit="return confirm(1)"{% endif %}>'))
         self.assertFalse(violations('<script type="application/json" id="d">{}</script>'))
         self.assertFalse(violations(f'<script {NONCE}>if (a<b) go();</script>'))

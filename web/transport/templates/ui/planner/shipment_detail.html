@@ -258,7 +258,7 @@
        style="{% if chosen_height and v.scenario.max_h_cm == chosen_height %}outline:3px solid #16a34a;outline-offset:-3px{% elif chosen_height and v.scenario.max_h_cm != chosen_height %}opacity:.5;filter:grayscale(.55){% endif %}">
     <!-- Header: inline height stepper + key stats -->
     <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-      <button type="button" class="hstp" {% if chosen_height and v.scenario.max_h_cm != chosen_height %}disabled style="opacity:.4;cursor:not-allowed"{% else %}onclick="bumpHeight({{ forloop.counter0 }},-0.01)"{% endif %} title="Niżej o 1 cm">−</button>
+      <button type="button" class="hstp" {% if chosen_height and v.scenario.max_h_cm != chosen_height %}disabled style="opacity:.4;cursor:not-allowed"{% else %}data-call="bumpHeight" data-args='[{{ forloop.counter0 }}, -0.01]'{% endif %} title="Niżej o 1 cm">−</button>
       <div style="text-align:center;min-width:96px">
         <div class="h-disp" data-idx="{{ forloop.counter0 }}" data-h="{{ v.scenario.max_h_cm }}"
              style="font-size:22px;font-weight:800;color:var(--blue-mid);line-height:1">{{ v.scenario.label }}</div>
@@ -269,7 +269,7 @@
                title="Wpisz dokładną wysokość w cm">
         <div style="font-size:11px;color:var(--gray-400)">wys. palety [cm]</div>
       </div>
-      <button type="button" class="hstp" {% if chosen_height and v.scenario.max_h_cm != chosen_height %}disabled style="opacity:.4;cursor:not-allowed"{% else %}onclick="bumpHeight({{ forloop.counter0 }},0.01)"{% endif %} title="Wyżej o 1 cm">+</button>
+      <button type="button" class="hstp" {% if chosen_height and v.scenario.max_h_cm != chosen_height %}disabled style="opacity:.4;cursor:not-allowed"{% else %}data-call="bumpHeight" data-args='[{{ forloop.counter0 }}, 0.01]'{% endif %} title="Wyżej o 1 cm">+</button>
       <div style="margin-left:auto;display:flex;gap:16px;text-align:center">
         <div><div style="font-size:26px;font-weight:700;color:var(--blue-mid);line-height:1" title="{% if v.scenario.actual_hu %}Liczba palet wg rzeczywistych HU z SAP{% elif v.scenario.n_slack %}{{ v.scenario.n_filled }} palet z towarem + {{ v.scenario.n_slack }} zapas (bufor na ręczne układanie){% else %}Wszystkie palety zapełnione{% endif %}">{{ v.scenario.n_pallets }}</div><div style="font-size:11px;color:var(--gray-400)">palet{% if v.scenario.actual_hu %} · SAP{% elif v.scenario.n_slack %} · {{ v.scenario.n_filled }}+{{ v.scenario.n_slack }} zapas{% endif %}</div>{% if v.scenario.model_pallets > v.scenario.n_pallets %}<div style="font-size:10px;color:var(--gray-300)" title="Model 3D układa luźno (bez przekładania); rzeczywisty/szacowany załadunek mieści się w {{ v.scenario.n_pallets }}.">model: {{ v.scenario.model_pallets }}</div>{% endif %}</div>
         <div><div style="font-size:18px;font-weight:700;line-height:1.3">{{ v.scenario.ldm }} m</div><div style="font-size:11px;color:var(--gray-400)">LDM</div></div>

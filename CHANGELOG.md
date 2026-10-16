@@ -22,6 +22,10 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   Strażnik: `ui.tests.test_naming_us011`.
 
 ### Security
+- US-008 (#19), faza 2 krok 7 — **faza 2 zakończona**: polityka CSP ekranów wewnętrznych z nonce zamiast
+  `'unsafe-inline'` (nadal report-only), więc raporty na `/csp-report/` pokazują realne naruszenia. Przepisane
+  3 pominięte handlery warunkowe (`{% if %}onclick=`); strażnik je teraz łapie. `csp-actions.js`:
+  `data-autosubmit-debounce`. Uwaga: `CSP_REPORT_ONLY=false` wymusza od teraz politykę z nonce (faza 3).
 - US-008 (#19), faza 2 krok 6: fragmenty wstawiane przez htmx (`_panel.html`, `_optimal_layer.html`) —
   `base.html` ustawia `htmx-config.inlineScriptNonce` na nonce strony, więc skrypty fragmentów działają pod
   ścisłą CSP (sprawdzone w Chromium). Wszystkie szablony bez handlerów `on*=`; lista wyjątków pusta.

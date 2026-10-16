@@ -12,6 +12,7 @@
  *   data-enable-submit      change → odblokowuje przycisk formularza
  *   data-check-all="sel"    klik w checkbox → zaznacza/odznacza wszystkie pasujące do selektora
  *   data-no-submit          formularz nie wysyła się (np. filtry działające tylko w JS)
+ *   data-autosubmit-debounce="ms"  na formularzu: wysyła go ms po ostatnim wpisanym znaku
  *   data-upload             change → gvUpload(this) (planer) / pvUpload(this) (skaner)
  *   data-action="fn"        wywołuje window.fn(el, ...argumenty); zwrot false = preventDefault
  *   data-call="fn"          wywołuje window.fn(...argumenty) — bez elementu (np. showTab('csv'))
@@ -110,5 +111,13 @@
   });
   document.addEventListener('change', onEvent('change'));
   document.addEventListener('input', onEvent('input'));
+  document.addEventListener('input', function (ev) {
+    if (!(ev.target instanceof Element)) return;
+    var form = ev.target.closest('form[data-autosubmit-debounce]');
+    if (!form) return;
+    clearTimeout(form._pvSubmitTimer);
+    form._pvSubmitTimer = setTimeout(function () { form.submit(); },
+                                     parseInt(form.dataset.autosubmitDebounce, 10) || 400);
+  });
   document.addEventListener('dblclick', onEvent('dblclick'));
 })();
