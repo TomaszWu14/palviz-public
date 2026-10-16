@@ -87,7 +87,7 @@ web/
     api.py, nbp.py, slotting.py, labels.py
     templatetags/           palviz_extras
     management/commands/    create_roles, import_locations, powerbi_connect
-    migrations/             ~190 migrations
+    migrations/             ~200 migrations
     templates/ui/           Templates grouped by feature
     static/ui/              JS (vendored three.js/echarts/plotly), icons, css
     tests/                  Django tests for ui (other apps have their own tests/)
@@ -156,7 +156,7 @@ pallets").
 
 ## Roles & access control
 
-Authorization is group-based — see `web/ui/roles.py`. **Nine** Polish-named groups:
+Authorization is group-based — see `web/core/roles.py` (`web/ui/roles.py` is a re-export shim). **Nine** Polish-named groups:
 `Administratorzy`, `Master Data`, `Transport`, `Kontrola HU`, `Lider kontroli`,
 `Podgląd`, `Obsługa klienta` (a narrow role limited to the customer database),
 `Magazyn` (warehouse operator: MATinfo product lookup), and `Optymalizacja kartonów`
@@ -183,7 +183,9 @@ the string. To retire a group, migrate `auth_group` rows + the SSO claim mapping
 ## Graph structure & module seams
 
 Findings from the graphify dependency-graph analysis (verified 2026-07-24), useful before
-any "harden the architecture" refactor. Graf w `graphify-out/` jest generowany **lokalnie**
+any "harden the architecture" refactor. **W publicznej kopii repo (palviz-public) tego nie ma** — `graphify-out/` i `graph-freshness.yml`
+zostały w repo prywatnym; poniższe ustalenia są aktualne, ale graf trzeba zbudować lokalnie
+(`graphify update .`). Graf w `graphify-out/` jest generowany **lokalnie**
 (`graphify update .`, narzędzie niedostępne w CI) i commitowany; workflow
 `graph-freshness.yml` otwiera issue `graf-wiedzy`, gdy graf odstaje od `main` — zanim
 zaufasz odpowiedzi grafu, porównaj „Built from commit" w `graphify-out/GRAPH_REPORT.md`
@@ -365,7 +367,7 @@ użytkownika jest nieprecyzyjny. Pisany głosowo prompt bywa mętny; nie zgaduj 
 
 1. **Diagnoza przed zmianą.** Przy „napraw X" bez jasnej przyczyny: najpierw zdiagnozuj,
    pokaż przyczynę, dopiero potem edytuj. Do orientacji „jak/gdzie" pytaj graf
-   (`graphify query`) zamiast grep + czytanie całych plików — graf w `graphify-out/`
+   (`graphify query`, jeśli graf zbudowano lokalnie — w publicznej kopii go nie ma) zamiast grep + czytanie całych plików — graf w `graphify-out/`
    jest już zbudowany, `query` zwraca skondensowaną odpowiedź bez wciągania plików do
    kontekstu (oszczędza tokeny).
 2. **Nieprecyzyjny prompt → dopytaj albo nazwij założenia.** Jeśli brakuje **CO** /
@@ -388,12 +390,16 @@ użytkownika jest nieprecyzyjny. Pisany głosowo prompt bywa mętny; nie zgaduj 
 CI/CD is split across `.github/workflows/`:
 
 - **`ci.yml`** — runs on **`pull_request` → `main`** (and `workflow_dispatch`). One `test`
-  job on the self-hosted runner: 500-line gate, the palletizer unittest suite, then
+  job (w tej kopii na runnerze GitHuba `ubuntu-latest`; self-hosted — ADR-0011 — tylko w repo prywatnym): 500-line gate, the palletizer unittest suite, then
   `web/manage.py check` + all four app test suites on PostgreSQL, the test-count guard, a
   star-import ruff check and `manage.py check --deploy` (ruff/mypy/pip-audit/bandit as full
   gates were dropped from the PR check on 2026-08-18; security scanners live in
   `security.yml`). Read the workflow for the current step list. `test` is the **required**
   status check on `main`.
+> **W publicznej kopii repo (palviz-public) tego nie ma**: joba `auto-merge` w `ci.yml` ani workflow `deploy.yml`. W tej kopii PR-y
+> mergeuje ręcznie Product Owner (CONTRIBUTING.md), a skanery bezpieczeństwa biegną w `security.yml`
+> na każdym PR (ADR-0019). Opis poniżej dotyczy repo prywatnego.
+
 - **`ci.yml` `auto-merge` job** — for a PR whose head branch is `claude/**`, once `test`
   passes it arms **GitHub-native auto-merge** (`gh pr merge --auto --merge`), so the PR
   merges **through the PR** (a normal merge commit, respecting branch protection — *not* a

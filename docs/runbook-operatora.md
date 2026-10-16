@@ -18,7 +18,7 @@ Minimalna wiedza operacyjna do utrzymania systemu bez udziału głównego develo
 1. Zmiana na gałęzi `claude/<nazwa>` → `git push` → `gh pr create --base main`.
 2. CI (`ci.yml`, job `test`) musi być zielone — to wymagany check na `main`.
 3. PR z gałęzi `claude/**` auto-merguje się po zielonym CI (GitHub auto-merge).
-4. Merge do `main` odpala `deploy.yml`: webhook Coolify + smoke check.
+4. Merge do `main` odpala `deploy.yml`: webhook Coolify + smoke check (**tylko repo prywatne** — w publicznej kopii brak `deploy.yml` i joba auto-merge; merge robi ręcznie PO, deploy przyciskiem w Coolify).
 5. Weryfikacja: `https://groove.example.com/health/` zwraca 200.
 
 Fallback ręczny: `gh workflow run deploy.yml` albo przycisk Deploy w Coolify.

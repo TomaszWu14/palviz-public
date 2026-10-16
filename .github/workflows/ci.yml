@@ -1,8 +1,8 @@
 name: CI
 
 # Test gate for PRs into main. `test` is meant to be a REQUIRED status check in the
-# branch-protection rule; when it passes, the auto-merge job arms GitHub's native
-# auto-merge so the PR merges itself THROUGH the PR (no direct push to a protected main).
+# branch-protection rule. W publicznej kopii repo nie ma joba auto-merge (jest w repo
+# prywatnym, ADR-0010) — PR-y mergeuje ręcznie Product Owner (CONTRIBUTING.md).
 on:
   push:
     branches: [main]
@@ -124,8 +124,3 @@ jobs:
           DJANGO_SSL_REDIRECT: 'true'
           PYTHONPATH: ${{ github.workspace }}/web:${{ github.workspace }}
         run: python web/manage.py check --deploy --fail-level WARNING
-
-  # ── Arm GitHub-native auto-merge for claude/** PRs once tests pass ───────────
-  # This merges THROUGH the pull request (respecting branch protection) instead of a
-  # direct push to main. Requires: Settings ▸ General ▸ "Allow auto-merge" enabled, and
-  # `test` set as a required status check on the main branch-protection rule.

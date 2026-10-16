@@ -7,6 +7,12 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 
 ## [Unreleased]
 
+### Fixed
+- US-010 (#21): dokumentacja sterująca bez odwołań do plików, których nie ma w publicznej kopii
+  (`deploy.yml`, `graphify-out/`, `.planning/`, `.scratch/`, `e2e-nightly.yml`, self-hosted runner,
+  auto-merge); runbook odtworzenia zgodny z `Dockerfile` (`pg_dump` jest w obrazie); liczba migracji
+  i ścieżka ról aktualne. Strażnik: `ui.tests.test_docs_links_us010`.
+
 ### Security
 - US-004 (#15): przy `DJANGO_DEBUG=false` start odrzuca `DJANGO_SECRET_KEY` krótszy niż 50 znaków,
   z mniej niż 5 różnymi znakami albo z prefiksem `django-insecure-` (P16). Komunikat błędu

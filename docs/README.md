@@ -22,7 +22,7 @@ od razu — bez zgadywania.
 | Typ dokumentu | Katalog docelowy | Uwaga |
 |---|---|---|
 | Architektura platformy (żywa, ręcznie pisana) | root [`ARCHITECTURE.md`](../ARCHITECTURE.md) | Hub/moduły, marka, konwencje strukturalne — aktualizowany przy zmianie modułów/konwencji |
-| Mapa kodu (auto-generowana) | [`.planning/codebase/`](../.planning/codebase/) — w tym jej **własny** `.planning/codebase/ARCHITECTURE.md` | **To NIE jest ten sam plik co root `ARCHITECTURE.md`.** Generowany przez `gsd-map-codebase`, snapshot struktury/diagram ASCII — nie edytować ręcznie, nie traktować jako kanon |
+| Mapa kodu (auto-generowana) | `.planning/codebase/` — **tylko w repo prywatnym**, w tej kopii brak; w tym jej **własny** `.planning/codebase/ARCHITECTURE.md` | **To NIE jest ten sam plik co root `ARCHITECTURE.md`.** Generowany przez `gsd-map-codebase`, snapshot struktury/diagram ASCII — nie edytować ręcznie, nie traktować jako kanon |
 | ADR / decyzja | [`docs/adr/`](adr/README.md) — pliki `NNNN-krotki-tytul.md` | Jedna świadoma decyzja = jeden plik (kontekst/decyzja/skutki/źródła) + wiersz w indeksie; nie edytuje się wstecz — zastępuje nowym ADR |
 | Analiza / feasibility | `docs/*.md` (np. `deploy-hardening-audit.md`) | Dokument analityczny z wariantami i rekomendacją; wiążąca decyzja z niego trafia do `docs/adr/` |
 | Spec / kontrakt integracji | `docs/*.md` (np. `compare-export-spec.md`) | Kontrakty międzysystemowe |
@@ -38,8 +38,8 @@ od razu — bez zgadywania.
 | Audyt otwierający proces (BA/DEV/SEC) | [`docs/AUDYT.md`](AUDYT.md) | Migawka z datą, nie żywa specyfikacja |
 | Archiwum wdrożonych planów/speców | `docs/archive/` | Historyczne plany/specy już zrealizowanych featurów (patrz `docs/archive/README.md` — dowód wdrożenia per plik) |
 | Higiena repo / cykl życia artefaktów | [`docs/repo-hygiene.md`](repo-hygiene.md) | Reguła commit/ignore/delete + cykl życia `.planning/` |
-| Ustalenia projektu GSD | `.planning/**` (PROJECT.md, ROADMAP.md, REQUIREMENTS.md, STATE.md, phases/, intel/, onboarding/) | Commitowane by design |
-| Backlog roboczy per temat | `.scratch/<temat>/issues/*.md` | Ustalony precedens (Faza 1) — commitowany, nie ignorowany |
+| Ustalenia projektu GSD (**tylko repo prywatne**) | `.planning/**` (PROJECT.md, ROADMAP.md, REQUIREMENTS.md, STATE.md, phases/, intel/, onboarding/) | Commitowane by design |
+| Backlog roboczy per temat | GitHub Issues + [`docs/analiza/HISTORYJKI.md`](analiza/HISTORYJKI.md); w repo prywatnym dodatkowo `.scratch/<temat>/issues/*.md` | Od 2026-10-16 backlog prowadzony w Issues (A-13) |
 
 ## Kolizja nazw: dwa pliki `ARCHITECTURE.md`
 
