@@ -27,7 +27,7 @@
         {% if can_write_products %}<form method="post" action="{% url 'ui:planner_carton_import' %}" enctype="multipart/form-data">
           {% csrf_token %}
           <label class="menu__item menu__upload">{% icon "file-up" %}Importuj CSV…
-            <input type="file" name="file" accept=".csv" onchange="gvUpload(this)"></label>
+            <input type="file" name="file" accept=".csv" data-upload></label>
         </form>{% endif %}
         {# „Opakowania zbiorcze" usunięte — to dublet zakładki w subnav tuż wyżej. #}
         <a class="menu__item" href="{% url 'ui:data_center_packaging' %}">{% icon "pencil" %}Edycja zbiorcza wymiarów</a>

@@ -6,8 +6,8 @@
 {% block extra_head %}
 <script defer src="{% static 'ui/js/plotly.min.js' %}"></script>
 <script src="{% static 'ui/vendor/htmx.min.js' %}"></script>
-<script type="importmap">{ "imports": { "three": "/static/ui/vendor/three.module.js" } }</script>
-<script type="module">
+<script type="importmap" nonce="{{ csp_nonce }}">{ "imports": { "three": "/static/ui/vendor/three.module.js" } }</script>
+<script type="module" nonce="{{ csp_nonce }}">
   // Expose the realistic pallet renderer globally so HTMX-injected result panels
   // (plain inline scripts) can call it; signal readiness for panels swapped before load.
   import { renderPalVizLevel } from "/static/ui/js/palviz-three.js";
@@ -76,8 +76,8 @@
   <!-- ── Left panel: parameters ─────────────────────────────────────────── -->
   <div class="params-panel">
     <div class="tab-bar">
-      <button class="tab-btn active" onclick="showTab('manual')">Ręcznie</button>
-      <button class="tab-btn" onclick="showTab('csv')">Z pliku CSV</button>
+      <button class="tab-btn active" data-call="showTab" data-args='["manual"]'>Ręcznie</button>
+      <button class="tab-btn" data-call="showTab" data-args='["csv"]'>Z pliku CSV</button>
     </div>
 
     <!-- Manual form -->
@@ -108,9 +108,9 @@
               <label for="sl_maxh">{{ manual_form.max_height_total.label }}</label>
               <div class="slider-row">
                 <input type="range" id="sl_maxh" name="_sl_maxh" min="100" max="400" value="215"
-                       oninput="syncSlider(this,'max_height_total','lbl_maxh')">
+                       data-action="syncSlider" data-on="input" data-args='["max_height_total", "lbl_maxh"]'>
                 <div class="slider-val"><input type="number" id="lbl_maxh" aria-label="{{ manual_form.max_height_total.label }} — wartość" value="215" min="50" max="400"
-                       oninput="syncNum(this,'sl_maxh','max_height_total')"> cm</div>
+                       data-action="syncNum" data-on="input" data-args='["sl_maxh", "max_height_total"]'> cm</div>
               </div>
               <input type="hidden" name="max_height_total" id="max_height_total" value="215">
             </div>
@@ -118,9 +118,9 @@
               <label for="sl_maxw">{{ manual_form.max_weight.label }}</label>
               <div class="slider-row">
                 <input type="range" id="sl_maxw" name="_sl_maxw" min="100" max="3000" step="50" value="1000"
-                       oninput="syncSlider(this,'max_weight','lbl_maxw')">
+                       data-action="syncSlider" data-on="input" data-args='["max_weight", "lbl_maxw"]'>
                 <div class="slider-val"><input type="number" id="lbl_maxw" aria-label="{{ manual_form.max_weight.label }} — wartość" value="1000" min="1" max="5000"
-                       oninput="syncNum(this,'sl_maxw','max_weight')"> kg</div>
+                       data-action="syncNum" data-on="input" data-args='["sl_maxw", "max_weight"]'> kg</div>
               </div>
               <input type="hidden" name="max_weight" id="max_weight" value="1000">
             </div>
@@ -139,9 +139,9 @@
               <label for="sl_l">Długość L [cm]</label>
               <div class="slider-row">
                 <input type="range" id="sl_l" name="_sl_l" min="5" max="200" value="40"
-                       oninput="syncSlider(this,'carton_l','lbl_l')">
+                       data-action="syncSlider" data-on="input" data-args='["carton_l", "lbl_l"]'>
                 <div class="slider-val"><input type="number" id="lbl_l" aria-label="Długość L [cm] — wartość" value="40" min="1" max="200"
-                       oninput="syncNum(this,'sl_l','carton_l')"> cm</div>
+                       data-action="syncNum" data-on="input" data-args='["sl_l", "carton_l"]'> cm</div>
               </div>
               <input type="hidden" name="carton_l" id="carton_l" value="40">
             </div>
@@ -149,9 +149,9 @@
               <label for="sl_w">Szerokość W [cm]</label>
               <div class="slider-row">
                 <input type="range" id="sl_w" name="_sl_w" min="5" max="150" value="30"
-                       oninput="syncSlider(this,'carton_w','lbl_w')">
+                       data-action="syncSlider" data-on="input" data-args='["carton_w", "lbl_w"]'>
                 <div class="slider-val"><input type="number" id="lbl_w" aria-label="Szerokość W [cm] — wartość" value="30" min="1" max="150"
-                       oninput="syncNum(this,'sl_w','carton_w')"> cm</div>
+                       data-action="syncNum" data-on="input" data-args='["sl_w", "carton_w"]'> cm</div>
               </div>
               <input type="hidden" name="carton_w" id="carton_w" value="30">
             </div>
@@ -159,9 +159,9 @@
               <label for="sl_h">Wysokość H [cm]</label>
               <div class="slider-row">
                 <input type="range" id="sl_h" name="_sl_h" min="5" max="150" value="25"
-                       oninput="syncSlider(this,'carton_h','lbl_h')">
+                       data-action="syncSlider" data-on="input" data-args='["carton_h", "lbl_h"]'>
                 <div class="slider-val"><input type="number" id="lbl_h" aria-label="Wysokość H [cm] — wartość" value="25" min="1" max="150"
-                       oninput="syncNum(this,'sl_h','carton_h')"> cm</div>
+                       data-action="syncNum" data-on="input" data-args='["sl_h", "carton_h"]'> cm</div>
               </div>
               <input type="hidden" name="carton_h" id="carton_h" value="25">
             </div>
@@ -255,7 +255,7 @@
                 <label for="si_instr_name" style="font-size:12px">Nazwa instrukcji (opcjonalnie)</label>
                 <input type="text" name="instr_name" id="si_instr_name" placeholder="np. Wersja standardowa">
               </div>
-              <button type="submit" class="btn btn-primary w-full" onclick="syncSaveFields()">
+              <button type="submit" class="btn btn-primary w-full" data-call="syncSaveFields">
                 <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                 Zapisz jako paletyzację
               </button>
@@ -316,7 +316,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
+<script nonce="{{ csp_nonce }}">
 function showTab(name) {
   document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', ['manual','csv'][i] === name));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));

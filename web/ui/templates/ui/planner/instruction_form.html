@@ -186,7 +186,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
+<script nonce="{{ csp_nonce }}">
 // Auto-fill carton dimensions when DB carton is selected
 const sel = document.getElementById('{{ form.carton_from_db.id_for_label }}');
 if (sel) {

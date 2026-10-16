@@ -40,7 +40,9 @@ Wdrożenie w trzech fazach:
    powitanie demo, hub) — zrobiony. Krok 2 — skaner Kontroli HU — zrobiony; handlery `on*=` zastępują
    atrybuty `data-*` obsługiwane przez jeden plik statyczny `ui/js/csp-actions.js` (`data-confirm`,
    `data-scan`, `data-action`, `data-autosubmit`, `data-upload`, `data-click`, `data-hide`) — kolejne
-   moduły używają tych samych atrybutów. Ustalenia z inwentaryzacji (74 szablony):
+   moduły używają tych samych atrybutów. Krok 3 — planer (`ui/planner`, 16 szablonów) — zrobiony;
+   dyspozytor dostał `data-call` (funkcja bez elementu), `data-args` (JSON) i zdarzenie `input`.
+   Ustalenia z inwentaryzacji (74 szablony):
    - **Fragmenty doładowywane** (np. `_panel.html` z kalkulatora, zwracany z widoku jako HTML):
      ich skrypty dostają nonce innego żądania niż strona. Rozwiązanie w kroku danego modułu:
      przenieść JS fragmentu do pliku statycznego albo ustawić `htmx.config.inlineScriptNonce`

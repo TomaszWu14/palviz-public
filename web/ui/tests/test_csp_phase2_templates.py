@@ -24,6 +24,12 @@ CONVERTED = (
     *(f"huctl/templates/ui/scanner/{n}.html" for n in (
         "_utile", "find_recipient", "hu_detail", "investigation_detail", "menu", "my_shift",
         "photo_check", "quality_issues", "recheck_list")),
+    # Faza 2, krok 3: planer (ui/planner) — data-call/data-args dla funkcji bez elementu.
+    *(f"ui/templates/ui/planner/{n}.html" for n in (
+        "_artwork_designer", "analytics", "calc_index", "carton_form", "carton_unify", "cartons",
+        "instruction_detail", "instruction_form", "location_fit_all", "location_simulate",
+        "locations", "optimizer", "product_form", "product_hierarchy", "products",
+        "ref_materials")),
 )
 
 SCRIPT_RE = re.compile(r"<script\b([^>]*)>", re.I)
@@ -53,6 +59,12 @@ class ConvertedTemplatesTests(SimpleTestCase):
     def test_bases_load_action_dispatcher(self):
         for rel in ("ui/templates/ui/base.html", "ui/templates/ui/scanner/base.html"):
             self.assertIn("ui/js/csp-actions.js", (WEB / rel).read_text(encoding="utf-8"), rel)
+
+    def test_location_delete_asks_for_confirmation(self):
+        # Regresja: cudzysłów w onsubmit urywał atrybut — JS był błędny i lokalizacja
+        # usuwała się bez pytania. Teraz potwierdzenie w atrybucie HTML (data-confirm).
+        text = (WEB / "ui/templates/ui/planner/locations.html").read_text(encoding="utf-8")
+        self.assertIn('data-confirm="Usunąć lokalizację „{{ loc.name }}”?"', text)
 
     def test_checker_catches_violations(self):
         self.assertTrue(violations("<script>alert(1)</script>"))

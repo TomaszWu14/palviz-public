@@ -221,7 +221,7 @@
     </div>
     <div class="hop-actions">
       {% if instr %}
-      <button id="btn-recalc" onclick="triggerRecalc({{ instr.pk }})"
+      <button id="btn-recalc" data-call="triggerRecalc" data-args='[{{ instr.pk }}]'
               class="btn btn-primary btn-sm" title="Przelicz ponownie" aria-label="Przelicz ponownie">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
         <span>Przelicz</span>
@@ -405,14 +405,14 @@
 </div>{# .hop #}
 
 <!-- ── Three.js renderer ─────────────────────────────────────────────────── -->
-<script type="importmap">
+<script type="importmap" nonce="{{ csp_nonce }}">
 {
   "imports": {
     "three": "/static/ui/vendor/three.module.js"
   }
 }
 </script>
-<script type="module">
+<script type="module" nonce="{{ csp_nonce }}">
 import { renderPalVizLevel } from "/static/ui/js/palviz-three.js";
 
 // Największy wymiar obiektu danej karty (do wspólnej skali między kartami).
@@ -505,7 +505,7 @@ document.querySelectorAll(".hop-card").forEach(card => {
 </script>
 
 <!-- ── Sticky header shrink + stepper nawigacja ──────────────────────────── -->
-<script>
+<script nonce="{{ csp_nonce }}">
 (function () {
   const bar = document.getElementById("hop-bar");
   if (bar) {
@@ -527,7 +527,7 @@ document.querySelectorAll(".hop-card").forEach(card => {
 </script>
 
 <!-- ── Celery async recalculate ──────────────────────────────────────────── -->
-<script>
+<script nonce="{{ csp_nonce }}">
 const TASK_STATUS_URL = "{% url 'ui:task_status' task_id='PLACEHOLDER' %}";
 const RECALC_URL = "{% if instr %}{% url 'ui:planner_instruction_recalculate_async' instr.pk %}{% endif %}";
 function getCookie(name) {

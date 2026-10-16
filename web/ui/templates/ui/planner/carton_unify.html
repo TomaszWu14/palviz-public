@@ -130,7 +130,7 @@
   <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:8px;margin-bottom:32px;">
     <a href="{% url 'ui:planner_cartons' %}" class="btn btn-secondary">Anuluj</a>
     <button type="submit" class="btn btn-primary"
-            onclick="return confirm('Scal zaznaczone grupy kartonów? Operacja jest nieodwracalna.')">
+            data-confirm="Scal zaznaczone grupy kartonów? Operacja jest nieodwracalna.">
       Scal i usuń duplikaty
     </button>
   </div>

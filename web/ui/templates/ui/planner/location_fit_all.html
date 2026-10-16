@@ -211,11 +211,11 @@
 
       <!-- Mode tabs: primary (based on location type) / secondary -->
       <div class="mode-tabs">
-        <button class="mode-tab active" onclick="switchTab(this,'{{ forloop.counter }}-primary')">
+        <button class="mode-tab active" data-action="switchTab" data-args='["{{ forloop.counter }}-primary"]'>
           {% if loc.is_pallet_location %}{% icon "construction" %} Z paletą{% else %}{% icon "package" %} Luzem{% endif %}
           ({{ mode_primary.fit.total_cartons }} kart.)
         </button>
-        <button class="mode-tab" onclick="switchTab(this,'{{ forloop.counter }}-secondary')">
+        <button class="mode-tab" data-action="switchTab" data-args='["{{ forloop.counter }}-secondary"]'>
           {% if loc.is_pallet_location %}{% icon "package" %} Bez palety{% else %}{% icon "construction" %} Z paletą{% endif %}
           ({{ mode_secondary.fit.total_cartons }} kart.)
         </button>
@@ -263,7 +263,7 @@
             <div id="fig3d-{{ forloop.counter }}-primary" style="height:340px"></div>
           </div>
         </div>
-        <script>
+        <script nonce="{{ csp_nonce }}">
         (function(){
           var f2 = {{ mode_primary.fig2d_json|safe }};
           Plotly.react('fig2d-{{ forloop.counter }}-primary', f2.data, f2.layout, {responsive:true, displayModeBar:false});
@@ -316,7 +316,7 @@
             <div id="fig3d-{{ forloop.counter }}-secondary" style="height:340px"></div>
           </div>
         </div>
-        <script>
+        <script nonce="{{ csp_nonce }}">
         (function(){
           var f2 = {{ mode_secondary.fig2d_json|safe }};
           Plotly.react('fig2d-{{ forloop.counter }}-secondary', f2.data, f2.layout, {responsive:true, displayModeBar:false});
@@ -353,7 +353,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
+<script nonce="{{ csp_nonce }}">
 function switchTab(btn, tabId) {
   var card = btn.closest('.loc-card');
   card.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
