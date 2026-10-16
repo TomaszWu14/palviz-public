@@ -143,6 +143,10 @@ def _glb_upload(request, owner):
         return JsonResponse({"ok": False, "error": "Plik za duży (max 8 MB)."}, status=400)
     if not (f.name or "").lower().endswith(".glb"):
         return JsonResponse({"ok": False, "error": "Dozwolony tylko plik .glb."}, status=400)
+    from core.uploads import check_upload   # US-005: typ po zawartości, nie po nazwie
+    err = check_upload(f, max_bytes=_ART_MAX_BYTES, kinds={"glb"})
+    if err:
+        return JsonResponse({"ok": False, "error": err}, status=400)
     owner.glb_model = f
     owner.save(update_fields=["glb_model"])
     return JsonResponse({"ok": True})

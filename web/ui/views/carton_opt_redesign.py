@@ -333,6 +333,11 @@ def carton_opt_redesign_save(request, pk):
         if not name.endswith((".glb", ".png", ".jpg", ".jpeg")):
             messages.error(request, "Render: dozwolone .glb / PNG / JPG.")
             return redirect("ui:carton_opt_redesign_detail", pk=pk)
+        from core.uploads import check_upload   # US-005: typ po zawartości, nie po nazwie
+        err = check_upload(up, max_bytes=_ART_MAX_BYTES, kinds={"glb", "png", "jpeg"})
+        if err:
+            messages.error(request, "Render: " + err)
+            return redirect("ui:carton_opt_redesign_detail", pk=pk)
         rd.a_render = up
     rd.save()
     messages.success(request, "Szkic zapisany.")

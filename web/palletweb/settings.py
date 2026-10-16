@@ -87,6 +87,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "core.middleware.RequestIDMiddleware",          # correlation ID → structlog + response
+    "core.uploads.UploadSizeLimitMiddleware",       # US-005: 413 dla multipart > UPLOAD_MAX_MB
     "django.middleware.security.SecurityMiddleware",
     "core.middleware.SecurityHeadersMiddleware",    # Permissions-Policy + CSP (report-only)
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -259,6 +260,8 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 # Content-Security-Policy mode (see ui.middleware). Report-only by default.
 CSP_REPORT_ONLY = env.CSP_REPORT_ONLY
+# US-005: limit całego żądania multipart (MB).
+UPLOAD_MAX_MB = env.UPLOAD_MAX_MB
 
 # ── django-axes (brute-force protection) ─────────────────────────────────────
 AXES_FAILURE_LIMIT        = 5          # block after 5 failed attempts

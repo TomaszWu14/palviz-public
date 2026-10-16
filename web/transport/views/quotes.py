@@ -370,6 +370,12 @@ def quote_response(request, token):
                     or _os.path.splitext(att.name)[1].lower() not in _ok_exts):
                 return render(request, "ui/quote_response.html", _quote_response_context(
                     request, offer, sh, error="Dozwolone tylko PDF / JPG / PNG."))
+            # US-005 / S-07: publiczny upload — typ sprawdzany też po zawartości pliku.
+            from core.uploads import check_upload
+            err = check_upload(att, max_bytes=30 * 1024 * 1024, kinds={"pdf", "jpeg", "png"})
+            if err:
+                return render(request, "ui/quote_response.html", _quote_response_context(
+                    request, offer, sh, error=err))
             offer.attachment = att
         # A missing/garbled amount must NOT lock the form — let the forwarder correct it.
         if offer.amount is None:

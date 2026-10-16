@@ -22,7 +22,32 @@ class ProductCategoryForm(forms.ModelForm):
         }
 
 
+def _clean_upload(form, field, kinds):
+    """US-005: nowo przesłany plik — limit rozmiaru i typ po zawartości (core.uploads)."""
+    from django.core.files.uploadedfile import UploadedFile
+    from core.uploads import check_upload
+    f = form.cleaned_data.get(field)
+    if isinstance(f, UploadedFile):
+        err = check_upload(f, max_bytes=FORM_UPLOAD_MAX_BYTES, kinds=kinds)
+        if err:
+            raise forms.ValidationError(err)
+    return f
+
+
+# US-005 / S-08: modele 3D i zdjęcia w formularzach produktu i kartonu (wcześniej bez limitu).
+FORM_UPLOAD_MAX_BYTES = 20 * 1024 * 1024
+
+
 class ProductForm(forms.ModelForm):
+    def clean_glb_model(self):
+        return _clean_upload(self, "glb_model", {"glb"})
+
+    def clean_ju_glb_model(self):
+        return _clean_upload(self, "ju_glb_model", {"glb"})
+
+    def clean_ju_image(self):
+        return _clean_upload(self, "ju_image", {"png", "jpeg"})
+
     class Meta:
         model = Product
         fields = ["code", "name", "supplier_short", "description", "ean",
@@ -93,6 +118,9 @@ class InnerPackForm(forms.ModelForm):
 
 
 class CartonForm(forms.ModelForm):
+    def clean_glb_model(self):
+        return _clean_upload(self, "glb_model", {"glb"})
+
     class Meta:
         model = Carton
         fields = ["name", "ean", "width_cm", "height_cm", "length_cm",

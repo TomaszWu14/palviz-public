@@ -36,7 +36,7 @@ klucz powinien mieć tylko potrzebne zakresy. Rotacja bez przestoju: dodać nowy
 | `GET /health/` | monitoring, healthcheck kontenera | publiczne; sprawdza bazę i cache (`web/core/health_urls.py`) |
 | `POST /csp-report/` | przeglądarki (raporty CSP) | bez CSRF; body ≤ 16 KB, 60/min/IP (`web/core/csp_report.py`) |
 | `POST /control/sync/` | skaner (zliczenia offline) | sesja + CSRF; te same bramki co online (`web/huctl/views/hu_stock.py`) |
-| `/driver/<token>/…`, `/quote/<token>/…`, gotowość magazynu | kierowca, spedytor, magazyn | token uuid4 w URL, 20 POST/h/token (`web/core/ratelimit.py`), upload PDF/JPG/PNG ≤ 30 MB |
+| `/driver/<token>/…`, `/quote/<token>/…`, gotowość magazynu | kierowca, spedytor, magazyn | token uuid4 w URL, 20 POST/h/token (`web/core/ratelimit.py`), upload PDF/JPG/PNG ≤ 30 MB sprawdzany po zawartości (US-005) |
 | `POST /demo/login` („Wejdź jako demo”) | odwiedzający demo | tylko `DEMO_MODE`; konto tylko do odczytu (`web/core/demo.py`) |
 
 Dokładne nazwy tras: `web/ui/urls.py`, `web/huctl/urls.py`, `web/transport/urls.py`
