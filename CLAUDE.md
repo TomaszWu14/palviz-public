@@ -2,9 +2,9 @@
 
 Guidance for AI assistants (and humans) working in this repository.
 
-## What PalViz is
+## What LogViz is
 
-PalViz is a warehouse / palletization planning application for **ACME
+LogViz (historically PalViz; code name GROOVE) is a warehouse / palletization planning application for **ACME
 Group**. It started as a CLI palletization calculator (`main.py` + the `palletizer`
 package) and grew into a full Django web app (`web/`) covering product master data,
 carton/pallet optimization, shipments & freight quoting, driver
@@ -14,10 +14,12 @@ module.
 The UI language is **Polish** — labels, messages, model `verbose_name`s, and most
 code comments are in Polish. Keep new user-facing strings in Polish to match.
 
-The product is branded **GROOVE** (the umbrella platform). Branding is env-driven: the
+**Naming (US-011, decision A-01):** in docs and user-facing prose the product is **LogViz**.
+**GROOVE** is the umbrella-platform name used in code and the default `APP_NAME`; PalViz is the
+historical name (dated/archived docs keep it). Branding is env-driven: the
 `APP_NAME` setting (default `GROOVE`) is injected into every template as `{{ app_name }}`
 via `core.context_processors.branding` — use it for new user-facing brand text rather than
-hardcoding a name. GROOVE is a **single-repo modular monolith** (see `ARCHITECTURE.md`):
+hardcoding a name. LogViz is a **single-repo modular monolith** (see `ARCHITECTURE.md`):
 after login the hub (`module_home` → `ui/home.html`) shows the platform modules ("tabs")
 the user may open — role-gated tiles defined in `web/ui/platform_modules.py`
 (`MODULES` / `modules_for(user)`) and documented in `ARCHITECTURE.md` §Hub i moduły
@@ -100,7 +102,7 @@ web/
   scripts/fetch_vendor.sh   Vendors front-end JS libs locally (no runtime CDN)
                             (path: web/scripts/fetch_vendor.sh)
 android/                    TWA (Trusted Web Activity) APK wrapper docs/manifest
-tools/sap_marm_to_palviz.py SAP MARM → PalViz data conversion helper
+tools/sap_marm_to_palviz.py SAP MARM → LogViz data conversion helper
 scripts/backup.sh           DB + media backup (Postgres pg_dump / SQLite .backup)
 excel_templates/, data/     Sample/template spreadsheets and CSV
 .env.example, .pre-commit-config.yaml

@@ -7,6 +7,12 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 
 ## [Unreleased]
 
+### Changed
+- US-011 (#22): jedna nazwa produktu w dokumentach sterujących — **LogViz** (decyzja A-01) w
+  `README.md`, `ARCHITECTURE.md`, `CLAUDE.md`, `docs/README.md` i `tests/README-TESTS.md`. GROOVE zostaje
+  jako nazwa techniczna (kod, domyślne `APP_NAME`), PalViz jako historyczna w dokumentach z datą.
+  Strażnik: `ui.tests.test_naming_us011`.
+
 ### Security
 - US-006 (#17): link oferty spedytora i potwierdzenia gotowości magazynu wygasa po
   `QUOTE_LINK_TTL_DAYS` (domyślnie 30 dni, 0 = bez limitu) — strona „Link jest już nieaktywny”, HTTP 410
