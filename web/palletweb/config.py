@@ -93,6 +93,9 @@ class AppEnv(BaseSettings):
     POWERBI_PULL_INTERVAL_SEC: float = 3600.0
     DRIVER_REMINDER_INTERVAL_MIN: int = 30
     DRIVER_REMINDER_MAX: int = 5
+    # US-004 / P15: limit SMS z publicznego formularza kierowcy i ważność linku (0 = bez limitu).
+    DRIVER_FORM_SMS_MAX: int = 3
+    DRIVER_LINK_TTL_DAYS: int = 30
     # Codzienny raport kontroli HU e-mailem do liderów (beat, 06:00 czasu lokalnego).
     HU_DAILY_REPORT: bool = False
     # ── Kontrola HU: wymuszenie fizycznego skanu (Warstwa A/B) + rezerwacje ──
@@ -123,6 +126,14 @@ class AppEnv(BaseSettings):
     # „zaraz" (min) sterujący kolorem karty + alertem. Knob per magazyn/okno załadunku.
     HU_SLA_CUTOFF_HOUR: int = 12
     HU_SLA_SOON_MIN: int = 60
+    # US-004 / P15: progi czytane wcześniej przez getattr z wartością domyślną poza AppEnv —
+    # nie dało się ich ustawić zmienną środowiskową. Wartości domyślne bez zmian.
+    HU_RECHECK_MAX_AGE_HOURS: float = 24.0   # rekontrola starsza niż N h → zadanie dla lidera
+    HU_RECHECK_ESCALATE_AFTER: int = 2       # po N wejściach w rekontrolę → eskalacja
+    HU_STALE_HOURS: float = 24.0             # paleta niewidziana w imporcie od N h → „zniknęła”
+    HU_INCONTROL_MAX_HOURS: float = 2.0      # kontrola trwa ponad N h → „utknęła”
+    HU_MAX_QTY: float = 1_000_000.0          # górny limit liczonej ilości
+    HU_SYNC_MAX_BATCH: int = 500             # maks. wpisów w jednej synchronizacji offline
     # Potwierdzenie typu urządzenia po zalogowaniu (Zebra/telefon/tablet/PC) — routing
     # zadań ze zdjęciem (Zebra bez aparatu). Włącz na prod: DEVICE_CONFIRM_ENABLED=1.
     DEVICE_CONFIRM_ENABLED: bool = False
@@ -227,10 +238,19 @@ class AppEnv(BaseSettings):
         # Never boot production with the throwaway dev key.
         if not self.DJANGO_DEBUG and self.DJANGO_SECRET_KEY == "dev-only-change-me":
             errs.append("DJANGO_SECRET_KEY must be set when DJANGO_DEBUG is false.")
+        elif not self.DJANGO_DEBUG and _weak_secret_key(self.DJANGO_SECRET_KEY):
+            # US-004 / P16: ta sama reguła co Django security.W009, ale twardo przy starcie.
+            errs.append(f"DJANGO_SECRET_KEY is too weak: needs at least {_SECRET_MIN_LEN} characters "
+                        f"and {_SECRET_MIN_UNIQUE} distinct ones, and must not start with "
+                        "'django-insecure-' (DJANGO_DEBUG is false).")
+        # US-009 / R-10: produkcja nie może wyłączyć weryfikacji TLS do Power BI (MITM tokenu).
+        if not self.DJANGO_DEBUG and not self.POWERBI_SSL_VERIFY:
+            errs.append("POWERBI_SSL_VERIFY=false is not allowed when DJANGO_DEBUG is false; "
+                        "use POWERBI_CA_BUNDLE for a corporate root CA instead.")
         if self.POWERBI_AUTO_PULL and self.POWERBI_PULL_INTERVAL_SEC <= 0:
             errs.append("POWERBI_PULL_INTERVAL_SEC must be > 0 when POWERBI_AUTO_PULL is on.")
         if not (1 <= self.EMAIL_PORT <= 65535):
-            errs.append(f"EMAIL_PORT must be 1–65535 (got {self.EMAIL_PORT}).")
+            errs.append("EMAIL_PORT must be 1–65535.")
         if not (0 <= self.DEFAULT_STOWAGE_EFFICIENCY_PCT <= 100):
             errs.append("DEFAULT_STOWAGE_EFFICIENCY_PCT must be 0–100.")
         if errs:
@@ -246,7 +266,38 @@ def load_env() -> AppEnv:
         return AppEnv()
     except Exception as exc:  # pydantic ValidationError or our ValueError
         from django.core.exceptions import ImproperlyConfigured
-        raise ImproperlyConfigured(f"Environment configuration error:\n{exc}") from exc
+        raise ImproperlyConfigured(
+            f"Environment configuration error:\n{format_config_error(exc)}") from None
+
+
+def format_config_error(exc: Exception) -> str:
+    """Opis błędu konfiguracji BEZ wartości zmiennych (US-004 / P17): `str()` błędu pydantic
+    zawiera `input_value`, więc sekret o złym typie trafiłby do logów startu. Zwracamy tylko
+    nazwę zmiennej i komunikat. `from None` w `load_env` odcina też oryginalny traceback."""
+    from pydantic import ValidationError
+    if not isinstance(exc, ValidationError):
+        return type(exc).__name__
+    lines = []
+    for err in exc.errors(include_input=False, include_url=False, include_context=False):
+        msg = str(err.get("msg", "invalid value")).removeprefix("Value error, ")
+        name = ".".join(str(part) for part in err.get("loc", ()))
+        if not name and msg.startswith("Invalid configuration:"):
+            # Błędy z _cross_field_checks: każdy już zaczyna się od nazwy zmiennej.
+            lines += [f"  - {line.strip().removeprefix('- ')}"
+                      for line in msg.splitlines()[1:] if line.strip()]
+            continue
+        lines.append(f"  - {name or 'configuration'}: {msg}")
+    return "\n".join(lines) or "  - invalid configuration"
+
+
+_SECRET_MIN_LEN = 50
+_SECRET_MIN_UNIQUE = 5
+
+
+def _weak_secret_key(key: str) -> bool:
+    """Reguła Django `security.W009`: < 50 znaków, < 5 różnych albo prefiks 'django-insecure-'."""
+    return (len(key) < _SECRET_MIN_LEN or len(set(key)) < _SECRET_MIN_UNIQUE
+            or key.startswith("django-insecure-"))
 
 
 def _demo_secret_key(directory: Path) -> str:

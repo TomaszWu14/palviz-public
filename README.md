@@ -154,7 +154,8 @@ docker compose up --build                         # gunicorn + Redis
 ```
 
 Aplikacja: <http://localhost:8000>. Kontener działa z `DJANGO_DEBUG=false`, więc obie zmienne
-trzeba ustawić przed startem (pusty klucz nie jest dziś odrzucany — zob. [07, P16](docs/07-ograniczenia.md)).
+trzeba ustawić przed startem. Klucz krótszy niż 50 znaków albo z mniej niż 5 różnymi znakami zatrzymuje start
+(US-004, [07, P16](docs/07-ograniczenia.md)).
 
 ### Testy
 
