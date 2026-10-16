@@ -150,6 +150,10 @@ class SecurityHeadersMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
         response.setdefault("Permissions-Policy", _PERMISSIONS_POLICY)
+        if getattr(response, "csp_strict", False):   # US-008 / ADR-0020: strony publiczne
+            from core.csp import strict_policy
+            response["Content-Security-Policy"] = strict_policy(request)
+            return response
         header = ("Content-Security-Policy-Report-Only"
                   if getattr(settings, "CSP_REPORT_ONLY", True)
                   else "Content-Security-Policy")

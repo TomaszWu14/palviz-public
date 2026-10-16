@@ -4,7 +4,7 @@ Dokumentacja analityczna LogViz: [01 Problem i zakres](01-problem-i-zakres.md) �
 [03 User flow](03-user-flow.md) · [04 Model danych](04-model-danych.md) ·
 [05 Wymagania](05-wymagania.md) · **06 Decyzje** · [07 Ograniczenia](07-ograniczenia.md)
 
-Skrót 19 zapisów decyzji z [rejestru ADR](adr/README.md). Kolumna „Rozważane opcje” zawiera tylko
+Skrót 20 zapisów decyzji z [rejestru ADR](adr/README.md). Kolumna „Rozważane opcje” zawiera tylko
 warianty, które ADR faktycznie wymienia; gdy ADR ich nie podaje — „brak zapisanych alternatyw”.
 
 | ADR | Decyzja | Kontekst | Rozważane opcje | Dlaczego ta | Skutki |
@@ -28,3 +28,4 @@ warianty, które ADR faktycznie wymienia; gdy ADR ich nie podaje — „brak zap
 | [0017](adr/0017-migracje-expand-contract.md) | Zmiany schematu w dwóch krokach: najpierw dodaj, w kolejnym deployu usuń | Migracja przy starcie nowego kontenera psuje działającą starą wersję | brak zapisanych alternatyw | Deploy bez przerywania działającej wersji | Usunięcie kolumny trwa dwa deploye |
 | [0018](adr/0018-decyzje-procesowe-2026-09-28.md) | Pakiet decyzji procesowych (9 punktów): automatyczne statusy wysyłki, jeden ranking kolejki, domknięcie anulowania, offline = te same bramki, definicja krótkiego terminu, MFA odłożone | Pytania biznesowe i znaleziska z audytu | brak zapisanych alternatyw | Rozstrzygnięcie właściciela | Ujednolicona definicja krótkiego terminu; MFA świadomie przyjętym ryzykiem |
 | [0019](adr/0019-skanery-bezpieczenstwa-na-pr.md) | Skanery bezpieczeństwa (gitleaks, Bandit HIGH) blokują PR; pozostałe skany informacyjnie; `test` nadal jedynym wymaganym checkiem — **Przyjęta** (PO 2026-10-16, wariant A) | Skanery biegły tylko raz w tygodniu (audyt 2026-10-15, S-01); proces zespołowy wymaga potoku z blokadą | A: blokują tylko sekrety i HIGH/HIGH; B: pełny potok jako wymagany check; C: status quo | Szybki merge zachowany, a ustalenia o niskim odsetku fałszywych alarmów blokują | Czas PR +2–3 min równolegle; Dependabot i tygodniowy skan obrazu |
+| [0020](adr/0020-csp-nonce-wymuszanie-etapami.md) | CSP z nonce wymuszana etapami: najpierw strony publiczne (zrobione), potem moduły, na końcu globalnie — **Proponowana** | Polityka report-only z `'unsafe-inline'` nie blokuje XSS; 73 skrypty inline i 136 handlerów w 48 szablonach | Wymuszenie od razu całej aplikacji (zepsułoby ekrany); nonce etapami | Najpierw strony bez logowania (największe ryzyko, mały zakres), reszta bez przerw w pracy | Strony publiczne blokują wstrzyknięty skrypt; ekrany wewnętrzne do fazy 3 na ADR-0008 |

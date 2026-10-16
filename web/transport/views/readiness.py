@@ -3,6 +3,7 @@ from ui.views.core import (
     Shipment, WarehouseReadiness,
     _transport_mgr, get_object_or_404, messages, redirect, render, require_POST,
 )
+from core.csp import strict_csp
 from core.ratelimit import post_rate_limit
 from django.urls import reverse
 from django.utils import timezone
@@ -97,6 +98,7 @@ def _wh_pallet_viz(shipment):
     return out, sc["max_h_cm"]
 
 
+@strict_csp   # US-008 / ADR-0020: publiczna strona z tokenem
 @post_rate_limit("wh_readiness_response", 20, 3600, by="token")   # SEC-014
 def wh_readiness_response(request, token):
     """Public token page: the warehouse sees the quoted pallet load and either confirms it,

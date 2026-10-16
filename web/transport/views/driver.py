@@ -5,6 +5,7 @@ from ui.views.core import (
     _transport_mgr,
     get_object_or_404, messages, redirect, render, require_POST, transaction,
 )
+from core.csp import strict_csp
 from core.ratelimit import post_rate_limit
 from django.urls import reverse
 from django.utils import timezone
@@ -158,6 +159,7 @@ def _link_expired(request, da):
     return render(request, "ui/link_expired.html", status=410) if expired else None
 
 
+@strict_csp   # US-008 / ADR-0020: publiczna strona z tokenem
 @post_rate_limit("driver_form", 20, 3600, by="token")   # SEC-014
 def driver_form(request, token):
     """Public form for the chosen forwarder to enter driver data (few required)."""
@@ -220,6 +222,7 @@ def _driver_info_context(request, da):
     }
 
 
+@strict_csp   # US-008 / ADR-0020: publiczna strona z tokenem
 @post_rate_limit("driver_confirm", 20, 3600, by="token")   # SEC-014
 def driver_confirm(request, token):
     """Public page (SMS link): the driver's info packet + pickup confirmation."""

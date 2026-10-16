@@ -14,6 +14,10 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   Strażnik: `ui.tests.test_naming_us011`.
 
 ### Security
+- US-008 (#19), faza 1 (ADR-0020): wymuszona ścisła CSP z nonce na stronach dostępnych bez logowania
+  (logowanie, oferta spedytora, gotowość magazynu, formularz i potwierdzenie kierowcy) — wstrzyknięty
+  skrypt jest blokowany. `core/csp.py` (nonce na żądanie, `{{ csp_nonce }}`, dekorator `strict_csp`);
+  handlery `on*=` na tych stronach zastąpione `addEventListener`. Ekrany wewnętrzne bez zmian (ADR-0008).
 - US-006 (#17): link oferty spedytora i potwierdzenia gotowości magazynu wygasa po
   `QUOTE_LINK_TTL_DAYS` (domyślnie 30 dni, 0 = bez limitu) — strona „Link jest już nieaktywny”, HTTP 410
   (link kierowcy wygasał już wcześniej, `DRIVER_LINK_TTL_DAYS`). Tokeny w ścieżkach linków publicznych
