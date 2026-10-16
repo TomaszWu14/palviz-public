@@ -8,6 +8,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 ## [Unreleased]
 
 ### Added
+- US-018 (#29): workflow `e2e-nightly.yml` — nocne testy przepływów E2E (`@flow`, Playwright) na `main`
+  (01:17 UTC), ręcznie i na PR-ach zmieniających `tests/e2e/**`; raport i ślady jako artefakt przy
+  porażce. Nie jest bramką PR-ów (D-12).
 - US-017 (#28): zadanie beat `ui.raise_hu_alert_tasks` co 15 min tworzy zadania lidera „HU zniknęła z feedu”
   i „HU utknęła w kontroli” bez otwierania hubu kontroli (P6, D-11). Te same kryteria i deduplikacja
   co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
