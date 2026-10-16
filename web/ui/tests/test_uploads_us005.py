@@ -45,6 +45,8 @@ class MiddlewareTests(SimpleTestCase):
     def _call(self, length):
         mw = UploadSizeLimitMiddleware(lambda request: "passed")
         req = RequestFactory().post("/x/", data=b"", content_type="multipart/form-data; boundary=x")
+        # RequestFactory pomija CONTENT_TYPE przy pustym body — ustawiamy nagłówki jawnie.
+        req.META["CONTENT_TYPE"] = "multipart/form-data; boundary=x"
         req.META["CONTENT_LENGTH"] = str(length)
         return mw(req)
 
