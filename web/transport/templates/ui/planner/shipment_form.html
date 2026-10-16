@@ -58,7 +58,7 @@
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--gray-100)">
         <strong style="font-size:14px">Pozycje przesyłki</strong>
-        <button type="button" class="btn btn-secondary btn-sm" onclick="addLine()">
+        <button type="button" class="btn btn-secondary btn-sm" data-call="addLine">
           <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14m-7-7h14"/></svg>
           Dodaj pozycję
         </button>
@@ -94,7 +94,7 @@
               </select>
             </td>
             <td><input type="text" name="line_notes" class="form-control form-control--sm" value="{{ line.notes }}" placeholder="opcjonalnie"></td>
-            <td><button type="button" class="btn btn-ghost btn-sm btn-icon" style="color:var(--red)" onclick="this.closest('tr').remove()">{% icon "x" label="Usuń pozycję" cls="icon--em" %}</button></td>
+            <td><button type="button" class="btn btn-ghost btn-sm btn-icon" style="color:var(--red)" data-remove-closest="tr">{% icon "x" label="Usuń pozycję" cls="icon--em" %}</button></td>
           </tr>
           {% endfor %}
           </tbody>
@@ -170,11 +170,11 @@
       </select>
     </td>
     <td><input type="text" name="line_notes" class="form-control form-control--sm" placeholder="opcjonalnie"></td>
-    <td><button type="button" class="btn btn-ghost btn-sm btn-icon" style="color:var(--red)" onclick="this.closest('tr').remove()">{% icon "x" label="Usuń pozycję" cls="icon--em" %}</button></td>
+    <td><button type="button" class="btn btn-ghost btn-sm btn-icon" style="color:var(--red)" data-remove-closest="tr">{% icon "x" label="Usuń pozycję" cls="icon--em" %}</button></td>
   </tr>
 </template>
 
-<script>
+<script nonce="{{ csp_nonce }}">
 function addLine() {
   const tpl = document.getElementById('line-template');
   const row = tpl.content.cloneNode(true);

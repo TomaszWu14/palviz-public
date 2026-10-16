@@ -42,11 +42,15 @@ Wdrożenie w trzech fazach:
    `data-scan`, `data-action`, `data-autosubmit`, `data-upload`, `data-click`, `data-hide`) — kolejne
    moduły używają tych samych atrybutów. Krok 3 — planer (`ui/planner`, 16 szablonów) — zrobiony;
    dyspozytor dostał `data-call` (funkcja bez elementu), `data-args` (JSON) i zdarzenie `input`.
+   Krok 4 — planer wysyłek (`transport`, 10 szablonów) — zrobiony; nowy `data-remove-closest`.
    Ustalenia z inwentaryzacji (74 szablony):
    - **Fragmenty doładowywane** (np. `_panel.html` z kalkulatora, zwracany z widoku jako HTML):
      ich skrypty dostają nonce innego żądania niż strona. Rozwiązanie w kroku danego modułu:
      przenieść JS fragmentu do pliku statycznego albo ustawić `htmx.config.inlineScriptNonce`
      na nonce strony.
+   - **Google Maps** (`shipment_detail`, trasa na ekranie wyceny) ładuje skrypt z
+     `maps.googleapis.com` — polityka tego ekranu w fazie 3 potrzebuje wyjątku dla tej domeny
+     (to usługa, nie biblioteka z CDN, więc ADR-0005 jej nie obejmuje).
    - **Alpine.js** (vendorowany) w zwykłym buildzie wymaga `'unsafe-eval'` — tak jak Plotly.
      Przed fazą 3 trzeba go zastąpić buildem CSP albo zostawić `'unsafe-eval'` na tych ekranach.
 3. **Wymuszenie globalne.** Po 2 tygodniach bez naruszeń w raportach PO ustawia

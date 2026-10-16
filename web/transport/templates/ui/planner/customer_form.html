@@ -95,7 +95,7 @@
         {% if can_edit_rules %}
         <td style="text-align:right">
           <form method="post" action="{% url 'ui:customer_rule_delete' r.pk %}" style="margin:0"
-                onsubmit="return confirm('Usunąć regułę {{ r.product.code|escapejs }}?')">
+                data-confirm="Usunąć regułę {{ r.product.code }}?">
             {% csrf_token %}<button type="submit" class="btn btn-secondary btn-sm">Usuń</button>
           </form>
         </td>

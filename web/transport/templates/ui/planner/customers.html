@@ -19,7 +19,7 @@
           title="Import klientów z eksportu SAP KNA1 / Excel (Klient, Nazwa klienta, Kraj, Miasto, Kod pocztowy, Ulica, Telefon). Upsert po numerze klienta — nie nadpisuje wymagań.">
       {% csrf_token %}
       <label class="btn btn-secondary menu__upload" style="cursor:pointer">{% icon "file-up" %}Importuj klientów
-        <input type="file" name="file" accept=".csv,.xlsx,.xls" onchange="gvUpload(this)"></label>
+        <input type="file" name="file" accept=".csv,.xlsx,.xls" data-upload></label>
     </form>
     <a href="{% url 'ui:planner_customer_new' %}" class="btn btn-primary" data-testid="customer-new">{% icon "plus" %}Nowy klient</a>
   </div>

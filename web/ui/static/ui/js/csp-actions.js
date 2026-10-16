@@ -7,6 +7,7 @@
  *   data-scan="input-id"    klik → palvizScan(id); opcjonalnie data-scan-src="scan" ustawia #scan-src
  *   data-click="el-id"      klik → klik w element #el-id (np. ukryty input[type=file])
  *   data-hide="el-id"       klik → ukrywa #el-id
+ *   data-remove-closest="tr"  klik → usuwa najbliższego przodka pasującego do selektora (np. wiersz)
  *   data-autosubmit         change → form.submit() (jak dawne onchange="this.form.submit()")
  *   data-upload             change → gvUpload(this) (planer) / pvUpload(this) (skaner)
  *   data-action="fn"        wywołuje window.fn(el, ...argumenty); zwrot false = preventDefault
@@ -79,6 +80,8 @@
     if (clk) { var t = byId(clk.dataset.click); if (t) t.click(); }
     var hide = ev.target.closest('[data-hide]');
     if (hide) { var h = byId(hide.dataset.hide); if (h) h.style.display = 'none'; }
+    var rm = ev.target.closest('[data-remove-closest]');
+    if (rm) { var row = rm.closest(rm.dataset.removeClosest); if (row) row.remove(); }
   });
 
   document.addEventListener('change', function (ev) {
