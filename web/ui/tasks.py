@@ -398,6 +398,14 @@ def gdpr_retention():
             "access_logs": purge_access_logs(int(getattr(settings, "GDPR_ACCESSLOG_RETAIN_DAYS", 0) or 0))}
 
 
+@shared_task(name="ui.raise_hu_alert_tasks")
+def raise_hu_alert_tasks():
+    """US-017: zadania lidera „HU zniknęła” / „HU utknęła w kontroli” z harmonogramu (beat
+    co 15 min), żeby sygnał nie zależał od otwarcia hubu kontroli. Dedup jak w hubie."""
+    from huctl.alerts import raise_hu_alert_tasks as _raise
+    return _raise()
+
+
 @shared_task(name="ui.refresh_transport_kpi")
 def refresh_transport_kpi():
     """Odśwież snapshot KPI transportu (beat co godzinę) — dashboard renderuje z cache."""

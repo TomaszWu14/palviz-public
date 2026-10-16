@@ -7,6 +7,11 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 
 ## [Unreleased]
 
+### Added
+- US-017 (#28): zadanie beat `ui.raise_hu_alert_tasks` co 15 min tworzy zadania lidera „HU zniknęła z feedu”
+  i „HU utknęła w kontroli” bez otwierania hubu kontroli (P6, D-11). Te same kryteria i deduplikacja
+  co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
+
 ### Changed
 - US-011 (#22): jedna nazwa produktu w dokumentach sterujących — **LogViz** (decyzja A-01) w
   `README.md`, `ARCHITECTURE.md`, `CLAUDE.md`, `docs/README.md` i `tests/README-TESTS.md`. GROOVE zostaje
