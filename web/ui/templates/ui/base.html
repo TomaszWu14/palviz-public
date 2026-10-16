@@ -7,7 +7,7 @@
   {% include "ui/_pwa_head.html" %}
   {# Inter vendorowany lokalnie (@font-face w fonts.css, latin + latin-ext, pliki w static/ui/fonts/) — zero CDN, offline PWA. #}
   {# Motyw pre-paint: profil serwera → localStorage → prefers-color-scheme. Inline, bo CSP+offline PWA. #}
-  <script>
+  <script nonce="{{ csp_nonce }}">
     try {
       var s = "{{ ui_theme|default:'' }}";
       var t = s || localStorage.getItem('ui-theme') ||
@@ -152,7 +152,7 @@
       </form>
     </div>
   </div>
-  <script>
+  <script nonce="{{ csp_nonce }}">
     (function(){
       var wrap = document.getElementById('user-menu-wrap');
       if (!wrap) return;
@@ -172,7 +172,7 @@
   </script>
   {% endif %}
 
-  <script>
+  <script nonce="{{ csp_nonce }}">
     /* Nawigacja 1b: sekcje z panelami. Klik/hover otwiera panel; jedna sekcja naraz;
        klik poza / Esc zamyka; sekcja z aktywnym modułem podświetlona; ☰ na mobile. */
     (function(){
@@ -239,7 +239,7 @@
 
 <script src="{% static 'ui/js/app.js' %}" defer></script>
 <script src="{% static 'ui/js/ref-typeahead.js' %}" defer></script>
-<script>
+<script nonce="{{ csp_nonce }}">
   // Double-submit guard for standard navigating POST forms: disable the submit control
   // just AFTER the form starts posting (setTimeout(0) so its name/value still goes in the
   // request), preventing duplicate records from an impatient double-click. The full page

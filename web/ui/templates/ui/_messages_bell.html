@@ -37,7 +37,7 @@ Liczniki [data-msg-count] aktualizuje poll z _notif_alert.html.
 </div>
 <div id="msg-drawer-ovl" hidden
      style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:99980;background:rgba(2,20,20,.35)"></div>
-<script>
+<script nonce="{{ csp_nonce }}">
 (function(){
   var LIST_URL = "{% url 'ui:messages_drawer' %}";
   var bell=document.getElementById('msg-bell'), dr=document.getElementById('msg-drawer'),
