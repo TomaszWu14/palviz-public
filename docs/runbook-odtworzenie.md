@@ -1,12 +1,12 @@
 # Runbook — odtworzenie GROOVE po awarii
 
-> Szablon procedury — miejsca `<…>` uzupełnia operator konkretnej instalacji. Dopóki BACKUP-001/002 nie są naprawione, **nie ma gwarancji, że istnieje kopia do odtworzenia** — pierwszym krokiem jest sprawdzenie, czy kopia istnieje (krok 0).
+> Szablon procedury — miejsca `<…>` uzupełnia operator konkretnej instalacji. Dopóki backup nie jest włączony i przetestowany (US-003, #14), **nie ma gwarancji, że istnieje kopia do odtworzenia** — pierwszym krokiem jest sprawdzenie, czy kopia istnieje (krok 0).
 
 ## Stan obecny (z repozytorium)
 
 | Element | Gdzie żyje | Backup dziś | Uwagi |
 |---|---|---|---|
-| Baza danych | Postgres 17 w Coolify **albo** SQLite w wolumenie  | zadanie `ui.run_backup` 02:30 **tylko gdy `BACKUP_ENABLED=true`**; dla Postgresa **nie działa** (brak `pg_dump` w obrazie — BACKUP-001) | Coolify ma własne backupy baz |
+| Baza danych | Postgres 17 w Coolify **albo** SQLite w wolumenie  | zadanie `ui.run_backup` 02:30 **tylko gdy `BACKUP_ENABLED=true`**; dla Postgresa przez `pg_dump` (obraz instaluje `postgresql-client`, `Dockerfile`) | Coolify ma własne backupy baz |
 | Pliki (media: zdjęcia HU, grafiki, załączniki) | wolumen `media` | ten sam task (tar.gz) — w tym samym katalogu na tym samym serwerze | brak kopii off-site |
 | Kod | repozytorium Git | GitHub | obraz budowany przez Coolify z `main` |
 | Konfiguracja / sekrety | zmienne środowiskowe w Coolify | **brak kopii** | spisać nazwy, wartości trzymać w menedżerze haseł |
