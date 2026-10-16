@@ -20,6 +20,10 @@ CONVERTED = (
     "ui/templates/ui/_demo_welcome.html",
     "ui/templates/ui/home.html",
     "ui/templates/ui/scanner/base.html",
+    # Faza 2, krok 2: skaner Kontroli HU (akcje przez ui/js/csp-actions.js, data-*).
+    *(f"huctl/templates/ui/scanner/{n}.html" for n in (
+        "_utile", "find_recipient", "hu_detail", "investigation_detail", "menu", "my_shift",
+        "photo_check", "quality_issues", "recheck_list")),
 )
 
 SCRIPT_RE = re.compile(r"<script\b([^>]*)>", re.I)
@@ -45,6 +49,10 @@ class ConvertedTemplatesTests(SimpleTestCase):
     def test_converted_templates_are_csp_ready(self):
         problems = {rel: v for rel in CONVERTED if (v := violations((WEB / rel).read_text(encoding="utf-8")))}
         self.assertEqual(problems, {})
+
+    def test_bases_load_action_dispatcher(self):
+        for rel in ("ui/templates/ui/base.html", "ui/templates/ui/scanner/base.html"):
+            self.assertIn("ui/js/csp-actions.js", (WEB / rel).read_text(encoding="utf-8"), rel)
 
     def test_checker_catches_violations(self):
         self.assertTrue(violations("<script>alert(1)</script>"))

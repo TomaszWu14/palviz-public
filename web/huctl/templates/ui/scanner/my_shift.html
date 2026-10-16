@@ -61,7 +61,7 @@
     <div class="field">
       <div style="display:flex;gap:8px;align-items:stretch">
         <input type="text" name="code" id="ms-scan" data-testid="scan-input" autocomplete="off" placeholder="Skanuj HU…" style="flex:1;min-width:0">
-        <button type="button" onclick="palvizScan('ms-scan')" aria-label="Skanuj aparatem" style="flex:0 0 auto;width:52px">{% icon "scan-barcode" 24 %}</button>
+        <button type="button" data-scan="ms-scan" aria-label="Skanuj aparatem" style="flex:0 0 auto;width:52px">{% icon "scan-barcode" 24 %}</button>
       </div>
     </div>
     <button type="submit" class="btn btn--primary" data-testid="scan-submit" style="width:100%">Skanuj / szukaj HU</button>

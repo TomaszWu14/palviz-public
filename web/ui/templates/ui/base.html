@@ -238,6 +238,7 @@
 {% block extra_scripts %}{% endblock %}
 
 <script src="{% static 'ui/js/app.js' %}" defer></script>
+<script src="{% static 'ui/js/csp-actions.js' %}" defer></script>
 <script src="{% static 'ui/js/ref-typeahead.js' %}" defer></script>
 <script nonce="{{ csp_nonce }}">
   // Double-submit guard for standard navigating POST forms: disable the submit control

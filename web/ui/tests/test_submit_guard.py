@@ -14,6 +14,9 @@ from django.test import SimpleTestCase
 
 BASE = Path(__file__).resolve().parents[2]
 APP_JS = BASE / "ui" / "static" / "ui" / "js" / "app.js"
+CSP_ACTIONS_JS = BASE / "ui" / "static" / "ui" / "js" / "csp-actions.js"
+# Inline <script> z nonce albo bez (US-008) — bez tego blok z nonce wypadał z node --check.
+INLINE_SCRIPT_RE = re.compile(r'<script(?:\s+nonce="[^"]*")?>(.*?)</script>', re.S)
 SCANNER_BASE = BASE / "ui" / "templates" / "ui" / "scanner" / "base.html"
 
 
@@ -72,9 +75,11 @@ class SubmitGuardTests(SimpleTestCase):
         node = shutil.which("node")
         if not node:
             self.skipTest("node niedostępny")
-        blocks = [APP_JS.read_text(encoding="utf-8")]
+        blocks = [APP_JS.read_text(encoding="utf-8"), CSP_ACTIONS_JS.read_text(encoding="utf-8")]
         html = SCANNER_BASE.read_text(encoding="utf-8")
-        blocks += [_strip_django(b) for b in re.findall(r"<script>(.*?)</script>", html, re.S)]
+        inline = [_strip_django(b) for b in INLINE_SCRIPT_RE.findall(html)]
+        self.assertGreaterEqual(len(inline), 2, "bloki <script> w scanner/base.html nie znalezione")
+        blocks += inline
         for i, js in enumerate(blocks):
             with tempfile.NamedTemporaryFile(
                 "w", suffix=".js", delete=False, encoding="utf-8"

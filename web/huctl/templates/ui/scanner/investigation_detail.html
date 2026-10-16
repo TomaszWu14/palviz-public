@@ -25,12 +25,12 @@
   <div class="msg msg--warning">Czeka na potwierdzenie (okno {{ window_min }} min od startu) — bez potwierdzenia czas wróci do licznika kontroli.</div>
     {% if can_confirm %}
     <form method="post" action="{% url 'ui:hu_investigation_confirm' inv.pk %}" style="margin-top:10px"
-          onsubmit="return confirm('Potwierdzić błąd? Pauza zostanie uznana w KPI.')">
+          data-confirm="Potwierdzić błąd? Pauza zostanie uznana w KPI.">
       {% csrf_token %}
       <button class="btn btn--ok" style="width:100%;padding:16px;font-size:17px;font-weight:900">POTWIERDZAM BŁĄD</button>
     </form>
     <form method="post" action="{% url 'ui:hu_investigation_reject' inv.pk %}" style="margin-top:8px"
-          onsubmit="return confirm('Odrzucić wyjaśnianie? Czas wróci do licznika kontroli.')">
+          data-confirm="Odrzucić wyjaśnianie? Czas wróci do licznika kontroli.">
       {% csrf_token %}
       <button class="btn btn--ghost" style="width:100%">Odrzuć (tylko lider)</button>
     </form>

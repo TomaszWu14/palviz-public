@@ -66,7 +66,7 @@
   <div class="msg msg--warning" style="display:flex;justify-content:space-between;align-items:center;gap:8px">
     <span>Zarezerwowana przez <strong>{{ reserved_by.get_full_name|default:reserved_by.username }}</strong>.</span>
     <form method="post" action="{% url 'ui:hu_reserve_takeover' hu.pk %}" style="margin:0"
-          onsubmit="return confirm('Przejąć rezerwację od {{ reserved_by.get_full_name|default:reserved_by.username|escapejs }}?')">
+          data-confirm="Przejąć rezerwację od {{ reserved_by.get_full_name|default:reserved_by.username }}?">
       {% csrf_token %}
       <button type="submit" class="btn btn--ghost" style="margin:0;padding:6px 12px">Przejmij rezerwację</button>
     </form>
@@ -81,7 +81,7 @@
   </div>
   {# Pomiar rozjazdu system↔hala (duchy): jawne zgłoszenie zamiast cichej odmowy. #}
   <form method="post" action="{% url 'ui:hu_release' hu.pk %}" style="margin:0 0 10px"
-        onsubmit="return confirm('Zgłosić, że palety nie ma na lokalizacji {{ hu.location|default:'—'|escapejs }}? Lider dostanie alarm, paleta zostanie odłożona na 4 h.')">
+        data-confirm="Zgłosić, że palety nie ma na lokalizacji {{ hu.location|default:'—' }}? Lider dostanie alarm, paleta zostanie odłożona na 4 h.">
     {% csrf_token %}<input type="hidden" name="not_found" value="1">
     <button type="submit" class="btn btn--ghost" style="width:100%;margin:0">{% icon "circle-x" %} Nie znaleziono palety na lokalizacji</button>
   </form>
@@ -92,7 +92,7 @@
   <div class="msg msg--warning">{% icon "flame" %} Paleta oznaczona jako PILNA — jest na czole kolejki.</div>
   {% else %}
   <form method="post" action="{% url 'ui:hu_urgent_pull' hu.pk %}" style="margin:0 0 10px"
-        onsubmit="return confirm('Oznaczyć HU {{ hu.ref|escapejs }} jako PILNĄ (czoło kolejki + alarm do kontrolera)?')">
+        data-confirm="Oznaczyć HU {{ hu.ref }} jako PILNĄ (czoło kolejki + alarm do kontrolera)?">
     {% csrf_token %}
     <button type="submit" class="btn btn--ghost" style="width:100%;margin:0">{% icon "flame" %} Pilne — wyciągnij teraz</button>
   </form>
@@ -143,7 +143,7 @@
   <div class="msg msg--warning" style="display:flex;justify-content:space-between;align-items:center;gap:8px">
     <span>Rekontrola — {% if full %}wszystkie pozycje{% else %}tylko błędne pozycje{% endif %}. Widać oczekiwaną ilość.</span>
     {% if not full %}<a href="?full=1" class="btn btn--ghost" style="margin:0;padding:6px 12px"
-         onclick="return palvizConfirmFull(this)">Przelicz całość</a>{% endif %}
+         data-action="palvizConfirmFull">Przelicz całość</a>{% endif %}
   </div>
   {% endif %}
 
@@ -170,7 +170,7 @@
       </div>
       {% endfor %}
       <form method="post" action="{% url 'ui:hu_reserve_group' hu.pk %}" style="margin-top:4px"
-            onsubmit="return confirm('Przypisać do siebie wszystkie palety odbiorcy w Twojej strefie?')">
+            data-confirm="Przypisać do siebie wszystkie palety odbiorcy w Twojej strefie?">
         {% csrf_token %}
         <button class="btn btn--ok" style="margin:0;width:100%;padding:8px">Przypisz całą grupę do mnie</button>
       </form>
@@ -252,7 +252,7 @@
     <div style="display:flex;gap:10px;margin-bottom:12px">
       {# Partia producenta (z etykiety) na wierzchu; LOT/seria SAP schowany — dwuklik odsłania. #}
       <div class="chip chip--lot" style="flex:1" title="Dwuklik: pokaż LOT (SAP)"
-           ondblclick="var s=this.querySelector('.lot-sap');if(s)s.hidden=!s.hidden">
+           data-action="pvToggleLotSap" data-on="dblclick">
         <div style="font-size:12px;color:#64748b;font-weight:700">PARTIA PRODUCENTA</div>
         <div style="font-weight:800;font-size:19px">{{ it.vendor_batch|default:"—" }}</div>
         <div class="lot-sap" hidden><div style="font-size:11px;color:#64748b;font-weight:700;margin-top:3px">LOT (SAP)</div><div style="font-weight:800;font-size:15px">{{ it.lot|default:"—" }}</div></div>
@@ -283,7 +283,7 @@
     {% if not locked %}
     {# Bez zdania-instrukcji („Wpisz ile zliczyłeś…") — na Zebrze zjadało 2 wiersze. #}
     <div style="display:flex;justify-content:flex-end;margin-bottom:6px">
-      <button type="button" class="uclear" onclick="palvizClearUnits(this)">{% icon "x" %} Wyczyść</button>
+      <button type="button" class="uclear" data-action="palvizClearUnits">{% icon "x" %} Wyczyść</button>
     </div>
     <div class="count-sum" data-expected="{{ it.base_qty|stringformat:'g' }}"
          style="margin-bottom:10px;padding:8px 11px;border-radius:10px;font-size:13px;font-weight:800;background:#eef6f4;color:#4a6660">
@@ -319,7 +319,7 @@
     <div style="display:flex;gap:10px">
       <button type="submit" name="action" value="confirm" class="btn btn--ghost" style="flex:1;margin:0">{% icon "refresh-cw" %} Przelicz ponownie</button>
       <button type="submit" name="action" value="confirm" class="btn btn--err" style="flex:1;margin:0"
-              onclick="this.form.sure.value='1'">Tak, jestem pewien</button>
+              data-action="pvMarkSure">Tak, jestem pewien</button>
     </div>
     {% elif it.controlled and it.result == 'error' and not recheck %}
     {# Niezgodność (błąd pickera) — zablokowane dla autora; rekontroluje inny kontroler. #}
@@ -343,7 +343,7 @@
     <summary style="font-size:12px;color:#64748b;cursor:pointer">{% icon "clipboard-list" %} Zgłoś niezgodność master daty (MATINFO)</summary>
     <form method="post" action="{% url 'ui:hu_md_report' it.pk %}" enctype="multipart/form-data" style="margin-top:6px;display:flex;flex-direction:column;gap:6px">
       {% csrf_token %}
-      <select aria-label="Rodzaj niezgodności master daty" name="md_aspect" onchange="this.closest('form').querySelector('.md-ajm').style.display=this.value=='ajm'?'flex':'none'"
+      <select aria-label="Rodzaj niezgodności master daty" name="md_aspect" data-action="pvToggleAjm" data-on="change"
               style="font-size:13px;padding:8px;border:1px solid #cbd5e1;border-radius:8px">
         {% for val, lab in md_aspects %}<option value="{{ val }}">{{ lab }}</option>{% endfor %}
       </select>
@@ -417,7 +417,7 @@
   </details>
   {# Lazy autocomplete REF: katalog NIE renderowany inline; podpowiedzi z serwera po 2 znakach. #}
   <datalist id="hu-prod-codes"></datalist>
-  <script>
+  <script nonce="{{ csp_nonce }}">
     (function () {
       var inp = document.querySelector('input[name="ref_code"][list="hu-prod-codes"]');
       var dl = document.getElementById('hu-prod-codes');
@@ -503,11 +503,17 @@
   </form>
   {% endif %}
 
-  <script>
+  <script nonce="{{ csp_nonce }}">
     // "Wyczyść" — wipe all four converter tiles in this position so the operator can
     // re-enter from scratch (e.g. typed into PAL by mistake) without backspacing each box.
     // "Przelicz całość" (?full=1) przeładowuje stronę — wpisane, niezaksięgowane
     // zliczenia przepadną. Ostrzeż, jeśli operator ma cokolwiek wpisane.
+    // US-008: małe akcje wywoływane przez ui/js/csp-actions.js (data-action) zamiast on*=.
+    function pvToggleLotSap(el){ var s = el.querySelector('.lot-sap'); if (s) s.hidden = !s.hidden; }
+    function pvMarkSure(btn){ btn.form.sure.value = '1'; }
+    function pvToggleAjm(sel){
+      sel.closest('form').querySelector('.md-ajm').style.display = sel.value == 'ajm' ? 'flex' : 'none';
+    }
     function palvizConfirmFull(link){
       var typed = false;
       document.querySelectorAll('.uconv').forEach(function(i){

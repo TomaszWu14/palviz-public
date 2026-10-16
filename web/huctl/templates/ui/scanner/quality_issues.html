@@ -23,7 +23,7 @@
     {% elif iss.status == 'open' %}
     <form method="post" action="{% url 'ui:hu_quality_attach' iss.pk %}" enctype="multipart/form-data" style="margin-top:8px">
       {% csrf_token %}<input type="hidden" name="next" value="?status=open">
-      <input type="file" name="photo" accept="image/*" capture="environment" onchange="pvUpload(this)" style="font-size:12px">
+      <input type="file" name="photo" accept="image/*" capture="environment" data-upload style="font-size:12px">
     </form>
     {% endif %}
     {% if iss.status == 'open' %}

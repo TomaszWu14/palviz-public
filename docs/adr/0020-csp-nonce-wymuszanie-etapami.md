@@ -37,7 +37,10 @@ Wdrożenie w trzech fazach:
    `'unsafe-eval'` zostaje tylko na ekranach z Plotly, dopóki nie zmienimy sposobu renderowania.
    Postęp i strażnik: `ui.tests.test_csp_phase2_templates` (lista `CONVERTED` rośnie z każdym
    modułem). Krok 1 — wspólny szkielet (`base.html`, `scanner/base.html`, dzwonek, powiadomienia,
-   powitanie demo, hub) — zrobiony. Ustalenia z inwentaryzacji (74 szablony):
+   powitanie demo, hub) — zrobiony. Krok 2 — skaner Kontroli HU — zrobiony; handlery `on*=` zastępują
+   atrybuty `data-*` obsługiwane przez jeden plik statyczny `ui/js/csp-actions.js` (`data-confirm`,
+   `data-scan`, `data-action`, `data-autosubmit`, `data-upload`, `data-click`, `data-hide`) — kolejne
+   moduły używają tych samych atrybutów. Ustalenia z inwentaryzacji (74 szablony):
    - **Fragmenty doładowywane** (np. `_panel.html` z kalkulatora, zwracany z widoku jako HTML):
      ich skrypty dostają nonce innego żądania niż strona. Rozwiązanie w kroku danego modułu:
      przenieść JS fragmentu do pliku statycznego albo ustawić `htmx.config.inlineScriptNonce`
