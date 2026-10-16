@@ -40,9 +40,9 @@ zgodny”), kalkulator paletyzacji (zmiana parametru → wynik htmx), rola Podgl
 planera. Własny projekt `flow` w `playwright.config.ts` (projekty wizualne mają `grepInvert: /@flow/`).
 Testy zmieniają bazę (księgują HU), więc każdy przebieg startuje na świeżej bazie. Wymaga
 vendorowanych bibliotek (`sh web/scripts/fetch_vendor.sh` — bez htmx kalkulator nie liczy).
-**CI:** `.github/workflows/e2e-nightly.yml` — co noc (02:30 UTC) + ręcznie (`gh workflow run
-e2e-nightly.yml`), `ubuntu-latest` (runner self-hosted nie ma przeglądarek), SQLite; raport HTML +
-trace jako artefakt przy porażce. Nie jest bramką PR-ów.
+**CI:** `.github/workflows/e2e-nightly.yml` (US-018) — co noc (01:17 UTC) na `main` + ręcznie
+(`gh workflow run e2e-nightly.yml`) + na PR-ach zmieniających `tests/e2e/**` albo sam workflow;
+`ubuntu-latest`, SQLite; raport HTML + trace jako artefakt przy porażce. Nie jest bramką PR-ów.
 
 ## Infrastruktura — `web/testkit/`
 

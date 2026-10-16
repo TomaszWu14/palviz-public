@@ -3,7 +3,7 @@
 // Nowe wzorce po świadomej zmianie wyglądu: make test-visual-update.
 // Wzorce są robione na Windows (renderowanie fontów zależy od systemu) — suita lokalna, nie CI.
 // Testy przepływów (@flow, flow.spec.ts) nie robią zrzutów → działają na każdym OS; nocny CI:
-// .github/workflows/e2e-nightly.yml (tylko repo prywatne; w tej kopii planowane — US-018, #29).
+// .github/workflows/e2e-nightly.yml (US-018, #29).
 // Uruchom: make test-flow (npx playwright test --grep @flow).
 import { defineConfig } from '@playwright/test';
 
