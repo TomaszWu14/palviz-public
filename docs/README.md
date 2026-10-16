@@ -2,6 +2,9 @@
 
 Opis systemu z perspektywy analityka, odtworzony z kodu (bez planów i funkcji, których nie ma).
 
+Produkt nazywa się **LogViz** (A-01, US-011). GROOVE to nazwa techniczna w kodzie i domyślne
+`APP_NAME`; PalViz to nazwa historyczna — dokumenty z datą i archiwum zostają bez zmian.
+
 | Dokument | Zawartość |
 |---|---|
 | [01 Problem i zakres](01-problem-i-zakres.md) | Problem, interesariusze i 9 ról, moduły w zakresie i poza nim. |

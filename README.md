@@ -219,6 +219,7 @@ tests/          macierz uprawnień (tests/permissions.yaml — 326 tras)
 ```
 
 Architektura: [`ARCHITECTURE.md`](ARCHITECTURE.md). Nazwy techniczne w kodzie (`palletweb`,
-`palletizer`, GROOVE) zostały; nazwę wyświetlaną ustawia zmienna `APP_NAME`.
+`palletizer`, GROOVE — domyślne `APP_NAME`) zostały; nazwę wyświetlaną ustawia zmienna `APP_NAME`.
+PalViz to nazwa historyczna — występuje w starszych dokumentach z datą.
 
 Kod do wglądu, wszelkie prawa zastrzeżone — [`LICENSE`](LICENSE).

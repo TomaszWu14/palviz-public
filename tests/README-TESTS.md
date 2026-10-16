@@ -1,4 +1,4 @@
-# Testy GROOVE — jak uruchamiać i na czym budować
+# Testy LogViz — jak uruchamiać i na czym budować
 
 System testów regresji: plan i decyzje w [`PLAN-ETAP-0.md`](PLAN-ETAP-0.md), macierze uprawnień w
 [`permissions.yaml`](permissions.yaml) / [`ui-permissions.yaml`](ui-permissions.yaml), znalezione

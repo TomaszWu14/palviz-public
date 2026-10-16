@@ -1,6 +1,10 @@
-# GROOVE — architektura platformy
+# LogViz — architektura platformy
 
-**GROOVE** to parasolowa platforma logistyczna (marka zastępuje wcześniejsze PalViz).
+> **Nazewnictwo (US-011, decyzja A-01):** produkt nazywa się **LogViz**. GROOVE to nazwa
+> techniczna w kodzie i domyślna wartość `APP_NAME`, PalViz — nazwa historyczna (stare dokumenty
+> z datą i archiwum zostają bez zmian). Słownik: [`docs/analiza/SLOWNIK.md`](docs/analiza/SLOWNIK.md).
+
+**LogViz** to parasolowa platforma logistyczna.
 Wszystko żyje w **jednym repozytorium** (projekt Django `palletweb`, aplikacja `ui`).
 Po zalogowaniu na `groove.example.com` użytkownik widzi **hub** z kafelkami modułów
 („zakładek"), do których ma dostęp; wchodzi w wybrany moduł i pracuje w jednej aplikacji.
@@ -13,7 +17,7 @@ Po zalogowaniu na `groove.example.com` użytkownik widzi **hub** z kafelkami mod
 ## Marka i domena (env-driven)
 
 - **Nazwa**: `APP_NAME` (domyślnie `GROOVE`) → `{{ app_name }}` w każdym szablonie przez
-  `core.context_processors.branding`. Zmiana = jedna zmienna env (np. `APP_NAME=PalViz`).
+  `core.context_processors.branding`. Zmiana = jedna zmienna env (demo: `APP_NAME=LogViz`).
 - **Domena**: env w Coolify — `DJANGO_ALLOWED_HOSTS`, `DJANGO_CSRF_TRUSTED_ORIGINS`,
   `SITE_BASE_URL`. TWA/APK (`android/`) ma host w `twa-manifest.json`.
 - Identyfikatory **techniczne** (`palletweb`, `ui`, `palletizer`, `palviz-three.js`)
@@ -135,7 +139,7 @@ NIE:
 - Alias `Z129` w `palletizer/config.py` — legacy nazwa presetu palety EU 120×80,
   trzymana żeby stare rekordy DB nadal się rozwiązywały.
 - Techniczne nazwy wewnętrzne: projekt `palletweb`, app label `ui`, pakiet
-  `palletizer` — to nie marka (GROOVE/PalViz), zostają bez zmian.
+  `palletizer` — to nie marka (LogViz), zostają bez zmian.
 
 ## Zasada przewodnia
 
