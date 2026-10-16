@@ -28,8 +28,8 @@ L2 dla uwierzytelniania, sesji i danych (propozycja — poziom do potwierdzenia 
 | V9.1 Komunikacja | TLS, HSTS | L1 | ✅ | HSTS 1 rok + preload (prod); TLS na brzegu (V2 do potwierdzenia) |
 | V10.3 Integralność | zależności z zaufanych źródeł, przypięte | L1 | ✅ | `requirements.txt`, obraz przypięty digestem, JS z SHA-256 |
 | V11.1 Logika biznesowa | limity, antyautomatyzacja | L1 | ✅ | rate limity formularzy publicznych, Celery limity |
-| V12.1 Upload — rozmiar | limit per plik i globalny | L1 | ⚠️ | 13 widoków z limitem; GLB bez limitu (US-005) |
-| V12.2 Upload — typ | walidacja zawartości, nie nagłówka | L1 | ⚠️ | zdjęcia ✅ (`phv_data.py`), załącznik oferty po nagłówku (US-005) |
+| V12.1 Upload — rozmiar | limit per plik i globalny | L1 | ✅ | globalny limit żądania `UPLOAD_MAX_MB` (413) + limity per formularz (US-005) |
+| V12.2 Upload — typ | walidacja zawartości, nie nagłówka | L1 | ✅ | `web/core/uploads.py` (sygnatury PDF/PNG/JPEG/GIF/WebP/GLB) w formularzach, załączniku oferty i renderach; zdjęcia `phv_data.py` |
 | V12.4 Przechowywanie | poza katalogiem publicznym, nazwy niezgadywalne | L1 | ✅ | `MEDIA_ROOT` + `media_serve`, losowy prefiks grafik |
 | V12.5 Pobieranie | `nosniff`, `Content-Disposition` dla aktywnych typów | L1 | ✅ | `media_serve` |
 | V13.1 API | uwierzytelnienie, autoryzacja per endpoint | L1 | ✅ | `api_auth.py` (zakresy) |

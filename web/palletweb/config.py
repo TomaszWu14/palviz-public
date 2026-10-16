@@ -84,6 +84,8 @@ class AppEnv(BaseSettings):
     CELERY_TASK_TIME_LIMIT: int = 600      # hard kill a runaway task after 10 min
     CELERY_TASK_SOFT_TIME_LIMIT: int = 540 # soft (SoftTimeLimitExceeded) after 9 min
     CSP_REPORT_ONLY: bool = True           # start CSP in report-only (won't break the UI)
+    # US-005 / S-08: globalny limit żądania multipart (MB) — core.uploads.UploadSizeLimitMiddleware.
+    UPLOAD_MAX_MB: int = 64
 
     # ── Celery / cache ───────────────────────────────────────────────────────
     CELERY_BROKER_URL: str = "redis://127.0.0.1:6379/0"

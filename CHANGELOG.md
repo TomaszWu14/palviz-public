@@ -7,6 +7,12 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 
 ## [Unreleased]
 
+### Security
+- US-005 (#16): `core.uploads` — globalny limit żądania multipart `UPLOAD_MAX_MB` (domyślnie 64 MB,
+  odpowiedź 413), sprawdzanie typu pliku po zawartości (PDF/PNG/JPEG/GIF/WebP/GLB) w formularzach
+  produktu i kartonu (modele 3D i zdjęcia, limit 20 MB — wcześniej bez limitu), w załączniku oferty
+  przewoźnika (publiczny formularz) oraz w uploadzie GLB i renderów (S-08, R-08).
+
 ### Fixed
 - US-015 (#26): formularz oferty przewoźnika odrzuca pustą, zerową, ujemną i nieliczbową kwotę
   (wcześniej pusta zapisywała się jako 0 zł i stawała się „najtańsza”, P13) oraz walutę spoza listy
