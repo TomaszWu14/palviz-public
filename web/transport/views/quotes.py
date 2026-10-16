@@ -325,10 +325,20 @@ def planner_shipment_send_quote(request, pk, recipient_id):
 QUOTE_CURRENCIES = frozenset({"PLN", "EUR", "USD", "GBP", "CZK"})
 
 
+def link_ttl_expired(issued_at):
+    """US-006 / S-07: czy link wystawiony `issued_at` przekroczył QUOTE_LINK_TTL_DAYS (0 = bez limitu)."""
+    from datetime import timedelta
+    from django.conf import settings as _st
+    ttl = int(getattr(_st, "QUOTE_LINK_TTL_DAYS", 30) or 0)
+    return bool(ttl and issued_at and issued_at < timezone.now() - timedelta(days=ttl))
+
+
 @post_rate_limit("quote_response", 20, 3600, by="token")   # SEC-014
 def quote_response(request, token):
     """Public, tokenised form for a forwarder to enter the price + dates."""
     offer = get_object_or_404(ShipmentQuoteOffer.objects.select_related("shipment"), token=token)
+    if link_ttl_expired(offer.created_at):
+        return render(request, "ui/link_expired.html", status=410)
     sh = offer.shipment
     # Fillable only once — once submitted the form is locked (read-only).
     if offer.submitted_at:

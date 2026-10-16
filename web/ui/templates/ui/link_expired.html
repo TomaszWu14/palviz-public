@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex">
   <title>Link nieaktywny — {{ app_name }}</title>
   <style>
-    /* Strona standalone dla odbiorców zewnętrznych (kierowca) — lokalne tokeny jak csrf_failure.html. */
+    /* Strona standalone dla odbiorców zewnętrznych (kierowca, spedytor, magazyn) — lokalne tokeny jak csrf_failure.html. */
     :root { --bg:#0f172a; --ink:#e2e8f0; --muted:#94a3b8; }
     * { box-sizing: border-box; }
     body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
@@ -22,7 +22,7 @@
   <main class="box">
     <div class="ico" aria-hidden="true">⌛</div>
     <h1>Link jest już nieaktywny</h1>
-    <p>Odbiór tej przesyłki został zakończony lub anulowany albo link wygasł.
+    <p>Ta przesyłka została zakończona lub anulowana albo link wygasł.
        Jeśli potrzebujesz informacji, skontaktuj się z nadawcą.</p>
   </main>
 </body>

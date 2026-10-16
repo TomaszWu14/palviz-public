@@ -12,7 +12,7 @@ prowadzonych nowym procesem; aktualizowane przy odbiorze [BA] każdej historyjki
 | NFR-011 | US-002 (#13) | `docs/bezpieczenstwo/RODO.md`; test zadania `ui.gdpr_retention` (do napisania) | #11 (dokument) | w toku |
 | NFR-005 | US-003 (#14) | runbook: sekcja „Test odtworzenia” z datą i wynikiem | — | do decyzji PO |
 | NFR-012 (sekrety w błędach), P15–P17 | US-004 (#15) | `ui.tests.test_config_validation_us004` (11 testów: siła klucza, maskowanie wartości, 8 ustawień P15) | #40 | odebrana |
-| NFR-012 (tokeny w logach) | US-006 (#17) | test: `GET /driver/<token>/` po TTL → 410; test formatu logu | — | nowa |
+| NFR-012 (tokeny w logach) | US-006 (#17) | `transport.tests.test_link_ttl_us006` (link po TTL → 410, maska w logu gunicorna i Django) | `core/logmask.py`, `palletweb/gunicorn_logger.py` | odebrana (PR US-006) |
 | NFR-008 | US-007 (#18) | test: admin bez TOTP → przekierowanie; logowanie bez kodu → odmowa | — | do decyzji PO |
 | S-05 / NFR-… (CSP) | US-008 (#19) | e2e flow z `CSP_REPORT_ONLY=false`; brak raportów CSP przez 2 tyg. | — | nowa |
 | S-08 | US-005 (#16) | `ui.tests.test_uploads_us005` (sygnatury, limit formularza, treść HTML udająca JPG/PDF, 413 middleware) | PR US-005 | w toku |

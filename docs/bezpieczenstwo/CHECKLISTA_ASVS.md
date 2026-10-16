@@ -22,7 +22,7 @@ L2 dla uwierzytelniania, sesji i danych (propozycja — poziom do potwierdzenia 
 | V5.3 Kodowanie wyjścia | autoescape, bezpieczne JSON w `<script>` | L1 | ✅ | szablony Django, `safe_json` |
 | V5.3.4 SQL | zapytania parametryzowane | L1 | ✅ | ORM, brak surowego SQL |
 | V6.2 Algorytmy | sprawdzone biblioteki, losowość | L1 | ✅ | `secrets`, `uuid4`, Django |
-| V7.1 Logi | bez danych uwierzytelniających, z identyfikatorem korelacji | L1 | ⚠️ | `RequestIDMiddleware` ✅; tokeny w URL w logu dostępowym (US-006) |
+| V7.1 Logi | bez danych uwierzytelniających, z identyfikatorem korelacji | L1 | ✅ | `RequestIDMiddleware`; tokeny linków publicznych maskowane w logu gunicorna i Django (`core/logmask.py`, US-006) |
 | V7.4 Obsługa błędów | brak stosu dla użytkownika, błędy logowane | L1 | ✅ | `DEBUG=false` na prod, `django.request` → konsola, Sentry |
 | V8.3 Dane wrażliwe | minimalizacja, retencja, usuwanie | L1/L2 | ❌ | retencja wyłączona (US-002) |
 | V9.1 Komunikacja | TLS, HSTS | L1 | ✅ | HSTS 1 rok + preload (prod); TLS na brzegu (V2 do potwierdzenia) |

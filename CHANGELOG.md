@@ -8,6 +8,10 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 ## [Unreleased]
 
 ### Security
+- US-006 (#17): link oferty spedytora i potwierdzenia gotowości magazynu wygasa po
+  `QUOTE_LINK_TTL_DAYS` (domyślnie 30 dni, 0 = bez limitu) — strona „Link jest już nieaktywny”, HTTP 410
+  (link kierowcy wygasał już wcześniej, `DRIVER_LINK_TTL_DAYS`). Tokeny w ścieżkach linków publicznych
+  i resetu hasła są maskowane (`abcd****`) w logu dostępowym gunicorna i w logach Django (S-07, R-07).
 - US-005 (#16): `core.uploads` — globalny limit żądania multipart `UPLOAD_MAX_MB` (domyślnie 64 MB,
   odpowiedź 413), sprawdzanie typu pliku po zawartości (PDF/PNG/JPEG/GIF/WebP/GLB) w formularzach
   produktu i kartonu (modele 3D i zdjęcia, limit 20 MB — wcześniej bez limitu), w załączniku oferty
