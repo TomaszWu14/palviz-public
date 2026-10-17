@@ -8,7 +8,7 @@ from ui.views.core import (
 )
 from django.utils import timezone
 from django.urls import reverse
-from .hu_helpers import _call_queue, _controllable, _filter_controlled, _incontrol_max_hours, _live_controls, _log_status, _raise_stale_tasks, _raise_stuck_tasks, _resolve_hu, _stale_hours, _stale_hus_qs, _status_counts, _stuck_incontrol_qs, _valid_photo, _zone_ok  # noqa: F401
+from .hu_helpers import _call_queue, _controllable, _filter_controlled, _incontrol_max_hours, _live_controls, _log_status, _raise_stale_tasks, _raise_stuck_tasks, _resolve_hu, _stale_hours, _stale_hus_qs, _status_counts, _stuck_incontrol_qs, _type_controlled, _valid_photo, _zone_ok  # noqa: F401
 from .hu_reports import _kpi_period_bounds, _kpi_stats  # noqa: F401
 
 
@@ -240,8 +240,8 @@ def hu_control_scan(request):
     # Źródło inputu PER HU (nie globalnie): jeden ręczny wpis nie może „brudzić" całej
     # zmiany, a skan HU1 nie uwiarygadnia liczenia HU2 otwartej przez auto-next.
     request.session[f"hu_scan_src_{hu.pk}"] = src
-    codes = ControlledWarehouseType.controlled_codes()
-    if codes is not None and (hu.warehouse_type or "") not in codes:
+    # US-023 (P4): ta sama bramka typu co kolejka/liczenie/księgowanie — z wyjątkiem VIP.
+    if not _type_controlled(hu):
         messages.warning(request, f"Typ magazynu „{hu.warehouse_type or '—'}” nie jest aktualnie kontrolowany "
                                   "(zmień na panelu Kontrola HU).")
         return redirect("ui:hu_control_menu")
