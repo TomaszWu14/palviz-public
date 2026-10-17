@@ -62,9 +62,12 @@ Wdrożenie w trzech fazach:
      ich skrypty dostają nonce innego żądania niż strona. Rozwiązanie w kroku danego modułu:
      przenieść JS fragmentu do pliku statycznego albo ustawić `htmx.config.inlineScriptNonce`
      na nonce strony.
-   - **Google Maps** (`shipment_detail`, trasa na ekranie wyceny) ładuje skrypt z
-     `maps.googleapis.com` — polityka tego ekranu w fazie 3 potrzebuje wyjątku dla tej domeny
-     (to usługa, nie biblioteka z CDN, więc ADR-0005 jej nie obejmuje).
+   - ~~**Google Maps** (`shipment_detail`, trasa na ekranie wyceny) ładuje skrypt z
+     `maps.googleapis.com` — polityka w fazie 3 potrzebuje wyjątku dla tej domeny~~ — nie dotyczy
+     (PO, 2026-10-17: mapy nie są używane). Polityka nie dostaje wyjątku dla `maps.googleapis.com`;
+     gdyby `GOOGLE_MAPS_API_KEY` był ustawiony, mapa się nie wyrenderuje, a raport trafi na
+     `/csp-report/`. CSP nie dotyczy trasy liczonej po stronie serwera (Directions API)
+     ani statycznej mapy w e-mailu (`transport/views/mailing.py`).
    - ~~**Alpine.js** wymaga `'unsafe-eval'`~~ — nieaktualne (krok 8): Alpine nie jest używany, a Plotly
      i ECharts nie potrzebują `'unsafe-eval'`.
 3. **Wymuszenie globalne.** Po 2 tygodniach bez naruszeń w raportach PO ustawia
