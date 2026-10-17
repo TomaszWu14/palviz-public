@@ -16,6 +16,8 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
 
 ### Changed
+- US-023 (#62, P4): skan etykiety palety VIP spoza kontrolowanych typów magazynu otwiera kontrolę —
+  skan używa tej samej bramki typu co kolejka, liczenie i księgowanie (WK-HU-07).
 - US-014 (#25, P2): kolejka HU oddaje ranking z ADR-0018 pkt 2 — VIP → PILNE → rekontrola. Zaksięgowanie
   z błędem nie oznacza już palety jako PILNA (`is_priority` = tylko „pilne wyjęcie” lidera), więc
   kategoria „rekontrola” działa, a VIP z błędem nie spada w rankingu. Palety, które już są w rekontroli
