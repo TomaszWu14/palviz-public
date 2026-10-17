@@ -22,6 +22,12 @@
   </div>
 </div>
 
+{# US-012 / ADR-0021 (P12): cennik nie jest używany w obliczeniach wyceny. #}
+<div class="alert alert-info" role="note" data-testid="rates-not-used" style="margin-bottom:16px">
+  Cennik ma charakter informacyjny — nie wpływa na wycenę wysyłki. Wycena opiera się na ofertach
+  przewoźników, a dzielnik wagi objętościowej kuriera jest stały (5000).
+</div>
+
 {% for zone in zones %}
 <div class="card" style="margin-bottom:16px">
   <div style="padding:12px 16px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">

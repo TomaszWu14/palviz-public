@@ -7,7 +7,7 @@ wpis w ADR lub rejestrze ryzyk.
 
 **Decyzja PO 2026-10-16 („Zgadzam się”):** wszystkie założenia A-01…A-15 potwierdzone bez zmian.
 Otwarte pozostają tylko: dane do kalibracji mierników i NFR (A-10/A-11 → US-020, #31), wskazanie
-IOD (A-04 → US-002, #13) oraz rozstrzygnięcie P1–P19 (US-012, #23).
+IOD (A-04 → US-002, #13). Rozstrzygnięcie P1–P19 zamknięte 2026-10-17 (ADR-0021).
 
 | ID | Założenie | Dlaczego tak | Skutek, gdy PO zdecyduje inaczej | Status |
 |---|---|---|---|---|
