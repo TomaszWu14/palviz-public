@@ -146,7 +146,7 @@ class Command(BaseCommand):
             hu = HandlingUnit.objects.create(
                 shipment=s, seq=n, code=f"0035901234{n:08d}", status=status, location=loc,
                 warehouse_type=wtype, picker=pickers[n % 3], weight_kg=380 + n * 17,
-                controlled_by=ctrl if done else None, is_priority=status == "to_recheck",
+                controlled_by=ctrl if done else None, is_priority=False,
                 control_started_at=now - timedelta(hours=2, minutes=10) if done else None,
                 verified_at=now - timedelta(hours=2) if status == "ok" else None)
             for prod, qty, lot in items:

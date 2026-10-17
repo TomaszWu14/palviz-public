@@ -101,7 +101,7 @@ class HUControlTests(TestCase):
         self.sh.refresh_from_db()
         self.assertEqual(self.sh.ready_notified_at, first_at)
 
-    def test_discrepancy_marks_priority_and_notifies(self):
+    def test_discrepancy_goes_to_recheck_and_notifies(self):
         from ui.models import Notification
         self.client.get(reverse("ui:hu_control_detail", args=[self.hu.pk]))   # start
         it = self.hu.items.first()
@@ -111,7 +111,7 @@ class HUControlTests(TestCase):
             self.client.post(reverse("ui:hu_control_finalize", args=[self.hu.pk]))
         self.hu.refresh_from_db()
         self.assertEqual(self.hu.status, "to_recheck")
-        self.assertTrue(self.hu.is_priority)
+        self.assertFalse(self.hu.is_priority)     # US-014: rekontrola ≠ PILNE (ADR-0018 pkt 2)
         self.assertTrue(Notification.objects.filter(title__icontains="rekontroli").exists())
 
     def test_bad_placement_requires_photo(self):

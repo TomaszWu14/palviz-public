@@ -27,6 +27,15 @@ def _key(kunnr, recipient_name, recipient_type):
     return (kunnr or "").strip() or (recipient_name or "").strip() or (recipient_type or "")
 
 
+def _is_vip(hu):
+    """Klient VIP niezależnie od is_priority — VIP z błędem nie spada do PILNE (US-014, P2)."""
+    sh = hu.shipment if hu.shipment_id else None
+    cust = getattr(sh, "customer", None) if sh else None
+    if cust is None:
+        return False
+    return (getattr(cust, "category", "") or "").lower() == "vip" or bool(getattr(cust, "is_vip", False))
+
+
 def rank_key(hu, families_in_progress, now=None):
     """(kategoria, termin_wysyłki, krótki_termin, created_at) — czysta funkcja rankingu.
 
@@ -35,10 +44,9 @@ def rank_key(hu, families_in_progress, now=None):
     dominuje — VIP zawsze przed PILNE itd. Krótki termin ważności (adnotacja
     `a_shortdated` z `_call_queue`; brak = False) rozstrzyga dopiero remis kategorii
     i terminu wysyłki — przed kolejnością FIFO."""
-    stype = shipment_type_for(hu)
-    if stype == "VIP":
+    if _is_vip(hu):
         cat = _RANK_VIP
-    elif stype == "PILNE":
+    elif shipment_type_for(hu) == "PILNE":      # pilne wyjęcie lidera (is_priority)
         cat = _RANK_PILNE
     elif hu.status == "to_recheck":
         cat = _RANK_RECHECK

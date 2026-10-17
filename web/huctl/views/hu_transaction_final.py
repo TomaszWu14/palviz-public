@@ -151,8 +151,7 @@ def hu_control_finalize(request, pk):
                 defaults={"raised_by": request.user, "note": f"Po terminie ważności: {it.expiry}"})
         hu.status = "to_recheck"
         hu.verified_at = None
-        hu.is_priority = True
-        _release_for_recheck(hu)
+        _release_for_recheck(hu)      # US-014: bez is_priority — rekontrola ma własną kategorię
         hu.save(update_fields=["status", "verified_at", "is_priority", "assigned_to", "called_at"])
         _log_status(hu, _old_status, "to_recheck", request.user,
                     f"pozycje po terminie ważności ({len(expired)})")
@@ -190,7 +189,8 @@ def hu_control_finalize(request, pk):
     if has_error:
         hu.status = "to_recheck"                 # blocked, awaits re-control
         hu.verified_at = None                    # a blocked HU is not "verified"
-        hu.is_priority = True                    # discrepancy → priority for re-control
+        # US-014 (P2): is_priority = tylko „pilne wyjęcie” lidera. Rekontrola ma własną
+        # kategorię w rankingu (ADR-0018 pkt 2), więc błąd jej nie podnosi do PILNE.
         _release_for_recheck(hu)
         msg = "Zaksięgowano. Wykryto rozbieżności → status: DO REKONTROLI (HU zablokowany)."
     else:
