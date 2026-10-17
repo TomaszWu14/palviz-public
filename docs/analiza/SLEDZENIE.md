@@ -17,7 +17,9 @@ prowadzonych nowym procesem; aktualizowane przy odbiorze [BA] każdej historyjki
 | S-05 / NFR-… (CSP) | US-008 (#19) | faza 1: `ui.tests.test_csp_us008` (strony publiczne: nonce, brak `on*=`, wymuszona CSP); fazy 2–3: e2e z `CSP_REPORT_ONLY=false`, 2 tyg. czystych raportów | `core/csp.py`, ADR-0020 | w toku (fazy 1–2 gotowe; faza 3 — decyzja PO) |
 | S-08 | US-005 (#16) | `ui.tests.test_uploads_us005` (sygnatury, limit formularza, treść HTML udająca JPG/PDF, 413 middleware) | PR US-005 | w toku |
 | D-01 | US-010 (#21) | `ui.tests.test_docs_links_us010` (linki względne w dokumentach sterujących i procesu, ci.yml, runbook) | #41 | odebrana |
-| BR-08 / P1 | US-013 (#24) | `huctl.tests.test_escalation` rozszerzony o nieudaną rekontrolę | — | do decyzji PO |
-| BR-01 / P2 | US-014 (#25) | `huctl.tests.test_queue_one_ranking` | — | do decyzji PO |
+| BR-08 / P1 | US-013 (#24) | `huctl.tests.test_escalation` rozszerzony o nieudaną rekontrolę | — | nowa (ADR-0021) |
+| BR-01 / P2 | US-014 (#25) | `huctl.tests.test_queue_one_ranking` | — | nowa (ADR-0021) |
+| P1–P19 (decyzje) | US-012 (#23) | `docs/07-ograniczenia.md` §2–3, [ADR-0021](../adr/0021-rozstrzygniecie-p1-p19.md) | PR US-012 | odebrana |
+| P12 | US-016 (#27) | `transport.tests.test_carrier_rates_us012` (informacja na ekranie cennika) | PR US-012 | odłożona (W) |
 | P13, P14 | US-015 (#26) | `transport.tests.test_quote_validation_us015` (8 testów: pusta/zero/ujemna/NaN, waluta) | #42 | odebrana |
 | S-10 / R-10 | US-009 (#20) | `ui.tests.test_config_validation_us004.PowerBiTlsTests` | #40 | odebrana |

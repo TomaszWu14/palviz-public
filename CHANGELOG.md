@@ -16,6 +16,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
 
 ### Changed
+- US-012 (#23): PO rozstrzygnął P1–P19 ([ADR-0021](docs/adr/0021-rozstrzygniecie-p1-p19.md)) — 12 błędów
+  ma historyjki (US-013, US-014, US-022–US-031), P12 i P18 odłożone. ADR-0020 przyjęty. Ekran cennika
+  przewoźnika informuje, że cennik nie wpływa na wycenę (P12).
 - US-011 (#22): jedna nazwa produktu w dokumentach sterujących — **LogViz** (decyzja A-01) w
   `README.md`, `ARCHITECTURE.md`, `CLAUDE.md`, `docs/README.md` i `tests/README-TESTS.md`. GROOVE zostaje
   jako nazwa techniczna (kod, domyślne `APP_NAME`), PalViz jako historyczna w dokumentach z datą.

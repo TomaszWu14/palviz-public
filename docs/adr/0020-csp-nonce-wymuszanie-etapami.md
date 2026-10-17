@@ -1,6 +1,6 @@
 # ADR-0020: Wymuszana CSP z nonce, wdrażana etapami od stron publicznych
 
-- **Status:** Proponowana
+- **Status:** Przyjęta (PO, 2026-10-17)
 - **Data:** 2026-10-16
 
 ## Kontekst
@@ -81,7 +81,7 @@ Wdrożenie w trzech fazach:
 - Style inline zostają dozwolone (`style-src 'unsafe-inline'`). Ich ryzyko jest znacznie
   mniejsze, a przepisanie ich nie wchodzi w zakres US-008.
 - Do czasu fazy 3 ekrany wewnętrzne pozostają na polityce z ADR-0008.
-- Do decyzji PO: przyjęcie tego planu oraz moment fazy 3. Wymaga on obserwacji raportów
+- PO przyjął plan 2026-10-17. Do decyzji PO zostaje moment fazy 3. Wymaga on obserwacji raportów
   z produkcji.
 
 ## Źródła
