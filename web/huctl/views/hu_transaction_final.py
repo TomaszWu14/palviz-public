@@ -10,6 +10,8 @@ from django.db import transaction
 from django.urls import reverse
 from ui.hu_metrics import hu_metrics
 from .hu_helpers import _ensure_started  # noqa: F401
+from .hu_helpers import _held_by_other, _recheck_by_original
+from ..count_policy import finalize_gate
 from .hu_count import _alt_conv, _annotate_picked_units, _count_tiles, _prefetch_instructions, _unit_factors  # noqa: F401
 from .hu_helpers import _call_queue, _is_parcel, _log_status, _maybe_escalate_recheck, _notify_groups, _raise_corrective_tasks, _reserve, _type_controlled, _valid_photo, _zone_ok  # noqa: F401
 from .hu_quality import _notify_recheck  # noqa: F401
@@ -99,6 +101,14 @@ def hu_control_finalize(request, pk):
     if not _type_controlled(hu):                   # spójność bramki typów (deep-link)
         messages.error(request, "Ten typ magazynu nie jest objęty kontrolą HU.")
         return redirect("ui:hu_control_menu")
+    # US-024 (P5): księguje osoba, która trzyma paletę; rekontrolę — nie pierwotny kontroler.
+    gate = finalize_gate(held_by=_held_by_other(hu, request.user),
+                         recheck=hu.status == "to_recheck",
+                         recheck_by_original=(hu.status == "to_recheck"
+                                              and _recheck_by_original(hu, request.user)))
+    if not gate.ok:
+        messages.error(request, gate.message)
+        return redirect("ui:hu_control_detail", pk=pk)
     _old_status = hu.status
     items = hu.items.all()
     if not items.exists():

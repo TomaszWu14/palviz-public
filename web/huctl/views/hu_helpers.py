@@ -153,6 +153,18 @@ def _recheck_by_original(hu, user):
     return fc is not None and fc == user.id
 
 
+def _held_by_other(hu, user):
+    """US-024 (P5): nazwa osoby, która trzyma paletę zamiast `user` — w kontroli
+    (controlled_by) albo w rezerwacji (assigned_to, planned); "" gdy nikt inny. Lider i
+    administrator nie mają cichego wyjątku: przejmują paletę jawnie (hu_control_takeover —
+    powód w historii, powiadomienie poprzedniej osoby)."""
+    if hu.status == "in_control" and hu.controlled_by_id and hu.controlled_by_id != user.id:
+        return hu.controlled_by.get_username()
+    if hu.status == "planned" and hu.assigned_to_id and hu.assigned_to_id != user.id:
+        return hu.assigned_to.get_username()
+    return ""
+
+
 _HU_MAX_QTY = float(getattr(settings, "HU_MAX_QTY", 1_000_000) or 1_000_000)
 _HU_SYNC_MAX_BATCH = int(getattr(settings, "HU_SYNC_MAX_BATCH", 500) or 500)
 
@@ -464,6 +476,7 @@ __all__ = [
     "_raise_stale_tasks",
     "_raise_stuck_tasks",
     "_recheck_by_original",
+    "_held_by_other",
     "_release_abandoned_incontrol",
     "_reserve",
     "_reserved_max_hours",

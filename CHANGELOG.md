@@ -25,6 +25,10 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   Strażnik: `ui.tests.test_naming_us011`.
 
 ### Security
+- US-024 (#60, P5, R-09): paletę liczy i księguje tylko osoba, która ją trzyma (w kontroli lub w
+  rezerwacji) — także przy sync offline (`held_by_other`); rekontroli nie zaksięguje pierwotny
+  kontroler. Lider i administrator przejmują paletę jawnie („Przejmij”). Strażnik:
+  `huctl.tests.test_hu_holder_gate_us024`.
 - US-008 (#19), krok 8: polityka CSP bez `'unsafe-eval'` — Plotly, ECharts i htmx działają bez naruszeń
   (sprawdzone w Chromium). Jedna polityka dla całej aplikacji (`core.csp.STRICT_CSP`); strony publiczne ją
   wymuszają, ekrany wewnętrzne raportują do czasu `CSP_REPORT_ONLY=false` (faza 3).

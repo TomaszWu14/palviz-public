@@ -53,7 +53,7 @@ flowchart LR
 |---|---|---|---|
 | Wpis ręczny udający skan | T | znacznik źródła wpisu, bramka `HU_SCAN_ENFORCE` (ADR-0012) | bramka domyślnie wyłączona (decyzja właściciela) |
 | Powtórna synchronizacja tego samego zliczenia | T | idempotencja (FR-HU-38), te same bramki co online | — |
-| Liczenie palety przez osobę, która jej nie trzyma | E | bramka „inny kontroler” przy liczeniu | nie sprawdzane przy księgowaniu (P5) → **R-09** (decyzja US-012) |
+| Liczenie palety przez osobę, która jej nie trzyma | E | bramka „inny kontroler” przy liczeniu; od US-024 bramka „trzyma paletę” przy liczeniu, księgowaniu i sync offline | R-09 zamknięte (US-024) |
 | Zdjęcie dowodowe podmienione / nieprawdziwe | T/R | zdjęcie wymagane przy flagach jakości, sprawdzane po zawartości (`phv_data.py`, `hu_helpers.py:30`) | — |
 
 ### F3 — Formularze tokenowe bez konta (kierowca, spedytor, gotowość magazynu)

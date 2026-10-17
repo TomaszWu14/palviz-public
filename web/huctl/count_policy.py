@@ -28,12 +28,13 @@ _OK = GateResult(True)
 
 
 def count_gate(*, zone_label, zone_ok, type_ok, hu_status, recheck,
-               recheck_by_original, scan_src, enforce):
+               recheck_by_original, scan_src, enforce, held_by=""):
     """Pierwsza niespełniona bramka wygrywa (jak kolejność `if` w widoku). ok=True → wolno
     liczyć; ok=False → komunikat + dokąd wrócić ("detail"/"menu").
 
     Kolejność MUSI się zgadzać z hu_control_count (pre-foto):
       1. strefa  2. typ pod kontrolą  3/4. statusy terminalne ok/escaped
+      4a. paletę trzyma ktoś inny (US-024, P5)
       5. rekontrola przez pierwotnego kontrolera  6. scan-enforce
     item-error jest sprawdzane w widoku PO foto-dywersji (kolejność wrażliwa) — nie tutaj.
     """
@@ -49,12 +50,30 @@ def count_gate(*, zone_label, zone_ok, type_ok, hu_status, recheck,
     if hu_status == "escaped":
         return GateResult(False, "HU oznaczony jako „wyjechało bez kontroli” — liczenie zablokowane.",
                           "detail", "hu_locked")
+    if held_by:
+        return GateResult(False, _held_message(held_by, "liczyć"), "detail", "held_by_other")
     if recheck and recheck_by_original:
         return GateResult(False, "Rekontrolę musi wykonać inny kontroler niż prowadzący "
                                  "pierwotną kontrolę.", "detail", "recheck_same_controller")
     if enforce and scan_src != "scan":
         return GateResult(False, "Zeskanuj kod HU SKANEREM przy palecie, aby liczyć.", "detail",
                           "scan_required")
+    return _OK
+
+
+def _held_message(held_by, verb):
+    return (f"Tę paletę trzyma {held_by} — aby {verb}, najpierw ją przejmij "
+            "(„Przejmij”, z powodem w historii).")
+
+
+def finalize_gate(*, held_by, recheck, recheck_by_original):
+    """US-024 (P5): zaksięgować może tylko osoba, która trzyma paletę, a rekontrolę — ktoś
+    inny niż prowadzący pierwotną kontrolę (każda rola, decyzja 2026-08-26)."""
+    if held_by:
+        return GateResult(False, _held_message(held_by, "zaksięgować"), "detail", "held_by_other")
+    if recheck and recheck_by_original:
+        return GateResult(False, "Rekontrolę musi zaksięgować inny kontroler niż prowadzący "
+                                 "pierwotną kontrolę.", "detail", "recheck_same_controller")
     return _OK
 
 

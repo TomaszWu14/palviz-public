@@ -6,7 +6,7 @@ from ui.views.core import (
 )
 from django.utils import timezone
 from django.db import transaction
-from .hu_helpers import _qty_error, _recheck_by_original, _type_controlled, _valid_photo, _zone_ok  # noqa: F401
+from .hu_helpers import _held_by_other, _qty_error, _recheck_by_original, _type_controlled, _valid_photo, _zone_ok  # noqa: F401
 from .hu_hub import _maybe_log_photo_skip, _needs_photo  # noqa: F401
 from .hu_helpers import _ensure_started  # noqa: F401
 from ..count_policy import (count_gate, is_blind_recount_needed,
@@ -339,7 +339,8 @@ def hu_control_count(request, pk, item_id):
             recheck=recheck,
             recheck_by_original=(recheck and _recheck_by_original(hu, request.user)),
             scan_src=request.session.get(f"hu_scan_src_{hu.pk}"),
-            enforce=getattr(settings, "HU_SCAN_ENFORCE", False))
+            enforce=getattr(settings, "HU_SCAN_ENFORCE", False),
+            held_by=_held_by_other(hu, request.user))
         if not gate.ok:
             messages.error(request, gate.message)
             return redirect("ui:hu_control_detail" if gate.redirect_to == "detail"
