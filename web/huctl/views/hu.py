@@ -130,6 +130,9 @@ def planner_hu_import(request):
     if info.get("skipped_locked"):
         messages.warning(request, f"Pominięto {info['skipped_locked']} pozycji z {info.get('locked_hus', 0)} HU "
                                   "już w kontroli — zawartość, liczenie, metadane i dostawa bez zmian.")
+    if info.get("acks_reset"):       # US-029: zmieniona zawartość → potwierdzenia do ponowienia
+        messages.warning(request, f"{info['acks_reset']} HU ma nową zawartość lub dostawę — potwierdzenia "
+                                  "wymagań klienta i krótkiego terminu trzeba ponowić.")
     # Partia i termin ważności są w spec-u wsadu obowiązkowe — braki wchodzą, ale głośno.
     holes = []
     if info.get("missing_batch"):
@@ -172,6 +175,8 @@ def planner_stock_powerbi_import(request):
         extra = f" Wykryto {n} nowych niezgodności (Zadania)." if n else ""
         if info.get("skipped_locked"):
             extra += f" Pominięto {info['skipped_locked']} pozycji z {info.get('locked_hus', 0)} HU już w kontroli."
+        if info.get("acks_reset"):
+            extra += f" {info['acks_reset']} HU wymaga ponownego potwierdzenia (zmieniona zawartość)."
         messages.success(request, f"Pobrano stan z Power BI: {info['hu']} HU, {info['items']} pozycji.{extra}")
         from ui.models import ImportRun
         ImportRun.record("hu_stock_powerbi", rows=info["hu"], user=request.user,

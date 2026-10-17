@@ -16,6 +16,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
 
 ### Changed
+- US-029 (#63, P10): import HU kasuje potwierdzenia wymagań klienta i krótkiego terminu na paletach,
+  którym zmienił zawartość (indeks, partia, data, ilość) albo dostawę; komunikat po imporcie mówi,
+  ile palet trzeba potwierdzić ponownie. Import bez zmian nie rusza potwierdzeń.
 - US-023 (#62, P4): skan etykiety palety VIP spoza kontrolowanych typów magazynu otwiera kontrolę —
   skan używa tej samej bramki typu co kolejka, liczenie i księgowanie (WK-HU-07).
 - US-014 (#25, P2): kolejka HU oddaje ranking z ADR-0018 pkt 2 — VIP → PILNE → rekontrola. Zaksięgowanie
