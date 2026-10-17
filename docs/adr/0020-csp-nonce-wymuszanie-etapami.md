@@ -53,6 +53,10 @@ Wdrożenie w trzech fazach:
    Krok 7 — polityka ekranów wewnętrznych `script-src 'self' 'nonce-…' 'unsafe-eval'` (bez
    `'unsafe-inline'`), nadal report-only — zrobiony. **Faza 2 zakończona.** Raporty na `/csp-report/`
    pokazują od teraz realne naruszenia; strażnik łapie też warunkowe `{% if %}onclick=`.
+   Krok 8 (2026-10-17) — **bez `'unsafe-eval'`**: w Chromium Plotly (mesh3d, scatter3d, scatter, box,
+   heatmap), ECharts (bar, line, tooltip) i htmx działają bez naruszeń; ich `eval`/`new Function` to
+   nieużywane gałęzie awaryjne, a Alpine.js nie jest używany w żadnym szablonie. Cała aplikacja ma
+   jedną politykę (`core.csp.STRICT_CSP`); różni się tylko nagłówek (wymuszony / report-only).
    Ustalenia z inwentaryzacji (74 szablony):
    - **Fragmenty doładowywane** (np. `_panel.html` z kalkulatora, zwracany z widoku jako HTML):
      ich skrypty dostają nonce innego żądania niż strona. Rozwiązanie w kroku danego modułu:
@@ -61,8 +65,8 @@ Wdrożenie w trzech fazach:
    - **Google Maps** (`shipment_detail`, trasa na ekranie wyceny) ładuje skrypt z
      `maps.googleapis.com` — polityka tego ekranu w fazie 3 potrzebuje wyjątku dla tej domeny
      (to usługa, nie biblioteka z CDN, więc ADR-0005 jej nie obejmuje).
-   - **Alpine.js** (vendorowany) w zwykłym buildzie wymaga `'unsafe-eval'` — tak jak Plotly.
-     Przed fazą 3 trzeba go zastąpić buildem CSP albo zostawić `'unsafe-eval'` na tych ekranach.
+   - ~~**Alpine.js** wymaga `'unsafe-eval'`~~ — nieaktualne (krok 8): Alpine nie jest używany, a Plotly
+     i ECharts nie potrzebują `'unsafe-eval'`.
 3. **Wymuszenie globalne.** Po 2 tygodniach bez naruszeń w raportach PO ustawia
    `CSP_REPORT_ONLY=false`. ADR-0008 dostaje wtedy status „Zastąpiona przez ADR-0020”.
 
