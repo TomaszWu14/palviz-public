@@ -1,6 +1,6 @@
 # ADR-0021: Rozstrzygnięcie znanych problemów P1–P19 (US-012)
 
-- **Status:** Przyjęta (PO, 2026-10-17)
+- **Status:** Przyjęta
 - **Data:** 2026-10-17
 
 ## Kontekst

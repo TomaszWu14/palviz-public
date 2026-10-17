@@ -1,6 +1,6 @@
 # ADR-0020: Wymuszana CSP z nonce, wdrażana etapami od stron publicznych
 
-- **Status:** Przyjęta (PO, 2026-10-17)
+- **Status:** Przyjęta
 - **Data:** 2026-10-16
 
 ## Kontekst
