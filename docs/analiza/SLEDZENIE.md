@@ -21,6 +21,7 @@ prowadzonych nowym procesem; aktualizowane przy odbiorze [BA] każdej historyjki
 | BR-01 / P2 | US-014 (#25) | `huctl.tests.test_queue_one_ranking` | — | nowa (ADR-0021) |
 | P1–P19 (decyzje) | US-012 (#23) | `docs/07-ograniczenia.md` §2–3, [ADR-0021](../adr/0021-rozstrzygniecie-p1-p19.md) | PR US-012 | odebrana |
 | P5, R-09 | US-024 (#60) | `huctl.tests.test_hu_holder_gate_us024` (liczenie, rezerwacja, księgowanie, rekontrola, sync offline, przejęcie lidera) | PR US-024 | odebrana |
+| P8 | US-027 (#61) | `huctl.tests.test_hu_history_guard_us027` (kaskada z wysyłki, delete na querysecie, paleta zaplanowana z próbami, reset demo, widok usuwania) | PR US-027 | odebrana |
 | P12 | US-016 (#27) | `transport.tests.test_carrier_rates_us012` (informacja na ekranie cennika) | PR US-012 | odłożona (W) |
 | P13, P14 | US-015 (#26) | `transport.tests.test_quote_validation_us015` (8 testów: pusta/zero/ujemna/NaN, waluta) | #42 | odebrana |
 | S-10 / R-10 | US-009 (#20) | `ui.tests.test_config_validation_us004.PowerBiTlsTests` | #40 | odebrana |

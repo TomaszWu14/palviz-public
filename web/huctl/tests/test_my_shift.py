@@ -8,6 +8,7 @@ from django.urls import reverse
 from huctl.views.hu_dashboard import families_in_progress, rank_key
 from ui.models import Customer, HandlingUnit, Shipment
 from ui.roles import GROUP_CONTROLLER
+from huctl.history_guard import allow_history_delete
 
 
 class MyShiftTests(TestCase):
@@ -63,7 +64,8 @@ class MyShiftTests(TestCase):
         self.assertContains(r, self.vip.ref)  # następna = VIP
 
     def test_empty_queue_renders(self):
-        HandlingUnit.objects.all().delete()
+        with allow_history_delete():   # US-027: świadome czyszczenie danych testu
+            HandlingUnit.objects.all().delete()
         r = self.client.get(reverse("ui:hu_my_shift"))
         self.assertContains(r, "Kolejka pusta")
 

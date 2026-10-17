@@ -1,4 +1,5 @@
 # Przesylki: lista, formularz, karta, anulowanie/requote, usuwanie, zaladunek kontenera.
+from django.db.models import ProtectedError
 from ui.views.core import (
     Carrier, Count, DriverAssignment, GROUP_ADMIN, GROUP_CONTROLLER,
     GROUP_LEADER, Paginator, Product, Q, QuoteRecipient, Shipment, ShipmentForm,
@@ -328,7 +329,13 @@ def planner_shipment_delete(request, pk):
                                     "(usunięcie skasowałoby historię kontroli). Anuluj ją zamiast usuwać.")
             return redirect("ui:planner_shipment_detail", pk=pk)
         name = shipment.name
-        shipment.delete()
+        try:
+            with transaction.atomic():      # savepoint: po odmowie połączenie zostaje używalne
+                shipment.delete()
+        except ProtectedError:      # US-027: paleta weszła w kontrolę między sprawdzeniem a usunięciem
+            messages.error(request, "Nie można usunąć przesyłki — jej HU mają historię kontroli. "
+                                    "Anuluj ją zamiast usuwać.")
+            return redirect("ui:planner_shipment_detail", pk=pk)
         messages.success(request, f'Przesylka "{name}" usunieta.')
         return redirect("ui:planner_shipments")
     return render(request, "ui/planner/shipment_confirm_delete.html", {"shipment": shipment})

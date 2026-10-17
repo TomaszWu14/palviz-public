@@ -15,6 +15,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from core.roles import GROUP_CONTROLLER, GROUP_LEADER, GROUP_MASTER_DATA, GROUP_TRANSPORT
+from huctl.history_guard import allow_history_delete
 from huctl.models import ControllerZone, HandlingUnit, HandlingUnitItem
 from transport.models import Shipment, ShipmentLine
 from ui.models import (Batch, Carton, Customer, CustomerPackagingRule, ErrorReport, InnerPack,
@@ -59,8 +60,9 @@ class Command(BaseCommand):
         with transaction.atomic():
             users = self._users()
             if opts["reset"]:
-                for model in RESET_MODELS:
-                    model.objects.all().delete()
+                with allow_history_delete():     # demo: świadomie kasujemy też historię kontroli
+                    for model in RESET_MODELS:
+                        model.objects.all().delete()
             elif Customer.objects.filter(code=MARKER_CODE).exists():
                 self.stdout.write("Dane demo już są — pomijam (użyj --reset, by odtworzyć).")
                 return

@@ -25,6 +25,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   Strażnik: `ui.tests.test_naming_us011`.
 
 ### Security
+- US-027 (#61, P8): paleta z historią kontroli (status ≠ zaplanowana albo próby liczenia) nie da
+  się usunąć żadną drogą — kaskada z wysyłki, delete na querysecie, konsola (`huctl/history_guard.py`,
+  `pre_delete`). Wyjątek tylko dla `seed_demo --reset`. Strażnik: `huctl.tests.test_hu_history_guard_us027`.
 - US-024 (#60, P5, R-09): paletę liczy i księguje tylko osoba, która ją trzyma (w kontroli lub w
   rezerwacji) — także przy sync offline (`held_by_other`); rekontroli nie zaksięguje pierwotny
   kontroler. Lider i administrator przejmują paletę jawnie („Przejmij”). Strażnik:
