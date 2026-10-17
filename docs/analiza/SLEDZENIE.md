@@ -18,7 +18,7 @@ prowadzonych nowym procesem; aktualizowane przy odbiorze [BA] każdej historyjki
 | S-08 | US-005 (#16) | `ui.tests.test_uploads_us005` (sygnatury, limit formularza, treść HTML udająca JPG/PDF, 413 middleware) | PR US-005 | w toku |
 | D-01 | US-010 (#21) | `ui.tests.test_docs_links_us010` (linki względne w dokumentach sterujących i procesu, ci.yml, runbook) | #41 | odebrana |
 | BR-08 / P1 | US-013 (#24) | `huctl.tests.test_escalation` rozszerzony o nieudaną rekontrolę | — | nowa (ADR-0021) |
-| BR-01 / P2 | US-014 (#25) | `huctl.tests.test_queue_one_ranking` | — | nowa (ADR-0021) |
+| BR-01 / P2 | US-014 (#25) | `huctl.tests.test_queue_rank_us014` (VIP z błędem przed PILNE, kategoria rekontroli, księgowanie z błędem bez PILNE) + `huctl.tests.test_queue_one_ranking` | PR US-014 | odebrana |
 | P1–P19 (decyzje) | US-012 (#23) | `docs/07-ograniczenia.md` §2–3, [ADR-0021](../adr/0021-rozstrzygniecie-p1-p19.md) | PR US-012 | odebrana |
 | P5, R-09 | US-024 (#60) | `huctl.tests.test_hu_holder_gate_us024` (liczenie, rezerwacja, księgowanie, rekontrola, sync offline, przejęcie lidera) | PR US-024 | odebrana |
 | P8 | US-027 (#61) | `huctl.tests.test_hu_history_guard_us027` (kaskada z wysyłki, delete na querysecie, paleta zaplanowana z próbami, reset demo, widok usuwania) | PR US-027 | odebrana |

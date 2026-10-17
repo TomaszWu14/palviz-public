@@ -16,6 +16,10 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
 
 ### Changed
+- US-014 (#25, P2): kolejka HU oddaje ranking z ADR-0018 pkt 2 — VIP → PILNE → rekontrola. Zaksięgowanie
+  z błędem nie oznacza już palety jako PILNA (`is_priority` = tylko „pilne wyjęcie” lidera), więc
+  kategoria „rekontrola” działa, a VIP z błędem nie spada w rankingu. Palety, które już są w rekontroli
+  z dawnym znacznikiem, zostają PILNE do najbliższego zaksięgowania na „zgodny”.
 - US-012 (#23): PO rozstrzygnął P1–P19 ([ADR-0021](docs/adr/0021-rozstrzygniecie-p1-p19.md)) — 12 błędów
   ma historyjki (US-013, US-014, US-022–US-031), P12 i P18 odłożone. ADR-0020 przyjęty. Ekran cennika
   przewoźnika informuje, że cennik nie wpływa na wycenę (P12).
