@@ -8,7 +8,7 @@ from ui.views.core import (
 from django.db.models import F
 from django.db import transaction, DataError as _DataError
 from .hu_count import _apply_item_count, _counted_base, _counted_from_units
-from .hu_helpers import _HU_SYNC_MAX_BATCH, _qty_error, _recheck_by_original, _strip_get, _type_controlled, _zone_ok
+from .hu_helpers import _HU_SYNC_MAX_BATCH, _held_by_other, _qty_error, _recheck_by_original, _strip_get, _type_controlled, _zone_ok
 from .hu_hub import _maybe_log_photo_skip, _needs_photo
 from ..count_policy import count_gate, is_blind_recount_needed, photo_required_for_flags, whole_units_ok
 from .hu_transaction import _ensure_started
@@ -305,7 +305,8 @@ def hu_control_sync(request):
             recheck=recheck,
             recheck_by_original=(recheck and _recheck_by_original(hu, request.user)),
             scan_src=src,
-            enforce=getattr(settings, "HU_SCAN_ENFORCE", False))
+            enforce=getattr(settings, "HU_SCAN_ENFORCE", False),
+            held_by=_held_by_other(hu, request.user))
         if not gate.ok:
             _reject(cid, gate.code, gate.message)
             continue
