@@ -99,11 +99,30 @@ class PublicPagesStrictCspTests(TestCase):
             self.assertEqual(resp.status_code, 200, url)
             script_src = _script_src(resp["Content-Security-Policy-Report-Only"])
             self.assertNotIn("unsafe-inline", script_src, url)
+            self.assertNotIn("unsafe-eval", script_src, url)     # Plotly/ECharts działają bez eval
             nonce = re.search(r"'nonce-([^']+)'", script_src).group(1)
             for attrs in SCRIPT_RE.findall(resp.content.decode()):
                 if "src=" in attrs or "application/json" in attrs:
                     continue
                 self.assertIn(f'nonce="{nonce}"', attrs, f"{url}: <script{attrs}>")
+
+
+class CspModeTests(TestCase):
+    """Faza 3 (ADR-0020): CSP_REPORT_ONLY=false wymusza tę samą politykę na ekranach wewnętrznych."""
+
+    def test_report_only_false_enforces_same_policy(self):
+        from django.test import override_settings
+        user = get_user_model().objects.create_superuser("csp3", "csp3@example.com", "x")
+        client = Client()
+        client.force_login(user)
+        url = reverse("ui:planner_calc_index")
+        report = client.get(url)["Content-Security-Policy-Report-Only"]
+        with override_settings(CSP_REPORT_ONLY=False):
+            resp = client.get(url)
+        self.assertNotIn("Content-Security-Policy-Report-Only", resp)
+        enforced = resp["Content-Security-Policy"]
+        strip = lambda p: re.sub(r"'nonce-[^']+'", "'nonce'", p)   # nonce różny per żądanie
+        self.assertEqual(strip(enforced), strip(report))
 
 
 class StrictCspUnitTests(SimpleTestCase):

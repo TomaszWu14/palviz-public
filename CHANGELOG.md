@@ -22,6 +22,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   Strażnik: `ui.tests.test_naming_us011`.
 
 ### Security
+- US-008 (#19), krok 8: polityka CSP bez `'unsafe-eval'` — Plotly, ECharts i htmx działają bez naruszeń
+  (sprawdzone w Chromium). Jedna polityka dla całej aplikacji (`core.csp.STRICT_CSP`); strony publiczne ją
+  wymuszają, ekrany wewnętrzne raportują do czasu `CSP_REPORT_ONLY=false` (faza 3).
 - US-008 (#19), faza 2 krok 7 — **faza 2 zakończona**: polityka CSP ekranów wewnętrznych z nonce zamiast
   `'unsafe-inline'` (nadal report-only), więc raporty na `/csp-report/` pokazują realne naruszenia. Przepisane
   3 pominięte handlery warunkowe (`{% if %}onclick=`); strażnik je teraz łapie. `csp-actions.js`:

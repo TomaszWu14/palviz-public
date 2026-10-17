@@ -5,7 +5,7 @@ import uuid
 
 from django.conf import settings
 
-from core.csp import app_policy, strict_policy
+from core.csp import strict_policy
 
 # Request-ID dla logów stdlib (logging.getLogger) — structlog ma własne contextvars.
 # "-" poza żądaniem (Celery, komendy manage.py).
@@ -19,7 +19,7 @@ class RequestIDLogFilter(logging.Filter):
         record.request_id = request_id_var.get()
         return True
 
-# Content-Security-Policy dla ekranów wewnętrznych (core.csp.app_policy): nonce + 'unsafe-eval'.
+# Content-Security-Policy (core.csp.STRICT_CSP): nonce, bez 'unsafe-inline' i 'unsafe-eval'.
 # Domyślnie REPORT-ONLY (CSP_REPORT_ONLY=true) — przeglądarka zgłasza naruszenia na /csp-report/,
 # ale nic nie blokuje. CSP_REPORT_ONLY=false to faza 3 z ADR-0020 (decyzja PO po 2 tyg. raportów).
 _PERMISSIONS_POLICY = "geolocation=(), microphone=(), payment=()"
@@ -139,13 +139,11 @@ class SecurityHeadersMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
         response.setdefault("Permissions-Policy", _PERMISSIONS_POLICY)
-        if getattr(response, "csp_strict", False):   # US-008 / ADR-0020: strony publiczne
-            response["Content-Security-Policy"] = strict_policy(request)
-            return response
-        header = ("Content-Security-Policy-Report-Only"
-                  if getattr(settings, "CSP_REPORT_ONLY", True)
-                  else "Content-Security-Policy")
-        response.setdefault(header, app_policy(request))
+        # US-008 / ADR-0020: ta sama polityka wszędzie; strony publiczne (strict_csp) zawsze wymuszają,
+        # ekrany wewnętrzne raportują, dopóki CSP_REPORT_ONLY=true.
+        enforce = getattr(response, "csp_strict", False) or not getattr(settings, "CSP_REPORT_ONLY", True)
+        header = "Content-Security-Policy" if enforce else "Content-Security-Policy-Report-Only"
+        response.setdefault(header, strict_policy(request))   # widok może nadać własną politykę
         return response
 
 
