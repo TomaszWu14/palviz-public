@@ -21,7 +21,7 @@ PO przyjął 2026-10-17 wszystkie rekomendacje:
 | P2 | błąd — łamie ranking z ADR-0018 pkt 2 | US-014 (#25) |
 | P3 | błąd — ostrzeżenie, gdy lista stref paczkowych nie pasuje do typów magazynu; produkcyjne kody ustawia PO w env | US-022 |
 | P4 | błąd — łamie WK-HU-07 (VIP zawsze kontrolowany) | US-023 |
-| P5 | błąd — liczy i księguje osoba trzymająca paletę; rekontrolę księguje inna osoba niż pierwotny kontroler; lider i administrator przejmują paletę jawnie (A-17) | US-024 (R-09) |
+| P5 | błąd — liczy i księguje osoba trzymająca paletę; rekontrolę księguje inna osoba niż pierwotny kontroler; lider i administrator przejmują paletę jawnie (A-17, potwierdzone 2026-10-17) | US-024 (R-09) |
 | P6 | błąd (reszta po US-017) — wygasanie rezerwacji i zwrot porzuconej kontroli z harmonogramu | US-025 |
 | P7 | błąd — obejście bramki zdjęcia przez lidera, z powodem w historii | US-026 |
 | P8 | błąd — usunięcie wysyłki nie może kasować historii kontroli | US-027 |
