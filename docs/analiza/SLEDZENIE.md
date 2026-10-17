@@ -22,6 +22,7 @@ prowadzonych nowym procesem; aktualizowane przy odbiorze [BA] każdej historyjki
 | P1–P19 (decyzje) | US-012 (#23) | `docs/07-ograniczenia.md` §2–3, [ADR-0021](../adr/0021-rozstrzygniecie-p1-p19.md) | PR US-012 | odebrana |
 | P5, R-09 | US-024 (#60) | `huctl.tests.test_hu_holder_gate_us024` (liczenie, rezerwacja, księgowanie, rekontrola, sync offline, przejęcie lidera) | PR US-024 | odebrana |
 | P4, WK-HU-07 | US-023 (#62) | `huctl.tests.test_vip_scan_us023` (skan VIP spoza kontrolowanych typów otwiera kontrolę; zwykła paleta nadal zablokowana) | PR US-023 | odebrana |
+| P10 | US-029 (#63) | `huctl.tests.test_import_acks_us029` (import bez zmian, zmiana pozycji/ilości, przepięcie na inną dostawę, nowa paleta) | PR US-029 | odebrana |
 | P8 | US-027 (#61) | `huctl.tests.test_hu_history_guard_us027` (kaskada z wysyłki, delete na querysecie, paleta zaplanowana z próbami, reset demo, widok usuwania) | PR US-027 | odebrana |
 | P12 | US-016 (#27) | `transport.tests.test_carrier_rates_us012` (informacja na ekranie cennika) | PR US-012 | odłożona (W) |
 | P13, P14 | US-015 (#26) | `transport.tests.test_quote_validation_us015` (8 testów: pusta/zero/ujemna/NaN, waluta) | #42 | odebrana |

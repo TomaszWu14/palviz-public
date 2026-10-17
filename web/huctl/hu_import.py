@@ -62,6 +62,7 @@ class _ImportRun:
         # ani dostawy/seq. Liczymy pominięte wiersze i same HU (komunikat po imporcie).
         self.locked = _load_locked({_cell(r, idx, "pickhu") for r in rows} - {""})
         self.locked_seen, self.skipped_locked = set(), 0
+        self.moved, self.acks_reset = set(), 0      # US-029: HU przepięte na inną dostawę (potwierdzenia do unieważnienia)
         # Wsad kontroli HU jest zawsze wydaniowy → każdy wiersz ma Dokument (dostawę). Wiersz bez
         # Dokumentu w feedzie z dostawami to BŁĄD wsadu (nie cichy „stock") — liczymy, by ostrzec.
         self.no_delivery = self.with_delivery = 0
@@ -189,6 +190,7 @@ def _get_hu(run, pick, shipment):
         hu.shipment = shipment
         hu.seq = _next_seq(run, shipment)
         hu.save(update_fields=["shipment", "seq"])
+        run.moved.add(hu.pk)
     run.hu_cache[pick] = hu
     return hu
 
@@ -276,6 +278,25 @@ def _import_row(run, row):
     run.new_items.append(_build_item(run, hu, row, ref))
 
 
+def _item_sig(ref_code, lot, vendor_batch, expiry, base_qty):
+    return (ref_code or "", lot or "", vendor_batch or "", str(expiry or ""),
+            round(float(base_qty or 0), 4))
+
+
+def _changed_content(hu_ids, new_items):
+    """Id HU, którym import zmienia zawartość (indeks, partia, data, ilość)."""
+    if not hu_ids:
+        return set()
+    old, new = {}, {}
+    for hid, *f in HandlingUnitItem.objects.filter(hu_id__in=hu_ids).values_list(
+            "hu_id", "ref_code", "lot", "vendor_batch", "expiry", "base_qty"):
+        old.setdefault(hid, []).append(_item_sig(*f))
+    for it in new_items:
+        new.setdefault(it.hu_id, []).append(
+            _item_sig(it.ref_code, it.lot, it.vendor_batch, it.expiry, it.base_qty))
+    return {hid for hid in hu_ids if sorted(old.get(hid, [])) != sorted(new.get(hid, []))}
+
+
 # ── zapis ──────────────────────────────────────────────────────────────────
 def _persist(run):
     """Zapisz metadane, podmień pozycje, stempluj last_seen_at. Wiersze HU w kontroli
@@ -287,9 +308,18 @@ def _persist(run):
     # Replace items only for HUs that actually got fresh rows — otherwise a pickHU
     # whose rows were all skipped (e.g. blank ref) would lose its existing items.
     hu_ids = {it.hu_id for it in run.new_items}
+    changed = _changed_content(hu_ids, run.new_items) | run.moved
     if hu_ids:
         HandlingUnitItem.objects.filter(hu_id__in=hu_ids).delete()
     HandlingUnitItem.objects.bulk_create(run.new_items, batch_size=2000)
+    # US-029 (P10): potwierdzenie wymagań klienta / krótkiego terminu dotyczy towaru, który
+    # kontroler widział. Nowa zawartość albo przepięcie na inną dostawę = trzeba potwierdzić
+    # ponownie; import bez zmian nie rusza potwierdzeń.
+    if changed:
+        run.acks_reset = HandlingUnit.objects.filter(pk__in=changed).filter(
+            Q(client_reqs_confirmed_at__isnull=False) | Q(short_dated_ack_at__isnull=False)
+        ).update(client_reqs_confirmed_at=None, client_reqs_confirmed_by=None,
+                 short_dated_ack_at=None, short_dated_ack_by=None)
     # Stamp every HU that appeared in this snapshot as "seen now" — an uncontrolled HU
     # that stops reappearing was likely booked out in SAP before we controlled it, and
     # is surfaced to the leader as a stale/vanished item (Q95/96).
@@ -318,4 +348,5 @@ def import_hu_rows(header, rows):
     return True, {"hu": len(run.hu_cache) + len(run.locked_seen), "items": len(run.new_items),
                   "no_delivery": run.no_delivery, "with_delivery": run.with_delivery,
                   "missing_batch": run.missing_batch, "missing_expiry": run.missing_expiry,
-                  "skipped_locked": run.skipped_locked, "locked_hus": len(run.locked_seen)}
+                  "skipped_locked": run.skipped_locked, "locked_hus": len(run.locked_seen),
+                  "acks_reset": run.acks_reset}
