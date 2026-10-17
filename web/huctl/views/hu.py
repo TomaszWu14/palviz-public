@@ -1,6 +1,7 @@
 # Handling Unit (paleta) — in-app control module.
 # Generation of expected contents from the palletization; the scanner-style
 # control transaction lives in hu_control.py.
+from django.db.models import ProtectedError
 from ui.views.core import (
     HandlingUnit, HandlingUnitItem, Shipment,
     _after_import_redirect, _build_shipment_three_data, _calc_shipment_data,
@@ -67,7 +68,11 @@ def planner_shipment_generate_hus(request, pk):
         messages.error(request, "Nie można wygenerować HU ponownie — palety są już w kontroli "
                                 "(regeneracja skasowałaby historię kontroli).")
         return redirect("ui:planner_shipment_detail", pk=pk)
-    n = _generate_handling_units(shipment)
+    try:
+        n = _generate_handling_units(shipment)
+    except ProtectedError:          # US-027: paleta weszła w kontrolę w międzyczasie
+        messages.error(request, "Nie można wygenerować HU ponownie — palety mają historię kontroli.")
+        return redirect("ui:planner_shipment_detail", pk=pk)
     if n:
         messages.success(request, f"Wygenerowano {n} HU (palet) z oczekiwaną zawartością.")
     else:

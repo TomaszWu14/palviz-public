@@ -13,6 +13,7 @@ from django.urls import reverse
 from ui.models import (HandlingUnit, HandlingUnitItem, PalletizationInstruction,
                        Product, Shipment)
 from ui.roles import GROUP_CONTROLLER
+from huctl.history_guard import allow_history_delete
 
 
 def _instruction(product, ppc):
@@ -47,7 +48,8 @@ class DetailQueryCountTests(TestCase):
 
     def test_instruction_queries_do_not_grow_with_positions(self):
         few = len(self._instr_queries(self._hu_with(2)))
-        HandlingUnit.objects.all().delete()
+        with allow_history_delete():   # US-027: świadome czyszczenie danych testu
+            HandlingUnit.objects.all().delete()
         Product.objects.all().delete()
         many = len(self._instr_queries(self._hu_with(12)))
         self.assertEqual(few, many,

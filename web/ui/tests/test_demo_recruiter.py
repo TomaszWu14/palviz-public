@@ -15,6 +15,7 @@ from core.demo import MSG, DemoReadOnlyMiddleware
 from huctl.models import HandlingUnit
 from transport.models import Shipment
 from ui.models import Customer, Product
+from huctl.history_guard import allow_history_delete
 
 DEMO = dict(DEMO_MODE=True, DEMO_USER="demo", DEMO_PASSWORD="")
 
@@ -41,7 +42,8 @@ class SeedDemoTests(TestCase):
         self.assertEqual(base, (5, 3, 4, 10))
         _seed()                                              # drugi raz: bez duplikatów
         self.assertEqual(_counts(), base)
-        Shipment.objects.all().delete()                      # „rekruter coś zepsuł”
+        with allow_history_delete():   # US-027: świadome czyszczenie danych testu
+            Shipment.objects.all().delete()                      # „rekruter coś zepsuł”
         Product.objects.filter(code="ACM-10021").update(name="bzdura")
         _seed("--reset")
         self.assertEqual(_counts(), base)
