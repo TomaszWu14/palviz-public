@@ -75,6 +75,10 @@ class HuListViewTests(TestCase):
 
     def test_batch_call_ready_for_recipient(self):
         from django.urls import reverse
+        from ui.roles import GROUP_CONTROLLER
+        ctl = User.objects.create_user("ctl", "ctl@example.com", "Zx9!longpass")
+        ctl.groups.add(Group.objects.get_or_create(name=GROUP_CONTROLLER)[0])
+        self.client.force_login(ctl)   # US-030: wywołuje kontrola, nie Master Data
         sh_id = self.h_new.shipment_id
         self.client.post(reverse("ui:hu_call_batch"), {"shipment_id": sh_id})
         self.h_new.refresh_from_db()

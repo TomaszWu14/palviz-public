@@ -5,7 +5,7 @@ from django.db.models import ProtectedError
 from ui.views.core import (
     HandlingUnit, HandlingUnitItem, Shipment,
     _after_import_redirect, _build_shipment_three_data, _calc_shipment_data,
-    _controller, _md_or_control, _shipment_pallet_height, _read_table, _transport_mgr,
+    _md_or_control, _shipment_pallet_height, _read_table, _transport_mgr,
     get_object_or_404, messages, redirect, require_POST, transaction, _pk4,  # _pk4: int4-safe pk → 404, nie 500
 )
 from huctl.hu_import import (  # noqa: F401  (aliasy: stare nazwy dla wołań/testów)
@@ -96,7 +96,9 @@ def _import_holes_label(info, prefix=""):
     return f"{prefix}{' · ' if prefix else ''}{tail}"[:200]
 
 
-@_controller
+# US-030 (P11): plik i Power BI to ten sam importer — ta sama lista ról co
+# planner_stock_powerbi_import (Data Center pokazuje Master Data obie drogi).
+@_md_or_control
 @require_POST
 def planner_hu_import(request):
     """Import handling units (with LOT/EXP/pickHU/location) from a PowerBI/SAP export.
@@ -106,16 +108,16 @@ def planner_hu_import(request):
     f = request.FILES.get("file")
     if not f:
         messages.error(request, "Nie wybrano pliku.")
-        return redirect("ui:hu_control_hub")
+        return _after_import_redirect(request, "ui:hu_control_hub")
     if f.size > 10 * 1024 * 1024:
         messages.error(request, "Plik zbyt duży (max 10 MB).")
-        return redirect("ui:hu_control_hub")
+        return _after_import_redirect(request, "ui:hu_control_hub")
 
     header, rows = _read_table(f)
     ok, info = _import_hu_rows(header, rows)
     if not ok:
         messages.error(request, info)
-        return redirect("ui:hu_control_hub")
+        return _after_import_redirect(request, "ui:hu_control_hub")
     from ui.notifications import run_stock_discrepancy_checks
     n = run_stock_discrepancy_checks(created_by=request.user)
     extra = f" Wykryto {n} nowych niezgodności (Zadania)." if n else ""

@@ -112,10 +112,12 @@
         <td style="text-align:right">{{ g.n }}</td>
         <td style="text-align:right">
           {% if group == 'recipient' and g.shipment_id %}
+          {% if role_is_control %}
           <form method="post" action="{% url 'ui:hu_call_batch' %}" style="display:inline">{% csrf_token %}
             <input type="hidden" name="shipment_id" value="{{ g.shipment_id }}">
             <button class="btn btn-ghost btn--sm" type="submit">Wywołaj gotowe</button>
           </form>
+          {% endif %}
           {% if g.incomplete %}
           <form method="post" action="{% url 'ui:hu_escalate' %}" style="display:inline">{% csrf_token %}
             <input type="hidden" name="shipment_id" value="{{ g.shipment_id }}">
@@ -138,15 +140,18 @@
 </div>
 {% elif mode == 'hu' %}
 {# Checkboxy „zaznacz wiele → wywołaj": formularz poza tabelą (wiersze mają własne formy), checkboxy wiążą się atrybutem form="callsel". #}
+{# US-030: rezerwuje tylko kontrola (Master Data widzi listę bez wywołania). #}
+{% if role_is_control %}
 <form id="callsel" method="post" action="{% url 'ui:hu_call_selected' %}" style="margin-bottom:8px">
   {% csrf_token %}
   <button type="submit" class="btn btn-secondary btn-sm">{% icon "megaphone" %} Wywołaj zaznaczone</button>
 </form>
+{% endif %}
 <div class="card">
   <div class="table-wrap">
     <table class="table">
       <thead><tr>
-        <th style="width:24px"><input type="checkbox" data-check-all="input[name=hu_ids]" title="Zaznacz wszystkie"></th>
+        <th style="width:24px">{% if role_is_control %}<input type="checkbox" data-check-all="input[name=hu_ids]" title="Zaznacz wszystkie">{% endif %}</th>
         <th><a href="?view=hu&sort=priority{% if qs_no_sort %}&{{ qs_no_sort }}{% endif %}" style="color:inherit" title="Pilne najpierw (wywołane + ranga klienta)">pickHU {% if sort == 'priority' %}{% icon "flame" %}{% endif %}</a></th>
         <th><a href="?view=hu&sort={% if sort == '-created' %}created{% else %}-created{% endif %}{% if qs_no_sort %}&{{ qs_no_sort }}{% endif %}" style="color:inherit">Data utworzenia {% if sort == 'created' %}↑{% else %}↓{% endif %}</a></th>
         <th><a href="?view=hu&sort=vip{% if qs_no_sort %}&{{ qs_no_sort }}{% endif %}" style="color:inherit">Klient {% if sort == 'vip' %}{% icon "star" %}{% endif %}</a></th>
@@ -157,7 +162,7 @@
       <tbody>
       {% for h in page_obj %}
       <tr>
-        <td>{% if h.is_completed and not h.called_at %}<input type="checkbox" name="hu_ids" value="{{ h.pk }}" form="callsel">{% endif %}</td>
+        <td>{% if role_is_control and h.is_completed and not h.called_at %}<input type="checkbox" name="hu_ids" value="{{ h.pk }}" form="callsel">{% endif %}</td>
         <td><a href="{% url 'ui:hu_control_detail' h.pk %}"><strong>{{ h.code|default:h.seq }}</strong></a></td>
         <td class="text-sm">{{ h.shipment.outbound_created_date|date:"d.m.Y"|default:"—" }}</td>
         <td class="text-sm">{% if h.shipment.customer.is_vip %}<span title="VIP">{% icon "star" label="VIP" cls="icon--em" %}</span> {% endif %}{{ h.shipment.customer.name|default:h.recipient_type|default:"—" }}</td>
