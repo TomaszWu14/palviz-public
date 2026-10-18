@@ -13,7 +13,7 @@ from ui.views.core.helpers import _calc_shipment_data
 from .test_shipment_calc import _user_all_roles
 
 class PalletCountCalibrationTests(TestCase):
-    """Regression for delivery 81772168: the loose 3D draw must NOT drive the billed
+    """Regression for delivery 80000168: the loose 3D draw must NOT drive the billed
     pallet count, and the efficiency slider must actually move the headline."""
 
     @classmethod
@@ -21,7 +21,7 @@ class PalletCountCalibrationTests(TestCase):
         cls.user = _user_all_roles()
         # A mixed load whose VOLUME fits in 2 pallets at high efficiency, but whose loose
         # shelf-packing (no true interlock) spreads into 3 — the exact inflation reported.
-        cls.sh = Shipment.objects.create(name="Dostawa 81772168", stowage_efficiency_pct=85)
+        cls.sh = Shipment.objects.create(name="Dostawa 80000168", stowage_efficiency_pct=85)
         specs = [("A", 40, 30, 25, 20), ("B", 60, 40, 20, 14), ("C", 35, 35, 30, 18),
                  ("D", 50, 30, 15, 16), ("E", 30, 20, 40, 22)]
         for code, l, w, h, qty in specs:

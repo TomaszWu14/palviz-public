@@ -223,9 +223,9 @@ class CmrDocumentTests(TestCase):
         PalletizationInstruction.objects.create(
             product=p, version=1, carton_l=40, carton_w=30, carton_h=25,
             unit_weight=1, pcs_per_carton=1, demand_pcs=100, is_active=True)
-        cust = Customer.objects.create(name="Nordmed ehf.", code="C1", city="Reykjavik",
+        cust = Customer.objects.create(name="ACME Nord ehf.", code="C1", city="Reykjavik",
                                        country="IS", street="Hverfisgata 1")
-        cls.sh = Shipment.objects.create(name="Dostawa 81772168", customer=cust,
+        cls.sh = Shipment.objects.create(name="Dostawa 80000168", customer=cust,
                                          destination_country="IS", destination_city="Reykjavik")
         ShipmentLine.objects.create(shipment=cls.sh, product=p, quantity=30, unit="kar")
 
@@ -241,7 +241,7 @@ class CmrDocumentTests(TestCase):
         if "html" in ct:                                    # WeasyPrint native libs absent → HTML
             self.assertContains(resp, "LIST PRZEWOZOWY CMR")
             self.assertContains(resp, "CMR-PROD")
-            self.assertContains(resp, "Nordmed")
+            self.assertContains(resp, "ACME Nord")
 
 
 class TransportKpiTests(TestCase):

@@ -16,7 +16,7 @@ class ThemeMappingTests(SimpleTestCase):
     def test_case_insensitive(self):
         self.assertEqual(carrier_for("73pa"), "PACZKI")
 
-    def test_unknown_and_blank_fall_back_to_geis(self):
+    def test_unknown_and_blank_fall_back_to_palety(self):
         self.assertEqual(carrier_for("ZZZ"), "PALETY")
         self.assertEqual(carrier_for(""), "PALETY")
         self.assertEqual(carrier_for(None), "PALETY")

@@ -1362,9 +1362,9 @@
    "customers": [
     {
      "city": "Rvk",
-     "code": "11132232",
+     "code": "10000232",
      "kind": "consignee",
-     "name": "Nordmed ehf.",
+     "name": "ACME Nord ehf.",
      "postal": "203"
     }
    ],
@@ -1375,7 +1375,7 @@
      "product__code": "P1",
      "product_code": "P1",
      "quantity": 600.0,
-     "shipment": "Dostawa 81772168",
+     "shipment": "Dostawa 80000168",
      "source_unit": "SZT",
      "unit": "szt"
     },
@@ -1385,7 +1385,7 @@
      "product__code": "P2",
      "product_code": "P2",
      "quantity": 2.5,
-     "shipment": "Dostawa 81772168",
+     "shipment": "Dostawa 80000168",
      "source_unit": "KAR",
      "unit": "kar"
     }
@@ -1396,15 +1396,15 @@
      "author": "ADEMOWY",
      "author_email": "",
      "client_requirements": "",
-     "customer__code": "11132232",
+     "customer__code": "10000232",
      "customer__kind": "consignee",
      "destination_city": "Rvk",
      "destination_country": "IS",
      "destination_postal": "203",
      "load_mode": "pallets",
-     "name": "Dostawa 81772168",
+     "name": "Dostawa 80000168",
      "notes": "",
-     "recipient_name": "Nordmed ehf.",
+     "recipient_name": "ACME Nord ehf.",
      "status": "draft",
      "transport_modes": ""
     }

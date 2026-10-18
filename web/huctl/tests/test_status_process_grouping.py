@@ -20,7 +20,7 @@ class StatusProcessGroupingTests(TestCase):
         mk(5, "71BU")                          # BUS solo
         self.client.force_login(self.lead)
 
-    def test_wc_zones_map_to_their_process_not_geis_fallback(self):
+    def test_wc_zones_map_to_their_process_not_fallback(self):
         self.assertEqual(carrier_for("WDEX"), "EXPORT")
         self.assertEqual(carrier_for("WDPL"), "PALETY")
         self.assertEqual(carrier_for("WDPA"), "PACZKI")

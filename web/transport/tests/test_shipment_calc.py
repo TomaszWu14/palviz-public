@@ -23,7 +23,7 @@ class CustomerRequirementsTests(TestCase):
         PalletizationInstruction.objects.create(
             product=p, version=1, carton_l=40, carton_w=30, carton_h=25,
             unit_weight=50, pcs_per_carton=1, demand_pcs=100, is_active=True)
-        cls.cust = Customer.objects.create(name="Nordmed", code="C1",
+        cls.cust = Customer.objects.create(name="ACME Nord", code="C1",
                                            max_pallet_weight_kg=200, requires_adr=True,
                                            temp_control="+2…+8°C", pallet_type="euro")
         cls.sh = Shipment.objects.create(name="Ciężka", customer=cls.cust)
@@ -176,12 +176,12 @@ class ShipmentFileImportTests(TestCase):
             "Dokument;Produkt;Ilość;Jednostka miary;Dost.Odbiorca materiałów;"
             "Dost.Opis odbiorcy materiałów;Dost.Utworz. dnia;Dost.Dział sprzedaży;Dost.Autor;"
             "Dost.Kod pocztowy;Dost.Klucz kraju/regionu;Dost.Nazwa odbiorcy 1;Dost.Liczba jednostek obsługi\n"
-            "81772168;ACME10001;600;SZT;11132232;Nordmed ehf.;17.06.2026;DS03;ADEMOWY;203;IS;Nordmed ehf.;2\n"
+            "80000168;ACME10001;600;SZT;10000232;ACME Nord ehf.;17.06.2026;DS03;ADEMOWY;203;IS;ACME Nord ehf.;2\n"
         )
         self._import(body)
-        sh = Shipment.objects.get(name="Dostawa 81772168")
+        sh = Shipment.objects.get(name="Dostawa 80000168")
         self.assertEqual(sh.destination_country, "IS")          # country captured for zones
-        self.assertEqual(sh.recipient_name, "Nordmed ehf.")
+        self.assertEqual(sh.recipient_name, "ACME Nord ehf.")
         self.assertEqual(sh.destination_postal, "203")
         self.assertEqual(sh.author, "ADEMOWY")
         self.assertEqual(sh.lines.get().unit, "szt")            # SZT → szt
