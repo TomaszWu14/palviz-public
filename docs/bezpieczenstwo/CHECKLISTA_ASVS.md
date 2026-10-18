@@ -37,7 +37,7 @@ L2 dla uwierzytelniania, sesji i danych (propozycja — poziom do potwierdzenia 
 | V14.1 Budowa | powtarzalny build, non-root | L1 | ✅ | `Dockerfile` |
 | V14.2 Zależności | skan SCA, usuwanie nieużywanych | L1 | ⚠️ | tygodniowo, nie na PR (US-001) |
 | V14.3 Konfiguracja | debug wyłączony, sekrety poza kodem | L1 | ⚠️ | `AppEnv`; słaby klucz przechodzi (US-004) |
-| V14.4 Nagłówki | CSP, `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options` | L1 | ⚠️ | CSP z nonce bez 'unsafe-inline' i 'unsafe-eval'; wymuszona na stronach publicznych, na ekranach wewnętrznych report-only do fazy 3 (ADR-0020); reszta ✅ |
+| V14.4 Nagłówki | CSP, `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options` | L1 | ⚠️ | CSP z nonce bez 'unsafe-inline' i 'unsafe-eval'; wymuszona na stronach publicznych, na ekranach wewnętrznych report-only do fazy 3 — termin 2026-11-01 (ADR-0020); reszta ✅ |
 | V14.5 Walidacja nagłówków | `Host`, `X-Forwarded-*` od zaufanego proxy | L1 | ⚠️ | `ALLOWED_HOSTS` ✅; `SECURE_PROXY_SSL_HEADER` bezwarunkowe (V1 do potwierdzenia) |
 
 Podsumowanie: ✅ 20 · ⚠️ 11 · ❌ 2 · ➖ 1. Każde ⚠️/❌ ma historyjkę lub pytanie do PO.

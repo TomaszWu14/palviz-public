@@ -72,6 +72,8 @@ Wdrożenie w trzech fazach:
      i ECharts nie potrzebują `'unsafe-eval'`.
 3. **Wymuszenie globalne.** Po 2 tygodniach bez naruszeń w raportach PO ustawia
    `CSP_REPORT_ONLY=false`. ADR-0008 dostaje wtedy status „Zastąpiona przez ADR-0020”.
+   **Termin (decyzja PO 2026-10-18): 2026-11-01.** Przed przełączeniem PO przegląda raporty
+   z `/csp-report/` z produkcji; nowe naruszenie przesuwa termin.
 
 ## Skutki
 
@@ -81,8 +83,8 @@ Wdrożenie w trzech fazach:
 - Style inline zostają dozwolone (`style-src 'unsafe-inline'`). Ich ryzyko jest znacznie
   mniejsze, a przepisanie ich nie wchodzi w zakres US-008.
 - Do czasu fazy 3 ekrany wewnętrzne pozostają na polityce z ADR-0008.
-- PO przyjął plan 2026-10-17. Do decyzji PO zostaje moment fazy 3. Wymaga on obserwacji raportów
-  z produkcji.
+- PO przyjął plan 2026-10-17. Termin fazy 3 PO wyznaczył 2026-10-18 na 2026-11-01, pod warunkiem
+  czystych raportów z produkcji.
 
 ## Źródła
 
