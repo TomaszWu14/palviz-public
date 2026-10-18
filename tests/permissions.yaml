@@ -769,18 +769,18 @@ trasy:
     widok: huctl.views.hu_queue.hu_call_batch
     straznik: roles
     metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: ok, Lider kontroli: ok, Podgląd: 403, Obsługa klienta: 403,
+    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: 403, Transport: 403, Kontrola HU: ok, Lider kontroli: ok, Podgląd: 403, Obsługa klienta: 403,
       Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Master Data]
+    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli]
     GET: 405
   ui:hu_call_selected:
     sciezka: /control/hu/wywolaj-zaznaczone/
     widok: huctl.views.hu_queue.hu_call_selected
     straznik: roles
     metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: ok, Lider kontroli: ok, Podgląd: 403, Obsługa klienta: 403,
+    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: 403, Transport: 403, Kontrola HU: ok, Lider kontroli: ok, Podgląd: 403, Obsługa klienta: 403,
       Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Master Data]
+    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli]
     GET: 405
   ui:hu_control_ack_short_dated:
     sciezka: /control/hu/<int:pk>/ack-short-dated/
@@ -1157,6 +1157,16 @@ trasy:
       Magazyn: 403, Optymalizacja kartonów: 403}
     dozwolone: [Administratorzy, Kontrola HU, Lider kontroli]
     wymaga_obiektu: true
+  ui:hu_photo_waive:
+    sciezka: /control/hu/<int:pk>/zdjecie/zwolnij/
+    widok: huctl.views.hu_hub.hu_photo_waive
+    straznik: roles
+    metody: [POST]
+    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: 403, Transport: 403, Kontrola HU: 403, Lider kontroli: ok, Podgląd: 403, Obsługa klienta: 403,
+      Magazyn: 403, Optymalizacja kartonów: 403}
+    dozwolone: [Administratorzy, Lider kontroli]
+    wymaga_obiektu: true
+    GET: 405
   ui:hu_prod_codes:
     sciezka: /control/prod-codes/
     widok: huctl.views.hu_quality.hu_prod_codes
@@ -1834,9 +1844,9 @@ trasy:
     widok: huctl.views.hu.planner_hu_import
     straznik: roles
     metody: [POST]
-    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: 403, Transport: 403, Kontrola HU: ok, Lider kontroli: ok, Podgląd: 403, Obsługa klienta: 403,
+    oczekiwane: {anon: 302, nieaktywny: 302, bez_roli: 403, superuser: ok, Administratorzy: ok, Master Data: ok, Transport: 403, Kontrola HU: ok, Lider kontroli: ok, Podgląd: 403, Obsługa klienta: 403,
       Magazyn: 403, Optymalizacja kartonów: 403}
-    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli]
+    dozwolone: [Administratorzy, Kontrola HU, Lider kontroli, Master Data]
     GET: 405
   ui:planner_inner_pack_delete:
     sciezka: /planner/inner-packs/<int:pk>/delete/

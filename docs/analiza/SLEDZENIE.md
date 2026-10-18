@@ -24,6 +24,7 @@ prowadzonych nowym procesem; aktualizowane przy odbiorze [BA] każdej historyjki
 | P4, WK-HU-07 | US-023 (#62) | `huctl.tests.test_vip_scan_us023` (skan VIP spoza kontrolowanych typów otwiera kontrolę; zwykła paleta nadal zablokowana) | PR US-023 | odebrana |
 | P10 | US-029 (#63) | `huctl.tests.test_import_acks_us029` (import bez zmian, zmiana pozycji/ilości, przepięcie na inną dostawę, nowa paleta) | PR US-029 | odebrana |
 | P19 | US-031 (#65) | `ui.tests.test_pallet_range_us031` (liczba palet w limitach z pakowania, zakres w zapytaniu) + snapshot `calc_shipment_data` (`height_short`) | PR US-031 | odebrana |
+| P11 | US-030 (#64) | `huctl.tests.test_roles_reserve_import_us030` (Master Data → 403 na wywołaniu, przyciski ukryte; plik i Power BI — ta sama lista w `tests/permissions.yaml`) | PR #81 | odebrana |
 | P7 | US-026 (#66) | `huctl.tests.test_photo_waiver_us026` (blokada → zwolnienie lidera z powodem → liczenie; kontroler nie zwolni; powód obowiązkowy) | PR US-026 | odebrana |
 | P8 | US-027 (#61) | `huctl.tests.test_hu_history_guard_us027` (kaskada z wysyłki, delete na querysecie, paleta zaplanowana z próbami, reset demo, widok usuwania) | PR US-027 | odebrana |
 | P12 | US-016 (#27) | `transport.tests.test_carrier_rates_us012` (informacja na ekranie cennika) | PR US-012 | odłożona (W) |

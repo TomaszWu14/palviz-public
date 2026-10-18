@@ -16,6 +16,10 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
 
 ### Changed
+- US-030 (#64, P11): Master Data nie wywołuje (nie rezerwuje) palet — wywołanie wsadowe i „zaznaczone” zwraca
+  403, a lista HU nie pokazuje mu przycisków „Wywołaj”. Import pliku palet ma te same role co pobranie
+  z Power BI (Master Data importuje plik z Data Center; błędy importu wracają na ekran, z którego go
+  uruchomiono). Macierz `tests/permissions.yaml` uzupełniona też o trasę `hu_photo_waive` (US-026).
 - US-026 (#66, P7): lider może zwolnić paletę z bramki zdjęcia (np. aparat nie działa) na karcie HU —
   powód jest obowiązkowy i trafia do historii palety; kontroler nie może zrobić tego sam. Ekran zdjęcia
   podpowiada, żeby poprosić lidera.

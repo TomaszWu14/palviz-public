@@ -69,7 +69,8 @@ def hu_reserve_takeover(request, pk):
     return redirect("ui:hu_control_detail", pk=pk)
 
 
-@_md_or_control
+# US-030 (P11): rezerwuje tylko ten, kto liczy — bez Master Data.
+@_controller
 @require_POST
 def hu_call_batch(request):
     """Wywołaj wszystkie GOTOWE (is_completed) palety danej przesyłki dla bieżącego kontrolera."""
@@ -87,7 +88,7 @@ def hu_call_batch(request):
     return _safe_referer(request, "ui:planner_stock_contents")
 
 
-@_md_or_control
+@_controller
 @require_POST
 def hu_call_selected(request):
     """Checkboxy „zaznacz wiele → wywołaj" (spec): rezerwuje zaznaczone palety dla
