@@ -16,6 +16,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
 
 ### Changed
+- US-031 (#65, P19): gdy ułożenie warstwami w limitach palety (wysokość, waga) potrzebuje więcej palet
+  niż szacunek z kubatury, karta wysyłki i ekran wyceny pokazują zakres (np. „2–3”) i ostrzeżenie,
+  a zapytanie do spedycji prosi o wycenę obu wariantów. Szacunek nadal jest nagłówkiem.
 - US-029 (#63, P10): import HU kasuje potwierdzenia wymagań klienta i krótkiego terminu na paletach,
   którym zmienił zawartość (indeks, partia, data, ilość) albo dostawę; komunikat po imporcie mówi,
   ile palet trzeba potwierdzić ponownie. Import bez zmian nie rusza potwierdzeń.

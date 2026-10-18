@@ -792,6 +792,7 @@
   "type": "shipment"
  },
  "target_forces_repack": {
+  "height_fit_pallets": 3,
   "max_h_cm": 120,
   "n_pallets": 1,
   "pallet_base": 14,
@@ -811,7 +812,7 @@
    }
   ],
   "rendered_pallets": 1,
-  "sha256": "a4e3a181a758b49bc6e513dcd0b45c26995ee8e1028bfe66b305497472561591",
+  "sha256": "5bdceda67610fb249c9515fbee3ecc2437f8bddc6b382904a7829eef3eca2718",
   "truncated": false,
   "type": "shipment",
   "warnings": [
@@ -819,6 +820,7 @@
   ]
  },
  "target_mono_and_pool_repack": {
+  "height_fit_pallets": 3,
   "max_h_cm": 120,
   "n_pallets": 2,
   "pallet_base": 14,
@@ -846,7 +848,7 @@
    }
   ],
   "rendered_pallets": 2,
-  "sha256": "3afb10e34792e3e9f01d18e43a022b6a7f2c46397779c5d8d5931ccc183b7f90",
+  "sha256": "5a1f00032a3a067784775de6e223bf305b0edf347dc4d3b9e9151472d765e511",
   "truncated": false,
   "type": "shipment",
   "warnings": [

@@ -158,7 +158,8 @@ def _build_shipment_three_data_ffd(calc, max_h=_DEFAULT_PALLET_HEIGHT, max_w=_MA
     # current fill balances the load across the target. A pallet is added only if a carton
     # fits in none, so the drawn count never silently disagrees with the layout.
     cartons.sort(key=lambda c: (-c[2], -c[6], c[4]))   # height, then weight, then SKU
-    bins, repacked = _ffd_pack_pool(cartons, len(pallets), max_h, mw, target_bins)
+    bins, repacked, n_natural = _ffd_pack_pool(cartons, len(pallets), max_h, mw, target_bins)
+    height_fit = len(pallets) + n_natural      # US-031: ile palet potrzeba W limicie wysokości
     pallets.extend(b["boxes"] for b in bins if b["boxes"])
     # Preserve the efficiency-calibrated quote count: if dense packing needed fewer pallets
     # than the estimate, pad with EMPTY slack pallets so the headline (which carries the
@@ -185,6 +186,7 @@ def _build_shipment_three_data_ffd(calc, max_h=_DEFAULT_PALLET_HEIGHT, max_w=_MA
     }
     warnings = _ffd_limit_warnings(calc["lines"], max_h, mw)
     if repacked:
+        data["height_fit_pallets"] = height_fit
         warnings += _ffd_repack_weight_warning(bins, mw)
         warnings += _ffd_repack_height_warning(out, max_h)
     if warnings:
@@ -275,16 +277,17 @@ def _ffd_pack_pool(cartons, n_mono, max_h, mw, target_bins):
     the quote budgeted after the mono pallets (loose shelf-flow can't reach the assumed
     density), re-packs everything into EXACTLY the budgeted number, spreading evenly and
     stacking taller (height-uncapped) so the picture matches the headline — „dociśnij do
-    wyceny". → (bins, czy_przepakowano)."""
+    wyceny". → (bins, czy_przepakowano, ile palet wyszło w limicie wysokości)."""
     pool_target = max(0, target_bins - n_mono) if target_bins else None
     bins = _ffd_fill(cartons, max_h, mw)
-    if pool_target and sum(1 for b in bins if b["boxes"]) > pool_target:
+    n_natural = sum(1 for b in bins if b["boxes"])
+    if pool_target and n_natural > pool_target:
         bins = [_ffd_new_bin() for _ in range(pool_target)]
         for (l, w, h, color, label, _v, wkg) in cartons:
             b = min(bins, key=lambda bb: bb["vol"])      # emptiest pallet → even towers
             _ffd_apply(b, l, w, h, color, label, wkg, *_ffd_coords(b, l, w))
-        return bins, True
-    return bins, False
+        return bins, True, n_natural
+    return bins, False, n_natural
 
 
 def _ffd_repack_weight_warning(bins, mw):
