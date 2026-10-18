@@ -24,7 +24,8 @@ prowadzonych nowym procesem; aktualizowane przy odbiorze [BA] każdej historyjki
 | P4, WK-HU-07 | US-023 (#62) | `huctl.tests.test_vip_scan_us023` (skan VIP spoza kontrolowanych typów otwiera kontrolę; zwykła paleta nadal zablokowana) | PR US-023 | odebrana |
 | P10 | US-029 (#63) | `huctl.tests.test_import_acks_us029` (import bez zmian, zmiana pozycji/ilości, przepięcie na inną dostawę, nowa paleta) | PR US-029 | odebrana |
 | P19 | US-031 (#65) | `ui.tests.test_pallet_range_us031` (liczba palet w limitach z pakowania, zakres w zapytaniu) + snapshot `calc_shipment_data` (`height_short`) | PR US-031 | odebrana |
-| P6 | US-025 (#68) | `huctl.tests.test_hu_queue_sweep_beat_us025` (beat bez otwierania kolejki: wygasa rezerwację > 8 h, zwraca kontrolę bez liczenia > 4 h, świeża rezerwacja zostaje; zwrócona paleta bez alertu „utknęła”) | PR US-025 | w realizacji |
+| P3 | US-022 (#69) | `huctl.tests.test_parcel_zone_check_us022` (huctl.W001 przy `PACZKI`/pustej liście, z nazwą zmiennej; brak ostrzeżenia, gdy jest choć jeden znany kod) + krok CI „Django deploy check” z `PARCEL_ZONE_CODES` | PR #84 | odebrana |
+| P6 | US-025 (#68) | `huctl.tests.test_hu_queue_sweep_beat_us025` (beat bez otwierania kolejki: wygasa rezerwację > 8 h, zwraca kontrolę bez liczenia > 4 h, świeża rezerwacja zostaje; zwrócona paleta bez alertu „utknęła”) | PR #83 | odebrana |
 | P9 | US-028 (#67) | `transport.tests.test_all_escaped_us028` (sygnał tylko gdy wszystkie palety „escaped”, raz; znacznik na liście i karcie; gotowość nietknięta) | PR #82 | odebrana |
 | P11 | US-030 (#64) | `huctl.tests.test_roles_reserve_import_us030` (Master Data → 403 na wywołaniu, przyciski ukryte; plik i Power BI — ta sama lista w `tests/permissions.yaml`) | PR #81 | odebrana |
 | P7 | US-026 (#66) | `huctl.tests.test_photo_waiver_us026` (blokada → zwolnienie lidera z powodem → liczenie; kontroler nie zwolni; powód obowiązkowy) | PR US-026 | odebrana |

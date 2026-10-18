@@ -122,5 +122,7 @@ jobs:
           DJANGO_DEBUG: 'false'
           DJANGO_ALLOWED_HOSTS: 'groove.example.com'
           DJANGO_SSL_REDIRECT: 'true'
+          # US-022: kody stref paczkowych jak na produkcji — inaczej huctl.W001 (bramka paczek wyłączona).
+          PARCEL_ZONE_CODES: '73PA,WDPA'
           PYTHONPATH: ${{ github.workspace }}/web:${{ github.workspace }}
         run: python web/manage.py check --deploy --fail-level WARNING
