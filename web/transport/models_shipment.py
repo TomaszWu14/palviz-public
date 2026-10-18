@@ -243,6 +243,12 @@ class Shipment(models.Model):
         active = [h for h in self.handling_units.all() if h.status != "escaped"]
         return bool(active) and all(h.status == "ok" for h in active)
 
+    def hu_all_escaped(self):
+        """True gdy wysyłka ma palety i WSZYSTKIE wyjechały bez kontroli (US-028, P9) — taka
+        wysyłka nigdy nie będzie „gotowa” (hu_checked_ready), więc dostaje osobny znacznik."""
+        hus = list(self.handling_units.all())
+        return bool(hus) and all(h.status == "escaped" for h in hus)
+
     def has_controlled_hu(self):
         """True gdy którakolwiek HU weszła w kontrolę (status ≠ planned albo ma próby
         kontroli). Regeneracja HU / usunięcie przesyłki skasowałyby wtedy kaskadą historię

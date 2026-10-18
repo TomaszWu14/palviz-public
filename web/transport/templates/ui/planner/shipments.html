@@ -143,6 +143,8 @@
             {% endwith %}
             {% if s.wh_ready %}
             <span class="badge" style="background:var(--green-light);color:var(--green)" title="Magazyn: towar przygotowany / HU sprawdzone">{% icon "warehouse" %}Gotowe do wysyłki</span>
+            {% elif s.hu_all_escaped %}
+            <span class="badge badge-red" title="Wszystkie palety wyjechały bez kontroli (dyspozycja lidera) — wysyłka nie będzie „gotowa”">{% icon "triangle-alert" %}Wyjechało bez kontroli</span>
             {% else %}
             <span class="badge" style="background:var(--yellow-light);color:var(--yellow-dark)" title="Magazyn: w trakcie przygotowania">{% icon "warehouse" %}W przygotowaniu</span>
             {% endif %}

@@ -16,6 +16,10 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
 
 ### Changed
+- US-028 (#67, P9): wysyłka, której wszystkie palety wyjechały bez kontroli, ma na liście i karcie
+  znacznik „Wyjechało bez kontroli”, a twórca i Transport dostają jedno powiadomienie (także e-mail).
+  Wysyłka nie zmienia się przez to na „gotowa”. Powiadomienia o gotowości wysyłki przeniesione do
+  `ui/notifications_shipment.py` (limit 500 linii; importy z `ui.notifications` bez zmian).
 - US-030 (#64, P11): Master Data nie wywołuje (nie rezerwuje) palet — wywołanie wsadowe i „zaznaczone” zwraca
   403, a lista HU nie pokazuje mu przycisków „Wywołaj”. Import pliku palet ma te same role co pobranie
   z Power BI (Master Data importuje plik z Data Center; błędy importu wracają na ekran, z którego go

@@ -519,6 +519,14 @@
 </div>
 {% endif %}
 
+{% if shipment.hu_all_escaped %}
+{# US-028 (P9): wysyłka bez żadnej skontrolowanej palety nigdy nie będzie „gotowa”. #}
+<div class="alert alert-warning" role="status" style="margin-bottom:16px">
+  {% icon "triangle-alert" %} <strong>Wszystkie palety wyjechały bez kontroli</strong> (dyspozycja lidera).
+  Wysyłka nie zmieni się na „gotowa” — zdecyduj o jej statusie.
+</div>
+{% endif %}
+
 <!-- Warehouse readiness confirmations -->
 <div class="card" style="margin-bottom:16px">
   <div style="padding:12px 16px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
