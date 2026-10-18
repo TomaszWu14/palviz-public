@@ -6,13 +6,19 @@ otwarciu hubu kontroli — gdy nikt go nie otworzył, lider nie dostawał sygna�
 co hub (dedup po `dedup_key`), ale dla wszystkich HU; woła ją beat co 15 min
 (`ui.raise_hu_alert_tasks`). Hub dalej podnosi zadania dla swoich list — dedup sprawia,
 że nic się nie dubluje.
+
+US-025 (P6): ten sam beat najpierw sprząta kolejkę — wygasanie porzuconych rezerwacji i
+zwrot porzuconej kontroli — tą samą funkcją `_expire_stale_reservations()`, którą woła
+budowa kolejki (`_call_queue`). Bez tego sprzątanie działało tylko przy otwarciu kolejki.
+Throttle 1×/min (cache) jest wspólny, więc kolejka i beat niczego nie dublują.
 """
 from django.utils import timezone
 
 from ui.models import HandlingUnit, Task
 
-from .views.hu_helpers import (_filter_controlled, _raise_stale_tasks, _raise_stuck_tasks,
-                               _stale_hus_qs, _stuck_incontrol_qs)
+from .views.hu_helpers import (_expire_stale_reservations, _filter_controlled,
+                               _raise_stale_tasks, _raise_stuck_tasks, _stale_hus_qs,
+                               _stuck_incontrol_qs)
 
 
 def _without_task_this_period(qs, category):
@@ -25,6 +31,8 @@ def _without_task_this_period(qs, category):
 
 
 def raise_hu_alert_tasks():
+    # Najpierw sprzątanie: paleta zwrócona do kolejki nie powinna dostać alertu „utknęła”.
+    _expire_stale_reservations()
     controlled = _filter_controlled(HandlingUnit.objects.all())
     stale = list(_without_task_this_period(_stale_hus_qs(controlled), "hu_stale"))
     stuck = list(_without_task_this_period(_stuck_incontrol_qs(controlled), "hu_stuck"))
