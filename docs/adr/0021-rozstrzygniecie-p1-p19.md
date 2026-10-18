@@ -30,7 +30,7 @@ PO przyjął 2026-10-17 wszystkie rekomendacje:
 | P11 | błąd — Master Data nie rezerwuje palet; import pliku i pobranie z Power BI mają te same role | US-030 |
 | P12 | odłożone (W) — ekran cennika informuje, że nie wpływa na wycenę | US-016 (#27) → W |
 | P18 | odłożone (W) — wymaga migracji danych (ADR-0017) | US-032 |
-| P19 | błąd — liczba palet w wycenie z pakowania warstwowego w limicie wysokości | US-031 |
+| P19 | błąd — gdy pakowanie w limicie potrzebuje więcej palet niż szacunek: zakres + ostrzeżenie w wycenie i zapytaniu (doprecyzowanie PO 2026-10-17) | US-031 |
 
 ## Skutki
 
@@ -40,7 +40,7 @@ PO przyjął 2026-10-17 wszystkie rekomendacje:
   `docs/analiza/HISTORYJKI.md`.
 - US-030 i US-024 zmieniają uprawnienia ról, a US-027 — reguły usuwania danych. Te PR-y przegląda
   człowiek (ścieżki ryzyka: role, migracje).
-- P19 zmienia liczbę palet w wycenie. Wyceny po zmianie mogą być wyższe o paletę; to zamierzone.
+- P19: wycena pokazuje zakres „szacunek – pakowanie w limicie”, gdy się różnią; zapytanie do spedycji prosi o oba warianty. Suwak wydajności nadal steruje szacunkiem.
 
 ## Źródła
 

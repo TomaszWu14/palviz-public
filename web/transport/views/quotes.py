@@ -198,8 +198,7 @@ def planner_shipment_quote(request, pk):
         response_url = request.build_absolute_uri(
             reverse("ui:quote_response", args=[offer.token]))
         recipients.append({"obj": r, "offer": offer, "mailto": _quote_mailto(
-            shipment, r.email, n_pallets=sel["n_pallets"], height_cm=sel["max_h_cm"],
-            n_pallets_low=(sel.get("n_pallets_low") if sel.get("n_range") else None),
+            shipment, r.email, height_cm=sel["max_h_cm"], **_quote_pallet_range(sel),
             calc=calc, maps_url=maps_url, km=km, sender=request.user, response_url=response_url)})
 
     return render(request, "ui/planner/shipment_quote.html", {
@@ -207,6 +206,16 @@ def planner_shipment_quote(request, pk):
         "origin": origin, "dest": dest, "km": km, "maps_url": maps_url,
         "static_map": static_map, "embed_url": embed_url, "recipients": recipients,
     })
+
+
+def _quote_pallet_range(sel):
+    """Liczba palet do zapytania: zakres, gdy ładunek jest na granicy (n_range) albo gdy
+    pakowanie w limicie wysokości potrzebuje więcej palet niż szacunek (US-031, P19)."""
+    if sel.get("height_short"):
+        low = sel["n_pallets_low"] if sel.get("n_range") else sel["n_pallets"]
+        return {"n_pallets": sel["n_pallets_high"], "n_pallets_low": low}
+    return {"n_pallets": sel["n_pallets"],
+            "n_pallets_low": sel.get("n_pallets_low") if sel.get("n_range") else None}
 
 
 @_transport_mgr

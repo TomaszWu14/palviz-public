@@ -231,6 +231,7 @@ def _build_scenario(sc_h, *, eff, total_vol_m3, total_weight_kg, weight_cap,
     # non-binding illustration whose own drawn count is surfaced separately.
     drawn_filled = _drawn_filled(three)
     n_pallets = est
+    height_fit = 0 if pallet_anchor else (three or {}).get("height_fit_pallets", 0)   # US-031
     # Precise modelled breakdown: how many pallets actually carry goods vs are reserved
     # slack (the hand-stacking buffer). Lets the UI show an exact count, not a range.
     n_filled = drawn_filled or n_pallets
@@ -247,6 +248,8 @@ def _build_scenario(sc_h, *, eff, total_vol_m3, total_weight_kg, weight_cap,
         "n_pallets": n_pallets,
         "n_pallets_low": n_low,
         "n_range": (not pallet_anchor) and (n_pallets - n_low == 1),
+        "n_pallets_high": max(height_fit, n_pallets),   # US-031: pakowanie w limicie wysokości
+        "height_short": height_fit > n_pallets,
         "est_theoretical": est_theoretical,   # slider-driven volumetric estimate
         "actual_hu": actual_hu,               # SAP physical HU count (0 = unknown)
         "wh_pallets": wh_pallets,             # warehouse-committed count (0 = none)

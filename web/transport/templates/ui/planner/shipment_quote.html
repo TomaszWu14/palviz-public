@@ -60,10 +60,16 @@
       <a href="{% url 'ui:planner_quote_recipients' %}" class="btn btn-ghost btn-sm" style="font-size:12px">Lista adresów</a>
     </div>
     <div style="padding:8px 16px;font-size:12px;color:var(--gray-500)">
-      Palety: <strong>{{ scenario.n_pallets }}</strong> (120×80, wys. do {{ scenario.max_h_cm }} cm) ·
+      Palety: <strong>{{ scenario.n_pallets }}{% if scenario.height_short %}–{{ scenario.n_pallets_high }}{% endif %}</strong> (120×80, wys. do {{ scenario.max_h_cm }} cm) ·
       {{ calc.total_vol_m3 }} m³ · {{ calc.total_weight_kg }} kg.
       Treść zawiera link, w którym spedycja wpisze kwotę i terminy.
     </div>
+    {% if scenario.height_short %}
+    <div class="alert alert-warning" role="note" data-testid="height-short" style="margin:0 16px 8px">
+      {% icon "triangle-alert" %} Szacunek z kubatury to {{ scenario.n_pallets }} palet, ale ułożenie warstwami
+      w limitach palety ({{ scenario.max_h_cm }} cm, waga) wymaga {{ scenario.n_pallets_high }}. Zapytanie podaje oba warianty.
+    </div>
+    {% endif %}
     {% for r in recipients %}
     <div style="padding:10px 16px;border-top:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center;gap:8px">
       <div>
