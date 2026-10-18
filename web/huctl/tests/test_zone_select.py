@@ -76,7 +76,7 @@ class ZoneFilterTests(TestCase):
         self.assertNotIn("HEXP", body)
         self.assertNotIn("HOTH", body)
 
-    def test_geis_zone_catches_unmapped_types(self):
+    def test_fallback_zone_catches_unmapped_types(self):
         u = _controller_user("paletyman", allowed="PALETY,BUS", section="PALETY")
         self.client.force_login(u)
         body = self.client.get(reverse("ui:hu_control_status")).content.decode()

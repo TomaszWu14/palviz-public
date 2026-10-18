@@ -98,7 +98,7 @@ class WarehouseCountNegotiationTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = _user_all_roles()
-        cls.sh = Shipment.objects.create(name="Dostawa 81772168", destination_city="Reykjavik",
+        cls.sh = Shipment.objects.create(name="Dostawa 80000168", destination_city="Reykjavik",
                                          destination_country="IS", stowage_efficiency_pct=85)
         p = Product.objects.create(code="X1", name="X1")
         PalletizationInstruction.objects.create(
@@ -161,7 +161,7 @@ class WarehouseCountNegotiationTests(TestCase):
             ready_at=timezone.now() + timedelta(days=2))
         resp = self.client.get(reverse("ui:planner_pickup_schedule"))
         self.assertEqual(resp.status_code, 200)
-        self.assertContains(resp, "Dostawa 81772168")
+        self.assertContains(resp, "Dostawa 80000168")
         self.assertContains(resp, "Harmonogram odbiorów")
 
     def test_suggest_raises_transport_task_and_notifies(self):
@@ -205,8 +205,8 @@ class ClientLoadedNotificationTests(TestCase):
     def setUpTestData(cls):
         from ui.models import Customer
         cls.user = _user_all_roles()
-        cust = Customer.objects.create(name="Nordmed", code="C1", contact_email="klient@nordmed.example")
-        cls.sh = Shipment.objects.create(name="Dostawa 81772168", customer=cust)
+        cust = Customer.objects.create(name="ACME Nord", code="C1", contact_email="klient@acme-nord.example")
+        cls.sh = Shipment.objects.create(name="Dostawa 80000168", customer=cust)
 
     def setUp(self):
         self.client.force_login(self.user)
@@ -221,7 +221,7 @@ class ClientLoadedNotificationTests(TestCase):
         self.assertIsNotNone(self.sh.client_loaded_notified_at)
         self.assertEqual(str(self.sh.client_eta), "2026-07-12")
         self.assertEqual(len(mail.outbox), 1)
-        self.assertIn("klient@nordmed.example", mail.outbox[0].to)
+        self.assertIn("klient@acme-nord.example", mail.outbox[0].to)
         self.assertIn("załadowany", mail.outbox[0].subject)
 
     def test_notify_client_without_email_errors(self):

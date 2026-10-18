@@ -208,9 +208,9 @@ class ShipmentsImportCharacterizationTests(TestCase):
         self._check("positional", self._post([("f.csv", body)]))
 
     def test_xlsx_numeric_cells(self):
-        body = _xlsx(SAP_HDR, [[81772168, "P1", 600, "SZT", 11132232, "Nordmed ehf.", "Rvk",
+        body = _xlsx(SAP_HDR, [[80000168, "P1", 600, "SZT", 10000232, "ACME Nord ehf.", "Rvk",
                                 203, "IS", "ADEMOWY", None, None, 2],
-                               [81772168, "P2", 2.5, "KAR", 11132232, None, None, None, None,
+                               [80000168, "P2", 2.5, "KAR", 10000232, None, None, None, None,
                                 None, None, None, 3]])
         self._check("xlsx_numeric", self._post([("s.xlsx", body, XLSX)]))
 

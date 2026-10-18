@@ -37,6 +37,10 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   Strażnik: `ui.tests.test_naming_us011`.
 
 ### Security
+- Higiena danych: z bieżącego kodu testów usunięto nazwę klienta „Nordmed ehf.” i realnie wyglądające numery
+  dostawy/klienta (zastąpione fikcyjnymi „ACME Nord ehf.”, 80000168, 10000232). Z `.env.example` usunięto
+  nieużywane zmienne z nazwami przewoźnika i magazynu (GLS, DLT). Historia commitów nie jest zmieniana —
+  decyzja o jej przepisaniu należy do PO.
 - US-027 (#61, P8): paleta z historią kontroli (status ≠ zaplanowana albo próby liczenia) nie da
   się usunąć żadną drogą — kaskada z wysyłki, delete na querysecie, konsola (`huctl/history_guard.py`,
   `pre_delete`). Wyjątek tylko dla `seed_demo --reset`. Strażnik: `huctl.tests.test_hu_history_guard_us027`.
