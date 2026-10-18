@@ -8,6 +8,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 ## [Unreleased]
 
 ### Added
+- US-022 (#69, P3): `manage.py check` ostrzega (`huctl.W001`), gdy `PARCEL_ZONE_CODES` nie zawiera żadnego
+  znanego kodu strefy — domyślne `PACZKI` wyłączało bramkę rozliczenia paczek po cichu. Krok CI
+  „Django deploy check” ustawia `PARCEL_ZONE_CODES=73PA,WDPA`. **Produkcja: ustaw tę zmienną w env.**
 - US-018 (#29): workflow `e2e-nightly.yml` — nocne testy przepływów E2E (`@flow`, Playwright) na `main`
   (01:17 UTC), ręcznie i na PR-ach zmieniających `tests/e2e/**`; raport i ślady jako artefakt przy
   porażce. Nie jest bramką PR-ów (D-12).

@@ -13,6 +13,7 @@ class HuctlConfig(AppConfig):
     verbose_name = "Kontrola HU"
 
     def ready(self):
+        from . import checks  # noqa: F401  (US-022: rejestracja checku PARCEL_ZONE_CODES)
         # US-027 (P8): usunięcie palety z historią kontroli — odmowa na każdej ścieżce.
         from django.db.models.signals import pre_delete
 
