@@ -2,7 +2,7 @@
 
 from ui.views.core import (
     ControlledWarehouseType, ControllerZone, Count, GROUP_ADMIN, GROUP_LEADER,
-    HandlingUnit, HUControlAttempt, HUQualityIssue, Q, Shipment, WarehouseRackType,
+    HandlingUnit, HUControlAttempt, HUQualityIssue, HUStatusEvent, Q, Shipment, WarehouseRackType,
     _controller, _leader, get_object_or_404, has_role, messages, module_required,
     redirect, render, require_POST, settings,
 )
@@ -262,7 +262,37 @@ def _needs_photo(request, hu):
     prof = getattr(request.user, "profile", None)
     if not (prof and prof.has_camera):
         return False
-    return not request.session.get(f"hu_photo_ok_{hu.pk}")
+    if request.session.get(f"hu_photo_ok_{hu.pk}"):
+        return False
+    return not _photo_waived(hu)
+
+
+# US-026 (P7): zwolnienie palety z bramki zdjęcia przez lidera (np. aparat nie działa) — wpis
+# w historii HU z autorem i powodem; kind spoza KIND jak „photo” (bez migracji, max 8 znaków).
+PHOTO_WAIVER_KIND = "nophoto"
+
+
+def _photo_waived(hu):
+    return HUStatusEvent.objects.filter(hu=hu, kind=PHOTO_WAIVER_KIND).exists()
+
+
+@_leader
+@require_POST
+def hu_photo_waive(request, pk):
+    """Lider zwalnia tę paletę z bramki zdjęcia. Powód obowiązkowy (audyt); kontroler sam
+    tego nie zrobi (dekorator lidera)."""
+    hu = get_object_or_404(HandlingUnit, pk=pk)
+    reason = (request.POST.get("reason") or "").strip()[:120]
+    if not reason:
+        messages.error(request, "Podaj powód zwolnienia z bramki zdjęcia (np. „aparat nie działa”).")
+        return redirect("ui:hu_control_detail", pk=pk)
+    if hu.status in ("ok", "escaped"):
+        messages.info(request, "HU jest zamknięta — zwolnienie zbędne.")
+        return redirect("ui:hu_control_detail", pk=pk)
+    _log_status(hu, hu.status, hu.status, request.user,
+                f"Zwolnienie z bramki zdjęcia: {reason}", kind=PHOTO_WAIVER_KIND, force=True)
+    messages.success(request, "Paleta zwolniona z bramki zdjęcia — kontroler może liczyć.")
+    return redirect("ui:hu_control_detail", pk=pk)
 
 
 def _maybe_log_photo_skip(request, hu):
@@ -333,5 +363,8 @@ __all__ = [
     "hu_control_tv",
     "hu_control_types",
     "hu_photo_check",
+    "hu_photo_waive",
+    "_photo_waived",
+    "PHOTO_WAIVER_KIND",
     "scanner_simulator",
 ]
