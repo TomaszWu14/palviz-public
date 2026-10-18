@@ -46,6 +46,7 @@ urlpatterns = [
     path("control/recipient/", huctl_views.hu_control_find_recipient, name="hu_control_find_recipient"),
     path("control/next/", huctl_views.hu_control_next, name="hu_control_next"),
     path("control/hu/<int:pk>/zdjecie/", huctl_views.hu_photo_check, name="hu_photo_check"),
+    path("control/hu/<int:pk>/zdjecie/zwolnij/", huctl_views.hu_photo_waive, name="hu_photo_waive"),
     path("control/hu/<int:pk>/", huctl_views.hu_control_detail, name="hu_control_detail"),
     path("control/hu/<int:pk>/przynies/", huctl_views.hu_request_bring, name="hu_request_bring"),
     path("control/hu/<int:pk>/wywolaj/", huctl_views.hu_call, name="hu_call"),

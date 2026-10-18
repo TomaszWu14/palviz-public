@@ -86,6 +86,19 @@
     <button type="submit" class="btn btn--ghost" style="width:100%;margin:0">{% icon "circle-x" %} Nie znaleziono palety na lokalizacji</button>
   </form>
   {% endif %}
+  {% if is_leader and photo_gate and hu.status != "escaped" %}
+  {# US-026: zwolnienie z bramki zdjęcia (aparat nie działa) — powód trafia do historii HU. #}
+  {% if photo_waived %}
+  <div class="msg msg--info" data-testid="photo-waived">{% icon "camera" %} Paleta zwolniona z bramki zdjęcia.</div>
+  {% else %}
+  <form method="post" action="{% url 'ui:hu_photo_waive' hu.pk %}" style="margin:0 0 10px;display:flex;gap:6px">
+    {% csrf_token %}
+    <input type="text" name="reason" required maxlength="120" placeholder="Powód (np. aparat nie działa)"
+           aria-label="Powód zwolnienia z bramki zdjęcia" style="flex:1;min-width:0">
+    <button type="submit" class="btn btn--ghost" style="margin:0">{% icon "camera" %} Zwolnij ze zdjęcia</button>
+  </form>
+  {% endif %}
+  {% endif %}
   {% if is_leader and not locked and hu.status != "escaped" %}
   {# Pilne wyjęcie (lider): auto czeka — paleta na czoło kolejki + ack-powiadomienie kontrolera. #}
   {% if hu.is_priority %}

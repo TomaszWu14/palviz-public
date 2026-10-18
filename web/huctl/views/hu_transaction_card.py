@@ -5,11 +5,13 @@ from ui.views.core import (
     _controller, get_object_or_404, has_role, messages, redirect, render,
     require_POST,
 )
+from django.conf import settings
 from django.utils import timezone
 from django.db import transaction
 from django.urls import reverse
 from urllib.parse import urlencode
 from .hu_helpers import _ensure_started  # noqa: F401
+from .hu_hub import _photo_waived
 from .hu_count import _alt_conv, _annotate_picked_units, _count_tiles, _prefetch_instructions, _unit_factors  # noqa: F401
 from .hu_helpers import _call_queue, _is_parcel, _log_status, _maybe_escalate_recheck, _notify_groups, _raise_corrective_tasks, _reserve, _type_controlled, _valid_photo, _zone_ok  # noqa: F401
 from .hu_quality import _notify_recheck  # noqa: F401
@@ -125,6 +127,9 @@ def hu_control_detail(request, pk):
         # Zdjęcia obecności (bramka foto) — tylko dla lidera, do spot-audytu. Ostatnie kilka.
         "control_photos": (list(hu.control_photos.select_related("user")[:8])
                            if has_role(request.user, GROUP_ADMIN, GROUP_LEADER) else []),
+        # US-026: lider może zwolnić paletę z bramki zdjęcia (gdy bramka jest włączona).
+        "photo_gate": getattr(settings, "HU_PHOTO_ENFORCE", False) and not locked,
+        "photo_waived": _photo_waived(hu),
         "flags": HandlingUnitItem.ACTIVE_ERROR_FLAGS,   # UI wejścia: bez kodów wygaszonych
         "open_issues": list(hu.quality_issues.filter(status="open").select_related("item")),
         "foreign_count": hu.quality_issues.filter(issue_type="foreign_item").count(),

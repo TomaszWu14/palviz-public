@@ -59,6 +59,7 @@ from .hu_hub import (  # noqa: F401
     hu_control_tv,
     hu_control_types,
     hu_photo_check,
+    hu_photo_waive,
     scanner_simulator,
 )
 from .hu_queue import (  # noqa: F401
@@ -162,6 +163,7 @@ __all__ = [
     "hu_control_sync",
     "hu_control_scan",
     "hu_photo_check",
+    "hu_photo_waive",
     "hu_call",
     "hu_request_bring",
     "hu_reserve_takeover",

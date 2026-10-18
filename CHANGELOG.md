@@ -16,6 +16,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
 
 ### Changed
+- US-026 (#66, P7): lider może zwolnić paletę z bramki zdjęcia (np. aparat nie działa) na karcie HU —
+  powód jest obowiązkowy i trafia do historii palety; kontroler nie może zrobić tego sam. Ekran zdjęcia
+  podpowiada, żeby poprosić lidera.
 - US-031 (#65, P19): gdy ułożenie warstwami w limitach palety (wysokość, waga) potrzebuje więcej palet
   niż szacunek z kubatury, karta wysyłki i ekran wyceny pokazują zakres (np. „2–3”) i ostrzeżenie,
   a zapytanie do spedycji prosi o wycenę obu wariantów. Szacunek nadal jest nagłówkiem.
