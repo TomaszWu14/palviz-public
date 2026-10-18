@@ -232,33 +232,6 @@ def notify_warehouse_response(shipment, readiness, kind):
     notify(recipients, title, body, level=level, url=url, email=True)
 
 
-def notify_shipment_ready(shipment):
-    """Fire once when every pallet (HU) of the shipment is controlled OK: tell the creator
-    + Transport the shipment is ready to ship. No-op until all HUs are OK / if already sent."""
-    hus = list(shipment.handling_units.all())
-    # 'escaped' (wyjechało bez kontroli) jest wykluczone z gotowości — użyj hu_checked_ready().
-    if not shipment.hu_checked_ready():
-        return
-    from django.utils import timezone
-    from django.urls import reverse
-    # Atomowy compare-and-set: dwie równoległe finalizacje ostatnich palet nie wyślą
-    # podwójnego „wszystko gotowe" (mail+notyfikacje). update() zwraca 1 tylko raz.
-    updated = shipment.__class__.objects.filter(
-        pk=shipment.pk, ready_notified_at__isnull=True).update(ready_notified_at=timezone.now())
-    if not updated:
-        return
-    n_ok = sum(1 for h in hus if h.status == "ok")
-    n_escaped = sum(1 for h in hus if h.status == "escaped")
-    body = f"Skontrolowano OK wszystkie {n_ok} palet — gotowe do wysyłki."
-    if n_escaped:
-        # BIZ-011: „wszystkie" liczy tylko palety kontrolowane — planista musi wiedzieć,
-        # że część wyjechała bez kontroli (dyspozycja lidera), zanim potwierdzi wysyłkę.
-        body += f" Bez kontroli (dyspozycja lidera): {n_escaped} palet."
-    notify(creator_and_transport(shipment),
-           f"Wszystkie palety gotowe — {shipment.name}", body,
-           level="info", url=reverse("ui:planner_shipment_detail", args=[shipment.id]), email=True)
-
-
 def close_warehouse_response_task(shipment):
     """Resolve any open warehouse-response task(s) for this shipment once the planner acts
     on it (applies the count / re-quotes) — covers both the 'pre' and 'date' variants."""
@@ -491,3 +464,8 @@ def leader_target(user):
     if leader is not None and leader.is_active:
         return f"u:{leader.pk}"
     return "g:Lider kontroli"
+
+
+# Powiadomienia o gotowości wysyłki — osobny moduł (limit 500 linii); re-eksport dla
+# dotychczasowych importów `from ui.notifications import notify_shipment_ready`.
+from .notifications_shipment import notify_shipment_all_escaped, notify_shipment_ready  # noqa: E402,F401
