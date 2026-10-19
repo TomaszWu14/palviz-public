@@ -170,9 +170,12 @@
        on top while the operator scrolls through positions. Compact (≈half height). */
     .hu-head { background:linear-gradient(160deg,#13938b,#0a5f5a); color:#fff; border-radius:14px; padding:10px 13px; margin-bottom:12px;
                position:sticky; top:0; z-index:20; box-shadow:0 6px 14px rgba(13,60,58,.28); }
-    .hu-head__code { font-size:21px; font-weight:800; letter-spacing:.5px; min-width:0; overflow-wrap:anywhere; }
+    /* clamp: 18-cyfrowy kod mieści się w jednym wierszu od 320 px; anywhere = awaryjnie, gdy jeszcze węziej. */
+    .hu-head__code { font-size:clamp(16px, 5.2vw, 21px); font-weight:800; letter-spacing:.5px; min-width:0; overflow-wrap:anywhere; }
     /* Długi tytuł paska (np. 18-cyfrowy kod HU) kończy się „…”, zamiast wchodzić na ikony. */
     .scr__ellipsis { min-width:0; overflow:hidden; text-overflow:ellipsis; }
+    /* Bardzo wąski ekran: bez „HU ” w pasku, żeby zmieściła się końcówka kodu (pełny kod jest w karcie). */
+    @media (max-width: 340px) { .scr__pfx { display:none; } }
     .vip { background:#7fe3d8; color:#063f3b; padding:5px 12px; border-radius:999px; font-size:12px; font-weight:800; }
     .prog { height:7px; background:rgba(255,255,255,.25); border-radius:6px; overflow:hidden; }
     .prog > div { height:7px; background:#d7f5ef; }

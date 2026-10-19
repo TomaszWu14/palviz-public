@@ -1,6 +1,7 @@
 {% extends "ui/scanner/base.html" %}
 {% load palviz_extras %}
-{% block bar %}<span class="scr__ellipsis">HU {{ hu.ref }}</span>{% endblock %}
+{# Pasek: długi kod (SSCC) skrócony do końcówki — po niej palety się różnią; pełny kod jest w karcie poniżej. #}
+{% block bar %}<span class="scr__ellipsis" title="HU {{ hu.ref }}"><span class="scr__pfx">HU </span>{% if hu.ref|length > 10 %}…{{ hu.ref|slice:"-8:" }}{% else %}{{ hu.ref }}{% endif %}</span>{% endblock %}
 {% block back %}<a href="{% url 'ui:hu_control_menu' %}">‹</a>{% endblock %}
 {% block content %}
   <div class="hu-head">
