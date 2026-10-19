@@ -33,7 +33,7 @@ def get_item(d, key):
 # więc wdrożenie jest bezpieczne i stopniowe.
 import os as _os
 from django.templatetags.static import static as _static
-from django.utils.safestring import mark_safe as _ms
+from django.utils.html import format_html as _fh
 
 _ICON_DIR = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))),
                           "static", "ui", "icons", "set", "dark")
@@ -54,8 +54,11 @@ def pv_icon(char, size=24):
     for cand in (code, code.split("-")[0] if "-" in code else None):
         if cand and cand in _ICON_SET:
             url = _static(f"ui/icons/set/dark/U{cand}.png")
-            return _ms(f'<img src="{url}" width="{size}" height="{size}" alt="{s}" '
-                       f'style="vertical-align:-{int(size)//5}px;border-radius:20%">')
+            # format_html (nie mark_safe): `s` to dane wejściowe — znaki < U+2000 (np. `"<>`)
+            # trafiały do atrybutu alt bez escapowania (Bandit B308/B703).
+            return _fh('<img src="{}" width="{}" height="{}" alt="{}" '
+                       'style="vertical-align:-{}px;border-radius:20%">',
+                       url, size, size, s, int(size) // 5)
     return s
 
 
@@ -64,7 +67,6 @@ def pv_icon(char, size=24):
 # znacząca (role=img + aria-label). Rozmiary 16/20/24. Atrybuty obrysu inline, żeby ikona
 # działała też na ekranach bez app.css (skaner). Nowe ikony: audit/tools/build_icons.py.
 from django.template import TemplateSyntaxError as _TSE
-from django.utils.html import format_html as _fh
 
 from ui.nav_icons import icon_svg as _icon_svg, module_icon_svg as _module_icon_svg
 
@@ -91,8 +93,8 @@ def icon_button(name, label="", href="", variant="btn-ghost", size="", type="but
     if not label:
         raise _TSE(f"icon_button '{name}': brak label (nazwa dostępna jest obowiązkowa)")
     cls = f"btn btn-icon {variant}" + (f" btn-{size}" if size else "")
-    extra = _ms((_fh(' data-confirm="{}"', confirm) if confirm else "")
-                + (_fh(' data-testid="{}"', testid) if testid else ""))
+    extra = _fh("{}{}", _fh(' data-confirm="{}"', confirm) if confirm else "",
+                _fh(' data-testid="{}"', testid) if testid else "")
     ico = icon(name, 16)
     if href:
         return _fh('<a href="{}" class="{}" aria-label="{}" title="{}"{}>{}</a>',

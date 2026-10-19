@@ -30,9 +30,14 @@ dozwolone; wobec cudzych instalacji potrzebna jest zgoda ich właściciela.
 
 ## Jak dbamy o bezpieczeństwo
 
-- Skanery na każdym PR: gitleaks (sekrety, blokuje), Bandit (SAST, HIGH blokuje), pip-audit,
-  Trivy, npm audit (informacyjnie); CodeQL i skan obrazu Dockera co tydzień; Dependabot
-  (`.github/workflows/security.yml`, `codeql.yml`, `.github/dependabot.yml`, ADR-0019).
+- Skanery na każdym PR: gitleaks (sekrety, blokuje), Bandit (SAST, MEDIUM+ blokuje), Semgrep
+  OWASP Top 10 (nowe znaleziska blokują), Trivy fs (HIGH/CRITICAL z poprawką blokuje), pip-audit
+  i npm audit (informacyjnie); CodeQL i skan obrazu Dockera co tydzień; Dependabot
+  (`.github/workflows/security.yml`, `codeql.yml`, `.github/dependabot.yml`, ADR-0019, ADR-0022).
+- Nagłówki bezpieczeństwa na każdej odpowiedzi (`core.middleware.SecurityHeadersMiddleware` +
+  `SecurityMiddleware` Django): nosniff, `X-Frame-Options`, `Referrer-Policy`, COOP,
+  `Permissions-Policy`, CSP (ADR-0020), HSTS przy `DJANGO_DEBUG=false`, `Cache-Control: no-store`
+  na JSON.
 - Przegląd każdego PR z perspektywy [SEC] (checklista w szablonie PR, OWASP Top 10 / ASVS —
   `docs/bezpieczenstwo/CHECKLISTA_ASVS.md`).
 - Model zagrożeń i rejestr ryzyk: `docs/bezpieczenstwo/THREAT_MODEL.md`, `RYZYKA.md`.

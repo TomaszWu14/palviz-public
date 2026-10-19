@@ -1,16 +1,20 @@
 name: Security
 
-# Skanery bezpieczeństwa (ADR-0019 — Przyjęta 2026-10-16, wariant A; audyt 2026-10-15 S-01/S-09):
-#   • gitleaks   — sekrety w historii i diffie: BLOKUJE (PR, push, tygodniowo)
-#   • Bandit     — SAST Python: BLOKUJE przy HIGH severity + HIGH confidence (ten sam próg co
-#                  pre-commit); pełny raport informacyjnie w podsumowaniu joba
+# Skanery bezpieczeństwa (ADR-0019 wariant A + ADR-0022 „wspólna podstawa”; audyt 2026-10-15 S-01/S-09):
+#   • gitleaks   — sekrety w historii i diffie: BLOKUJE (PR, push, tygodniowo); binarka
+#                  z przypiętą wersją i sumą sha256 (ADR-0022)
+#   • Bandit     — SAST Python: BLOKUJE od MEDIUM severity + MEDIUM confidence (ADR-0022; pre-commit
+#                  lokalnie zostaje na HIGH/HIGH); pełny raport informacyjnie w podsumowaniu joba
+#   • Semgrep    — p/owasp-top-ten: na PR BLOKUJE nowe znaleziska (względem bazy PR-a); pełny skan
+#                  repo informacyjnie (push/tygodniowo) — zaległe znaleziska do triage (ADR-0022)
 #   • pip-audit  — CVE zależności Pythona: informacyjnie (podsumowanie joba)
-#   • Trivy fs   — CVE + misconfig (Dockerfile/compose) + sekrety: informacyjnie na PR
+#   • Trivy fs   — CVE + misconfig (Dockerfile/compose) + sekrety: HIGH/CRITICAL z dostępną poprawką
+#                  BLOKUJE (ADR-0022); wyjątki w .trivyignore (ID + uzasadnienie)
 #   • npm audit  — CVE bibliotek front-end (web/package-lock.json): informacyjnie
 #   • Trivy image — tygodniowo/ręcznie: build obrazu z Dockerfile i skan; CRITICAL/HIGH z poprawką
 #                  czerwieni przebieg
 # Wymaganym checkiem na main pozostaje `test` (ci.yml, ADR-0009); `Security` nie jest wymagany
-# (ADR-0019 wariant A — zmiana = nowy ADR). SARIF trafia do zakładki Security ▸ Code scanning
+# (ADR-0019 wariant A; ADR-0022 zaostrza progi, nie zmienia ochrony gałęzi). SARIF trafia do zakładki Security ▸ Code scanning
 # (continue-on-error, gdyby code scanning był wyłączony). Uruchomienie lokalne: CONTRIBUTING.md §6.
 
 on:
@@ -34,23 +38,39 @@ jobs:
   gitleaks:
     name: gitleaks (sekrety, blokuje)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
-      pull-requests: read     # gitleaks-action listuje commity PR
+    env:
+      # Przypięta binarka + sha256 (ADR-0022) zamiast gitleaks-action, które bez GITLEAKS_VERSION
+      # pobiera „latest” bez weryfikacji sumy.
+      GITLEAKS_VERSION: 8.30.1
+      GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0        # pełna historia, nie tylko czubek
-      - name: Run gitleaks
-        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
+      - name: Instalacja gitleaks (przypięta wersja + sha256)
+        working-directory: ${{ runner.temp }}
+        run: |
+          curl -sSfL -o gitleaks.tgz \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  gitleaks.tgz" | sha256sum -c -
+          tar -xzf gitleaks.tgz gitleaks
+      - name: gitleaks
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # gitleaks-action jest darmowy dla repo na koncie osobistym; GITLEAKS_LICENSE
-          # potrzebny tylko dla organizacji.
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          # .gitleaks.toml (allowlista szablonów) i .gitleaksignore (fingerprinty) czytane z repo.
+          args=(git --redact --no-banner)
+          # PR: tylko jego commity; push/tygodniowo/ręcznie: cała historia.
+          if [ -n "$BASE" ]; then args+=(--log-opts="$BASE..$HEAD"); fi
+          "$RUNNER_TEMP/gitleaks" "${args[@]}" .
 
-  # ── SAST Python — HIGH/HIGH blokuje, reszta informacyjnie ──────────────────
+  # ── SAST Python — MEDIUM+/MEDIUM+ blokuje, reszta informacyjnie ────────────
   bandit-gate:
-    name: Bandit (HIGH/HIGH blokuje)
+    name: Bandit (MEDIUM+ blokuje)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -62,16 +82,16 @@ jobs:
           python-version: "3.11"
       - name: Install Bandit
         run: pip install "bandit[toml,sarif]==1.9.4"
-      - name: Bandit — bramka (HIGH severity + HIGH confidence)
-        # Ten sam próg co hook pre-commit (.pre-commit-config.yaml). Konfiguracja: pyproject [tool.bandit]
+      - name: Bandit — bramka (MEDIUM+ severity + MEDIUM+ confidence)
+        # ADR-0022 (wcześniej HIGH/HIGH jak pre-commit). Konfiguracja: pyproject [tool.bandit]
         # (bez tests/migrations/vendor, B101 pominięte). Fałszywy alarm = `# nosec Bxxx` z uzasadnieniem.
-        run: bandit -c pyproject.toml -r web palletizer --severity-level high --confidence-level high -q
+        run: bandit -c pyproject.toml -r web palletizer --severity-level medium --confidence-level medium -q
       - name: Bandit — pełny raport (informacyjnie)
         continue-on-error: true
         run: |
           bandit -c pyproject.toml -r web palletizer -q -f txt -o bandit.txt || true
           {
-            echo "### Bandit — pełny raport (informacyjnie; bramka = HIGH/HIGH wyżej)"
+            echo "### Bandit — pełny raport (informacyjnie; bramka = MEDIUM+/MEDIUM+ wyżej)"
             echo '```'
             tail -n 40 bandit.txt
             echo '```'
@@ -86,9 +106,47 @@ jobs:
           sarif_file: bandit.sarif
           category: bandit
 
-  # ── Trivy fs: CVE + misconfig + sekrety — informacyjnie ─────────────────────
+  # ── SAST OWASP Top 10 — nowe znaleziska na PR blokują ───────────────────────
+  semgrep:
+    name: Semgrep (OWASP, nowe znaleziska blokują)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0        # --baseline-commit potrzebuje bazy PR-a w historii
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - run: pip install "semgrep==1.181.0"
+      - name: Semgrep p/owasp-top-ten
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        # PR: bramka tylko na znaleziskach WPROWADZONYCH przez PR (--baseline-commit) — zaległe
+        # (~150, głównie szablony Django) czekają na triage (ADR-0022). Push/tygodniowo: pełny skan,
+        # informacyjnie. Fałszywy alarm: `# nosemgrep: <id-reguły>` + powód w komentarzu.
+        run: |
+          args=(scan --config p/owasp-top-ten --metrics off --text --sarif-output semgrep.sarif
+                --exclude tests --exclude testkit --exclude migrations --exclude vendor --exclude '*.min.js')
+          if [ -n "$BASE" ]; then
+            semgrep "${args[@]}" --error --baseline-commit "$BASE" web palletizer
+          else
+            semgrep "${args[@]}" web palletizer || true
+          fi
+      - name: Artefakt Semgrep
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: semgrep-${{ github.sha }}
+          path: semgrep.sarif
+          if-no-files-found: warn
+          retention-days: 30
+
+  # ── Trivy fs: CVE + misconfig + sekrety — HIGH/CRITICAL z poprawką blokuje ──
   trivy:
-    name: Trivy (fs, informacyjnie)
+    name: Trivy (fs, HIGH/CRITICAL z poprawką blokuje)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -96,17 +154,20 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Trivy — tabela (nie blokuje)
+      - name: Trivy — bramka (HIGH/CRITICAL z dostępną poprawką)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: fs
           scanners: vuln,misconfig,secret
           format: table
-          exit-code: "0"          # informacyjnie — pokazuje, nie blokuje
+          exit-code: "1"          # ADR-0022: blokuje (wcześniej informacyjnie)
+          severity: HIGH,CRITICAL
           ignore-unfixed: true
+          trivyignores: .trivyignore
           skip-dirs: web/ui/static/ui/vendor
 
       - name: Trivy — SARIF (code scanning)
+        if: always()
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: fs
@@ -117,6 +178,7 @@ jobs:
           skip-dirs: web/ui/static/ui/vendor
 
       - name: Upload Trivy SARIF
+        if: always()
         uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4
         continue-on-error: true
         with:
@@ -188,6 +250,10 @@ jobs:
             tail -n 30 npm-audit.txt 2>/dev/null || echo "brak wyniku"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+      - name: npm audit — tests/e2e (Playwright, informacyjnie)
+        continue-on-error: true   # informacyjnie; audyt czyta sam lockfile, bez instalacji
+        working-directory: tests/e2e
+        run: npm audit --audit-level=high
 
   # ── Obraz Dockera: build + skan — tygodniowo / ręcznie ──────────────────────
   # Nie na PR (build ~5 min i pobieranie bibliotek JS z CDN) — ADR-0009/0019.

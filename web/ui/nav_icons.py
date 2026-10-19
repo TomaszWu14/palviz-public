@@ -31,7 +31,8 @@ def icon_svg(name, size=16, label="", cls=""):
     if size not in ICON_SIZES:
         raise ValueError(f"icon: rozmiar {size} spoza {ICON_SIZES}")
     href = f"{static('ui/icons/lucide.svg')}#{name}"
-    a11y = format_html('role="img" aria-label="{}"', label) if label else mark_safe('aria-hidden="true"')
+    a11y = (format_html('role="img" aria-label="{}"', label) if label
+            else mark_safe('aria-hidden="true"'))  # nosec B308 — stały literał, bez danych wejściowych
     return format_html(
         '<svg class="icon icon--{} {}" width="{}" height="{}" fill="none" stroke="currentColor" '
         'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false" {}>'

@@ -22,7 +22,12 @@ class RequestIDLogFilter(logging.Filter):
 # Content-Security-Policy (core.csp.STRICT_CSP): nonce, bez 'unsafe-inline' i 'unsafe-eval'.
 # Domyślnie REPORT-ONLY (CSP_REPORT_ONLY=true) — przeglądarka zgłasza naruszenia na /csp-report/,
 # ale nic nie blokuje. CSP_REPORT_ONLY=false to faza 3 z ADR-0020 (decyzja PO po 2 tyg. raportów).
-_PERMISSIONS_POLICY = "geolocation=(), microphone=(), payment=()"
+# Permissions-Policy: kamera tylko dla własnej domeny (skaner kodów — getUserMedia/BarcodeDetector),
+# reszta nieużywanych API przeglądarki wyłączona.
+_PERMISSIONS_POLICY = (
+    "camera=(self), geolocation=(), microphone=(), payment=(), usb=(), serial=(), hid=(), "
+    "bluetooth=(), midi=(), magnetometer=(), gyroscope=(), accelerometer=()"
+)
 
 
 class RequestIDMiddleware:
@@ -130,8 +135,12 @@ class PasswordChangeRequiredMiddleware:
 
 
 class SecurityHeadersMiddleware:
-    """Add headers Django doesn't set by default: Permissions-Policy and a (report-only
-    by default) Content-Security-Policy for defense-in-depth against injected scripts."""
+    """Add headers Django doesn't set by default: Permissions-Policy, a (report-only
+    by default) Content-Security-Policy for defense-in-depth against injected scripts, and
+    `Cache-Control: no-store` on JSON responses (API data must not linger in shared/browser
+    caches). X-Content-Type-Options, Referrer-Policy (same-origin), Cross-Origin-Opener-Policy
+    and HSTS (DEBUG=false) come from Django's SecurityMiddleware; X-Frame-Options from
+    XFrameOptionsMiddleware (SAMEORIGIN — settings.X_FRAME_OPTIONS)."""
 
     def __init__(self, get_response):
         self.get_response = get_response
@@ -139,6 +148,9 @@ class SecurityHeadersMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
         response.setdefault("Permissions-Policy", _PERMISSIONS_POLICY)
+        # setdefault: widok, który świadomie ustawił cache (np. eksport z max-age), wygrywa.
+        if response.get("Content-Type", "").startswith("application/json"):
+            response.setdefault("Cache-Control", "no-store")
         # US-008 / ADR-0020: ta sama polityka wszędzie; strony publiczne (strict_csp) zawsze wymuszają,
         # ekrany wewnętrzne raportują, dopóki CSP_REPORT_ONLY=true.
         enforce = getattr(response, "csp_strict", False) or not getattr(settings, "CSP_REPORT_ONLY", True)

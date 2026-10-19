@@ -8,6 +8,13 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 ## [Unreleased]
 
 ### Added
+- ADR-0022 (wspólna podstawa bezpieczeństwa): `security.yml` — gitleaks z przypiętą binarką i sha256,
+  Bandit blokuje od MEDIUM/MEDIUM, nowy job Semgrep `p/owasp-top-ten` (na PR blokuje nowe znaleziska),
+  Trivy fs blokuje HIGH/CRITICAL z poprawką (`.trivyignore`), npm audit także dla `tests/e2e`;
+  Dependabot: docker + `tests/e2e`, grupy minor+patch. Nagłówki: szerszy `Permissions-Policy`
+  (kamera tylko `self`), `Cache-Control: no-store` na odpowiedziach JSON. Poprawki po Bandit
+  (B308/B310): filtr `pv_icon` escapuje tekst w `alt` (wcześniej `mark_safe` na danych wejściowych),
+  webhook n8n (`N8N_EVENT_URL`) wysyłany tylko po `http(s)://`.
 - US-022 (#69, P3): `manage.py check` ostrzega (`huctl.W001`), gdy `PARCEL_ZONE_CODES` nie zawiera żadnego
   znanego kodu strefy — domyślne `PACZKI` wyłączało bramkę rozliczenia paczek po cichu. Krok CI
   „Django deploy check” ustawia `PARCEL_ZONE_CODES=73PA,WDPA`. **Produkcja: ustaw `PARCEL_ZONE_CODES=73PA,WDPA` w env (decyzja PO 2026-10-18).**

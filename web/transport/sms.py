@@ -33,7 +33,7 @@ def send_sms(to, body):
         f"https://api.twilio.com/2010-04-01/Accounts/{sid}/Messages.json", data=data)
     req.add_header("Authorization", "Basic " + base64.b64encode(f"{sid}:{tok}".encode()).decode())
     try:
-        urllib.request.urlopen(req, timeout=8)
+        urllib.request.urlopen(req, timeout=8)  # nosec B310 — stały adres https://api.twilio.com  # nosemgrep: dynamic-urllib-use-detected
         return True
     except Exception as exc:
         # Audyt INT-004: bez tego nieudany SMS nie zostawiał śladu. Bez treści SMS, tokenu

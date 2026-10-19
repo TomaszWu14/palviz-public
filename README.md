@@ -66,6 +66,14 @@ Status procesu: krok 3 (szkielet dokumentów i CI) zakończony; założenia potw
 2026-10-16 ([`docs/analiza/ZALOZENIA.md`](docs/analiza/ZALOZENIA.md)); backlog w Issues #12–#32;
 następna historyjka: US-004 (#15).
 
+## Bezpieczeństwo
+
+CI (`.github/workflows/security.yml`, ADR-0019/ADR-0022) na każdym PR: gitleaks (sekrety, blokuje),
+Bandit (MEDIUM+ blokuje), Semgrep OWASP Top 10 (nowe znaleziska blokują), Trivy fs (HIGH/CRITICAL
+z dostępną poprawką blokuje), pip-audit i npm audit (informacyjnie); CodeQL i skan obrazu co tydzień;
+Dependabot (pip, npm, GitHub Actions, Docker). Nagłówki bezpieczeństwa HTTP ustawia
+`web/core/middleware.py`. Podatności zgłaszaj prywatnie — [`SECURITY.md`](SECURITY.md).
+
 ## Jak uruchomić
 
 **Wymagania:** Python 3.11+ (testowane na 3.13), Git. Na Windows sklonuj repo do krótkiej ścieżki

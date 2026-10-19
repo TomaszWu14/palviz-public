@@ -16,6 +16,10 @@ on:
     - cron: "17 5 * * 1"
   workflow_dispatch:
 
+# Domyślnie tylko odczyt; job `analyze` sam dokłada security-events: write.
+permissions:
+  contents: read
+
 # A newer run on the same ref supersedes an in-flight one.
 concurrency:
   group: codeql-${{ github.ref }}
