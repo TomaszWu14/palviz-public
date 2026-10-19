@@ -145,6 +145,10 @@ def emit_event(kind, payload):
     url = getattr(settings, "N8N_EVENT_URL", "")
     if not url:
         return False
+    # Bandit B310: urlopen obsługuje też file:// i własne schematy — webhook tylko po HTTP(S).
+    if not url.lower().startswith(("https://", "http://")):
+        log.warning("n8n emit_event(%s) skipped: N8N_EVENT_URL must be http(s)", kind)
+        return False
     import json
     import urllib.request
     body = json.dumps({"kind": kind, "payload": payload}).encode()
@@ -154,7 +158,7 @@ def emit_event(kind, payload):
     if secret:
         req.add_header("X-N8N-Secret", secret)
     try:
-        urllib.request.urlopen(req, timeout=5)
+        urllib.request.urlopen(req, timeout=5)  # nosec B310 — schemat sprawdzony wyżej (http/https)  # nosemgrep: dynamic-urllib-use-detected
         return True
     except Exception as exc:      # webhook best-effort — log i jedź dalej
         log.warning("n8n emit_event(%s) failed: %s", kind, type(exc).__name__)

@@ -70,3 +70,4 @@ Co zyskujemy, co tracimy, co trzeba pilnować (test / strażnik CI).
 | [0019](0019-skanery-bezpieczenstwa-na-pr.md) | Skanery bezpieczeństwa na każdym PR obok szybkiej bramki testów | Przyjęta | 2026-10-16 |
 | [0020](0020-csp-nonce-wymuszanie-etapami.md) | Wymuszana CSP z nonce, wdrażana etapami od stron publicznych | Przyjęta | 2026-10-16 |
 | [0021](0021-rozstrzygniecie-p1-p19.md) | Rozstrzygnięcie znanych problemów P1–P19 (US-012) | Przyjęta | 2026-10-17 |
+| [0022](0022-wspolna-podstawa-bezpieczenstwa.md) | Wspólna podstawa bezpieczeństwa — ostrzejsze bramki skanerów | Przyjęta | 2026-10-19 |

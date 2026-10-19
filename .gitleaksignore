@@ -8,3 +8,5 @@ web/ui/tests/test_seed_zaria_models.py:generic-api-key:17
 web/ui/tests/test_seed_zaria_models.py:generic-api-key:20
 web/ui/tests/test_seed_zaria_models.py:generic-api-key:34
 web/ui/tests/test_seed_zaria_models.py:generic-api-key:37
+# Hasło testowe fabryk (stała PASSWORD) przesunęło się do linii 26 — fałszywy alarm, jak wpis :29 wyżej.
+web/testkit/factories.py:generic-api-key:26

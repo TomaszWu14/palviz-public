@@ -30,7 +30,7 @@ def _google_route(origin, dest):
         return None, None
     try:
         q = urllib.parse.urlencode({"origin": origin, "destination": dest, "key": key})
-        with urllib.request.urlopen(
+        with urllib.request.urlopen(  # nosec B310 — stały adres https://maps.googleapis.com  # nosemgrep: dynamic-urllib-use-detected
                 "https://maps.googleapis.com/maps/api/directions/json?" + q, timeout=5) as r:
             d = json.load(r)
         route = (d.get("routes") or [None])[0]

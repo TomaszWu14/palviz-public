@@ -81,18 +81,19 @@ Nie ogłaszamy „zrobione”, dopóki testy nie przeszły i zakres nie został 
 | `mypy` | typowanie `palletizer/` | `mypy palletizer` | pre-commit |
 | `manage.py check` / testy | regresja, migracje, kontrakty | `sh web/scripts/test.sh [fast|full|role <rola>|<labels>]`; `python -m unittest discover -s palletizer/tests` | `ci.yml` job `test` (wymagany) |
 | `coverage` | próg 80 % | `make test-full` | `ci.yml` |
-| `bandit` | SAST Python | `bandit -c pyproject.toml -r web palletizer --severity-level high --confidence-level high` (bramka) / bez progów (pełny) | `security.yml` `bandit-gate` (HIGH/HIGH blokuje) |
+| `bandit` | SAST Python | `bandit -c pyproject.toml -r web palletizer --severity-level medium --confidence-level medium` (bramka) / bez progów (pełny) | `security.yml` `bandit-gate` (MEDIUM+/MEDIUM+ blokuje, ADR-0022) |
+| `semgrep` | SAST OWASP Top 10 | `semgrep scan --config p/owasp-top-ten --exclude tests --exclude migrations --exclude vendor web palletizer` | `security.yml` `semgrep` (na PR nowe znaleziska blokują) |
 | `pip-audit` | CVE zależności Pythona | `pip-audit -r requirements.txt --desc` | `security.yml` (informacyjnie) |
 | `gitleaks` | sekrety w historii i diffie | `gitleaks detect --source . -c .gitleaks.toml` lub pre-commit | `security.yml` (blokuje) |
-| `trivy` | CVE/misconfig w repo i obrazie | `trivy fs --scanners vuln,misconfig,secret .`; `docker build -t palviz:ci . && trivy image palviz:ci` | `security.yml` (fs na PR informacyjnie; obraz tygodniowo) |
+| `trivy` | CVE/misconfig w repo i obrazie | `trivy fs --scanners vuln,misconfig,secret .`; `docker build -t palviz:ci . && trivy image palviz:ci` | `security.yml` (fs: HIGH/CRITICAL z poprawką blokuje, wyjątki `.trivyignore`; obraz tygodniowo) |
 | `npm audit` | CVE bibliotek front-end | `cd web && npm ci --ignore-scripts && npm audit --audit-level=high` | `security.yml` (informacyjnie) |
 | CodeQL | SAST Python + JS | — (GitHub) | `codeql.yml` co tydzień |
-| Dependabot | aktualizacje pip / actions / npm | — | `.github/dependabot.yml` |
+| Dependabot | aktualizacje pip / actions / npm / docker | — | `.github/dependabot.yml` |
 | pre-commit | to samo przed commitem | `pip install pre-commit && pre-commit install` (uwaga: wyklucza się z `core.hooksPath .githooks`, README) | — |
 | Playwright | e2e przepływów i wizualne | `make test-flow`, `make test-visual` | poza CI (US-018) |
 
 Instalacja narzędzi deweloperskich: `pip install -r requirements-dev.txt`. Uzasadnienie wyboru:
-ADR-0009 (szybka bramka), ADR-0019 (skanery na PR).
+ADR-0009 (szybka bramka), ADR-0019 (skanery na PR), ADR-0022 (wspólna podstawa bezpieczeństwa).
 
 ## 7. Gdzie co jest
 

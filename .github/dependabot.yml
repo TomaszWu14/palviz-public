@@ -1,4 +1,4 @@
-# Dependabot (ADR-0019, audyt S-01/S-09): cotygodniowe PR-y z aktualizacjami zależności.
+# Dependabot (ADR-0019 + ADR-0022, audyt S-01/S-09): cotygodniowe PR-y z aktualizacjami zależności.
 # Wersje runtime są przypięte (requirements.txt) — Dependabot podbija piny; po merge CI testuje.
 version: 2
 updates:
@@ -22,6 +22,9 @@ updates:
       day: monday
       time: "06:00"
       timezone: Europe/Warsaw
+    groups:
+      actions-minor-patch:
+        update-types: ["minor", "patch"]
     commit-message:
       prefix: "chore(ci)"
   - package-ecosystem: npm
@@ -32,5 +35,36 @@ updates:
       time: "06:00"
       timezone: Europe/Warsaw
     open-pull-requests-limit: 3
+    groups:
+      npm-minor-patch:
+        update-types: ["minor", "patch"]
+    commit-message:
+      prefix: "chore(deps)"
+  # Testy E2E (Playwright) — tests/e2e/package-lock.json (e2e-nightly.yml).
+  - package-ecosystem: npm
+    directory: "/tests/e2e"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Warsaw
+    open-pull-requests-limit: 2
+    groups:
+      e2e-minor-patch:
+        update-types: ["minor", "patch"]
+    commit-message:
+      prefix: "chore(deps)"
+  # Obrazy bazowe: Dockerfile (python:3.11-slim@sha256, uv) i docker-compose*.yml.
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Warsaw
+    open-pull-requests-limit: 2
+    groups:
+      docker-minor-patch:
+        update-types: ["minor", "patch"]
     commit-message:
       prefix: "chore(deps)"

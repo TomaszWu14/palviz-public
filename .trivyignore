@@ -1,0 +1,10 @@
+# Wyjątki Trivy (security.yml, job „trivy” — bramka HIGH/CRITICAL, ADR-0022).
+# Format: ID + uzasadnienie + data przeglądu. Nowy wpis tylko z powodem; przegląd co kwartał.
+
+# DS-0002 (HIGH, „brak USER w Dockerfile”) — fałszywy alarm: kontener startuje jako root
+# wyłącznie po to, by docker-entrypoint.sh poprawił właściciela wolumenów (db/media), po czym
+# gunicorn i Celery działają jako nieuprzywilejowany użytkownik `app` (uid 10001) przez `gosu`.
+# Zwykłe `USER app` nie umie zrobić chown na wolumenie nazwanym należącym do roota.
+# Przegląd: 2026-10-19. Oba zapisy ID (nowsze i starsze wersje Trivy).
+DS-0002
+AVD-DS-0002
