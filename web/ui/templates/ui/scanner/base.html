@@ -170,7 +170,9 @@
        on top while the operator scrolls through positions. Compact (≈half height). */
     .hu-head { background:linear-gradient(160deg,#13938b,#0a5f5a); color:#fff; border-radius:14px; padding:10px 13px; margin-bottom:12px;
                position:sticky; top:0; z-index:20; box-shadow:0 6px 14px rgba(13,60,58,.28); }
-    .hu-head__code { font-size:21px; font-weight:800; letter-spacing:.5px; }
+    .hu-head__code { font-size:21px; font-weight:800; letter-spacing:.5px; min-width:0; overflow-wrap:anywhere; }
+    /* Długi tytuł paska (np. 18-cyfrowy kod HU) kończy się „…”, zamiast wchodzić na ikony. */
+    .scr__ellipsis { min-width:0; overflow:hidden; text-overflow:ellipsis; }
     .vip { background:#7fe3d8; color:#063f3b; padding:5px 12px; border-radius:999px; font-size:12px; font-weight:800; }
     .prog { height:7px; background:rgba(255,255,255,.25); border-radius:6px; overflow:hidden; }
     .prog > div { height:7px; background:#d7f5ef; }
@@ -310,7 +312,7 @@
     <div class="scr__bar"{% if section_theme %} style="background:{{ section_theme.app_bar_bg }};color:{{ section_theme.app_bar_text }}"{% endif %}>
       {% block back %}{% endblock %}
       {# flex+min-width:0 — tytuł i pigułka operatora w JEDNYM wierszu; pigułka ścieśnia się z „…". #}
-      <span style="min-width:0;flex:1;display:flex;align-items:center;gap:8px;white-space:nowrap">{% block bar %}Kontrola HU{% endblock %}</span>
+      <span class="scr__title" style="min-width:0;flex:1;display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden">{% block bar %}Kontrola HU{% endblock %}</span>
       <span id="hu-net-badge" role="status" aria-live="polite" style="margin-left:12px;font-size:13px;font-weight:800;padding:5px 12px;border-radius:99px;display:none"></span>
       {# Badge AKTYWNEJ strefy kontroli: login + strefa w nagłówku; >1 dozwolona → tap = zmiana strefy. #}
       {% if section_theme %}

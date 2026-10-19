@@ -85,6 +85,8 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   inline (także `importmap` i `type="module"`). `csp-actions.js`: `data-call`, `data-args`, zdarzenie `input`.
 
 ### Fixed
+- Karta palety w skanerze (telefon): długi kod HU w pasku kończy się „…” zamiast nachodzić na ikony;
+  w nagłówku karty kod ma własny wiersz, a VIP i link „Historia” nie wychodzą poza ekran.
 - Usuwanie przewoźnika (`carriers.html`) i strefy cennika (`carrier_rates.html`) — ten sam błąd co przy
   lokalizacji: cudzysłów w nazwie urywał `onsubmit`, więc usuwanie szło bez potwierdzenia. Teraz `data-confirm`.
 - Usuwanie lokalizacji (`planner/locations.html`) pytało o potwierdzenie z błędnym JS — cudzysłów w nazwie
