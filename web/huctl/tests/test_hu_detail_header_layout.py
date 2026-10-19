@@ -26,9 +26,16 @@ class HuDetailHeaderLayoutTests(TestCase):
         html = self.client.get(reverse("ui:hu_control_detail", args=[self.hu.pk])).content.decode()
         self.assertIn('class="scr__title"', html)
         self.assertIn("white-space:nowrap;overflow:hidden", html)
-        self.assertIn('<span class="scr__ellipsis">HU', html)
+        self.assertIn('<span class="scr__ellipsis" title="HU 003590123400000001"><span class="scr__pfx">HU </span>…00000001</span>', html)
 
     def test_card_code_has_own_row_and_can_break(self):
         html = self.client.get(reverse("ui:hu_control_detail", args=[self.hu.pk])).content.decode()
         self.assertIn('class="hu-head__code" style="flex-basis:100%"', html)
         self.assertIn("overflow-wrap:anywhere", html)
+        self.assertIn("font-size:clamp(16px, 5.2vw, 21px)", html)
+
+    def test_short_ref_shown_in_full(self):
+        self.hu.code = ""
+        self.hu.save()
+        html = self.client.get(reverse("ui:hu_control_detail", args=[self.hu.pk])).content.decode()
+        self.assertIn(f'<span class="scr__pfx">HU </span>{self.hu.ref}</span>', html)

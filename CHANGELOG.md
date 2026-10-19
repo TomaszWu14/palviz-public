@@ -85,6 +85,8 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   inline (także `importmap` i `type="module"`). `csp-actions.js`: `data-call`, `data-args`, zdarzenie `input`.
 
 ### Fixed
+- Karta palety na wąskim telefonie (320–360 px): pasek pokazuje końcówkę kodu HU („HU …00000001”),
+  po której palety się różnią; pełny kod w karcie mieści się w jednym wierszu (font dopasowany do szerokości).
 - Baner trybu demo na ekranach skanera (telefon) jest teraz pełnej szerokości nad paskiem, zamiast
   wąskiej żółtej kolumny obok aplikacji, która ucinała ekran.
 - Karta palety w skanerze (telefon): długi kod HU w pasku kończy się „…” zamiast nachodzić na ikony;
