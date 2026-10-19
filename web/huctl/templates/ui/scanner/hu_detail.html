@@ -1,11 +1,11 @@
 {% extends "ui/scanner/base.html" %}
 {% load palviz_extras %}
-{% block bar %}HU {{ hu.ref }}{% endblock %}
+{% block bar %}<span class="scr__ellipsis">HU {{ hu.ref }}</span>{% endblock %}
 {% block back %}<a href="{% url 'ui:hu_control_menu' %}">‹</a>{% endblock %}
 {% block content %}
   <div class="hu-head">
-    <div style="display:flex;align-items:center;gap:8px">
-      <div class="hu-head__code">HU {{ hu.code|default:hu.ref }}</div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <div class="hu-head__code" style="flex-basis:100%">HU {{ hu.code|default:hu.ref }}</div>
       {% if customer.is_vip %}<span style="background:#fbbf24;color:#78350f;font-size:11px;font-weight:900;padding:2px 9px;border-radius:999px;white-space:nowrap">{% icon "star" %} VIP</span>{% endif %}
       {% if hu.recipient_type %}<span class="vip">● {{ hu.recipient_type }}</span>{% endif %}
       <a href="{% url 'ui:hu_control_history' hu.pk %}" style="margin-left:auto;font-size:13px;color:#bdeee7;text-decoration:underline;min-height:44px;display:inline-flex;align-items:center;padding:0 4px">Historia</a>
