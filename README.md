@@ -1,5 +1,7 @@
 # LogViz
 
+🇵🇱 Polski · 🇬🇧 [English](README.en.md)
+
 Wspólne narzędzie dla magazynu, transportu i obsługi klienta, które zastępuje rozproszone w Excelu
 i SAP planowanie palet i wysyłek, kontrolę HU (palet z etykietą) i obraz magazynu.
 
