@@ -92,6 +92,8 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   inline (także `importmap` i `type="module"`). `csp-actions.js`: `data-call`, `data-args`, zdarzenie `input`.
 
 ### Fixed
+- Dependabot dla pip nie działał (`dependency_file_not_found`): komentarz w linii `-r` w
+  `requirements-dev.txt` był czytany jako część ścieżki. Komentarz przeniesiony do osobnej linii.
 - Karta palety na wąskim telefonie (320–360 px): pasek pokazuje końcówkę kodu HU („HU …00000001”),
   po której palety się różnią; pełny kod w karcie mieści się w jednym wierszu (font dopasowany do szerokości).
 - Baner trybu demo na ekranach skanera (telefon) jest teraz pełnej szerokości nad paskiem, zamiast
