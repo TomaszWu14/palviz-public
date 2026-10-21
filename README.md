@@ -171,7 +171,7 @@ trzeba ustawić przed startem. Klucz krótszy niż 50 znaków albo z mniej niż 
 # Biblioteka pakowania (40 testów)
 python -m unittest discover -s palletizer/tests -p "test_*.py"
 
-# Django (z web/; 1943 testy)
+# Django (z web/; ok. 2100 testów)
 pip install -r requirements-test.txt
 cd web
 DJANGO_SECRET_KEY=ci-test-secret DJANGO_DEBUG=true DJANGO_ALLOWED_HOSTS='*' \
