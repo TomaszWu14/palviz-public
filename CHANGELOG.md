@@ -26,6 +26,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
 
 ### Changed
+- README: aktualne fakty — 22 ADR, stan znanych problemów P1–P19 (16 naprawionych, 3 otwarte),
+  auto-merge opisany jako cecha repo prywatnego, nieaktualny „status procesu” zastąpiony odnośnikiem do
+  backlogu; pusty placeholder „Kontekst projektu” ukryty do czasu uzupełnienia.
 - US-025 (#68, P6): wygasanie porzuconych rezerwacji palet i zwrot porzuconej kontroli działają też
   z harmonogramu — beat `ui.raise_hu_alert_tasks` (co 15 min) woła tę samą funkcję co budowa kolejki,
   przed podniesieniem alertów. Bez zmiany konfiguracji (`CELERY_BEAT_SCHEDULE`).

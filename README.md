@@ -46,7 +46,7 @@ powiadomienia żyją w aplikacji, a paleta z błędem trafia do rekontroli, któ
 | [05 Wymagania](docs/05-wymagania.md) | 64 wymagania z kryteriami akceptacji „Zakładając / Gdy / Wtedy” i miejscem w kodzie/testach. |
 | [06 Decyzje](docs/06-decyzje.md) | Dziennik decyzji: kontekst, opcje, uzasadnienie, skutki. |
 | [07 Ograniczenia](docs/07-ograniczenia.md) | Czego świadomie nie ma i znane problemy (P1–P19). |
-| [ADR](docs/adr/README.md) | 20 zapisów decyzji architektonicznych (pełna treść). |
+| [ADR](docs/adr/README.md) | 22 zapisy decyzji architektonicznych (pełna treść). |
 
 ## Proces pracy i dokumentacja zespołowa
 
@@ -62,9 +62,9 @@ zgłaszanie podatności — [`SECURITY.md`](SECURITY.md); zmiany — [`CHANGELOG
 | Klasyfikacja danych, threat model, rejestr ryzyk, RODO, ASVS | [`docs/bezpieczenstwo/`](docs/bezpieczenstwo/THREAT_MODEL.md) |
 | Strategia testów, runbooki | [`docs/testy/`](docs/testy/STRATEGIA_TESTOW.md), [`docs/operacje/`](docs/operacje/RUNBOOK.md) |
 
-Status procesu: krok 3 (szkielet dokumentów i CI) zakończony; założenia potwierdzone przez PO
-2026-10-16 ([`docs/analiza/ZALOZENIA.md`](docs/analiza/ZALOZENIA.md)); backlog w Issues #12–#32;
-następna historyjka: US-004 (#15).
+Założenia potwierdzone przez PO 2026-10-16 ([`docs/analiza/ZALOZENIA.md`](docs/analiza/ZALOZENIA.md)).
+Backlog to historyjki w [Issues](https://github.com/TomaszWu14/palviz-public/issues) (opis:
+[`docs/analiza/HISTORYJKI.md`](docs/analiza/HISTORYJKI.md)); zrealizowane opisuje [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Bezpieczeństwo
 
@@ -202,19 +202,20 @@ każdym PR do `main`.
   ([`web/palletweb/config.py`](web/palletweb/config.py)).
 - **Nazwy 9 grup ról jako zamrożony kontrakt** — są wierszami w bazie i słownikiem mapowania SSO;
   pilnuje ich test ([ADR-0006](docs/adr/0006-nazwy-grup-rol-zamrozony-kontrakt.md)).
-- **Docker + Coolify, CI na GitHub Actions** z szybką bramką testów i auto-merge przez PR
-  ([ADR-0009](docs/adr/0009-szybka-bramka-ci.md), [ADR-0010](docs/adr/0010-auto-merge-claude-przez-pr.md)).
+- **Docker + Coolify, CI na GitHub Actions** z szybką bramką testów
+  ([ADR-0009](docs/adr/0009-szybka-bramka-ci.md)); w repo prywatnym także auto-merge przez PR
+  ([ADR-0010](docs/adr/0010-auto-merge-claude-przez-pr.md)), w tej kopii PR-y scala ręcznie Product Owner.
 
 ## Zakres i ograniczenia
 
 Bez zapisu do SAP i integracji w czasie rzeczywistym, CSP tylko raportuje naruszenia, MFA dla
-administratorów odłożone. Analiza kodu wykazała 19 znanych problemów (m.in. eskalacja po nieudanej
-rekontroli nie odpala, pusty `DJANGO_SECRET_KEY` przechodzi walidację) — pełna lista:
-[07 Ograniczenia](docs/07-ograniczenia.md).
+administratorów odłożone. Analiza kodu wykazała 19 znanych problemów (P1–P19); 16 jest naprawionych
+z testami regresji, otwarte zostały 3: eskalacja po nieudanej rekontroli nie odpala (P1, US-013),
+cennik przewoźników nie wpływa jeszcze na wycenę (P12, US-016) i niespójności modelu danych
+(P18, US-032) — pełna lista: [07 Ograniczenia](docs/07-ograniczenia.md).
 
-## Kontekst projektu
-
-`<DO UZUPEŁNIENIA przeze mnie>`
+<!-- Sekcja „Kontekst projektu” do uzupełnienia przez autora (skąd projekt, rola, efekt);
+     ukryta, dopóki jest pusta, żeby README nie pokazywało placeholdera. -->
 
 ## Układ repo
 
