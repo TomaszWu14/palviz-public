@@ -63,6 +63,8 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   Strażnik: `ui.tests.test_naming_us011`.
 
 ### Security
+- Pillow 12.3.0 → 13.0.0: poprawki CVE-2026-112403 (CRITICAL, dekoder JPEG) i sześciu HIGH (DoS / odczyt
+  poza buforem w GIF, TIFF, PDF). Bramka Trivy fs w `security.yml` blokowała przez nie każdy PR.
 - Higiena danych: z bieżącego kodu testów usunięto nazwę klienta „Nordmed ehf.” i realnie wyglądające numery
   dostawy/klienta (zastąpione fikcyjnymi „ACME Nord ehf.”, 80000168, 10000232). Z `.env.example` usunięto
   nieużywane zmienne z nazwami przewoźnika i magazynu (GLS, DLT). Historia commitów nie jest zmieniana —
