@@ -8,6 +8,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 ## [Unreleased]
 
 ### Added
+- Workflow `demo-monitor.yml`: co 6 h (i ręcznie) sprawdza, czy demo <https://logviz.twapp.pl> odpowiada
+  200 na `/`, `/login/` i `/health/`; awaria otwiera issue „Demo nie odpowiada” (etykieta `demo`, kolejne
+  awarie jako komentarze), powrót do normy je zamyka. Tylko `GITHUB_TOKEN`, bez sekretów.
 - `README.en.md` — angielska wersja README (problem, ekrany, stack, uruchomienie, testy) dla czytelników
   spoza Polski; przełącznik języka na górze obu plików.
 - ADR-0022 (wspólna podstawa bezpieczeństwa): `security.yml` — gitleaks z przypiętą binarką i sha256,
