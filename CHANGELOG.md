@@ -8,6 +8,8 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 ## [Unreleased]
 
 ### Added
+- `README.en.md` — angielska wersja README (problem, ekrany, stack, uruchomienie, testy) dla czytelników
+  spoza Polski; przełącznik języka na górze obu plików.
 - ADR-0022 (wspólna podstawa bezpieczeństwa): `security.yml` — gitleaks z przypiętą binarką i sha256,
   Bandit blokuje od MEDIUM/MEDIUM, nowy job Semgrep `p/owasp-top-ten` (na PR blokuje nowe znaleziska),
   Trivy fs blokuje HIGH/CRITICAL z poprawką (`.trivyignore`), npm audit także dla `tests/e2e`;
