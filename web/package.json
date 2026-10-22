@@ -4,7 +4,7 @@
     "alpinejs": "3.17.4",
     "echarts": "6.1.0",
     "htmx.org": "1.9.12",
-    "plotly.js-dist-min": "3.5.0",
+    "plotly.js-dist-min": "4.1.2",
     "three": "0.186.1",
     "three-r128": "npm:three@0.128.0"
   }
