@@ -2,6 +2,10 @@
 
 🇵🇱 Polski · 🇬🇧 [English](README.en.md)
 
+**▶ Wypróbuj demo:** <https://logviz.twapp.pl>. Kliknij **Wejdź jako demo**, nie trzeba
+zakładać konta. Dane są fikcyjne, zapis jest wyłączony, a co noc wszystko wraca do stanu wyjściowego.
+Po zalogowaniu hub pokazuje 4 kroki „od czego zacząć” i przycisk pokazu z lektorem (2 min).
+
 Wspólne narzędzie dla magazynu, transportu i obsługi klienta, które zastępuje rozproszone w Excelu
 i SAP planowanie palet i wysyłek, kontrolę HU (palet z etykietą) i obraz magazynu.
 
@@ -12,10 +16,6 @@ i SAP planowanie palet i wysyłek, kontrolę HU (palet z etykietą) i obraz maga
 ![Załadunek luzem — kartony ułożone w kontenerze 40' HC w widoku 3D](docs/img/zaladunek-3d.png)
 
 📹 [Prezentacja działania — 2 min, bez lektora, z napisami](docs/video/logviz-demo.mp4)
-
-**Demo online:** <https://logviz.twapp.pl>. Kliknij **Wejdź jako demo**, nie trzeba
-zakładać konta. Dane są fikcyjne, zapis jest wyłączony, a co noc wszystko wraca do stanu wyjściowego.
-Po zalogowaniu hub pokazuje 4 kroki „od czego zacząć” i przycisk pokazu z lektorem (2 min).
 
 > **Projekt portfolio.** Nazwy firm są zamienione na fikcyjne (ACME, DOMEX, przewoźnicy PACZKI /
 > PALETY / BUS / EXPORT, magazyn zewnętrzny ZEW), a dane demo i testowe są syntetyczne.

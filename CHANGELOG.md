@@ -28,6 +28,8 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
 
 ### Changed
+- README i README.en: blok „▶ Wypróbuj demo” / „▶ Try the demo” (link do <https://logviz.twapp.pl> i przycisk
+  „Wejdź jako demo”, bez hasła) przeniesiony tuż pod tytuł, przed opis i zrzuty ekranu.
 - README: aktualne fakty — 22 ADR, stan znanych problemów P1–P19 (16 naprawionych, 3 otwarte),
   auto-merge opisany jako cecha repo prywatnego, nieaktualny „status procesu” zastąpiony odnośnikiem do
   backlogu; pusty placeholder „Kontekst projektu” ukryty do czasu uzupełnienia.

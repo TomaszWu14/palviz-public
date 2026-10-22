@@ -2,6 +2,10 @@
 
 🇵🇱 [Polski](README.md) · 🇬🇧 English
 
+**▶ Try the demo:** <https://logviz.twapp.pl>. Click **Wejdź jako demo** ("enter as demo") — no account
+needed. The data is fictional, writes are disabled and everything resets every night. After login
+the hub shows 4 "where to start" steps and a narrated tour (2 min). The UI is in Polish.
+
 One shared tool for the warehouse, transport and customer-service teams. It replaces pallet and
 shipment planning scattered across Excel and SAP, adds a scanner-driven pallet (HU) content check
 before loading, and gives everyone the same picture of the warehouse.
@@ -13,10 +17,6 @@ before loading, and gives everyone the same picture of the warehouse.
 ![Loose-carton loading — cartons packed into a 40' HC container, 3D view](docs/img/zaladunek-3d.png)
 
 📹 [Walkthrough video — 2 min, no voice-over, Polish captions](docs/video/logviz-demo.mp4)
-
-**Live demo:** <https://logviz.twapp.pl>. Click **Wejdź jako demo** ("enter as demo") — no account
-needed. The data is fictional, writes are disabled and everything resets every night. After login
-the hub shows 4 "where to start" steps and a narrated tour (2 min). The UI is in Polish.
 
 > **Portfolio project.** Company names are replaced with fictional ones (ACME, DOMEX, carriers
 > PACZKI / PALETY / BUS / EXPORT, external warehouse ZEW); demo and test data are synthetic.
