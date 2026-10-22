@@ -13,6 +13,11 @@ updates:
     groups:
       python-minor-patch:
         update-types: ["minor", "patch"]
+    # Django celowo na 5.2 LTS (requirements.txt: 6.x wymaga Pythona >=3.12, a CI/Docker
+    # stoją na 3.11). Poprawki 5.2.x przychodzą dalej w grupie python-minor-patch.
+    ignore:
+      - dependency-name: "django"
+        update-types: ["version-update:semver-major"]
     commit-message:
       prefix: "chore(deps)"
   - package-ecosystem: github-actions
