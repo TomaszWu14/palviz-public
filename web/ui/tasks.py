@@ -394,6 +394,8 @@ def gdpr_retention():
     """RODO: anonimizacja danych kierowców i czyszczenie logów logowania po okresie retencji
     (GDPR_DRIVER_RETAIN_DAYS / GDPR_ACCESSLOG_RETAIN_DAYS; 0 = wyłączone, domyślnie)."""
     from .gdpr import anonymize_drivers, purge_access_logs
+    from .models.demo_visitor import purge_old_visitors
+    purge_old_visitors()   # odwiedzający demo: 90 dni (core/demo_gate.py)
     return {"drivers": anonymize_drivers(int(getattr(settings, "GDPR_DRIVER_RETAIN_DAYS", 0) or 0)),
             "access_logs": purge_access_logs(int(getattr(settings, "GDPR_ACCESSLOG_RETAIN_DAYS", 0) or 0))}
 

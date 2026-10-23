@@ -12,6 +12,7 @@ from .packspec import *  # noqa: F401,F403
 from .producer_dims import *  # noqa: F401,F403
 from .material_master import *  # noqa: F401,F403
 from .warehouse_data import *  # noqa: F401,F403
+from .demo_visitor import *  # noqa: F401,F403
 
 # nazwy podkreślnikowe używane przez migracje/kod — star-import ich nie niesie
 from .catalog import _quote_token  # noqa: F401

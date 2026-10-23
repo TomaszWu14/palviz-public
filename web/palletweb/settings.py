@@ -35,6 +35,7 @@ APP_NAME = env.APP_NAME
 DEMO_MODE = env.DEMO_MODE
 DEMO_USER = env.DEMO_USER
 DEMO_PASSWORD = env.DEMO_PASSWORD
+DEMO_VISITOR_GATE = env.DEMO_VISITOR_GATE
 # Deployment variant: "" = full platform; "hu" = a Kontrola HU-only instance
 # (same code + DB, deployed separately under its own name/host). See platform_modules.
 GROOVE_VARIANT = (env.GROOVE_VARIANT or "").strip().lower()

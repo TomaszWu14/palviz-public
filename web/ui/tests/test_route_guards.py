@@ -20,7 +20,7 @@ PUBLIC_ROUTES = {
     "csp_report": "raporty CSP z przeglądarki (report-uri) — bez sesji/CSRF; limit body/IP w widoku",
     "health": "healthcheck dla Coolify/smoke — bez sesji",
     "login": "ekran logowania",
-    "demo_login": "„Wejdź jako demo” — tylko przy DEMO_MODE (core/demo.py), inaczej 404",
+    "demo_login": "„Wejdź jako demo” — tylko przy DEMO_MODE (core/demo_gate.py), inaczej 404",
     "logout": "wylogowanie",
     "password_reset": "reset hasła dla niezalogowanych (GuardedPasswordResetView)",
     "password_reset_done": "reset hasła — potwierdzenie wysyłki",
