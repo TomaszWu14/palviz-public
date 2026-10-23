@@ -487,5 +487,11 @@
   "ui:warehouse_snapshot_upload": "data-center/import/snapshot/",
   "ui:picker_activity_template": "data-center/import/pickerzy/wzor.xlsx",
   "ui:warehouse_snapshot_template": "data-center/import/snapshot/wzor.xlsx",
-  "ui:demo_login": "demo/wejdz/"
+  "ui:demo_login": "demo/wejdz/",
+  "ui:ui_demovisitor_changelist": "admin/ui/demovisitor/",
+  "ui:ui_demovisitor_add": "admin/ui/demovisitor/add/",
+  "ui:ui_demovisitor_history": "admin/ui/demovisitor/<path:object_id>/history/",
+  "ui:ui_demovisitor_delete": "admin/ui/demovisitor/<path:object_id>/delete/",
+  "ui:ui_demovisitor_change": "admin/ui/demovisitor/<path:object_id>/change/",
+  "ui:demo_visitors": "demo/goscie/"
 }

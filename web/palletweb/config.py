@@ -38,6 +38,9 @@ class AppEnv(BaseSettings):
     DEMO_MODE: bool = False
     DEMO_USER: str = "demo"
     DEMO_PASSWORD: str = ""
+    # Bramka odwiedzających demo (core/demo_gate.py): przed „Wejdź jako demo” trzeba się przedstawić.
+    # Domyślnie włączona, ale działa tylko przy DEMO_MODE; testy ją wyłączają (testkit.runner).
+    DEMO_VISITOR_GATE: bool = True
     # Deployment variant — one codebase, one DB, but this instance serves only a subset of
     # modules. "" = full platform; "hu" = Kontrola HU only (warehouse-floor app).
     GROOVE_VARIANT: str = ""

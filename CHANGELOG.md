@@ -8,6 +8,11 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 ## [Unreleased]
 
 ### Added
+- Bramka odwiedzających demo (`DEMO_VISITOR_GATE`, domyślnie włączona przy `DEMO_MODE`): przed „Wejdź jako
+  demo” trzeba podać imię, nazwisko, firmę i zaakceptować informację RODO (honeypot przeciw botom). Dane
+  w modelu `ui.DemoVisitor` (bez IP i user-agenta), kasowane po 90 dniach (przy zapisie i w `ui.gdpr_retention`);
+  podpisany cookie na 30 dni oszczędza formularz. Lista: Django admin i `/demo/goscie/` (Administratorzy).
+  Zwykłe logowanie, SSO, `/healthz` i statyki bez zmian.
 - `README.en.md` — angielska wersja README (problem, ekrany, stack, uruchomienie, testy) dla czytelników
   spoza Polski; przełącznik języka na górze obu plików.
 - ADR-0022 (wspólna podstawa bezpieczeństwa): `security.yml` — gitleaks z przypiętą binarką i sha256,
