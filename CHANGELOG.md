@@ -8,6 +8,10 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 ## [Unreleased]
 
 ### Added
+- Powiadomienie push (ntfy) o każdym nowym gościu bramki demo (`core/visitor_notify.py`): po udanym zapisie
+  POST na `NTFY_URL` z treścią „{imię} {nazwisko} ({firma}) wszedł do LogViz” (nagłówki ASCII, opcjonalnie
+  `NTFY_TOKEN` → Bearer), w wątku tła z timeoutem 5 s; błąd tylko w logu. Bez `NTFY_URL` — no-op.
+  Klauzula RODO w formularzu wymienia ntfy jako kanał powiadomienia.
 - Bramka odwiedzających demo (`DEMO_VISITOR_GATE`, domyślnie włączona przy `DEMO_MODE`): przed „Wejdź jako
   demo” trzeba podać imię, nazwisko, firmę i zaakceptować informację RODO (honeypot przeciw botom). Dane
   w modelu `ui.DemoVisitor` (bez IP i user-agenta), kasowane po 90 dniach (przy zapisie i w `ui.gdpr_retention`);
