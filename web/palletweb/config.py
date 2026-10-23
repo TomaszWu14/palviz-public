@@ -41,6 +41,10 @@ class AppEnv(BaseSettings):
     # Bramka odwiedzających demo (core/demo_gate.py): przed „Wejdź jako demo” trzeba się przedstawić.
     # Domyślnie włączona, ale działa tylko przy DEMO_MODE; testy ją wyłączają (testkit.runner).
     DEMO_VISITOR_GATE: bool = True
+    # Push ntfy o każdym nowym gościu bramki (core/visitor_notify.py): pełny URL tematu, np.
+    # https://ntfy.sh/<tajny-temat>. Puste = brak powiadomień. NTFY_TOKEN → Authorization: Bearer.
+    NTFY_URL: str = ""
+    NTFY_TOKEN: str = ""
     # Deployment variant — one codebase, one DB, but this instance serves only a subset of
     # modules. "" = full platform; "hu" = Kontrola HU only (warehouse-floor app).
     GROOVE_VARIANT: str = ""

@@ -9,7 +9,7 @@
 | Rola | Kto (założenie) |
 |---|---|
 | Administrator danych | właściciel instancji produkcyjnej (firma eksploatująca magazyn; w repo: PO) |
-| Podmioty przetwarzające (tylko gdy skonfigurowane w env) | dostawca VPS/Coolify (hosting), Twilio (SMS do kierowców), dostawca SMTP (e-mail), Sentry (błędy — bez PII), Google (Maps — adresy, nie osoby), Microsoft (Power BI — dane SAP), Keycloak (tożsamość, jeśli SSO) |
+| Podmioty przetwarzające (tylko gdy skonfigurowane w env) | dostawca VPS/Coolify (hosting), Twilio (SMS do kierowców), dostawca SMTP (e-mail), Sentry (błędy — bez PII), Google (Maps — adresy, nie osoby), Microsoft (Power BI — dane SAP), Keycloak (tożsamość, jeśli SSO), ntfy (push o gościu bramki demo: imię, nazwisko, firma — `NTFY_URL`) |
 | IOD / kontakt | **brak w repo — do uzupełnienia** (`ADMIN_CONTACT_EMAIL` to kontakt techniczny) |
 
 ## 2. Rejestr czynności przetwarzania (szkic)

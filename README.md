@@ -146,6 +146,8 @@ wysyłki, produkty i klientów.
    Do tego `DJANGO_ALLOWED_HOSTS`, `APP_NAME=LogViz` i `DB_PATH=/app/data/db.sqlite3` (wolumen na `/app/data`).
    `DJANGO_SECRET_KEY` jest opcjonalny: bez niego instancja demo sama tworzy losowy klucz w
    `/app/data/.django_secret_key` (prawa 0600, przeżywa deploy). Redis nie jest potrzebny: `CELERY_BROKER_URL=memory://`.
+   Opcjonalnie `NTFY_URL` (pełny URL tematu ntfy, np. `https://ntfy.sh/<tajny-temat>`) i `NTFY_TOKEN`
+   (Bearer dla serwera z kontrolą dostępu): każdy gość, który poprawnie wypełni bramkę, wysyła push na telefon.
 2. Pierwszy start: `docker-entrypoint.sh` przy `DEMO_MODE=true` sam uruchamia `create_roles` i `seed_demo`
    (oba są idempotentne).
 3. Reset co noc: **Scheduled Tasks → Add**, kontener aplikacji, komenda

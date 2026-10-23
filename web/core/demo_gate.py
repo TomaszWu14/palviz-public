@@ -15,6 +15,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods
 
 from .roles import _admin_only
+from .visitor_notify import notify_visitor
 
 COOKIE = "demo_visitor"
 COOKIE_AGE = 30 * 86400
@@ -81,6 +82,7 @@ def demo_login(request):
     from ui.models.demo_visitor import DemoVisitor, purge_old_visitors
     DemoVisitor.objects.create(**data)
     purge_old_visitors()
+    notify_visitor(data)                            # push ntfy w tle (no-op bez NTFY_URL)
     resp = _enter(request)
     resp.set_signed_cookie(COOKIE, "1", max_age=COOKIE_AGE, httponly=True, samesite="Lax",
                            secure=not settings.DEBUG)
