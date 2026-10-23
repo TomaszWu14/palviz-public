@@ -29,6 +29,11 @@ class VisitorGateTests(TestCase):
         self.assertFalse(_logged(self.client))
         self.assertEqual(DemoVisitor.objects.count(), 0)
 
+    def test_clause_hides_owner_email_from_scrapers(self):
+        r = self.client.post(self.url)
+        self.assertNotContains(r, "tomasz.wierzbowski@op.pl")
+        self.assertContains(r, "tomasz.wierzbowski [at] op.pl")
+
     def test_invalid_or_missing_consent_refused(self):
         for bad in ({**OK, "gdpr": ""}, {**OK, "first_name": " A "}, {**OK, "company": "x\x07yz"},
                     {**OK, "last_name": "z" * 101}):
