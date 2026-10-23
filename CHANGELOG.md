@@ -8,6 +8,7 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 ## [Unreleased]
 
 ### Added
+- Klauzula RODO bramki demo: adres kontaktowy w zapisie „tomasz.wierzbowski [at] op.pl” (bez `@`, żeby nie zbierały go boty).
 - Monitoring gości demo v2: `NTFY_WATCH_COMPANIES` (frazy po przecinku, porównanie bez wielkości liter
   i diakrytyków) — gość z firmy z listy wysyła push `Priority: urgent` „UWAGA firma z listy”. Aktywność po
   wejściu (`core/visitor_activity.py`): podpisane cookie bramki niesie id wpisu, middleware liczy udane
