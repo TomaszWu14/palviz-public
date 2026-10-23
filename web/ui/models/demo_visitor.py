@@ -14,6 +14,10 @@ class DemoVisitor(models.Model):
     last_name = models.CharField("nazwisko", max_length=100)
     company = models.CharField("firma", max_length=100)
     created_at = models.DateTimeField("data wizyty", default=timezone.now, db_index=True)
+    # Aktywność po wejściu (core/visitor_activity.py): ekrany HTML, ostatnie żądanie, sekcje.
+    page_views = models.PositiveIntegerField("ekrany", default=0)
+    last_seen_at = models.DateTimeField("ostatnia aktywność", null=True, blank=True)
+    sections = models.JSONField("sekcje", default=dict, blank=True)
 
     class Meta:
         ordering = ["-created_at"]
@@ -22,6 +26,20 @@ class DemoVisitor(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.company})"
+
+    @property
+    def visit_duration(self):
+        """„ok. N min” (last_seen_at − created_at) albo „—”, gdy gość nic nie obejrzał."""
+        if not self.last_seen_at:
+            return "—"
+        minutes = max(0, round((self.last_seen_at - self.created_at).total_seconds() / 60))
+        return f"ok. {minutes} min"
+
+    @property
+    def top_sections(self):
+        """3 najczęściej oglądane sekcje, np. „palety (5), start (2)”."""
+        items = sorted((self.sections or {}).items(), key=lambda kv: (-kv[1], kv[0]))[:3]
+        return ", ".join(f"{k} ({v})" for k, v in items) or "—"
 
 
 def purge_old_visitors(now=None) -> int:

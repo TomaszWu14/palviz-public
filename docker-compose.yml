@@ -31,6 +31,12 @@ services:
       DEMO_MODE: ${DEMO_MODE:-false}
       DEMO_USER: ${DEMO_USER:-demo}
       DEMO_PASSWORD: ${DEMO_PASSWORD:-}
+      # Bramka gościa demo + push ntfy (README, „Instancja demo w Coolify”); puste NTFY_URL = brak pushy.
+      DEMO_VISITOR_GATE: ${DEMO_VISITOR_GATE:-true}
+      NTFY_URL: ${NTFY_URL:-}
+      NTFY_TOKEN: ${NTFY_TOKEN:-}
+      NTFY_WATCH_COMPANIES: ${NTFY_WATCH_COMPANIES:-}
+      NTFY_ENGAGED_VIEWS: ${NTFY_ENGAGED_VIEWS:-10}
       # Managed PostgreSQL: set DATABASE_URL=postgresql://user:pass@host:5432/palviz?sslmode=require
       # When empty the app falls back to the SQLite volume below.
       # Dev z lokalnym Postgresem z tego pliku (profil `pg`, patrz niżej):

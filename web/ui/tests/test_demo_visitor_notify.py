@@ -93,5 +93,6 @@ class VisitorNotifyClauseTests(TestCase):
     @override_settings(**GATE)
     def test_gdpr_clause_mentions_ntfy(self):
         r = self.client.get(reverse("ui:demo_login"))
-        self.assertContains(r, "powiadomień push ntfy; poza tym nikomu danych nie przekazuję.")
+        self.assertContains(r, "powiadomień push ntfy. Zapisuję też, ile i jakie ekrany")
+        self.assertNotContains(r, "ntfy; poza tym nikomu danych nie przekazuję.")
         self.assertNotContains(r, "i nikomu ich nie przekazuję")
