@@ -20,6 +20,7 @@ from .visitor_notify import notify_visitor
 COOKIE = "demo_visitor"
 COOKIE_AGE = 30 * 86400
 FIELDS = (("first_name", "Imię"), ("last_name", "Nazwisko"), ("company", "Firma"))
+_PASS_ID = re.compile(r"v[0-9]{1,18}")
 _CONTROL = re.compile(r"[\x00-\x1f\x7f-\x9f  ]")
 
 
@@ -42,11 +43,29 @@ def clean_visitor(post):
     return data, errors
 
 
-def _has_pass(request):
+def _pass_value(request):
     try:
-        return request.get_signed_cookie(COOKIE, default=None, max_age=COOKIE_AGE) == "1"
+        return request.get_signed_cookie(COOKIE, default=None, max_age=COOKIE_AGE)
     except BadSignature:
-        return False
+        return None
+
+
+def _has_pass(request):
+    """Ważna flaga: „1” (sprzed liczenia aktywności) albo „v<id>” (podpisane id wpisu)."""
+    value = _pass_value(request)
+    return value == "1" or visitor_id(value) is not None
+
+
+def visitor_id(value):
+    """Id wpisu DemoVisitor z wartości podpisanego cookie „v<id>”; stara flaga „1” → None."""
+    if value and _PASS_ID.fullmatch(value):
+        return int(value[1:])
+    return None
+
+
+def visitor_id_from_request(request):
+    """Id gościa z ważnej (podpisanej, ≤ 30 dni) flagi albo None — dla core/visitor_activity."""
+    return visitor_id(_pass_value(request))
 
 
 def _enter(request):
@@ -80,11 +99,11 @@ def demo_login(request):
     if errors:
         return _form(request, data, errors, status=400)
     from ui.models.demo_visitor import DemoVisitor, purge_old_visitors
-    DemoVisitor.objects.create(**data)
+    visitor = DemoVisitor.objects.create(**data)
     purge_old_visitors()
     notify_visitor(data)                            # push ntfy w tle (no-op bez NTFY_URL)
     resp = _enter(request)
-    resp.set_signed_cookie(COOKIE, "1", max_age=COOKIE_AGE, httponly=True, samesite="Lax",
+    resp.set_signed_cookie(COOKIE, f"v{visitor.pk}", max_age=COOKIE_AGE, httponly=True, samesite="Lax",
                            secure=not settings.DEBUG)
     return resp
 

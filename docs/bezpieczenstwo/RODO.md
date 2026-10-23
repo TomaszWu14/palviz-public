@@ -9,7 +9,7 @@
 | Rola | Kto (założenie) |
 |---|---|
 | Administrator danych | właściciel instancji produkcyjnej (firma eksploatująca magazyn; w repo: PO) |
-| Podmioty przetwarzające (tylko gdy skonfigurowane w env) | dostawca VPS/Coolify (hosting), Twilio (SMS do kierowców), dostawca SMTP (e-mail), Sentry (błędy — bez PII), Google (Maps — adresy, nie osoby), Microsoft (Power BI — dane SAP), Keycloak (tożsamość, jeśli SSO), ntfy (push o gościu bramki demo: imię, nazwisko, firma — `NTFY_URL`) |
+| Podmioty przetwarzające (tylko gdy skonfigurowane w env) | dostawca VPS/Coolify (hosting), Twilio (SMS do kierowców), dostawca SMTP (e-mail), Sentry (błędy — bez PII), Google (Maps — adresy, nie osoby), Microsoft (Power BI — dane SAP), Keycloak (tożsamość, jeśli SSO), ntfy (push o gościu bramki demo: imię, nazwisko, firma, liczba obejrzanych ekranów — `NTFY_URL`) |
 | IOD / kontakt | **brak w repo — do uzupełnienia** (`ADMIN_CONTACT_EMAIL` to kontakt techniczny) |
 
 ## 2. Rejestr czynności przetwarzania (szkic)
@@ -22,6 +22,7 @@
 | Zapytania ofertowe do przewoźników | pracownicy spedytorów | nazwa, e-mail służbowy, oferta | wybór przewoźnika | art. 6 ust. 1 lit. b/f | bezterminowo → jak dokumentacja handlowa (do ustalenia) |
 | Kontrola HU i rozliczalność kontrolerów | kontrolerzy, pickerzy | nazwa użytkownika przy próbach liczenia, imię i nazwisko pickera z SAP, zdjęcia | jakość wysyłek, ślad audytowy | art. 6 ust. 1 lit. f | zdjęcia 30 dni (działa); próby liczenia bezterminowo → do ustalenia |
 | Zgłoszenia i wiadomości wewnętrzne | pracownicy | treść, autor, czas | komunikacja operacyjna | art. 6 ust. 1 lit. f | bezterminowo → do ustalenia |
+| Bramka gościa demo (`ui.DemoVisitor`, tylko instancja `DEMO_MODE`) | odwiedzający demo portfolio | imię, nazwisko, firma, czas wejścia; liczba i sekcje obejrzanych ekranów, ostatnia aktywność (bez IP i user-agenta) | kontrola dostępu do demo, statystyka odwiedzin | art. 6 ust. 1 lit. f | 90 dni (usuwane przy zapisie i w `ui.gdpr_retention`) |
 | Monitorowanie błędów (Sentry) | — | bez PII (`send_default_pii=False`, bez zmiennych lokalnych) | utrzymanie | art. 6 ust. 1 lit. f | wg Sentry (90 dni) |
 
 ## 3. Minimalizacja i zabezpieczenia (stan)

@@ -14,8 +14,8 @@ before loading, and gives everyone the same picture of the warehouse.
 
 📹 [Walkthrough video — 2 min, no voice-over, Polish captions](docs/video/logviz-demo.mp4)
 
-**Live demo:** <https://logviz.twapp.pl>. Click **Wejdź jako demo** ("enter as demo") — no account
-needed. The data is fictional, writes are disabled and everything resets every night. After login
+**▶ See the demo: <https://logviz.twapp.pl>** (on entry the demo asks for your first name, last name
+and company). Click **Wejdź jako demo** ("enter as demo") — no account needed. The data is fictional, writes are disabled and everything resets every night. After login
 the hub shows 4 "where to start" steps and a narrated tour (2 min). The UI is in Polish.
 
 > **Portfolio project.** Company names are replaced with fictional ones (ACME, DOMEX, carriers
