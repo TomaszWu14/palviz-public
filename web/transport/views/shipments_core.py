@@ -1,4 +1,6 @@
 # Przesylki: lista, formularz, karta, anulowanie/requote, usuwanie, zaladunek kontenera.
+import math
+
 from django.db.models import ProtectedError
 from ui.views.core import (
     Carrier, Count, DriverAssignment, GROUP_ADMIN, GROUP_CONTROLLER,
@@ -135,7 +137,7 @@ def planner_shipment_form(request, pk=None):
                             try:
                                 product = Product.objects.get(pk=pid)
                                 qty_f = float(qty.replace(",", "."))
-                                if qty_f <= 0:
+                                if not math.isfinite(qty_f) or qty_f <= 0:
                                     continue
                                 ShipmentLine.objects.create(
                                     shipment=shipment,

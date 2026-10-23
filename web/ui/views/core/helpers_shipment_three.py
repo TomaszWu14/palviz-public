@@ -1,5 +1,7 @@
 # core/ — shared kernel split into layers (base ◅ figures/xlsx/helpers ◅ packing).
 # Re-exported wholesale by core/__init__.py so `from .core import *` is unchanged.
+import math
+
 from .base import Product, ShipmentLine, openpyxl
 from .helpers_shipment_calc import _DEFAULT_PALLET_HEIGHT, _MAX_PALLET_WEIGHT_KG, _PAZ_BUILD_HEIGHT_CM, _settle_boxes  # noqa: F401
 from .helpers_shipment_ffd_fit import (  # geometria/limity FFD (liść, bez star-eksportu)
@@ -455,7 +457,7 @@ def _import_shipment_lines_excel(shipment, file_obj):
                 if not code or qty_raw is None:
                     continue
                 qty = float(str(qty_raw).replace(",", "."))
-                if qty <= 0:
+                if not math.isfinite(qty) or qty <= 0:   # "inf"/"1e999" z Excela
                     continue
                 unit = "kar"
                 if col_unit is not None and row[col_unit]:
