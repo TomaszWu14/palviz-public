@@ -13,8 +13,8 @@ i SAP planowanie palet i wysyłek, kontrolę HU (palet z etykietą) i obraz maga
 
 📹 [Prezentacja działania — 2 min, bez lektora, z napisami](docs/video/logviz-demo.mp4)
 
-**Demo online:** <https://logviz.twapp.pl>. Kliknij **Wejdź jako demo**, nie trzeba
-zakładać konta. Dane są fikcyjne, zapis jest wyłączony, a co noc wszystko wraca do stanu wyjściowego.
+**▶ Zobacz demo: <https://logviz.twapp.pl>** (przy wejściu demo poprosi o imię, nazwisko i firmę).
+Kliknij **Wejdź jako demo**, nie trzeba zakładać konta. Dane są fikcyjne, zapis jest wyłączony, a co noc wszystko wraca do stanu wyjściowego.
 Po zalogowaniu hub pokazuje 4 kroki „od czego zacząć” i przycisk pokazu z lektorem (2 min).
 
 > **Projekt portfolio.** Nazwy firm są zamienione na fikcyjne (ACME, DOMEX, przewoźnicy PACZKI /
@@ -146,6 +146,12 @@ wysyłki, produkty i klientów.
    Do tego `DJANGO_ALLOWED_HOSTS`, `APP_NAME=LogViz` i `DB_PATH=/app/data/db.sqlite3` (wolumen na `/app/data`).
    `DJANGO_SECRET_KEY` jest opcjonalny: bez niego instancja demo sama tworzy losowy klucz w
    `/app/data/.django_secret_key` (prawa 0600, przeżywa deploy). Redis nie jest potrzebny: `CELERY_BROKER_URL=memory://`.
+   Opcjonalnie `NTFY_URL` (pełny URL tematu ntfy, np. `https://ntfy.sh/<tajny-temat>`) i `NTFY_TOKEN`
+   (Bearer dla serwera z kontrolą dostępu): każdy gość, który poprawnie wypełni bramkę, wysyła push na telefon.
+   `NTFY_WATCH_COMPANIES` (frazy firm po przecinku, bez wielkości liter i polskich znaków) zamienia push
+   na pilny „UWAGA firma z listy”, a `NTFY_ENGAGED_VIEWS` (domyślnie 10, `0` = wyłączone) wysyła jeden
+   push „gość ogląda demo”, gdy gość obejrzy tyle ekranów. Lista `/demo/goscie/` pokazuje przy gościu
+   liczbę ekranów, czas wizyty i 3 najczęściej oglądane sekcje.
 2. Pierwszy start: `docker-entrypoint.sh` przy `DEMO_MODE=true` sam uruchamia `create_roles` i `seed_demo`
    (oba są idempotentne).
 3. Reset co noc: **Scheduled Tasks → Add**, kontener aplikacji, komenda

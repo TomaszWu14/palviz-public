@@ -1,0 +1,57 @@
+{% load static %}<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Przedstaw się · {{ app_name }}</title>
+  <link rel="stylesheet" href="{% static 'ui/css/fonts.css' %}">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --accent:#1a56db; --ink:#111827; --muted:#4b5563; --line:#d1d5db; --red:#b91c1c; }
+    body { font-family:'Inter','Segoe UI',system-ui,sans-serif; color:var(--ink); min-height:100vh;
+      display:flex; align-items:center; justify-content:center; padding:24px;
+      background:linear-gradient(165deg,#0b1220 0%,#101b33 60%,#0f172a 100%); }
+    .card { width:100%; max-width:440px; background:#fff; border-top:3px solid var(--accent);
+      border-radius:12px; padding:28px 28px 22px; }
+    h1 { font-size:20px; margin-bottom:6px; }
+    .lead { font-size:14px; color:var(--muted); margin-bottom:18px; }
+    label { display:block; font-size:13px; font-weight:600; margin:12px 0 4px; }
+    input[type=text] { width:100%; padding:10px 12px; font:inherit; border:1px solid var(--line); border-radius:8px; }
+    .err { color:var(--red); font-size:12px; margin-top:4px; }
+    .check { display:flex; gap:8px; align-items:flex-start; margin-top:16px; font-size:13px; font-weight:400; }
+    .btn { margin-top:18px; width:100%; padding:11px; font:inherit; font-weight:600; color:#fff;
+      background:var(--accent); border:0; border-radius:8px; cursor:pointer; }
+    .rodo { margin-top:16px; font-size:11.5px; line-height:1.5; color:var(--muted); }
+    .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+    a { color:var(--accent); font-size:13px; }
+    :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>{{ app_name }} — wersja demonstracyjna</h1>
+    <p class="lead">Zanim wejdziesz do wersji demonstracyjnej, przedstaw się, proszę.</p>
+    <form method="post" action="{% url 'ui:demo_login' %}" novalidate>
+      {% csrf_token %}
+      {% if errors.form %}<p class="err" role="alert">{{ errors.form }}</p>{% endif %}
+      <label for="id_first_name">Imię</label>
+      <input type="text" id="id_first_name" name="first_name" value="{{ data.first_name }}" maxlength="100" required autocomplete="given-name">
+      {% if errors.first_name %}<p class="err" role="alert">{{ errors.first_name }}</p>{% endif %}
+      <label for="id_last_name">Nazwisko</label>
+      <input type="text" id="id_last_name" name="last_name" value="{{ data.last_name }}" maxlength="100" required autocomplete="family-name">
+      {% if errors.last_name %}<p class="err" role="alert">{{ errors.last_name }}</p>{% endif %}
+      <label for="id_company">Firma</label>
+      <input type="text" id="id_company" name="company" value="{{ data.company }}" maxlength="100" required autocomplete="organization">
+      {% if errors.company %}<p class="err" role="alert">{{ errors.company }}</p>{% endif %}
+      <div class="hp" aria-hidden="true"><label for="id_website">Nie wypełniaj tego pola</label>
+        <input type="text" id="id_website" name="website" tabindex="-1" autocomplete="off"></div>
+      <label class="check" for="id_gdpr"><input type="checkbox" id="id_gdpr" name="gdpr" value="1" required>
+        <span>Zapoznałem(-am) się z informacją o przetwarzaniu danych osobowych (poniżej).</span></label>
+      {% if errors.gdpr %}<p class="err" role="alert">{{ errors.gdpr }}</p>{% endif %}
+      <button type="submit" class="btn" data-testid="demo-gate-submit">Wejdź do wersji demo</button>
+    </form>
+    <p class="rodo">Administratorem danych jest Tomasz Wierzbowski (kontakt: tomasz.wierzbowski [at] op.pl). Imię, nazwisko i nazwę firmy przetwarzam wyłącznie w celu kontroli dostępu do wersji demonstracyjnej i statystyki odwiedzin portfolio, na podstawie prawnie uzasadnionego interesu (art. 6 ust. 1 lit. f RODO). Dane przechowuję 90 dni, potem są automatycznie usuwane. O każdej wizycie (imię, nazwisko, firma) dostaję powiadomienie na telefon przez usługę powiadomień push ntfy. Zapisuję też, ile i jakie ekrany wersji demonstracyjnej obejrzałeś (bez adresu IP), żeby wiedzieć, co zainteresowało gości. Poza tym nikomu danych nie przekazuję. Masz prawo dostępu do danych, ich sprostowania, usunięcia, ograniczenia przetwarzania i sprzeciwu – napisz na adres powyżej. Przysługuje Ci skarga do Prezesa UODO.</p>
+    <p class="rodo"><a href="{% url 'ui:login' %}">Wróć do logowania</a></p>
+  </main>
+</body>
+</html>

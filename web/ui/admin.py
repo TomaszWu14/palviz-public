@@ -2,9 +2,41 @@ from django.contrib import admin
 from .models import (Batch, Palletization, Product, Carton, InnerPack,
                      PalletizationInstruction, ErrorReport, SiteInfo, Customer,
                      Task, Notification, RecurringTask, UserProfile, PowerBIToken,
-                     UserModuleAccess,
+                     UserModuleAccess, DemoVisitor,
                      EscalationRoute,
                      PackagingIssue, ProductAlias, DictionaryEntry)
+
+
+@admin.register(DemoVisitor)
+class DemoVisitorAdmin(admin.ModelAdmin):
+    """Lista odwiedzających demo — tylko do odczytu (dane osobowe, retencja 90 dni)."""
+    list_display = ("created_at", "last_name", "first_name", "company", "page_views",
+                    "duration", "top")
+    ordering = ("-created_at",)
+    search_fields = ("last_name", "first_name", "company")
+
+    @admin.display(description="czas")
+    def duration(self, obj):
+        return obj.visit_duration
+
+    @admin.display(description="najczęściej")
+    def top(self, obj):
+        return obj.top_sections
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_module_permission(self, request):
+        return request.user.is_superuser or request.user.groups.filter(name="Administratorzy").exists()
+
+    def has_view_permission(self, request, obj=None):
+        return self.has_module_permission(request)
+
+    def has_delete_permission(self, request, obj=None):
+        return self.has_module_permission(request)
 
 
 @admin.register(UserModuleAccess)

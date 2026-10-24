@@ -8,6 +8,23 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
 ## [Unreleased]
 
 ### Added
+- Klauzula RODO bramki demo: adres kontaktowy w zapisie „tomasz.wierzbowski [at] op.pl” (bez `@`, żeby nie zbierały go boty).
+- Monitoring gości demo v2: `NTFY_WATCH_COMPANIES` (frazy po przecinku, porównanie bez wielkości liter
+  i diakrytyków) — gość z firmy z listy wysyła push `Priority: urgent` „UWAGA firma z listy”. Aktywność po
+  wejściu (`core/visitor_activity.py`): podpisane cookie bramki niesie id wpisu, middleware liczy udane
+  GET-y stron HTML (bez statyki, /health, API, htmx) — `page_views`, `last_seen_at`, `sections`
+  (max 20 sekcji; migracja `ui.0198`). Lista gości i admin: kolumny „Ekrany”, „Czas”, „Najczęściej”.
+  `NTFY_ENGAGED_VIEWS` (domyślnie 10) — jeden push „gość ogląda demo”. Klauzula RODO wymienia
+  zapis obejrzanych ekranów.
+- Powiadomienie push (ntfy) o każdym nowym gościu bramki demo (`core/visitor_notify.py`): po udanym zapisie
+  POST na `NTFY_URL` z treścią „{imię} {nazwisko} ({firma}) wszedł do LogViz” (nagłówki ASCII, opcjonalnie
+  `NTFY_TOKEN` → Bearer), w wątku tła z timeoutem 5 s; błąd tylko w logu. Bez `NTFY_URL` — no-op.
+  Klauzula RODO w formularzu wymienia ntfy jako kanał powiadomienia.
+- Bramka odwiedzających demo (`DEMO_VISITOR_GATE`, domyślnie włączona przy `DEMO_MODE`): przed „Wejdź jako
+  demo” trzeba podać imię, nazwisko, firmę i zaakceptować informację RODO (honeypot przeciw botom). Dane
+  w modelu `ui.DemoVisitor` (bez IP i user-agenta), kasowane po 90 dniach (przy zapisie i w `ui.gdpr_retention`);
+  podpisany cookie na 30 dni oszczędza formularz. Lista: Django admin i `/demo/goscie/` (Administratorzy).
+  Zwykłe logowanie, SSO, `/healthz` i statyki bez zmian.
 - Workflow `demo-monitor.yml`: co 6 h (i ręcznie) sprawdza, czy demo <https://logviz.twapp.pl> odpowiada
   200 na `/`, `/login/` i `/health/`; awaria otwiera issue „Demo nie odpowiada” (etykieta `demo`, kolejne
   awarie jako komentarze), powrót do normy je zamyka. Tylko `GITHUB_TOKEN`, bez sekretów.

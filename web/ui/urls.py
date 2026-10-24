@@ -1,7 +1,7 @@
 from django.urls import include, path
 from django.contrib.auth import views as auth_views
 from core.csp import strict_csp
-from core.demo import demo_login
+from core.demo_gate import demo_login, demo_visitors
 
 from . import views
 
@@ -14,7 +14,8 @@ urlpatterns = [
         redirect_authenticated_user=True,
     )), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path("demo/wejdz/", demo_login, name="demo_login"),
+    path("demo/wejdz/", strict_csp(demo_login), name="demo_login"),
+    path("demo/goscie/", demo_visitors, name="demo_visitors"),
 
     # ── Samoobsługowy reset hasła (wymaga skonfigurowanego SMTP — EMAIL_HOST) ──
     path("password-reset/", views.GuardedPasswordResetView.as_view(

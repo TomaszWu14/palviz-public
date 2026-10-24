@@ -35,6 +35,11 @@ APP_NAME = env.APP_NAME
 DEMO_MODE = env.DEMO_MODE
 DEMO_USER = env.DEMO_USER
 DEMO_PASSWORD = env.DEMO_PASSWORD
+DEMO_VISITOR_GATE = env.DEMO_VISITOR_GATE
+NTFY_URL = env.NTFY_URL          # push o gościu demo (core/visitor_notify.py); puste = no-op
+NTFY_TOKEN = env.NTFY_TOKEN
+NTFY_WATCH_COMPANIES = env.NTFY_WATCH_COMPANIES   # frazy po przecinku → push „UWAGA firma z listy”
+NTFY_ENGAGED_VIEWS = env.NTFY_ENGAGED_VIEWS       # push „gość ogląda demo” przy N ekranach; 0 = wył.
 # Deployment variant: "" = full platform; "hu" = a Kontrola HU-only instance
 # (same code + DB, deployed separately under its own name/host). See platform_modules.
 GROOVE_VARIANT = (env.GROOVE_VARIANT or "").strip().lower()
@@ -111,6 +116,8 @@ MIDDLEWARE = [
     "core.middleware.PasswordChangeRequiredMiddleware",
     # DEMO_MODE: konto demo nie zapisuje poza bezpiecznymi akcjami (no-op bez DEMO_MODE).
     "core.demo.DemoReadOnlyMiddleware",
+    # Bramka demo: liczy ekrany HTML gościa z podpisaną flagą (no-op bez DEMO_VISITOR_GATE).
+    "core.visitor_activity.VisitorActivityMiddleware",
 ]
 
 ROOT_URLCONF = "palletweb.urls"

@@ -24,6 +24,9 @@ PLAIN_STATIC = "django.contrib.staticfiles.storage.StaticFilesStorage"
 def prepare():
     """Wspólne dla manage.py test (proces główny i robocze) i pytest (conftest.py)."""
     net.install()
+    settings.DEMO_VISITOR_GATE = False   # test włącza ją przez override_settings
+    settings.NTFY_URL = ""               # zero pushy ntfy z testów (testy mockują wysyłkę)
+    settings.NTFY_WATCH_COMPANIES = ""   # alarm „firma z listy” — test ustawia frazy sam
     if settings.PASSWORD_HASHERS[0] != FAST_HASHER:
         settings.PASSWORD_HASHERS = [FAST_HASHER, *settings.PASSWORD_HASHERS]
     # Prod: statyki z manifestem (hash w nazwie) — wymaga collectstatic, którego testy nie robią.

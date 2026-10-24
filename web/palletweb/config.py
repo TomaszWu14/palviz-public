@@ -16,7 +16,7 @@ import os
 import secrets
 from pathlib import Path
 
-from pydantic import model_validator
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -38,6 +38,18 @@ class AppEnv(BaseSettings):
     DEMO_MODE: bool = False
     DEMO_USER: str = "demo"
     DEMO_PASSWORD: str = ""
+    # Bramka odwiedzających demo (core/demo_gate.py): przed „Wejdź jako demo” trzeba się przedstawić.
+    # Domyślnie włączona, ale działa tylko przy DEMO_MODE; testy ją wyłączają (testkit.runner).
+    DEMO_VISITOR_GATE: bool = True
+    # Push ntfy o każdym nowym gościu bramki (core/visitor_notify.py): pełny URL tematu, np.
+    # https://ntfy.sh/<tajny-temat>. Puste = brak powiadomień. NTFY_TOKEN → Authorization: Bearer.
+    NTFY_URL: str = ""
+    NTFY_TOKEN: str = ""
+    # Frazy firm (po przecinku, bez wielkości liter i diakrytyków) → push z priorytetem urgent.
+    # Wartość tylko w env (Coolify), nigdy w repo. Puste = brak alarmu.
+    NTFY_WATCH_COMPANIES: str = ""
+    # Jeden push „gość ogląda demo”, gdy gość obejrzy dokładnie tyle ekranów; 0 (lub mniej) = wyłączone.
+    NTFY_ENGAGED_VIEWS: int = 10
     # Deployment variant — one codebase, one DB, but this instance serves only a subset of
     # modules. "" = full platform; "hu" = Kontrola HU only (warehouse-floor app).
     GROOVE_VARIANT: str = ""
@@ -231,6 +243,12 @@ class AppEnv(BaseSettings):
     # nagłówku X-N8N-Secret, żeby n8n odrzucił obce POST-y.
     N8N_EVENT_URL: str = ""
     N8N_EVENT_SECRET: str = ""
+
+    @field_validator("NTFY_ENGAGED_VIEWS", mode="before")
+    @classmethod
+    def _blank_engaged_views(cls, value):
+        # Puste w Coolify/compose („NTFY_ENGAGED_VIEWS=”) = wartość domyślna, nie błąd startu.
+        return 10 if isinstance(value, str) and not value.strip() else value
 
     @model_validator(mode="after")
     def _cross_field_checks(self) -> "AppEnv":

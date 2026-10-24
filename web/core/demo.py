@@ -8,13 +8,11 @@ Konto DEMO_USER widzi moduły jak planista/lider, ale nie może niczego trwale z
 Bez DEMO_MODE moduł nic nie robi — zwykła instancja działa bez zmian."""
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model, login
 from django.core.exceptions import PermissionDenied
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import Resolver404, resolve
 from django.utils.http import url_has_allowed_host_and_scheme
-from django.views.decorators.http import require_POST
 
 MSG = ("Wersja demonstracyjna: ta akcja jest wyłączona. "
        "Dane demo wracają do stanu wyjściowego co noc.")
@@ -65,17 +63,3 @@ def _deny(request):
     if not url_has_allowed_host_and_scheme(ref, allowed_hosts={request.get_host()}):
         ref = "/"
     return redirect(ref)
-
-
-@require_POST
-def demo_login(request):
-    """„Wejdź jako demo” — logowanie bez hasła, więc blokada Axes (5 prób) nie zamknie
-    wspólnego konta. Działa tylko przy DEMO_MODE."""
-    if not getattr(settings, "DEMO_MODE", False):
-        raise Http404
-    user = get_user_model().objects.filter(username=settings.DEMO_USER, is_active=True).first()
-    if user is None:
-        messages.error(request, "Konto demo nie istnieje — uruchom `manage.py seed_demo`.")
-        return redirect("ui:login")
-    login(request, user, backend="django.contrib.auth.backends.ModelBackend")
-    return redirect("/")
