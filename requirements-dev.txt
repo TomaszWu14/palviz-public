@@ -3,8 +3,8 @@
 # testy (w tym requirements.txt). Komentarz w osobnej linii: Dependabot traktuje
 # komentarz w linii `-r` jako część nazwy pliku i przerywa aktualizacje pip.
 -r requirements-test.txt
-ruff==0.16.9                # linter + formatter (replaces flake8/black/isort)
-mypy==2.3.1                # static type checking
+ruff==0.17.1                # linter + formatter (replaces flake8/black/isort)
+mypy==2.4.0                # static type checking
 pytest-cov==7.1.0          # coverage integration
 django-extensions==4.1   # shell_plus, runserver_plus, model graphs
 django-debug-toolbar==8.0.0 # query/profiling panel (dev only, env-gated)
