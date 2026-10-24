@@ -45,6 +45,8 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   co w hubie — wejście na ekran niczego nie dubluje. Wymaga procesu `celery beat` w produkcji.
 
 ### Changed
+- Dependabot (pip): ignoruje wydania główne Django (projekt celowo na 5.2 LTS, Python 3.11); poprawki 5.2.x
+  dalej przychodzą w grupie `python-minor-patch`.
 - README: aktualne fakty — 22 ADR, stan znanych problemów P1–P19 (16 naprawionych, 3 otwarte),
   auto-merge opisany jako cecha repo prywatnego, nieaktualny „status procesu” zastąpiony odnośnikiem do
   backlogu; pusty placeholder „Kontekst projektu” ukryty do czasu uzupełnienia.
