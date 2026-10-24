@@ -72,6 +72,7 @@ jobs:
   bandit-gate:
     name: Bandit (MEDIUM+ blokuje)
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
       security-events: write
@@ -148,6 +149,7 @@ jobs:
   trivy:
     name: Trivy (fs, HIGH/CRITICAL z poprawką blokuje)
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
       security-events: write
@@ -189,6 +191,7 @@ jobs:
   python-audit:
     name: pip-audit (informacyjnie)
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
     steps:
@@ -220,6 +223,7 @@ jobs:
   npm-audit:
     name: npm audit (frontend, informacyjnie)
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
     defaults:
@@ -261,6 +265,7 @@ jobs:
     name: Trivy (obraz Dockera, tygodniowo)
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
       security-events: write
