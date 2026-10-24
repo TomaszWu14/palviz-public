@@ -27,6 +27,16 @@ class SecurityHeadersOnResponsesTests(TestCase):
         self.assertTrue(resp.has_header("Content-Security-Policy")
                         or resp.has_header("Content-Security-Policy-Report-Only"))
 
+    def test_login_page_has_portfolio_tracking_pixel(self):
+        # Piksel portfolio.twapp.pl (ui/_tracking_pixel.html) musi być na ekranie startowym
+        # demo i CSP musi dopuszczać jego domenę w img-src, inaczej przeglądarka go zablokuje.
+        resp = self.client.get(reverse("ui:login"))
+        body = resp.content.decode()
+        self.assertIn('src="https://portfolio.twapp.pl/px/logviz"', body)
+        policy = resp.get("Content-Security-Policy") or resp.get("Content-Security-Policy-Report-Only")
+        img_src = next(d for d in policy.split(";") if d.strip().startswith("img-src"))
+        self.assertIn("https://portfolio.twapp.pl", img_src)
+
     def test_json_response_is_not_cached(self):
         resp = self.client.get("/health/")
         self.assertTrue(resp["Content-Type"].startswith("application/json"))

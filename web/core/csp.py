@@ -22,7 +22,8 @@ STRICT_CSP = "; ".join((
     "default-src 'self'",
     "style-src 'self' 'unsafe-inline'",
     "font-src 'self'",
-    "img-src 'self' data: blob:",
+    # portfolio.twapp.pl: piksel 1x1 licznika odsłon demo (ui/_tracking_pixel.html).
+    "img-src 'self' data: blob: https://portfolio.twapp.pl",
     "connect-src 'self'",
     "frame-ancestors 'self'",
     "base-uri 'self'",
