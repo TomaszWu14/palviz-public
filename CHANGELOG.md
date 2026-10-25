@@ -17,6 +17,9 @@ tu odtwarzana — opisują ją ADR i `docs/07-ograniczenia.md`.
   (max 20 sekcji; migracja `ui.0198`). Lista gości i admin: kolumny „Ekrany”, „Czas”, „Najczęściej”.
   `NTFY_ENGAGED_VIEWS` (domyślnie 10) — jeden push „gość ogląda demo”. Klauzula RODO wymienia
   zapis obejrzanych ekranów.
+- Przepustka z portfolio (`core/portfolio_pass.py`, `PORTFOLIO_URL`, `PORTFOLIO_PASS`): gość z ciasteczkiem `gosc`
+  potwierdzonym przez `GET {PORTFOLIO_URL}/api/gosc` (200, timeout 2 s, cache 10 min) omija formularz bramki;
+  wpis `DemoVisitor` „Gość z portfolio” bez danych osobowych i bez własnego pusha ntfy. Błąd sieci = formularz jak dotąd.
 - Powiadomienie push (ntfy) o każdym nowym gościu bramki demo (`core/visitor_notify.py`): po udanym zapisie
   POST na `NTFY_URL` z treścią „{imię} {nazwisko} ({firma}) wszedł do LogViz” (nagłówki ASCII, opcjonalnie
   `NTFY_TOKEN` → Bearer), w wątku tła z timeoutem 5 s; błąd tylko w logu. Bez `NTFY_URL` — no-op.

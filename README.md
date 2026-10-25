@@ -152,6 +152,9 @@ wysyłki, produkty i klientów.
    na pilny „UWAGA firma z listy”, a `NTFY_ENGAGED_VIEWS` (domyślnie 10, `0` = wyłączone) wysyła jeden
    push „gość ogląda demo”, gdy gość obejrzy tyle ekranów. Lista `/demo/goscie/` pokazuje przy gościu
    liczbę ekranów, czas wizyty i 3 najczęściej oglądane sekcje.
+   `PORTFOLIO_URL` (domyślnie `https://portfolio.twapp.pl`, tylko `https://`) i `PORTFOLIO_PASS` (`0` wyłącza):
+   gość z ciasteczkiem `gosc` z portfolio (już się tam przedstawił) wchodzi bez formularza bramki; backend
+   pyta `GET {PORTFOLIO_URL}/api/gosc` (timeout 2 s), liczy się tylko status 200, błąd = zwykły formularz.
 2. Pierwszy start: `docker-entrypoint.sh` przy `DEMO_MODE=true` sam uruchamia `create_roles` i `seed_demo`
    (oba są idempotentne).
 3. Reset co noc: **Scheduled Tasks → Add**, kontener aplikacji, komenda
