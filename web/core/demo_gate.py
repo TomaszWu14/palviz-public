@@ -14,6 +14,7 @@ from django.http import Http404
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods
 
+from .portfolio_pass import has_portfolio_pass
 from .roles import _admin_only
 from .visitor_notify import notify_visitor
 
@@ -77,6 +78,18 @@ def _enter(request):
     return redirect("/")
 
 
+def _enter_from_portfolio(request):
+    """Wejście z przepustką portfolio: wpis bez danych osobowych (id do liczenia aktywności),
+    bez pusha ntfy — push z nazwiskiem wysyła portfolio."""
+    from ui.models.demo_visitor import DemoVisitor, purge_old_visitors
+    visitor = DemoVisitor.objects.create(first_name="Gość z portfolio", last_name="", company="")
+    purge_old_visitors()
+    resp = _enter(request)
+    resp.set_signed_cookie(COOKIE, f"v{visitor.pk}", max_age=COOKIE_AGE, httponly=True, samesite="Lax",
+                           secure=not settings.DEBUG)
+    return resp
+
+
 def _form(request, data=None, errors=None, status=200):
     return render(request, "ui/demo_gate.html", {"data": data or {}, "errors": errors or {}},
                   status=status)
@@ -91,6 +104,10 @@ def demo_login(request):
         if request.method != "POST":
             return redirect("ui:login")
         return _enter(request)
+    if has_portfolio_pass(request):                 # przedstawił się w portfolio — bez własnego formularza
+        if request.method != "POST":
+            return redirect("ui:login")
+        return _enter_from_portfolio(request)
     if request.method != "POST" or "first_name" not in request.POST:
         return _form(request)                       # pusty formularz „przedstaw się”
     if request.POST.get("website"):                 # honeypot: człowiek tego pola nie widzi
