@@ -12,7 +12,7 @@ whitenoise==6.12.0
 celery[redis]==5.6.3
 django-celery-results==2.6.0
 django-simple-history==3.12.0
-redis==6.4.0   # kombu[redis] (celery 5.6.x) wymaga redis <6.5 — nie podbijać do 7/8 bez bumpa celery/kombu
+redis==8.1.0   # kombu[redis] (celery 5.6.x) wymaga redis <6.5 — nie podbijać do 7/8 bez bumpa celery/kombu
 django-axes==8.3.1
 mozilla-django-oidc==4.0.1        # optional SSO (Keycloak/OIDC) — only active when OIDC_ENABLED=true
 sentry-sdk[django]==2.64.0
