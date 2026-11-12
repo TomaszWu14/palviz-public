@@ -3,7 +3,7 @@
 # (change a pin, re-run both test suites) rather than letting `>=` drift.
 pandas==3.0.3
 matplotlib==3.11.1
-plotly==6.8.0
+plotly==7.1.0
 django==5.2.17   # LTS; 6.x wymaga Pythona >=3.12, a CI/Docker stoją na 3.11 — nie podbijać bez zmiany Pythona
 openpyxl==3.1.5
 Pillow==13.0.0
